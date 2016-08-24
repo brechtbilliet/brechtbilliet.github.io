@@ -2,11 +2,11 @@
  -layout: post		
  -title: Modals in Angular 2	
  -published: true
- -author: brechtbilliet
  ----		
  -		
  -Todo		
  -
+
 # Modals in Angular 2
 Since one of my late newyears resolutions is blogging, behold my very first blogpost.
 For a customer of mine I had to implement modal-dialog functionality in Angular 2.
