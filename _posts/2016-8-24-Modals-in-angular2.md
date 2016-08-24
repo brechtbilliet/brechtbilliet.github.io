@@ -16,11 +16,11 @@ What I needed was actually very simple... I just needed a service that would ope
 
 What I needed was a simple service where I could pass a component that would get rendered on the page, without memory leaks of course. I needed something like this:
 
-{% highlight js %} 
+```typescript
 
 this.modalService.create(MyCustomModalComponent, {foo: "bar"});
 
-{% endhighlight %}
+```
 
 Since I didn't found any viable solutions, I decided to write it myself.
 
@@ -43,7 +43,7 @@ The thing about a lot of open-source libraries is they want to make everybody ha
 In Angular 2, you can not just compile stuff to the DOM, you need a placeholder.
 That's why I created a <strong>modal-placeholder</strong>, that I can use like this. This will be the placeholder where our modals will be rendered in.
 
-{% highlight js %} 
+```typescript
 @Component({
     selector: "application",
     template: `    
@@ -55,7 +55,7 @@ That's why I created a <strong>modal-placeholder</strong>, that I can use like t
 export class ApplicationContainer {
 	...
 }
-{% endhighlight %}
+```
 
 <strong>Let's look at the implementation</strong>
 
@@ -66,7 +66,7 @@ The modal-placeholder has 3 goals:
 <li>It should register the injector to that service. Our modals will need DI as well...</li>
 </ul>
 
-{% highlight js %} 
+```typescript
 @Component({
     selector: "modal-placeholder",
     template: `<div #modalplaceholder></div>`
@@ -81,12 +81,12 @@ export class ModalPlaceholderComponent implements OnInit {
         this.modalService.registerInjector(this.injector);
     }
 }
-{% endhighlight %}
+```
 
 ### The modal service
 This is the service that will dynamically generate custom components.
 
-{% highlight js %} 
+```typescript
 export class ModalService {
     private vcRef: ViewContainerRef; // here we hold our placeholder
     private injector: Injector; // here we hold our injector
@@ -123,22 +123,22 @@ export class ModalService {
         return componentRef$;
     }
 }
-{% endhighlight %}
+```
 
 As we saw above, every modal component will have a destroy method. That method is dynamically added (see logic above) to the instance of the modalcomponent. This will call the <strong>componentRef.destroy()</strong> behind the scenes which will safely destroy the component. I also found it convenient to have a closeModal function on the modal as well. Therefore every custom modal component we create should inherit this class:
 
-{% highlight js %} 
+```typescript
 export class ModalContainer {
     destroy: Function;
     closeModal(): void {
         this.destroy();
     }
 }
-{% endhighlight %}
+```
 
 This means, a custom modal could look like this: (ideally you could also create a generic modal component)
 
-{% highlight js %} 
+```typescript
 @Component({
 	selector: "my-custom-modal",
 	template: `
@@ -161,12 +161,12 @@ export class MyCustomModalComponent extends ModalContainer {
 	}
 	// the closeModal function will be executed on the ModalContainer parent class
 }
-{% endhighlight %}
+```
 
 I love typescript decorators, and I didn't want to inherit this ModalContainer everytime.
 I wanted to create modal components like this:
 
-{% highlight js %} 
+```typescript
 @Component({
 	selector: "my-custom-modal",
 	template: `
@@ -178,19 +178,19 @@ export class ModalWrapperComponent {
 	@Input() foo;
 	onSave(): Function;
 }
-{% endhighlight %}
+```
 
 This is basically the same thing as above, but much cleaner right?
 
 Here's the code for the custom decorator: (How easy is that?!)
 
-{% highlight js %} 
+```typescript
 export function Modal() {
     return function (target) {
         Object.assign(target.prototype,  ModalContainer.prototype);
     };
 }
-{% endhighlight %}
+```
 
 Ok, so what we have now is:
 <ul>
@@ -207,20 +207,20 @@ It's flexible, maintainable and easy to use... Let me show you...
 
 I want to create a modal of Type "MyCustomComponent", pass it the property foo (@input) and pass a callback for the onSave function.
 
-{% highlight js %} 
+```typescript
 	this.modalService.create<MyCustomComponent>(MyCustomComponent, 
 	{ 
 		foo: "bar", 
 		onSave: () => alert('save me')
 	});
-{% endhighlight %}
+```
 
 
 But wait? What if we want to destroy it outside of the component, you said you needed control right?
 
 That's why the create function returns an observable that contains the componentRef, which has a destroy function.
 
-{% highlight js %} 
+```typescript
 this.modalService.create<MyCustomComponent>(MyCustomComponent, 
 	{ 
 		foo: "bar", 
@@ -230,4 +230,6 @@ this.modalService.create<MyCustomComponent>(MyCustomComponent,
 		//destroy after 1 second
 		setTimeout(() => ref.destroy(), 1000);
 	});
-{% endhighlight %}
+```
+
+Thanks for reading! Hope you enjoyed it
