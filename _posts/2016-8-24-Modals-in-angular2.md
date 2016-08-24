@@ -2,10 +2,7 @@
  -layout: post		
  -title: Modals in Angular 2	
  -published: true
- ----		
- -		
- -Todo		
- -
+----
 
 # Modals in Angular 2
 Since one of my late newyears resolutions is blogging, behold my very first blogpost.
