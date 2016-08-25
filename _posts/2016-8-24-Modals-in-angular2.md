@@ -3,6 +3,7 @@ layout: post
 title: Modals in Angular 2	
 published: true
 author: brechtbilliet
+comments: true
 ---
 
 Since one of my late newyears resolutions is blogging, behold my very first blogpost.
