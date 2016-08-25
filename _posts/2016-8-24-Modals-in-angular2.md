@@ -244,11 +244,11 @@ It's flexible, maintainable and easy to use... Let me show you...
 I want to create a modal of Type "MyCustomComponent", pass it the property foo (@input) and pass a callback for the onSave function.
 
 ```typescript
-	this.modalService.create<MyCustomComponent>(MyCustomComponent, 
-	{ 
-		foo: "bar", 
-		onSave: () => alert('save me')
-	});
+this.modalService.create<MyCustomComponent>(MyCustomComponent, 
+{ 
+	foo: "bar", 
+	onSave: () => alert('save me')
+});
 ```
 
 
