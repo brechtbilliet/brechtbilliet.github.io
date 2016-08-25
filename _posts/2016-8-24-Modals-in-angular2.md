@@ -13,14 +13,14 @@ Since Angular 2 has made some big breaking changes in it's latest release candid
 
 What I needed was actually very simple... I just needed a service that would open modals in Angular 2 and I only needed a few features:
 <ul>
-<li>Multiple modals above each other</li>
+<li>Multiple modals that could be placed above each other</li>
 <li>Custom modals</li>
-<li>Modals must be destroyed inside and outside the modal</li>
+<li>The ability to desroy modals inside and outside the custom modal-component</li>
 </ul>
 
 <strong>Note:</strong> I'm using bootstrap as css framework so I don't care about the actual modal behavior.
 
-What I needed was a simple service where I could pass a component that would get rendered on the page, without memory leaks of course. I needed something like this:
+What I needed was a simple service where I could pass a component that would get rendered on the page, without memory leaks of course. Basically, I needed something like this:
 
 ```typescript
 
@@ -30,7 +30,7 @@ this.modalService.create(MyCustomModalComponent, {foo: "bar"});
 
 Since I didn't found any viable solutions, I decided to write it myself.
 
-Writing this piece of functionality myself, actually made me realise a few things:
+Writing this piece of functionality my self, actually made me realise a few things:
 <ul>
 <li>It wasn't difficult to write this functionality on my own</li>
 <li>It was way more flexible than the solutions I found on the internet</li>
@@ -39,12 +39,19 @@ Writing this piece of functionality myself, actually made me realise a few thing
 <li><strong>We use to much dependencies from the net</strong></li>
 </ul>
 
-Don't get me wrong, I don't think we should reinvent the wheel everytime. I'm just saying that sometimes it's better to write something yourself, when it doesn't cost you to much effort and saves you a lot of bloat.
+Don't get me wrong, I don't think we should reinvent the wheel everytime. I'm just saying that sometimes it's better to write something your self, when it doesn't cost you to much effort and saves you a lot of bloat.
 
 The thing about a lot of open-source libraries is they want to make everybody happy, which mostly comes with a lot of bloat and features you don't realy need. And..., with a big codebase, comes a big issuelist... 
 
-<strong>Enough about that, let's see how I implemented this...</strong>
-### The modal placeholder
+<strong>Enough about that, let's see how I implemented my requirements with very little code...</strong>
+## A brief overview of the flow
+First of all the modal-placeholder will register the Injector and ViewContainerRef (see later) to the UserModalService. At that time we can create modals using the UserModalService. These modals will be rendered into the modal-placeholder.
+
+![Image of Angular 2 modal scheme](https://github.com/brechtbilliet/brechtbilliet.github.io/raw/master/_posts/angular2-modal.png)
+
+
+
+## The modal placeholder
 
 In Angular 2, you can not just compile stuff to the DOM, you need a placeholder.
 That's why I created a <strong>modal-placeholder</strong>, that I can use like this. This will be the placeholder where our modals will be rendered in.
@@ -78,9 +85,12 @@ The modal-placeholder has 3 goals:
     template: `<div #modalplaceholder></div>`
 })
 export class ModalPlaceholderComponent implements OnInit {
-    @ViewChild("modalplaceholder", {read: ViewContainerRef}) viewContainerRef;
+    @ViewChild("modalplaceholder", {read: ViewContainerRef}) 
+    	viewContainerRef;
 
-    constructor(private modalService: ModalService, private injector: Injector) {
+    constructor(
+    	private modalService: ModalService, 
+    	private injector: Injector) {
     }
     ngOnInit(): void {
         this.modalService.registerViewContainerRef(this.viewContainerRef);
@@ -88,16 +98,20 @@ export class ModalPlaceholderComponent implements OnInit {
     }
 }
 ```
+As you can see above the ViewContainerRef holds a reference to the #modalplaceholder
 
-### The modal service
+## The modal service
 This is the service that will dynamically generate custom components.
 
 ```typescript
 export class ModalService {
-    private vcRef: ViewContainerRef; // here we hold our placeholder
-    private injector: Injector; // here we hold our injector
-    public activeInstances: number = 0; // we an use this to determine z-index of multiple modals
-
+    // here we hold our placeholder
+    private vcRef: ViewContainerRef; 
+    // here we hold our injector
+    private injector: Injector; 
+    // we can use this to determine z-index of multiple modals
+    public activeInstances: number = 0;
+    
     constructor(private compiler: Compiler) {
     }
 
@@ -109,20 +123,32 @@ export class ModalService {
         this.injector = injector;
     }
 
-    create<T>(component: any, parameters?: Object): Observable<ComponentRef<T>> {
-        let componentRef$ = Subject.create(); // we return a stream
+    create<T>(component: any, parameters?: Object):
+     	Observable<ComponentRef<T>> {
+     	// we return a stream so we can  access the componentref
+        let componentRef$ = Subject.create(); 
+        // compile the component based on it's type and
+        // create a component factory
         this.compiler.compileComponentAsync(component)
             .then(factory => {
-                const childInjector = ReflectiveInjector.resolveAndCreate([], this.injector);
-                let componentRef = this.vcRef.createComponent(factory, 0, childInjector);
+            	// the injector will be needed for DI in 
+            	// the custom component
+                const childInjector = ReflectiveInjector
+                	.resolveAndCreate([], this.injector);
+            	// create the actual component
+                let componentRef = this.vcRef
+                	.createComponent(factory, 0, childInjector);
                 // pass the @Input parameters to the instance
                 Object.assign(componentRef.instance, parameters); 
                 this.activeInstances ++;
                 // add a destroy method to the modal instance
                 componentRef.instance["destroy"] = () => {
                     this.activeInstances --;
-                    componentRef.destroy(); // this will destroy the component
+                    // this will destroy the component
+                    componentRef.destroy(); 
                 };
+                // the component is rendered into the ViewContainerRef
+                // so we can update and complete the stream
                 componentRef$.next(componentRef);
                 componentRef$.complete();
             });
@@ -130,6 +156,8 @@ export class ModalService {
     }
 }
 ```
+
+## The Custom modal
 
 As we saw above, every modal component will have a destroy method. That method is dynamically added (see logic above) to the instance of the modalcomponent. This will call the <strong>componentRef.destroy()</strong> behind the scenes which will safely destroy the component. I also found it convenient to have a closeModal function on the modal as well. Therefore every custom modal component we create should inherit this class:
 
@@ -151,7 +179,8 @@ This means, a custom modal could look like this: (ideally you could also create 
 	<div modal="" class="modal fade in">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				 <button type="button" class="close" (click)="closeModal()">×</button>
+				 <button type="button" class="close" 
+				 	(click)="closeModal()">×</button>
 				...
 			</div>
 		</div>
@@ -165,7 +194,8 @@ export class MyCustomModalComponent extends ModalContainer {
 	constructor(){
 		super();
 	}
-	// the closeModal function will be executed on the ModalContainer parent class
+	// the closeModal function will be available 
+	// on the ModalContainer parent class
 }
 ```
 
@@ -179,14 +209,14 @@ I wanted to create modal components like this:
 	...
 `
 })
-@Modal()
+@Modal() // this decorator is all it takes
 export class ModalWrapperComponent {
 	@Input() foo;
 	onSave(): Function;
 }
 ```
 
-This is basically the same thing as above, but much cleaner right?
+This is basically the same thing as the inheritance example above, but much cleaner right?
 
 Here's the code for the custom decorator: (How easy is that?!)
 
@@ -209,7 +239,7 @@ Ok, so what we have now is:
 And... that's it folks. That's the only code I had to write (cleaned up a bit but still...)
 It's flexible, maintainable and easy to use... Let me show you...
 
-### The use of the modalservice
+## How to use it
 
 I want to create a modal of Type "MyCustomComponent", pass it the property foo (@input) and pass a callback for the onSave function.
 
@@ -222,7 +252,7 @@ I want to create a modal of Type "MyCustomComponent", pass it the property foo (
 ```
 
 
-But wait? What if we want to destroy it outside of the component, you said you needed control right?
+But wait? What if we want to destroy it outside of the component, you said you needed control over de lifetime of the component right?
 
 That's why the create function returns an observable that contains the componentRef, which has a destroy function.
 
@@ -238,4 +268,7 @@ this.modalService.create<MyCustomComponent>(MyCustomComponent,
 	});
 ```
 
-Thanks for reading! Hope you enjoyed it
+## Conclusion
+With very little code I created a flexible way to create custom modal's. Don't <strong>always</strong> blindly rely on opensource solutions. Think about the complexity and flexibility first.
+
+Thanks for reading! I Hope you enjoyed it
