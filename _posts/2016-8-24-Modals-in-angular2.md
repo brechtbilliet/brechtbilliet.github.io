@@ -44,6 +44,7 @@ Don't get me wrong, I don't think we should reinvent the wheel everytime. I'm ju
 The thing about a lot of open-source libraries is they want to make everybody happy, which mostly comes with a lot of bloat and features you don't realy need. And..., with a big codebase, comes a big issuelist... 
 
 <strong>Enough about that, let's see how I implemented my requirements with very little code...</strong>
+
 ## A brief overview of the flow
 First of all the modal-placeholder will register the Injector and ViewContainerRef (see later) to the UserModalService. At that time we can create modals using the UserModalService. These modals will be rendered into the modal-placeholder.
 
