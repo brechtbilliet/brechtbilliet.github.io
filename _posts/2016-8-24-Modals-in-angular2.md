@@ -6,20 +6,20 @@ author: brechtbilliet
 comments: true
 ---
 
-Since one of my late newyears resolutions is blogging, behold my very first blogpost.
+Since one of my late New Year's resolutions is blogging, behold my very first blogpost.
 For a customer of mine I had to implement modal-dialog functionality in Angular 2.
-As most developers would do in this scenario, I also crawled the web searching for existing solutions.
+As most developers would do in this scenario, I crawled the web searching for existing solutions.
 
-Since Angular 2 has made some big breaking changes in it's latest release candidates, most of these solutions were deprecated. The ones that weren't deprecated weren't stable enough and/or very bloated.
+Since Angular 2 has made some big breaking changes in its latest release candidates, most of these solutions were deprecated. The ones that weren't deprecated weren't stable enough and/or very bloated.
 
 What I needed was actually very simple... I just needed a service that would open modals in Angular 2 and I only needed a few features:
 <ul>
 <li>Multiple modals that could be placed above each other</li>
 <li>Custom modals</li>
-<li>The ability to desroy modals inside and outside the custom modal-component</li>
+<li>The ability to destroy modals inside and outside the custom modal-component</li>
 </ul>
 
-<strong>Note:</strong> I'm using bootstrap as css framework so I don't care about the actual modal behavior.
+<strong>Note:</strong> I'm using bootstrap as css framework so I don't have to worry about the styling.
 
 What I needed was a simple service where I could pass a component that would get rendered on the page, without memory leaks of course. Basically, I needed something like this:
 
@@ -31,18 +31,18 @@ this.modalService.create(MyCustomModalComponent, {foo: "bar"});
 
 Since I didn't found any viable solutions, I decided to write it myself.
 
-Writing this piece of functionality my self, actually made me realise a few things:
+Writing this piece of functionality myself, actually made me realise a few things:
 <ul>
 <li>It wasn't difficult to write this functionality on my own</li>
 <li>It was way more flexible than the solutions I found on the internet</li>
 <li>It wasn't bloated at all</li>
 <li>I wrote very few lines of code</li>
-<li><strong>We use to much dependencies from the net</strong></li>
+<li><strong>We use too much dependencies from the net</strong></li>
 </ul>
 
 Don't get me wrong, I don't think we should reinvent the wheel everytime. I'm just saying that sometimes it's better to write something your self, when it doesn't cost you to much effort and saves you a lot of bloat.
 
-The thing about a lot of open-source libraries is they want to make everybody happy, which mostly comes with a lot of bloat and features you don't realy need. And..., with a big codebase, comes a big issuelist... 
+The thing about a lot of open-source libraries is they want to make everybody happy, which mostly comes with a lot of bloat and features you don't really need. And..., with a big codebase, comes a big issuelist... 
 
 <strong>Enough about that, let's see how I implemented my requirements with very little code...</strong>
 
@@ -129,7 +129,7 @@ export class ModalService {
      	Observable<ComponentRef<T>> {
      	// we return a stream so we can  access the componentref
         let componentRef$ = Subject.create(); 
-        // compile the component based on it's type and
+        // compile the component based on its type and
         // create a component factory
         this.compiler.compileComponentAsync(component)
             .then(factory => {
@@ -271,6 +271,6 @@ this.modalService.create<MyCustomComponent>(MyCustomComponent,
 ```
 
 ## Conclusion
-With very little code I created a flexible way to create custom modal's. Don't <strong>always</strong> blindly rely on opensource solutions. Think about the complexity and flexibility first.
+With very little code I created a flexible way to create custom modal's. Don't <strong>always</strong> blindly rely on open source solutions. Think about the complexity and flexibility first.
 
 Thanks for reading! I Hope you enjoyed it
