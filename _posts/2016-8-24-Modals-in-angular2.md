@@ -212,7 +212,7 @@ I wanted to create modal components like this:
 `
 })
 @Modal() // this decorator is all it takes
-export class ModalWrapperComponent {
+export class MyCustomComponent {
 	@Input() foo;
 	onSave(): Function;
 }
