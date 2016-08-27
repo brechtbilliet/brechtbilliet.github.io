@@ -49,7 +49,7 @@ The thing about a lot of open-source libraries is they want to make everybody ha
 ## A brief overview of the flow
 First of all the modal-placeholder will register the Injector and ViewContainerRef (see later) to the UserModalService. At that time we can create modals using the UserModalService. These modals will be rendered into the modal-placeholder.
 
-![Image of Angular 2 modal scheme](https://github.com/brechtbilliet/brechtbilliet.github.io/raw/master/_posts/angular2-modal.png)
+![Image of Angular 2 modal scheme](https://github.com/brechtbilliet/brechtbilliet.github.io/raw/master/_posts/angular2modal.png)
 
 
 
