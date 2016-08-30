@@ -200,10 +200,9 @@ Keep the html of the component in the same file of the javascript.
 Wait, what?! What about separation of concerns? Actually it is the concern of the component to fulfill its purpose. The component fulfills that purpose by the combination of his html and javascript.
 When you put them in the same file there are some advantages:
 <ul>
-<li>Less context switching when developing the component (don't switch between files)
+<li>Less context switching when developing the component (don't switch between files)</li>
 <li>No absolute paths to templates that are hard to maintain</li>
 <li>Less ajax calls to fetch templates, there already there when bootstrapping the application</li>
 </ul>
-
 
 **Note:** This only applies when the component isn't to big, but than again... keep them small remember.
