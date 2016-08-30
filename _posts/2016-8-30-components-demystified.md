@@ -15,11 +15,13 @@ comments: true
   1. [Best practices](#best-practices)
 
 ## Foreword
+
 These documents are the beginning of a book (or a collection of documents) that will explain SPA-principles in depth. SPA's (single-page-apps) offer us the opportunity to create responsive userfriendly webapplications that have a native look-and-feel. However, with great power comes great responsability! It's not always easy to manage those SPA's when they tend to get big, and most of the time... they will! When applying the principles of 'spa concepts demystified' you should be able to create large-scale applications like it's 'a walk in the park'.
 
 This module will demystify components and explain why certain choices were made.
 
 ## Base concept
+
 The concept 'Components' is one of the most commonly used concepts these days in SPA applications. The concept itself exists for a while now, but since React (SPA-framework from Facebook) became popular, most SPA-frameworks are based on this concept.
 
 In essence, a component is a tiny part of a bigger picture, a part of an application for instance. The term 'component' is something that is used quite commonly, but when we talk about components in SPA technologies, a component is something very specific.
@@ -38,6 +40,7 @@ Just like other native DOM-tags, components can have custom attributes. Those at
 
 
 ### Example: The native anchor-tag
+
 Let's take a look at the native **anchor-tag** for instance: 
 
 ```html
@@ -53,6 +56,7 @@ Let's take a look at the native **anchor-tag** for instance:
 </dl>
 
 ### Example: A custom rating-tag
+
 ```html
 <rating value="5"></rating>
 ``` 
@@ -79,6 +83,7 @@ Single page applications will mostly render additional HTML for custom component
 
 
 ## The hierarchical component-tree
+
 Most of the modern frameworks these days recommend the use of component-trees. Basically, this means that your entire application is a hierarchical tree of components. 
 This means that your pages will become seperate components. This even results in the fact that the application itself will become a component. Yes! **Every presentational chunk of your application becomes a component.** There are no standalone templates nor are there standalone controllers.
 
@@ -96,12 +101,14 @@ A single hierarchical component-tree will give you the following advantages:
 </ul> 
 
 ## Smart vs dumb components
+
 When structuring components, it's a good idea to separate dumb components from smart components. Dumb components (also called presentational components) are stupid and therefor know nothing about the application. Smart components (also called containers) typically have an interface to the rest of the application. 
 When working with a unidirectional dataflow like React or Angular2 this principle can become quite handy to structure your code.
 
 Let's define a set of groundrules shall we?
 
 ### Dumb components
+
 <ul>
 	<li>They don't know anything about the application</li>
 	<li>They will not redirect to other parts of the application</li>
@@ -130,6 +137,7 @@ The angular2 code for that could then be:
 Dumb components are very easy to reason about and can mostly be ignored in the thinkproces of your application. Therefore, the main groundrule should be: **Try to use dumb components as much as possible! They make your application less complex and easier to reason about**
 
 ### Smart components
+
 <ul>
 	<li>They know about the state and data of the application, but should not care how it's managed</li>
 	<li>Typically they have an interface that communicates with the rest of the application</li>
@@ -140,9 +148,11 @@ Dumb components are very easy to reason about and can mostly be ignored in the t
 ## Best practices
 
 ### Draw them first, think about the responsabilities first
+
 Since components represent the complete presentationlayer of your application it's important to think about the structure of these components. It's also a good idea to think about what components should dumb and smart before you start writing the application. For that reason I suggest you take a piece of paper or use a whiteboard and start drawing the componenttree for every page. This gives you the ability to start thinking about which state belongs to which component.
 
 ### Keep them small
+
 When you keep your components small, you get the following advantages:
 <ul>
 	<li>Small components are easier to work with. The smaller your code, the easier you get an overview of what the component does</li>
@@ -154,7 +164,9 @@ When you keep your components small, you get the following advantages:
 	<li>Split up into different developer tasks. (developers can work sandboxed on their own set of components)</li>
 	<li>Component names in an application create somekind of developer jargon</li>
 </ul>
+
 ### Don't let components talk directly with the rest of the application
+
 If you have read the rest of this chapter, you should know that this section does not apply to dumb components, since they don't interfere with the rest of the application. They only interfere with there direct parent's and direct children.
 Containers (smart components) do know about the application, but that doesn't mean they should have access to everything. 
 
@@ -162,13 +174,16 @@ It's a good idea to **provide some kind of abstraction layer** for your containe
 If you think about it, the containers should not know how statemanagement is handled, nor should they know how data is being fetched/handled. And in software, the less a component knows, the easier it gets to manage that component.
 
 An option would be to provide some kind of sandbox that only contains the properties of the state that your container needs. The sandbox would also contain the functions your container needs to modify state and or communicate with the backend. You want to keep this abstraction thin, and keep the logic of your container in the container itself. After all, it is its responsability right?
+
 ### Strict rules regarding communication
+
 A dumb component should only communicate with its direct parent-component and with its own child-components.
 This rule also applies for smart components, however a smart component has somekind of api to communicate with the rest of the application. That's what makes it smart.
 
 The big advantage here is that you don't have to keep track of who notifies who. There is a strict structure here.
 
 ### Keep your components dumb where possible
+
 The more dumb components your application has, the easier it gets to maintain that application.
 A majority of dumb components has the following advantages:
 <ul>
@@ -180,6 +195,7 @@ A majority of dumb components has the following advantages:
 </ul>
 
 ### keep your templates inline
+
 Keep the html of the component in the same file of the javascript.
 Wait, what?! What about separation of concerns? Actually it is the concern of the component to fulfill its purpose. The component fulfills that purpose by the combination of his html and javascript.
 When you put them in the same file there are some advantages:
