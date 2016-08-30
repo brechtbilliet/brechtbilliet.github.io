@@ -205,4 +205,5 @@ When you put them in the same file there are some advantages:
 <li>Less ajax calls to fetch templates, there already there when bootstrapping the application</li>
 </ul>
 
+
 **Note:** This only applies when the component isn't to big, but than again... keep them small remember.
