@@ -5,8 +5,6 @@ published: true
 author: brechtbilliet
 comments: true
 ---
-# Components demystified
-
 ## Table of Contents
 
   1. [Foreword](#foreword)
