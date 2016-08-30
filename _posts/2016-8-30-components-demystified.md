@@ -5,6 +5,7 @@ published: true
 author: brechtbilliet
 comments: true
 ---
+
 ## Table of Contents
 
   1. [Foreword](#foreword)
@@ -17,6 +18,7 @@ comments: true
 These documents are the beginning of a book (or a collection of documents) that will explain SPA-principles in depth. SPA's (single-page-apps) offer us the opportunity to create responsive userfriendly webapplications that have a native look-and-feel. However, with great power comes great responsability! It's not always easy to manage those SPA's when they tend to get big, and most of the time... they will! When applying the principles of 'spa concepts demystified' you should be able to create large-scale applications like it's 'a walk in the park'.
 
 This module will demystify components and explain why certain choices were made.
+
 ## Base concept
 The concept 'Components' is one of the most commonly used concepts these days in SPA applications. The concept itself exists for a while now, but since React (SPA-framework from Facebook) became popular, most SPA-frameworks are based on this concept.
 
@@ -136,8 +138,10 @@ Dumb components are very easy to reason about and can mostly be ignored in the t
 </ul>
 
 ## Best practices
+
 ### Draw them first, think about the responsabilities first
 Since components represent the complete presentationlayer of your application it's important to think about the structure of these components. It's also a good idea to think about what components should dumb and smart before you start writing the application. For that reason I suggest you take a piece of paper or use a whiteboard and start drawing the componenttree for every page. This gives you the ability to start thinking about which state belongs to which component.
+
 ### Keep them small
 When you keep your components small, you get the following advantages:
 <ul>
@@ -163,6 +167,7 @@ A dumb component should only communicate with its direct parent-component and wi
 This rule also applies for smart components, however a smart component has somekind of api to communicate with the rest of the application. That's what makes it smart.
 
 The big advantage here is that you don't have to keep track of who notifies who. There is a strict structure here.
+
 ### Keep your components dumb where possible
 The more dumb components your application has, the easier it gets to maintain that application.
 A majority of dumb components has the following advantages:
@@ -173,6 +178,7 @@ A majority of dumb components has the following advantages:
 	<li>It's easier to give dumb components a clear responsability</li>
 	<li>Dumb components are easier to test (less dependencies)</li>
 </ul>
+
 ### keep your templates inline
 Keep the html of the component in the same file of the javascript.
 Wait, what?! What about separation of concerns? Actually it is the concern of the component to fulfill its purpose. The component fulfills that purpose by the combination of his html and javascript.
@@ -182,4 +188,5 @@ When you put them in the same file there are some advantages:
 <li>No absolute paths to templates that are hard to maintain</li>
 <li>Less ajax calls to fetch templates, there already there when bootstrapping the application</li>
 </ul>
+
 **Note:** This only applies when the component isn't to big, but than again... keep them small remember.
