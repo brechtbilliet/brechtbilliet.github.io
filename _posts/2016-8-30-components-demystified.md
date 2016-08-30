@@ -44,7 +44,7 @@ Just like other native DOM-tags, components can have custom attributes. Those at
 Let's take a look at the native **anchor-tag** for instance: 
 
 ```html
-	<a href="http://brecht.io">my link</a>
+<a href="http://brecht.io">my link</a>
 ```
 
 <dl>
@@ -72,13 +72,13 @@ Let's take a look at the native **anchor-tag** for instance:
 Single page applications will mostly render additional HTML for custom components. The component above might output something like this:
 
 ```html
-	<rating>
+<rating>
+	<i class="fa fa-star rating fa-2x starred"></i>
         <i class="fa fa-star rating fa-2x starred"></i>
         <i class="fa fa-star rating fa-2x starred"></i>
         <i class="fa fa-star rating fa-2x starred"></i>
         <i class="fa fa-star rating fa-2x starred"></i>
-        <i class="fa fa-star rating fa-2x starred"></i>
-	</rating>
+</rating>
 ```
 
 
