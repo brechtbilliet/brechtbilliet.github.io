@@ -6,6 +6,8 @@ author: brechtbilliet
 comments: true
 ---
 
+**Updated at 3 september 2016 (RC.6 compliant)**
+
 Since one of my late New Year's resolutions is blogging, behold my very first blogpost.
 For a customer of mine I had to implement modal-dialog functionality in Angular 2.
 As most developers would do in this scenario, I crawled the web searching for existing solutions.
@@ -25,7 +27,12 @@ What I needed was a simple service where I could pass a component that would get
 
 ```typescript
 
+// this was possible in RC.5
 this.modalService.create(MyCustomModalComponent, {foo: "bar"});
+
+
+// this is what we need to do in RC.6
+this.modalService.create(MyModule, MyCustomModalComponent, {foo: "bar"});
 
 ```
 
@@ -125,21 +132,25 @@ export class ModalService {
         this.injector = injector;
     }
 
-    create<T>(component: any, parameters?: Object):
+	// update: as of rc6 we have to pass the module as well
+    create<T>(module: any, component: any, parameters?: Object):
      	Observable<ComponentRef<T>> {
      	// we return a stream so we can  access the componentref
         let componentRef$ = Subject.create(); 
         // compile the component based on its type and
         // create a component factory
-        this.compiler.compileComponentAsync(component)
+        this.compiler.compileModuleAndAllComponentsAsync(module)
             .then(factory => {
+            	// look for the componentfactory in the modulefactory
+             	let componentFactory = factory.componentFactories
+             		.filter(item => item.componentType === component)[0];
             	// the injector will be needed for DI in 
             	// the custom component
                 const childInjector = ReflectiveInjector
                 	.resolveAndCreate([], this.injector);
             	// create the actual component
                 let componentRef = this.vcRef
-                	.createComponent(factory, 0, childInjector);
+                	.createComponent(componentFactory, 0, childInjector);
                 // pass the @Input parameters to the instance
                 Object.assign(componentRef.instance, parameters); 
                 this.activeInstances ++;
@@ -245,8 +256,10 @@ It's flexible, maintainable and easy to use... Let me show you...
 
 I want to create a modal of Type "MyCustomComponent", pass it the property foo (@input) and pass a callback for the onSave function.
 
+**Update: Since RC.6 we have to pass the module as well**
+
 ```typescript
-this.modalService.create<MyCustomComponent>(MyCustomComponent, 
+this.modalService.create<MyCustomComponent>(MyModule, MyCustomComponent, 
 { 
 	foo: "bar", 
 	onSave: () => alert('save me')
@@ -259,7 +272,7 @@ But wait? What if we want to destroy it outside of the component, you said you n
 That's why the create function returns an observable that contains the componentRef, which has a destroy function.
 
 ```typescript
-this.modalService.create<MyCustomComponent>(MyCustomComponent, 
+this.modalService.create<MyCustomComponent>(MyModule, MyCustomComponent, 
 	{ 
 		foo: "bar", 
 		onSave: () => alert('save me')
