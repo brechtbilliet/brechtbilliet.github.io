@@ -59,7 +59,6 @@ First of all the modal-placeholder will register the Injector and ViewContainerR
 ![Image of Angular 2 modal scheme](https://github.com/brechtbilliet/brechtbilliet.github.io/raw/master/_posts/angular2modal.png)
 
 
-
 ## The modal placeholder
 
 In Angular 2, you can not just compile stuff to the DOM, you need a placeholder.
@@ -287,3 +286,6 @@ this.modalService.create<MyCustomComponent>(MyModule, MyCustomComponent,
 With very little code I created a flexible way to create custom modal's. Don't <strong>always</strong> blindly rely on open source solutions. Think about the complexity and flexibility first.
 
 Thanks for reading! I Hope you enjoyed it
+
+## Plunk
+![Checkout this plunk I've created] (https://plnkr.co/edit/0c2YuGt7n7Fti0uup6Gs?p=info)
