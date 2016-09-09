@@ -290,4 +290,4 @@ Thanks for reading! I Hope you enjoyed it
 
 ## Plunk
 
-[Checkout this plunk I've created] (https://plnkr.co/edit/0c2YuGt7n7Fti0uup6Gs?p=info)
+[Checkout this plunk I've created](https://plnkr.co/edit/0c2YuGt7n7Fti0uup6Gs?p=info)
