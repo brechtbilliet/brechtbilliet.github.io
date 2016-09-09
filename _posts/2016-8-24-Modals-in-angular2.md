@@ -283,9 +283,11 @@ this.modalService.create<MyCustomComponent>(MyModule, MyCustomComponent,
 ```
 
 ## Conclusion
+
 With very little code I created a flexible way to create custom modal's. Don't <strong>always</strong> blindly rely on open source solutions. Think about the complexity and flexibility first.
 
 Thanks for reading! I Hope you enjoyed it
 
 ## Plunk
+
 [Checkout this plunk I've created] (https://plnkr.co/edit/0c2YuGt7n7Fti0uup6Gs?p=info)
