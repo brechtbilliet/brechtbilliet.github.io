@@ -5,7 +5,7 @@ published: false
 author: brechtbilliet
 comments: true
 ---
-Me and [Kwinten Pisman](https://blog.kwintenp.com/) were working on a workshop this weekend with the focus on Reactive applications with [Angular 2](http://angular.io), [RXJS](https://github.com/ReactiveX/rxjs) and [@ngrx](https://github.com/ngrx). Something that can't miss in a reactive workshop are real-time updates. The application we are trying to make real-time is the [winecellar](http://winecellar.surge.sh) app (you can register an account here if you want to test it).
+[Kwinten Pisman](https://blog.kwintenp.com/) and me were working on a workshop this weekend with the focus on Reactive applications with [Angular 2](http://angular.io), [RXJS](https://github.com/ReactiveX/rxjs) and [@ngrx](https://github.com/ngrx). Something that can't miss in a reactive workshop are real-time updates. The application we are trying to make real-time is the [winecellar](http://winecellar.surge.sh) app (you can register an account here if you want to test it).
 
 To make this application real-time we changed some code in the node.js backend, but that's out of scope for this post. 
 The cool thing is, that we only needed **6 lines of code** to make the frontend completely real-time.
@@ -13,7 +13,16 @@ The cool thing is, that we only needed **6 lines of code** to make the frontend 
 Here's a small demo. Both computers are signed in with the same account. At the left screen, wines are being added and removed, and in the right screen you'll see the changes happening real-time.
 ![Winecellar app](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/realtimewinecellar.gif)
 
+
+
+## The winecellar app
+
+### intro 
+The winecellar application is a simple application with only a few features, but we overengineered it on purpose to make it work for largescale applications.
+You can find the open-source code of the winecellar project here: [frontend, (realtime branch)](https://github.com/brechtbilliet/winecellar) and [backend](https://github.com/brechtbilliet/WineCellarBackend). Beware, the backend might be a little quick and dirty ;)
+
 ### Technology stack
+
 The technology stack the winecellar uses is:
 <ul>
 <li>Angular 2</li>
@@ -23,12 +32,8 @@ The technology stack the winecellar uses is:
 <li>We will use socket.io to make the real-time connection with the backend</li>
 </ul>
 
-### The winecellar app
+### features
 
-The winecellar application is a simple application with only a few features, but we overengineered it on purpose to make it work for largescale applications.
-You can find the open-source code of the winecellar project here: [frontend, (realtime branch)](https://github.com/brechtbilliet/winecellar) and [backend](https://github.com/brechtbilliet/WineCellarBackend). Beware, the backend might be a little quick and dirty ;)
-
-The main features of the winecellar app are:
 <ul>
 <li>Authentication</li>
 <li>Add, update, remove wines</li>
@@ -37,9 +42,10 @@ The main features of the winecellar app are:
 <li>Update the stock of wines</li>
 <li>Setting ratings for wines</li>
 </ul>
+
 ![Winecellar app](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/winecellar.png)
 
-### What part of the application should be real-time?
+## What part of the application should be real-time?
 
 <ul>
 <li>All the actions that will update the content in the database eventually should push notifications to all clients except the one sending them.</li>
@@ -48,7 +54,7 @@ The main features of the winecellar app are:
 
 But why did we made something like that real-time? Actually, **just because we can**! It doesn't really make sense that a user is logged in twice right? We did it for the purpose of the workshop.
 
-### How did we manage to make it real-time?
+## How did we manage to make it real-time?
 
 First, let me give you a little bit of information about how the winecellar really works.
 
@@ -109,7 +115,7 @@ public post(@Req()req: Request, @Res() res: Response): void {
 }
 ```
 
-### Conclusion
+## Conclusion
 
 The data that is managed by redux can be easily made real-time by making the backend dispatch redux actions to the frontend. 
 That way, we can make our application real-time in matter of minutes.
