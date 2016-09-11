@@ -5,12 +5,12 @@ published: false
 author: brechtbilliet
 comments: true
 ---
-Me and [Kwinten Pisman](https://blog.kwintenp.com/) were working on a workshop this weekend with the focus on Reactive applications with [Angular 2](http://angular.io), [RXJS](https://github.com/ReactiveX/rxjs) and [@ngrx](https://github.com/ngrx). Something that can't miss in a reactive workshop are real-time updates. While me and Kwinten were working on that workshop, we had this crazy idea to make the whole thing real-time. The application we are using is the [winecellar](http://winecellar.surge.sh) app (you can register an account here if you want to test it).
+Me and [Kwinten Pisman](https://blog.kwintenp.com/) were working on a workshop this weekend with the focus on Reactive applications with [Angular 2](http://angular.io), [RXJS](https://github.com/ReactiveX/rxjs) and [@ngrx](https://github.com/ngrx). Something that can't miss in a reactive workshop are real-time updates. The application we are trying to make real-time is the [winecellar](http://winecellar.surge.sh) app (you can register an account here if you want to test it).
 
 To make this application real-time we changed some code in the node.js backend, but that's out of scope for this post. 
 The cool thing is, that we only needed **6 lines of code** to make the frontend completely real-time.
 
-Here's the result. Both computers are signed in with the same account. At the left screen wines are being added and removed, and in the right screen we'll see the changes happening real-time.
+Here's a small demo. Both computers are signed in with the same account. At the left screen, wines are being added and removed, and in the right screen you'll see the changes happening real-time.
 ![Winecellar app](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/realtimewinecellar.gif)
 
 ### Technology stack
@@ -61,7 +61,7 @@ Redux also has devtools.
 In The devtools below you'll see the actions being dispatched when updating the stock of a wine for instance:
 ![Winecellar devtools](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/winecellar_devtools.png)
 
-Let's say we want to add a wine. when we add a wine, we send a XHR request to the backend and send an action to the store, like you can see in the snippet below.
+Let's say that we want to add a wine. when we add a wine, we send a XHR request to the backend and send an action to the store, like you can see in the snippet below. That is already how to wine application works
 
 ```typescript
 add(wine: Wine): void {
@@ -73,11 +73,11 @@ add(wine: Wine): void {
 }
 ```
 
-This doesn't have anything to do with real-time, right?! You are right, it doesn't... But what if our backend can send Redux actions as well?
+This doesn't have anything to do with real-time, right?! You are right, it doesn't... But what if our backend can send Redux actions as well? If the backend can push redux actions to the frontend, then we can make it real-time with very little effort.
 
 For every REST call where something in the database gets updated, we can send a redux action to all the clients which are logged in with the same username (except for ourselves)
 
-**These are the 6 lines we need to make our frontend 100% real-time.**
+**These are the 6 lines of code, that we need to make our frontend 100% real-time.**
 
 ```typescript
 import * as io from "socket.io-client";
@@ -111,7 +111,5 @@ public post(@Req()req: Request, @Res() res: Response): void {
 
 ### Conclusion
 
-When the backend emits redux actions through a real-time system like socket.io,
-we can just dispatch these actions directly to our redux store.
-
+The data that is managed by redux can be easily made real-time by making the backend dispatch redux actions to the frontend. 
 That way, we can make our application real-time in matter of minutes.
