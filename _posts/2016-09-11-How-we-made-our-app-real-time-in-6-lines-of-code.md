@@ -5,20 +5,22 @@ published: false
 author: brechtbilliet
 comments: true
 ---
+Me and [Kwinten Pisman](https://blog.kwintenp.com/) were working on a workshop this weekend with the focus on Reactive applications with [Angular 2](http://angular.io), [RXJS](https://github.com/ReactiveX/rxjs) and [@ngrx](https://github.com/ngrx). Something that can't miss in a reactive workshop are real-time updates. While me and Kwinten were working on that workshop, we had this crazy idea to make the whole thing real-time. The application we are using is the [winecellar](http://winecellar.surge.sh) app (you can register an account here if you want to test it).
 
-## How we made our app real-time in 6 lines of code
+To make this application real-time we changed some code in the node.js backend, but that's out of scope for this post. 
+The cool thing is, that we only needed **6 lines of code** to make the frontend completely real-time.
 
-Me and [Kwinten Pisman](https://blog.kwintenp.com/) will give a workshop at the first Belgian Angular conference [ngbe](http://ng-be.org) about Reactive applications with [Angular 2](http://angular.io), [RXJS](https://github.com/ReactiveX/rxjs) and [@ngrx](https://github.com/ngrx).
-The application we are using is the [winecellar](http://winecellar.surge.sh), which I already used in all my Angular 2 workshops. The focus of that workshop is Reactive programming and architectural choices.
-
-Something that can't miss in a reactive workshop are real-time updates. While me and Kwinten were working on that particular workshop, we had this crazy idea to make the winecellar application real-time.
-
-When we updated the node.js backend (which is out of scope for the workshop and this post) we started changing our application to make it real-time.
-First, we thought about a lot of different scenarios that would take some big code refactors. At the end we did it in only 6 lines of code.
-
-Here's the result: At both computers, we are signed in with the same account.
+Here's the result. Both computers are signed in with the same account. At the left screen wines are being added and removed, and in the right screen we'll see the changes happening real-time.
 ![Winecellar app](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/realtimewinecellar.gif)
 
+### Technology stack
+The technology stack the winecellar uses is:
+<ul>
+<li>Angular 2</li>
+<li>RXJS</li>
+<li>@ngrx/store as redux implementation</li>
+<li>Typescript</li>
+</ul>
 
 ### The winecellar app
 
@@ -39,7 +41,7 @@ The main features of the winecellar app are:
 ### What part of the application should be real-time?
 
 <ul>
-<li>All the actions that will update the database eventually should push notifications to all clients except the one sending them.</li>
+<li>All the actions that will update the content in the database eventually should push notifications to all clients except the one sending them.</li>
 <li>Even the filter should be real-time. (Eg. when filtering on "Chateau pomerol", and somebody adds that wine, we want to update our filtered results real-time)</li>
 </ul>
 
@@ -47,11 +49,11 @@ But why did we made something like that real-time? Actually, **just because we c
 
 ### How did we manage to make it real-time?
 
-First, let me give you a little bit of information about the technology stack and how the winecellar realy works.
+First, let me give you a little bit of information about how the winecellar really works.
 
-The technology stack is Angular 2, @ngrx/store and RXJS. @ngrx/store is a redux library that we use to maintain the state of our application. Basically, you can see it as a client-side store of all our wines and other state. We use that particular store as a single-source-of-truth. We will send actions towards that store which will update the state with pure functions called reducers.
+Like said before we use @ngrx/store as our redux implementation. It is a redux library that we use to maintain the state of our application. Basically, you can see it as a client-side store of all our wines and other state. We use that particular store as a single-source-of-truth. We will send actions towards that store which will update the state with pure functions called reducers.
 
-In the following scheme you can see the unidirectional dataflow of redux: The view sends action to the store which will update the state and then update the view.
+In the following scheme you can see the unidirectional dataflow of redux: The view sends actions to the store which will update the state and then update the view.
 ![Redux](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/redux.png)
 
 Redux also has devtools.
@@ -70,36 +72,11 @@ add(wine: Wine): void {
 }
 ```
 
-This doesn't have anything to do with real-time, right?! You are right, it doesn't... but I want to show that we only have to update the store to make the view react on that.
+This doesn't have anything to do with real-time, right?! You are right, it doesn't... But what if our backend can send Redux actions as well?
 
-When this XHR request is handled in the backend, and the wine is added in the database, The backend will send a push notification with socket.io (but only towards the other clients, we don't want to be notified for something we just did, now do we?)
+For every REST call where something in the database gets updated, we can send a redux action to all the clients which are logged in with the same username (except for ourselves)
 
-Basically, for every crud action the backend will handle the database communication and send a push notification to every client which is logged in with the same username.
-For every REST call that changed something in the database, I wanted to send a custom action to the frontend which I would consume like this:
-
-```typescript
-// connect with socket.io and listen  actions
-connect(): void {
-    this.store.select(state => state.data.authentication.jwtToken)
-    	.take(1).subscribe((token: string) => {
-	        let socket = io(BACKEND, {query: "jwttoken=" + token});
-	        socket.on("ADDWINE", (wine: Wine) => {
-	        	// add the wine to the store
-	        });
-	        socket.on("UPDATEWINE", (wine: Wine) => {
-	        	...
-	        });
-	        socket.on("REMOVEWINE", (_id: string) => {
-	        	...
-	        });
-	        ...
-    });
-}
-```
-
-Kwinten had the great idea to just send redux actions from the backend. That way, we only have to listen for one event, which will receive an action, that will be dispatched directly to the redux store.
-
-The snippet below is all the code we had to write to make this work:
+**These are the 6 lines we need to make our frontend 100% realtime.**
 
 ```typescript
 // connect with socket.io and listen to redux actions
@@ -112,7 +89,6 @@ connect(): void {
 }
 ```
 
-This is super awesome, we just made our node.js backend send the same actions as our frontend. This means, that because of the fact that we use the redux principle and we carefully designed our state, that we can make our application real-time in a few minutes.
 
 This is a simplified example of what happens on the backend when we add a wine, for instance.
 
@@ -130,4 +106,5 @@ public post(@Req()req: Request, @Res() res: Response): void {
 
 ### Conclusion
 
-Because of the redux principle, we can make our application real-time in a matter of minutes. This was a great breakthrough for us and we look forward of teaching these principles in our ngbe workshop.
+Because of the redux principle, we can make our application real-time in a matter of minutes.
+We just have to make our backend push the correct redux actions, and dispatch them to the redux store.
