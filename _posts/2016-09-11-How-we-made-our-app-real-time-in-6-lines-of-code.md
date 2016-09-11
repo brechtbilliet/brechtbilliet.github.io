@@ -17,13 +17,11 @@ Here's a small demo. Both computers are signed in with the same account. At the 
 
 ## The winecellar app
 
-### intro 
 The winecellar application is a simple application with only a few features, but we overengineered it on purpose to make it work for largescale applications.
 You can find the open-source code of the winecellar project here: [frontend, (realtime branch)](https://github.com/brechtbilliet/winecellar) and [backend](https://github.com/brechtbilliet/WineCellarBackend). Beware, the backend might be a little quick and dirty ;)
 
 ### Technology stack
 
-The technology stack the winecellar uses is:
 <ul>
 <li>Angular 2</li>
 <li>RXJS</li>
@@ -62,10 +60,6 @@ Like said before we use @ngrx/store as our redux implementation. It is a redux l
 
 In the following scheme you can see the unidirectional dataflow of redux: The view sends actions to the store which will update the state and then update the view.
 ![Redux](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/redux.png)
-
-Redux also has devtools.
-In The devtools below you'll see the actions being dispatched when updating the stock of a wine for instance:
-![Winecellar devtools](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/winecellar_devtools.png)
 
 Let's say that we want to add a wine. when we add a wine, we send a XHR request to the backend and send an action to the store, like you can see in the snippet below. That is already how to wine application works
 
@@ -114,6 +108,10 @@ public post(@Req()req: Request, @Res() res: Response): void {
     });
 }
 ```
+
+## Check the devtools
+In The devtools below you'll see the actions being dispatched during the lifecycle of the application. These actions can be triggered manually or real-time. Be sure to check them out at [https://github.com/ngrx/store-devtools](https://github.com/ngrx/store-devtools)
+![Winecellar devtools](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/realtimein6lines/winecellar_devtools.png)
 
 ## Conclusion
 
