@@ -117,3 +117,4 @@ In The devtools below you'll see the actions being dispatched during the lifecyc
 
 The data that is managed by redux can be easily made real-time by making the backend dispatch redux actions to the frontend. 
 That way, we can make our application real-time in matter of minutes.
+If you want to learn more about these technologies: Be sure to checkout our workshop at [ngbe](http://ng-be.org).
