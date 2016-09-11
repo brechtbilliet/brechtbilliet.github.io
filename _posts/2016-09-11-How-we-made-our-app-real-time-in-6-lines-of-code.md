@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How we made our app real-time in 6 lines of code
-published: false
+published: true
 author: brechtbilliet
 comments: true
 ---
