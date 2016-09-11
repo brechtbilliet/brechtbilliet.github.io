@@ -20,6 +20,7 @@ The technology stack the winecellar uses is:
 <li>RXJS</li>
 <li>@ngrx/store as redux implementation</li>
 <li>Typescript</li>
+<li>We will use socket.io to make the real-time connection with the backend</li>
 </ul>
 
 ### The winecellar app
@@ -45,7 +46,7 @@ The main features of the winecellar app are:
 <li>Even the filter should be real-time. (Eg. when filtering on "Chateau pomerol", and somebody adds that wine, we want to update our filtered results real-time)</li>
 </ul>
 
-But why did we made something like that real-time? Actually, **just because we can**! It doesn't realy make sense that a user is logged in twice right? We did it for the purpose of the workshop.
+But why did we made something like that real-time? Actually, **just because we can**! It doesn't really make sense that a user is logged in twice right? We did it for the purpose of the workshop.
 
 ### How did we manage to make it real-time?
 
@@ -76,9 +77,10 @@ This doesn't have anything to do with real-time, right?! You are right, it doesn
 
 For every REST call where something in the database gets updated, we can send a redux action to all the clients which are logged in with the same username (except for ourselves)
 
-**These are the 6 lines we need to make our frontend 100% realtime.**
+**These are the 6 lines we need to make our frontend 100% real-time.**
 
 ```typescript
+import * as io from "socket.io-client";
 // connect with socket.io and listen to redux actions
 connect(): void {
     this.store.select(state => state.data.authentication.jwtToken)
@@ -98,7 +100,10 @@ public post(@Req()req: Request, @Res() res: Response): void {
     let userId = handleAuth(req, res);
     new Wine(req.body).save((error, response) => {
         ...
+        // emit a socket.io event to the client
+        // which contains the redux action
         this.pushToClient(userId, req, {type: DATA_WINES_ADD, payload: {wine: response}});
+        // return the new user
         res.send(response);
     });
 }
@@ -106,5 +111,7 @@ public post(@Req()req: Request, @Res() res: Response): void {
 
 ### Conclusion
 
-Because of the redux principle, we can make our application real-time in a matter of minutes.
-We just have to make our backend push the correct redux actions, and dispatch them to the redux store.
+When the backend emits redux actions through a real-time system like socket.io,
+we can just dispatch these actions directly to our redux store.
+
+That way, we can make our application real-time in matter of minutes.
