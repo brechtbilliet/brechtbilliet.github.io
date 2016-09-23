@@ -135,7 +135,7 @@ export class ModalService {
     create<T>(module: any, component: any, parameters?: Object):
      	Observable<ComponentRef<T>> {
      	// we return a stream so we can  access the componentref
-        let componentRef$ = Subject.create(); 
+        let componentRef$ = new ReplaySubject(); 
         // compile the component based on its type and
         // create a component factory
         this.compiler.compileModuleAndAllComponentsAsync(module)
@@ -280,6 +280,32 @@ this.modalService.create<MyCustomComponent>(MyModule, MyCustomComponent,
 		//destroy after 1 second
 		setTimeout(() => ref.destroy(), 1000);
 	});
+```
+
+## AOT
+
+[Ahead-time-compilation](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/) in angular2 breaks this pattern (because the compiler will not be available in production in that scenario). For AOT to work you just need to use the generated factory and update the modalservice like below.
+
+```typescript
+createFromFactory<T>(componentFactory: ComponentFactory<T>, 
+	parameters?: Object): Observable<ComponentRef<T>> {
+    let componentRef$ = new ReplaySubject();
+    const childInjector = ReflectiveInjector.resolveAndCreate([], this.injector);
+    let componentRef = this.vcRef.createComponent(componentFactory, 0, childInjector);
+    // pass the @Input parameters to the instance
+    Object.assign(componentRef.instance, parameters); 
+    this.activeInstances++;
+    componentRef.instance["destroy"] = () => {
+        this.activeInstances--;
+        componentRef.destroy();
+    };
+    componentRef$.next(componentRef);
+    componentRef$.complete();
+    return componentRef$.asObservable();
+}
+
+// you can call it like that
+this.modalService.createFromFactory(myCustomModalNgFactory);
 ```
 
 ## Conclusion
