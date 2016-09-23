@@ -49,7 +49,7 @@ There is one exception to this rule: When **adding** data, the backend has to re
 
 ## What if the server-call fails?
 
-What if the user his internet-connection is lost? Or the backend doesn't return a 200 response but an error. Our store will already be updated, the wine will be lost when it's in fact still in the database. In some scenarios you want to prevent that kind of behavior. In those cases we want to rollback that specific action, but not interfere with the rest of the actions. It has to be completely safe.
+What if the user's internet-connection is lost? Or the backend doesn't return a 200 response but an error. Our store will already be updated, the wine will be lost when it's in fact still in the database. In some scenarios you want to prevent that kind of behavior. In those cases we want to rollback that specific action, but not interfere with the rest of the actions. It has to be completely safe.
 
 ![Scenario 3](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/optimisticupdates/optimisticupdates_scenario3.png)
 
@@ -74,7 +74,7 @@ remove(wine: Wine): void {
 }
 ```
 
-It turns out that when using the redux pattern, this only takes 12 lines of code. We will have to create a parentreducer that will delegate to our root reducer. The parentreducer will keep track of all the actions, so they can be rollbacked.
+It turns out that when using the redux pattern, this only takes 12 lines of code (without comments :-)). We will have to create a parentreducer that will delegate to our root reducer. The parentreducer will keep track of all the actions, so they can be rollbacked.
 The implementation looks like this:
 
 ```typescript
@@ -134,10 +134,38 @@ What if it would become slow?
 We can implement a buffer. Let's say that we only want the last 100 actions to be kept.
 
 ```typescript
-import {ApplicationState} from "../statemanagement/state/ApplicationState";
-import {Action, ActionReducer} from "@ngrx/store";
-export function handleUndo(rootReducer: ActionReducer<ApplicationState>, bufferSize: number = 100)
-	: ActionReducer<ApplicationState> {
-    // todo
+export function handleUndo(rootReducer: ActionReducer<ApplicationState>, 
+	bufferSize = 100): ActionReducer<ApplicationState> {
+    let executedActions: Array<Action> = [];
+    let initialState = undefined;
+    return (state: ApplicationState, action: Action) => {
+        if (action.type === "UNDO_ACTION") {
+        	// if the action is UNDO_ACTION, 
+        	// then call all the actions again on the rootReducer, 
+        	// except the one we want to rollback
+            let newState: any = {};
+            executedActions = executedActions.filter(eAct => eAct !== action.payload);
+            // update the state for every action untill we get the
+            // exact same state as before, but without the action we want to rollback
+            executedActions.forEach(executedAction => 
+            	newState = rootReducer(newState, executedAction));
+            return newState;
+        }
+       	// push every action that isn't UNDO_ACTION to the executedActions property
+		executedActions.push(action);
+        let updatedState =  rootReducer(state, action);
+        if (executedActions.length === bufferSize + 1) {
+            let firstAction = executedActions[0];
+            // calculate the state x (buffersize) actions ago
+            initialState = rootReducer(initialState, firstAction);
+            // keep the correct actions
+            executedActions = executedActions.slice(1, bufferSize + 1);
+        }
+        return updatedState;
+    };
 }
 ```
+
+### Solution
+The redux pattern has opened amazing doors for frontend development. Just like [realtime](http://blog.brecht.io/How-we-made-our-app-real-time-in-6-lines-of-code/) became a breeze we can do optimistic updates with almost no effort.
+Let me know if you enjoyed this article!
