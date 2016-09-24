@@ -6,7 +6,7 @@ author: brechtbilliet
 comments: true
 ---
 
-[Angular 2](https://angular.io/) and [redux](https://github.com/reactjs/redux) are 2 technologies that are getting a lot of traction these days. Angular 2 is a SPA framework and redux is a statemanagement tool. Most developers that are using Angular 2 are using the [@ngrx/store](https://github.com/ngrx/store) variant of the redux principle. Because I'm one of them I will be using @ngrx/store instead of redux.js for this article. Don't let that bother you, what you are about to read can be used wth redux.js in the exact same way. If you have never heard about redux, I strongly advice to read the [documentation](http://redux.js.org/) first.
+[Angular 2](https://angular.io/) and [redux](https://github.com/reactjs/redux) are 2 technologies that are getting a lot of traction these days. Angular 2 is a SPA framework and redux is a state management tool. Most developers that are using Angular 2 are using the [@ngrx/store](https://github.com/ngrx/store) variant of the redux principle. Because I'm one of them I will be using @ngrx/store instead of redux.js for this article. Don't let that bother you, what you are about to read can be used wth redux.js in the exact same way. If you have never heard about redux, I strongly advice to read the [documentation](http://redux.js.org/) first.
 
 ## Optimistic updates
 
@@ -28,7 +28,7 @@ remove(wine: Wine): void {
 }
 ```
 
-This is the traditional way of doing things, but I think we can do it better. What if we would update the store, regardless of the HTTP response the server returns? We click the deletebutton in the datagrid, call the angularService like we already did. But in that service we update the store directly (parallel with the http call)
+This is the traditional way of doing things, but I think we can do it better. What if we would update the store, regardless of the HTTP response the server returns? We click the delete button in the datagrid, call the angularService like we already did. But in that service we update the store directly (parallel with the http call)
 
 ![Scenario 2](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/optimisticupdates/optimisticupdates_scenario2.png)
 
@@ -74,12 +74,13 @@ remove(wine: Wine): void {
 }
 ```
 
-It turns out that when using the redux pattern, this only takes 12 lines of code (without comments :-)). We will have to create a parentreducer that will delegate to our root reducer. The parentreducer will keep track of all the actions, so they can be rollbacked.
+It turns out that when using the redux pattern, this only takes 12 lines of code (without comments :-)). We will have to create a parent reducer that will delegate to our root reducer. The parent reducer will keep track of all the actions, so they can be rollbacked.
 The implementation looks like this:
 
 ```typescript
 import {ApplicationState} from "../statemanagement/state/ApplicationState";
 import {Action, ActionReducer} from "@ngrx/store";
+
 export function handleUndo(rootReducer: ActionReducer<ApplicationState>)
 	: ActionReducer<ApplicationState> {
 	// keep the executedActions
