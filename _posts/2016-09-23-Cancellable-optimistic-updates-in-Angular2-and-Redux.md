@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Implementing cancellable optimistic updates in Angular 2
+title: Cancellable optimistic updates in Angular 2 and Redux
 published: true
 author: brechtbilliet
 comments: true
