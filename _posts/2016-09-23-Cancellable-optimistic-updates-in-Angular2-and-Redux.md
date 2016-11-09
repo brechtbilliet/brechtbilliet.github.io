@@ -129,7 +129,7 @@ Some facts:
 <li>Actions are very cheap</li>
 <li>They will update the store only once, we execute the actions ourselves, so ui won't get updated</li>
 <li>Actions only get replayed when there is an error</li>
-<li>The devtools also work like that, (enables [timetraveling](https://onsen.io/blog/react-redux-devtools-with-time-travel/))</li>
+<li>The devtools also work like that, enables [timetraveling](https://onsen.io/blog/react-redux-devtools-with-time-travel)</li>
 </ul>
 What if it would become slow?
 We can implement a buffer. Let's say that we only want the last 100 actions to be kept.
