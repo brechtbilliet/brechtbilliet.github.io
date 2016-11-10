@@ -96,7 +96,8 @@ I designed a certain architecture based on principles of today (most of them exp
 
 ### Abstraction that makes sense
 
-This principle is partially based on the [Sandbox principle](http://www.slideshare.net/nzakas/scalable-javascript-application-architecture) of [Nicholas Zakas](https://twitter.com/slicknet), which is already a few years old. In that architecture, there was no unidirectional dataflow though.
+This principle is partially based on the [Sandbox principle](http://www.slideshare.net/nzakas/scalable-javascript-application-architecture) of [Nicholas Zakas](https://twitter.com/slicknet), which is already a few years old. For Nicholas Zakas, the sandbox acts like a dispatcher between different modules where a module is like a smart component.
+In that architecture, there was no unidirectional dataflow though.
 For me a sandbox is a way to **decouple the presentation layer from the application logic**, but that's not its only responsibility.
 
 But let's start from the beginning...
