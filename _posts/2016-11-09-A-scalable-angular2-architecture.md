@@ -18,11 +18,11 @@ One of the biggest challenges might be: extending existing logic and writing new
 
 Single-page-applications are rather new (not really), and especially older frameworks gave you 100 different ways to design an application. There wasn't any structure, encapsulation and everything was tightly coupled to each other.
 
-Most of the time in the beginning of a project the development process went blazingly fast. But after a few developers, features, refactors, the code started to become less maintainable. It started to look like spaghetti. Frameworks have matured a lot, but it's also important that the architecture of the software you write matures along the process.
+Most of the time in the beginning of a project the development process went blazingly fast. But after a few developers, features, refactors, the code started to become less maintainable. It started to look like spaghetti. Frameworks have matured a lot, but it's also important that the architecture of the software you write matures along with the process.
 
 ## SPA in 2016 (and even before)
 
-To explain the architecture where this article is all about, here's a reminder of how a web-application in 2016 might look like.
+To explain the architecture this article is all about, here's a reminder of how a web-application in 2016 might look like.
 These are concepts that your applications should rely on these days. It doesn't matter whether using [React](https://facebook.github.io/react/), [Angular 2](http://angular.io) or something else. These principles are there to make sure that your web architecture becomes maintainable.
 
 ### Principle 1: Components
@@ -107,7 +107,7 @@ In this particular scenario I'm going to assume that we use [Redux](http://redux
 The same reason you don't let children play with everything: **"It might get messy"**.
 Smart components (also named containers here) should also follow a very strict set of rules. We don't want to inject every service that we want in there, just because we can. For instance: it might not make sense to inject a game-engine in an authentication module. 
 
-The following example shows a big constructor with a lot of dependencies. In this scenario the MyComponent can pretty much do whatever it wants in the application. He gets injected whatever it wants and uses whatever it wants.
+The following example shows a big constructor with a lot of dependencies. In this scenario *MyComponent* can pretty much do whatever it wants in the application. It gets injected whatever it wants and uses whatever it wants.
 That's generally not a good idea.
 
 ```typescript
@@ -119,10 +119,11 @@ export class MyComponent{
 }
 ```
 
-The example above has too much dependencies in its constructor. It has to many links to the rest of the application. When you persue this kind of design it might end up looking like this: (The REST stands for restful services, so these are just the HTTP blocks)
+The example above has too many dependencies in its constructor. It has too many links to the rest of the application. When you pursue this kind of design it might end up looking like this (REST stands for restful services, so these are just the HTTP blocks):
+
 ![Abstraction step1](scalableng2architecture/abstraction_step1.png)
 
-This is starting to look like a spaghetti, where everything is really tightly coupled.
+This is starting to look like spaghetti code, where everything is really tightly coupled.
 An abstraction layer could really help us here. In the example below we can see that the presentation layer is completely decoupled and the abstraction layer delegates everything.
 
 ![Abstraction step2](scalableng2architecture/abstraction_step2.png)
@@ -131,7 +132,7 @@ An abstraction layer could really help us here. In the example below we can see 
 
 Dumb components and smart components shouldn't know that you use Redux, or any other state management layer for that matter. They should not care how state is being managed. They just trust that it's being handled the right way. It's not their responsibility. The responsibility of the presentation layer is **"to present"** and **"to delegate"**.
 
-The snippet below might be an example of bad design, it's very tightly coupled to redux (we use [ngrx/store](https://github.com/ngrx/store) in this example):
+The snippet below might be an example of bad design because the component is very tightly coupled to redux (we use [ngrx/store](https://github.com/ngrx/store) in this example):
 
 ```typescript
 export class MyComponent{
@@ -186,7 +187,7 @@ Now the component really focusses on its responsibility. It doesn't know how the
 
 
 ### Rule number THREE: HTTP services should not know about the statemanagement layer
-It might look pragmatic to listen to the result of a get call and put it in the store right in the service. But the only goal an HTTP service has, is **to perform HTTP requests and return the result of those requests**.
+At a first glance, it might seem pragmatic to handle the result of a GET call and put it in the store right in the service. But the only goal an HTTP service has, is **to perform HTTP requests and return the result of those requests**.
 This might look pragmatic:
 
 ```typescript
@@ -210,6 +211,7 @@ export class UserService{
 ```
 
 But now our http services are very tightly coupled to our state management system.
+
 ![Abstraction step3](scalableng2architecture/abstraction_step3.png)
 
 This is actually the only responsibility an http service should have.
@@ -227,7 +229,7 @@ export class UserService{
 
 ### A possible solution
 
-This is not the only solution of course, but it's a solution that works mostly for me.
+This is not the only solution of course, but it's a solution that has worked most of the times for me.
 Every presentational module has access to its own sandbox. A sandbox is a service that will expose:
 <ul>
 <li>Streams of state (selected from redux in this case)</li>
@@ -248,7 +250,7 @@ No **it's not just a facade** :) It should have a certain amount of logic.
 The advantages of the sandbox are:
 <ul>
 <li>Decoupling the presentation layer from the rest</li>
-<li>Abstracting away the statemanagementlayer</li>
+<li>Abstracting away the state management layer</li>
 <li>You can see what a module has access to by opening its sandbox</li>
 <li>Components cannot just use and break whatever they want, better encapsulation</li>
 <li>Putting optimistic update logic in there seems like the right place because neither the component nor the service cares about that functionality</li>
