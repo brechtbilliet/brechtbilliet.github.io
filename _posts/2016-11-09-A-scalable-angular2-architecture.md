@@ -119,7 +119,7 @@ export class MyComponent{
 }
 ```
 
-The example above has too much dependencies in its constructor. It has to many links to the rest of the application. When you persue this kind of design it might end up looking like this:
+The example above has too much dependencies in its constructor. It has to many links to the rest of the application. When you persue this kind of design it might end up looking like this: (The REST stands for restful services, so these are just the HTTP blocks)
 ![Abstraction step1](scalableng2architecture/abstraction_step1.png)
 
 This is starting to look like a spaghetti, where everything is really tightly coupled.
