@@ -6,7 +6,7 @@ author: brechtbilliet
 comments: true
 ---
 
-##Foreword
+## Foreword
 
 This article might be more relevant for [Angular 2](http://angular.io) developers, but I believe it can be used with other frameworks as well. It's just a handbook for writing scalable and maintainable single-page-applications. It's important to note, that this is not the only way, but it's a way that works for me in quite a few situations.
 
@@ -69,14 +69,14 @@ Before, we used to update application state in a rather inefficient manner:
 
 Did you ever tried to make sibling components communicate with each other?
 Sometimes it seems pragmatic to do so, but please don't.
-![Multidirectional dataflow](scalableng2architecture/multidirectionaldataflow.png)
+![Multidirectional dataflow](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/multidirectionaldataflow.png)
 
 **This is bad design!** It's almost impossible to see in which direction the data flows. I's also very hard to maintain this code, fix bugs in it or develop features.
 What we do want, is a unidirectional dataflow like [Flux](https://facebook.github.io/flux/) or [Redux](http://redux.js.org/).
 
 It basically looks like this: child components only notify their parent components, the parent (smart component) will send an action to a store that contains state, and that action will update the state for the entire application. When that state is being updated, we can re-evaluate the component tree. As a result the data always flows in the same direction (downwards).
 
-![Unidirectional dataflow](scalableng2architecture/unidirectionaldataflow.png)
+![Unidirectional dataflow](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/unidirectionaldataflow.png)
 
 The big advantages of this approach are:
 <ul>
@@ -121,12 +121,12 @@ export class MyComponent{
 ```
 
 The example above has too much dependencies in its constructor. It has to many links to the rest of the application. When you persue this kind of design it might end up looking like this: (The REST stands for restful services, so these are just the HTTP blocks)
-![Abstraction step1](scalableng2architecture/abstraction_step1.png)
+![Abstraction step1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/abstraction_step1.png)
 
 This is starting to look like spaghetti code, where everything is really tightly coupled.
 An abstraction layer could really help us here. In the example below we can see that the presentation layer is completely decoupled and the abstraction layer delegates everything.
 
-![Abstraction step2](scalableng2architecture/abstraction_step2.png)
+![Abstraction step2](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/abstraction_step2.png)
 
 The abstraction might look something like this:
 
@@ -223,7 +223,7 @@ export class UserService{
 ```
 
 But now our http services are very tightly coupled to our state management system.
-![Abstraction step3](scalableng2architecture/abstraction_step3.png)
+![Abstraction step3](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/abstraction_step3.png)
 
 This is actually the only responsibility an http service should have.
 
@@ -257,7 +257,7 @@ No **it's not just a facade** :) It should have a certain amount of logic.
 <li>If using something like firebase, exposing the correct streams from firebase</li>
 </ul>
 
-![Abstraction Sandboxes](scalableng2architecture/sandboxes.png)
+![Abstraction Sandboxes](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/sandboxes.png)
 
 The advantages of the sandbox are:
 <ul>
