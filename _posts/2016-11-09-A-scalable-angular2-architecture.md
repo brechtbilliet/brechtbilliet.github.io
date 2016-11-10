@@ -16,22 +16,22 @@ A lot of developers are having trouble writing large-scale, maintainable single-
 
 One of the biggest challenges might be: extending existing logic and writing new features based on a tricky foundation.
 
-Single-page-applications are rather new (not really), and especially older frameworks gave you 100 different ways to design an application. There wasn't any structure, encapsulation and everything was tightly coupled to each other.
+Single-page-applications are rather new, and especially older frameworks gave you 100 different ways to design an application. There wasn't any structure, encapsulation and everything was tightly coupled to each other.
 
 Most of the time in the beginning of a project the development process went blazingly fast. But after a few developers, features, refactors, the code started to become less maintainable. It started to look like spaghetti. Frameworks have matured a lot, but it's also important that the architecture of the software you write matures along the process.
 
 ## SPA in 2016 (and even before)
 
-To explain the architecture where this article is all about, here's a reminder of how a web-application in 2016 might look like.
-These are concepts that your applications should rely on these days. It doesn't matter whether using [React](https://facebook.github.io/react/), [Angular 2](http://angular.io) or something else. These principles are there to make sure that your web architecture becomes maintainable.
+To explain the architecture what this article is all about, here's a reminder of how a web-application in 2016 might look like.
+These are concepts that your applications should rely on these days. It doesn't matter whether using [React](https://facebook.github.io/react/), [Angular 2](http://angular.io) or something else. These principles exist to make sure that your web architecture becomes maintainable.
 
 ### Principle 1: Components
 
-SPA-technologies like React and Angular2 make us use components. A component is a piece of HTML and javascript combined. We don't want to use standalone views or standalone controllers anymore.
+SPA-technologies like React and Angular2 make us use components. A component is a piece of HTML and JavaScript combined. We don't want to use standalone views or standalone controllers anymore.
 They can grow exponentially and are related to each other in a way that is hard to maintain.
 
 So basically the philosophy here is:
-**Everything should be a component**, even your pages and your application. An application could look like this:
+**everything should be a component**, even your pages and your application. An application could look like this:
 
 ```html
 <application>
@@ -74,7 +74,7 @@ Sometimes it seems pragmatic to do so, but please don't.
 **This is bad design!** It's almost impossible to see in which direction the data flows. I's also very hard to maintain this code, fix bugs in it or develop features.
 What we do want, is a unidirectional dataflow like [Flux](https://facebook.github.io/flux/) or [Redux](http://redux.js.org/).
 
-It basically looks like this: childcomponents only notify their parent components, the parent (smart component) will send an action to a store that contains state, and that action will update the state for the entire application. When that state is being updated, we can re-evaluate the component tree. Afterwards the data always flows in the same direction (downwards).
+It basically looks like this: child components only notify their parent components, the parent (smart component) will send an action to a store that contains state, and that action will update the state for the entire application. When that state is being updated, we can re-evaluate the component tree. As a result the data always flows in the same direction (downwards).
 
 ![Unidirectional dataflow](scalableng2architecture/unidirectionaldataflow.png)
 
@@ -91,23 +91,23 @@ If you are new to unidirectional dataflows checkout the [introduction to redux](
 
 ## A scalable architecture
 
-I designed a certain architecture based on principles of today (most of them explained above) and even principles from 10 years back. Would I say it's the way to go for every SPA? Not at all... Every type of software deserves it's own architecture, and I'm just showing a concept that works for me in a lot of scenarios. This architecture might come in handy for developers that are writing [Angular 2](http://angular.io) where we can profit from awesome features like dependency injection, but it can also be applied in other frameworks (as explained above).
+I designed a certain architecture based on principles of today (most of them explained above) and even principles from 10 years back. Would I say it's the way to go for every SPA? Not at all... Every type of software deserves its own architecture, and I'm just showing a concept that works for me in a lot of scenarios. This architecture might come in handy for developers that are writing [Angular 2](http://angular.io) where we can profit from awesome features like dependency injection, but it can also be applied in other frameworks.
 
 
 ### Abstraction that makes sense
 
 This principle is partially based on the [Sandbox principle](http://www.slideshare.net/nzakas/scalable-javascript-application-architecture) of [Nicholas Zakas](https://twitter.com/slicknet), which is already a few years old. In that architecture, there was no unidirectional dataflow though.
-For me a sandbox is a way to **decouple the presentationlayer from the application logic**, but that's not its only responsibility.
+For me a sandbox is a way to **decouple the presentation layer from the application logic**, but that's not its only responsibility.
 
 But let's start from the beginning...
-In this particular scenario I'm going to assume that we use [Redux](http://redux.js.org). However, it doesn't really matter what kind of statemanagement you use, but it's important that you know the principle behind it.
+In this particular scenario I'm going to assume that we use [Redux](http://redux.js.org). However, it doesn't really matter what kind of state management you use, but it's important that you know the principle behind it.
 
 ### Rule number ONE: Don't let your components play with all the toys
 
 The same reason you don't let children play with everything: **"It might get messy"**.
 Smart components (also named containers here) should also follow a very strict set of rules. We don't want to inject every service that we want in there, just because we can. For instance: it might not make sense to inject a game-engine in an authentication module. 
 
-The following example shows a big constructor with a lot of dependencies. In this scenario the MyComponent can pretty much do whatever it wants in the application. He gets injected whatever it wants and uses whatever it wants.
+The following example shows a big constructor with a lot of dependencies. In this scenario the MyComponent can pretty much do whatever it wants in the application. It gets injected whatever it wants and uses whatever it wants.
 That's generally not a good idea.
 
 ```typescript
@@ -185,7 +185,7 @@ Now the component really focusses on its responsibility. It doesn't know how the
 </ul>
 
 
-### Rule number THREE: HTTP services should not know about the statemanagement layer
+### Rule number THREE: HTTP services should not know about the state management layer
 It might look pragmatic to listen to the result of a get call and put it in the store right in the service. But the only goal an HTTP service has, is **to perform HTTP requests and return the result of those requests**.
 This might look pragmatic:
 
@@ -248,7 +248,7 @@ No **it's not just a facade** :) It should have a certain amount of logic.
 The advantages of the sandbox are:
 <ul>
 <li>Decoupling the presentation layer from the rest</li>
-<li>Abstracting away the statemanagementlayer</li>
+<li>Abstracting away the state management layer</li>
 <li>You can see what a module has access to by opening its sandbox</li>
 <li>Components cannot just use and break whatever they want, better encapsulation</li>
 <li>Putting optimistic update logic in there seems like the right place because neither the component nor the service cares about that functionality</li>
