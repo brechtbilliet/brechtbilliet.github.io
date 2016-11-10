@@ -1,7 +1,7 @@
 ---
 layout: post
 title: A scalable Angular 2 architecture
-published: false
+published: true
 author: brechtbilliet
 comments: true
 ---
@@ -128,6 +128,18 @@ An abstraction layer could really help us here. In the example below we can see 
 
 ![Abstraction step2](scalableng2architecture/abstraction_step2.png)
 
+The abstraction might look something like this:
+
+```typescript
+export class MyComponent{
+	constructor(private abstraction: SomeAbstractionType){
+	}
+	
+	doSomething(): void{
+	this.abstraction.doSomething();
+}
+```
+
 ### Rule number TWO: Components should not know about the state management layer
 
 Dumb components and smart components shouldn't know that you use Redux, or any other state management layer for that matter. They should not care how state is being managed. They just trust that it's being handled the right way. It's not their responsibility. The responsibility of the presentation layer is **"to present"** and **"to delegate"**.
@@ -220,6 +232,8 @@ export class UserService{
 	constructor(private http: Http){
 	}
 	
+	// just let the consumer of this service handle the store interaction
+	// this will just return a stream of users
 	fetchUsers(): Observable<Array<User>>{
 		return this.http.get("...").map(...)
 	}
@@ -261,3 +275,10 @@ This architecture is one way of doing things, but that doesn't mean that it's th
 
 I do believe it's very important to have encapsulation, loose-coupling and a decent structure of responsibilities. The frontend landscape evolves quickly, which means that we might want to be flexible for refactors/new technologies.
 I hope you enjoyed the article.
+
+## Want to learn more?
+
+Checkout [strongbrew.io](http://strongbrew.io) where [Kwinten Pisman](http://twitter.com/kwintenp) and [me](http://twitter.com/brechtbilliet) are giving a "reactive applications workshop" where we go more into detail on this subject.
+
+## A very special thanks
+I want to thank the people who have reviewed this article and gave me their valuable input. Thank you so much [Jurgen Van de Moere](http://twitter.com/jvandemo), [Carmen Popoviciu](http://twitter.com/carmenpopoviciu), [Manfred Steyer](http://twitter.com/manfredsteyer) and [Juri Strumpflohner](http://twitter.com/juristr)!!!
