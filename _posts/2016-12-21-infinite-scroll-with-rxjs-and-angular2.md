@@ -70,4 +70,11 @@ You see that we have created the following streams based on our initial streams:
 <li>**pageByManual$**: which contains pagenumbers based on manual events (for instance, there is still whitespace on the screen, load the next page)</li>
 </ul>
 
-What if we could merge all these streams in an efficient manner
+What if we could merge these 3 page-number streams in an efficient manner, than we would get a new stream called **pageToLoad$**, that would give us a stream that will contain pagenumbers filled by scrolling-events, resize-events, and manual events.
+
+![Whiteboard 4](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard4.png)
+
+If we subscribe to the pageToLoad$ and than fetch data from the service, part of our infinite scroll would work. But we were thinking reactively right? That means, avoid subscriptions as much as possible... 
+We actually need a new stream based on the pageToLoad$ stream
+
+![Whiteboard 4](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard4.png)
