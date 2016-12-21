@@ -46,4 +46,7 @@ At this point I can see 3 sources of events happening, let's call them streams
 Let's draw these streams on a white-board shall we?
 ![Scenario 1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard1.png)
 
+The streams would have certain values in there over time:
+
+
 What if we could map all these streams, to streams that contain pagenumbers? That would be awesome, because based on the pagenumber, we want to load specific data.
