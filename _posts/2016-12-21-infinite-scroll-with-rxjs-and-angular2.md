@@ -74,7 +74,9 @@ What if we could merge these 3 page-number streams in an efficient manner, than 
 
 ![Whiteboard 4](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard4.png)
 
-If we subscribe to the pageToLoad$ and than fetch data from the service, part of our infinite scroll would work. But we were thinking reactively right? That means, avoid subscriptions as much as possible... 
-We actually need a new stream based on the pageToLoad$ stream
+If we subscribe to the pageToLoad$ stream and than fetch data from the service, part of our infinite scroll would work. But we were thinking reactively right? That means, avoid subscriptions as much as possible... 
+We actually need a new stream based on the pageToLoad$ stream that contains the results of our infinite scroll list...
 
-![Whiteboard 4](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard4.png)
+![Whiteboard 5](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard5.png)
+
+Now let's throw this in one big schema.
