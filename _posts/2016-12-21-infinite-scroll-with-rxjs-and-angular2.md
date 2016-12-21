@@ -34,19 +34,52 @@ Now what features should this list implement?
 </ul>
 
 ### How do we start?
-Like every architectural decision, I prefer to draw it on a whiteboard first. That might be a personal approach, but it helps me not to write code that will be removed later. 
+Like most coding decisions, I prefer to draw it on a whiteboard first. That might be a personal approach, but it helps me not to write code that will be removed later. 
 
-At this point I can see 3 sources of events happening, let's call them streams
+Based on the feature-list, there are three actions that will trigger the application to load data: Scrolling, resizing, and an initial action that can be retriggered to manually fetch pages. When thinking reactively I can see 3 sources of events happening, let's call them streams
 <ul>
-<li>A stream of scroll events</li>
-<li>A stream of resize events</li>
-<li>A manual event where the user tells what page to load</li>
+<li>A stream of scroll events: **scroll$**</li>
+<li>A stream of resize events: **resize$**</li>
+<li>A manual stream where the user tells what page to load: **pageByManual$**</li>
 </ul>
 
+**Note: Streams are being suffixed with $ to indicate that they are streams**
+
 Let's draw these streams on a white-board shall we?
-![Scenario 1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard1.png)
+![Whiteboard 1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard1.png)
 
-The streams would have certain values in there over time:
+The streams would contain certain values over time:
+![Whiteboard 2](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard2.png)
+
+The scroll$ has Y values, which we can use to calculate the pagenumber. 
+
+The resize$ has event values, which we won't use because we can calculate it based on the screen size.
+
+The pageByManual$ will contain pagenumbers, which we can set directly since this is a subject (more on that later).
 
 
-What if we could map all these streams, to streams that contain pagenumbers? That would be awesome, because based on the pagenumber, we want to load specific data.
+What if we could map all these streams, to streams that contain pagenumbers? That would be awesome, because based on the pagenumber, we could load a specific page. How we map the current streams to pagenumber-streams is not something that we need to think about right now (we are just drawing remember).
+The next drawing might look something like this:
+
+![Whiteboard 3](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard3.png)
+
+You see that we have created the following streams based on our initial streams:
+<ul>
+<li>**pageByScroll$**: which contains pagenumbers based on the scroll-events</li>
+<li>**pageByResize$**: which contains pagenumbers based on the resize-events</li>
+<li>**pageByManual$**: which contains pagenumbers based on manual events (for instance, there is still whitespace on the screen, load the next page)</li>
+</ul>
+
+What if we could merge these 3 page-number streams in an efficient manner, than we would get a new stream called **pageToLoad$**, that would give us a stream that will contain pagenumbers filled by scrolling-events, resize-events, and manual events.
+
+![Whiteboard 4](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard4.png)
+
+If we subscribe to the pageToLoad$ stream and than fetch data from the service, part of our infinite scroll would work. But we were thinking reactively right? That means, avoid subscriptions as much as possible... 
+We actually need a new stream based on the pageToLoad$ stream that contains the results of our infinite scroll list...
+
+![Whiteboard 5](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard5.png)
+
+Now let's throw this in one big schema.
+
+
+![Whiteboard 6](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard6.png)
