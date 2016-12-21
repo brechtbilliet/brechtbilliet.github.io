@@ -44,9 +44,13 @@ At this point I can see 3 sources of events happening, let's call them streams
 </ul>
 
 Let's draw these streams on a white-board shall we?
-![Scenario 1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard1.png)
+![Whiteboard 1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard1.png)
 
 The streams would have certain values in there over time:
+![Whiteboard 2](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard2.png)
+
+The scroll$ has Y values, which we can use to calculate the pagenumber. The resize$ has event values, which we won't use because we can calculate it based on the screen size.
+Thge pageByManual$ will contain pagenumbers, which we can set directly since this is a subject.
 
 
-What if we could map all these streams, to streams that contain pagenumbers? That would be awesome, because based on the pagenumber, we want to load specific data.
+What if we could map all these streams, to streams that contain pagenumbers? That would be awesome, because based on the pagenumber, we want to load specific data. How we map to pagenumber streams is not something that we need to think about right now, we know that we have the information to calculate the page number.
