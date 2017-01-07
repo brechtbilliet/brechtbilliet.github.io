@@ -8,18 +8,18 @@ comments: true
 
 ## About this article
 
-This article explains how the "reactive-programming" approach helps us to create an awesome infinite-scroll-list in only a few lines of code. For this article, I'm going to use [RXJS](http://reactivex.io/rxjs/) and [angular](http://angular.io). If you haven't heard about [RXJS](http://reactivex.io/rxjs/) before I suggest to read the documentation first. Whether you use [angular](http://angular.io) or something else like [react](https://facebook.github.io/react/), it shouln't really interfere with the clarity of this post.
+This article explains how the "reactive-programming" approach helps us to create an awesome infinite-scroll-list in only a few lines of code. For this article, I'm going to use [RXJS](http://reactivex.io/rxjs/) and [angular](http://angular.io). If you haven't heard about [RXJS](http://reactivex.io/rxjs/) before I suggest to read the documentation first. Whether you use [angular](http://angular.io) or something else like [react](https://facebook.github.io/react/), it shouldn't really interfere with the clarity of this post.
 
 ## Reactive programming
 
-Reactive programming is really hot these days. However, there are a huge amount of people that have problems with thinking completely reactively. Thinking reactively is a huge mind-switch that one must make to completely accept this "new" way of coding things. The whole "My application reacts to a statemanagement-layer like [redux](http://redux.js.org/)" principle is grasped quite quickly (it's reactive programming too), but when it comes to [thinking in streams](http://freecontent.manning.com/reactive-fundamentals-thinking-in-streams/) it can become quite difficult in the beginning. 
+Reactive programming is really hot these days. However, there are a huge amount of people that have problems with thinking completely reactively. Thinking reactively is a huge mind-switch that one must make to completely accept this "new" way of coding things. The whole "My application reacts to a state-management-layer like [redux](http://redux.js.org/)" principle is grasped quite quickly (it's reactive programming too), but when it comes to [thinking in streams](http://freecontent.manning.com/reactive-fundamentals-thinking-in-streams/) it can become quite difficult in the beginning. 
 
 ### Why not imperative but reactive programming?
 
 <ul>
 <li>No more "if this, then that scenario's"</li>
 <li>You can forget about a ton of edge-cases</li>
-<li>It's easy to seperate presentation logic from other logic (The presentation layer will just react to streams)</li>
+<li>It's easy to separate presentation logic from other logic (The presentation layer will just react to streams)</li>
 <li>It's a standard: widely supported by tons of languages</li>
 <li>When you grab the concepts, you write complex logic in a few lines of code in a very simple manner </li>
 </ul>
@@ -39,7 +39,7 @@ For this scenario, let's say that every page contains 10 results and that all th
 Now what features should this list implement?
 <ul>
 <li>It should load page 1 by default</li>
-<li>When the results of page 1 don't fill the page completely, it should fill page 2, and so on, untill the page is full</li>
+<li>When the results of page 1 don't fill the page completely, it should fill page 2, and so on, until the page is full</li>
 <li>When the user scrolls down, it should load page 3, and so on...</li>
 <li>When the user resizes it's window, and more space is being freed for results, it should load the next page</li>
 <li>It should  make sure that it doesn't load the same pages more than once</li>
@@ -58,32 +58,32 @@ Based on the feature-list, there are three actions that will trigger the applica
 
 **Note: Streams are being suffixed with $ to indicate that they are streams**
 
-Let's draw these streams on a white-board shall we?
+Let's draw these streams on a whiteboard shall we?
 ![Whiteboard 1](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard1.png)
 
-The streams would contain certain values over time:
+These streams would contain certain values over time:
 ![Whiteboard 2](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard2.png)
 
-The scroll$ has Y values, which we can use to calculate the pagenumber. 
+The scroll$ has Y values, which we can use to calculate the page number. 
 
 The resize$ has event values, which we won't use because we can calculate it based on the screen size. We will use the events of course, just not what's in it.
 
-The pageByManual$ will contain pagenumbers, which we can set directly since this is a subject (more on that later).
+The pageByManual$ will contain page numbers, which we can set directly since this is a subject (more on that later).
 
 
-What if we could map all these streams, to streams that contain pagenumbers? That would be awesome, because based on the pagenumber, we could load a specific page. How we map the current streams to pagenumber-streams is not something that we need to think about right now (we are just drawing remember).
+What if we could map all these streams, to streams that contain page numbers? That would be awesome, because based on the page number, we could load a specific page. How we map the current streams to page number-streams is not something that we need to think about right now (we are just drawing remember).
 The next drawing might look something like this:
 
 ![Whiteboard 3](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard3.png)
 
 You see that we have created the following streams based on our initial streams:
 <ul>
-<li>**pageByScroll$**: which contains pagenumbers based on the scroll-events</li>
-<li>**pageByResize$**: which contains pagenumbers based on the resize-events</li>
-<li>**pageByManual$**: which contains pagenumbers based on manual events (for instance, there is still whitespace on the screen, load the next page)</li>
+<li>**pageByScroll$**: which contains page numbers based on the scroll-events</li>
+<li>**pageByResize$**: which contains page numbers based on the resize-events</li>
+<li>**pageByManual$**: which contains page numbers based on manual events (for instance, there is still whitespace on the screen, load the next page)</li>
 </ul>
 
-What if we could merge these 3 page-number streams in an efficient manner, than we would get a new stream called **pageToLoad$**, that would give us a stream that will contain pagenumbers filled by scrolling-events, resize-events, and manual events.
+What if we could merge these 3 page-number streams in an efficient manner, than we would get a new stream called **pageToLoad$**, that would give us a stream that will contain page numbers filled by scrolling-events, resize-events, and manual events.
 
 ![Whiteboard 4](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard4.png)
 
@@ -98,7 +98,7 @@ Now let's throw this in one big schema.
 ![Whiteboard 6](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard6.png)
 
 As we can see above we have 3 input streams: one for scrolling, one for resizing and a manual one.
-Afterwards we have 3 pagestreams that are based on the input streams. When merging these streams we can create a pageToLoad$ stream. Based on that pageToLoad$ stream, we will fetch the data.
+Afterwards we have 3 page streams that are based on the input streams. When merging these streams we can create a pageToLoad$ stream. Based on that pageToLoad$ stream, we will fetch the data.
 
 ## Let's code
 
@@ -111,7 +111,7 @@ private itemHeight = 40;
 private numberOfItems = 10;// number of items in a page
 ```
 
-### pageByCroll$
+### pageByScroll$
 
 The pageByScroll$ stream might look something like this:
 
@@ -152,7 +152,7 @@ The pageByResize$ looks like this:
 
 ### pageByManual$
 The pageByManual$ is the stream we use to have an initial value (initial page to load), but it's also something that we need to control manually. A [Behavior subject](http://reactivex.io/documentation/subject.html) looks perfect for the job.
-A behaviorsubject is a stream that has an initial value and can be manipulated over time. 
+A behavior subject is a stream that has an initial value and can be manipulated over time. 
 
 ```typescript
 private pageByManual$ = new BehaviorSubject(1);
@@ -176,7 +176,7 @@ private pageToLoad$ =
 
 ### itemResults$
 
-The hard part is over. We now have a stream with the page we have to load in there, which is super useful. We don't need to care anymore about corner cases or other complex logic. Everytime a new value in that stream is added, we just need to load the data. **That's it!!**
+The hard part is over. We now have a stream with the page we have to load in there, which is super useful. We don't need to care anymore about corner cases or other complex logic. Every time a new value in that stream is added, we just need to load the data. **That's it!!**
 
 ```typescript
 itemResults$ = this.pageToLoad$ 
@@ -270,3 +270,5 @@ Here is a [working plunk](http://plnkr.co/edit/WewXnQRj9xBA7yPveWLQ?p=preview)
   width="100%"
   height="480px">
 </iframe>
+
+Thanks for reading, I hope you enjoyed it.
