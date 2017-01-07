@@ -1,3 +1,11 @@
+---
+layout: post
+title: Infinite scroll
+published: false
+author: brechtbilliet
+comments: true
+---
+
 ## About this article
 This article explains how the "reactive-programming" approach helps us to create an awesome infinite-scroll-list in only a few lines of code. For this article, I'm going to use [RXJS](http://reactivex.io/rxjs/) and [angular](http://angular.io). If you haven't heard about [RXJS](http://reactivex.io/rxjs/) before I suggest to read the documentation first. Whether you use [angular](http://angular.io) or something else like [react](https://facebook.github.io/react/), it shouln't really interfere with the clarity of this post.
 
