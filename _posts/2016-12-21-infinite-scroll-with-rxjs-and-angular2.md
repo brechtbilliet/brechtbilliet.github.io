@@ -101,7 +101,7 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
 
 ## Let's code
 
-We have drawn more than enough, we have a clear vision of what our application should do, so let's start shall we?
+We have drawn more than enough, we have a clear vision of what our inifinte-scroll-list should do, so let's start shall we?
 
 To calculate which page needs to be loaded we need 2 properties:
 
@@ -201,7 +201,7 @@ itemResults$ = this.pageToLoad$
 
 ### The result
 
-the complete result might look like this
+the complete result might look like this:  **Note the [async pipe](https://angular.io/docs/ts/latest/guide/pipes.html#!#async-pipe) that puts the whole subscription process into play**
 
 
 ```typescript
@@ -271,4 +271,7 @@ Here is a [working plunk](http://plnkr.co/edit/WewXnQRj9xBA7yPveWLQ?p=preview)
   height="480px">
 </iframe>
 
-Thanks for reading, I hope you enjoyed it.
+Again, (like I try to prove in previous articles) You don't need to use third party solutions for everything. The infinite-scroll-list doesn't contain that much code, and it's very flexible.
+Let's say that you would like to free up DOM-elements and use only 100 items at a time, you could just create a new stream for that :)
+
+Thanks for reading, I hope you enjoyed it. 
