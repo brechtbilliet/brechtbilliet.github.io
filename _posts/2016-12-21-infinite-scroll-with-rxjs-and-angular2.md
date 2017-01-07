@@ -142,8 +142,11 @@ The pageByResize$ looks like this:
 	// when the user stops resizing for 200 ms, then we can continue
 	.debounceTime(200) 
 	// calculate the page number based on the window
-	.map(_ => Math.ceil(window.innerHeight / (this.itemHeight * this.numberOfItems)));
-	
+   .map(_ => Math.ceil(
+	   	(window.innerHeight + document.body.scrollTop) / 
+	   	(this.itemHeight * this.numberOfItems)
+   	));
+   
 	// --------1---2----3------2...
 ```
 
@@ -187,9 +190,9 @@ itemResults$ = this.pageToLoad$
 				// add the page to the cache
 				this.cache[page -1] = resp;
 				// if the page contains enough white space, load some more data :)
-				this.pageByManual$.next(
-					Math.ceil(window.innerHeight / (this.itemHeight * this.numberOfItems))
-				);
+				if((this.itemHeight * this.numberOfItems * page) < window.innerHeight){
+					this.pageByManual$.next(page + 1);
+				}
 			})
 		})
 	// eventually, just return a stream that contains the cache
@@ -226,10 +229,14 @@ export class InfiniteScrollListComponent {
       .distinct() 
       .map(y => Math.ceil((y + window.innerHeight)/ (this.itemHeight * this.numberOfItems)));
        
-  private pageByResize$ = Observable
-    .fromEvent(window, "resize")
-    .debounceTime(200) 
-    .map(_ => Math.ceil(window.innerHeight / (this.itemHeight * this.numberOfItems)));
+  private pageByResize$ = 
+	Observable.fromEvent(window, "resize")
+	.debounceTime(200) 
+	.map(_ => Math.ceil(
+	   	(window.innerHeight + document.body.scrollTop) / 
+	   	(this.itemHeight * this.numberOfItems)
+   	));
+
     
   private pageToLoad$ = Observable
     .merge(this.pageByManual$, this.pageByScroll$, this.pageByResize$)
@@ -241,20 +248,25 @@ export class InfiniteScrollListComponent {
     .flatMap((page: number) => {
       return this.http.get(`https://swapi.co/api/people?page=${page}`)
           .map(resp => resp.json().results)
-          .do(resp => {
-            this.cache[page -1] = resp;
-            this.pageByManual$.next(this.calculatePageByWindow());
+      		.do(resp => {
+				this.cache[page -1] = resp;
+				if((this.itemHeight * this.numberOfItems * page) < window.innerHeight){
+					this.pageByManual$.next(page + 1);
+				}
           })
     })
     .map(_ => flatMap(this.cache)); 
   
   constructor(private http: Http){ 
   } 
-  
-  private calculatePageByWindow(): number{
-    return Math.ceil(window.innerHeight / (this.itemHeight * this.numberOfItems));
-  }
 }
 ```
 
 Here is a [working plunk](http://plnkr.co/edit/WewXnQRj9xBA7yPveWLQ?p=preview)
+
+<iframe
+  src="https://embed.plnkr.co/plunk/WewXnQRj9xBA7yPveWLQ?show=app,preview"
+  frameborder="0"
+  width="100%"
+  height="480px">
+</iframe>
