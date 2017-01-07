@@ -80,3 +80,6 @@ We actually need a new stream based on the pageToLoad$ stream that contains the 
 ![Whiteboard 5](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard5.png)
 
 Now let's throw this in one big schema.
+
+
+![Whiteboard 6](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/infinite-scroll/whiteboard6.png)
