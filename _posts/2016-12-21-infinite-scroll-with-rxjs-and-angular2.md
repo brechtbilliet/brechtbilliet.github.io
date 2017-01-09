@@ -12,7 +12,7 @@ This article explains how the "reactive-programming" approach helps you to creat
 
 ## Reactive programming
 
-Reactive programming is really hot these days. However, there are a huge amount of people that have problems with thinking completely reactively. Thinking reactively is a huge mind-switch that you must make to completely accept this "new" way of coding things. The whole "My application reacts to a state-management-layer like [redux](http://redux.js.org/)" principle is grasped quite quickly (it's reactive programming too), but when it comes to [thinking in streams](http://freecontent.manning.com/reactive-fundamentals-thinking-in-streams/) it can become quite difficult in the beginning. 
+Reactive programming is really hot these days. However, there is a huge amount of people that have problems with thinking completely reactively. Thinking reactively is a huge mind switch that you must make to completely accept this "new" way of coding things. The whole "My application reacts to a state-management-layer like [redux](http://redux.js.org/)" principle is grasped quite quickly (it's reactive programming too), but when it comes to [thinking in streams](http://freecontent.manning.com/reactive-fundamentals-thinking-in-streams/) it can become quite difficult in the beginning. 
 
 ### Why not imperative but reactive programming?
 
