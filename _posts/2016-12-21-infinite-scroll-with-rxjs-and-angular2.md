@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Infinite scroll
+title: Infinite scroll in Angular an RxJS
 published: true
 author: brechtbilliet
 comments: true
