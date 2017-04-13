@@ -1,3 +1,10 @@
+---
+layout: post
+title: Why angular
+published: false
+author: brechtbilliet
+comments: true
+---
 ## What I look for in a javascript-framework
 
 The search for a great javascript-framework can be a difficult task. There are so many javascript-libraries and javascript-frameworks out there which makes the task even more difficult.
