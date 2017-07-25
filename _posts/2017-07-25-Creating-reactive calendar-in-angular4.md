@@ -1,4 +1,10 @@
-# Creating a reactive calendar
+---
+layout: post
+title: Creating a reactive calendar in Angular 4 and RXJS
+published: false
+author: brechtbilliet
+comments: true
+---
 
 ## Foreword
 
