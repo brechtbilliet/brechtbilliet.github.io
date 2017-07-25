@@ -15,7 +15,7 @@ In this article we will learn how to write a reactive calendar application in on
 
 We will use Angular, Angular material, typescript, RxJS and firebase as our mqin technology-stack, but the focus of this article really lies on the reactiveness. Don't expect a deep dive in all RxJS operators, but rather expect how to draw, think and reason about reactive web applications.
 
-### The reactive calendar
+## The reactive calendar
 
 ![Reactive calendar](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar1.png)
 The reactive calendar is a small but complete calendar application that allows us to:
@@ -28,11 +28,14 @@ The reactive calendar is a small but complete calendar application that allows u
 **Note:** One small issue, we can only create appointments at noon =) But hey! Consider it some homework.
 
 
-### Setting up the project
+## Setting up the project
 
 I've created a branch to get us started. It contains the dumb components, empty smart components, the setup and the styles. That way we can completely focus on the reactive part.
 
 First of all, we will clone the project locally, and checkout the **initial** branch. This branch already contains all the uninteresting parts we don't want to write right now. 
+
+### Installing locally
+
 
 ```
 git clone git@github.com:brechtbilliet/reactive-calendar.git
@@ -41,14 +44,13 @@ git checkout initial
 npm i
 ```
 
-#### Setting up firebase
+### Setting up firebase
 Go to [https://firebase.google.com](https://firebase.google.com/) and click on the "GO TO CONSOLE" button and choose your google account.
 Click on the "Add project" button and choose a name for your project. Let's take **reactive-calendar** to keep it simple. Click on the "CREATE PROJECT" button. Now we should be redirected to [something like this](https://console.firebase.google.com/project/reactive-calendar/overview).
 
 On the Authentication tab, go to "SIGN-IN METHOD" and enable the Anonymous setting.
 
 Go back to the Overview by clicking on the home symbol and select "Add Firebase to your web app"
-todo: screenshot
 
 Copy the config with the correct properties and replace the firebaseConfig object in src/app/app.module.ts with these properties.
 This might look something like this:
@@ -73,7 +75,9 @@ npm start
 This should build the application and show it in the browser, as you can see this just handles static data, the buttons/inputs won't work and the appointments are not loaded yet.
 This is where we start from.
 
+## Thinking reactive
 
+### What does the app have to do?
+![Application events](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar2.png)
 
-
-share the slides here too
+This is what this article is all about, how are we going to create a reactive calendar.
