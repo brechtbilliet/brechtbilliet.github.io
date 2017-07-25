@@ -7,20 +7,20 @@ comments: true
 ---
 
 ## Introduction
-Most of the people that know me, might consider me an "angular-guy". It's a fact that I'm pretty much in love with the framework (since Angular 2), so people might be surprised that this arcticle is actually about React. Anyway, I consider myself an application-developer and would encourage everyone to keep an open mind.
+Most of the people that know me, might consider me an "angular-guy". It's a fact that I'm pretty much in love with Google his [Angular framework](http://angular.io) (since Version 2 at least), so people might be surprised that this arcticle is actually about Facebook's framework: [React](https://facebook.github.io/react/). Anyway, I consider myself an application-developer and would encourage everyone to keep an open mind.
 
-One of the things that I like most about angular is the fact that it gives us an all-in-one solution to create large-scale applications in a very opiniated way.
-The angular-CLI is a great way to avoid a huge project-setup and the angular module-principles make code-decoupling a breeze. On the other hand, when using angular, we are bound to a framework and it's harder to draw outside of the lines.
+One of the things that I personally like most about angular is the fact that it gives us an **all-in-one solution** to create large-scale applications in a very opiniated way.
+The angular-CLI is a great way to avoid a huge project-setup and the angular module-principles make code-decoupling a breeze. On the other hand, when using angular, we are **bound to a framework** and it's harder to draw outside of the lines.
 
 
-At the time of writing, I'm freelancing for a company called Showpad. Showpad is a success-story of a scale-up that made its way across the globe. At the time of writing, Showpad is using Angular +4 in various projects. 
+At the time of writing, I'm freelancing for a company called [Showpad](http://www.showpad.com). Showpad is a success-story of a scale-up that made its way across the globe. They have a great atmosphere and an awesome engineering-team, and at the time of writing, Showpad is using Angular +4 in various projects. 
 For these applications, Showpad uses an [architecture written by me](http://blog.brecht.io/A-scalable-angular2-architecture/) that I already introduced in a bunch of companies.
 
 That being said, I believe that teams should have some freedom in choosing their technology-stack. This is important when a company works with autonomous teams (see the spotify engineering culture).
 
 A few weeks ago, there was a team that asked if they could use react in a new project. Since React its goal is only to provide the presentation layer, there was need for a decent architecture. After some research it became clear that there are multiple solutions, and that there are a lot of opinions on how to do things. It became clear that I wasn't going to find one single opiniated architecture.
 
-In this post we will learn about how that specific "React" Architecture was born.
+In this post we will learn about how a new "React" Architecture was born.
 
 ## The requirements of our architecture
 
