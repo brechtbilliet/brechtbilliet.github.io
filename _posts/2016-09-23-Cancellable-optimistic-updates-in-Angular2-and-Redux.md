@@ -171,4 +171,6 @@ export function handleUndo(rootReducer: ActionReducer<ApplicationState>,
 The redux pattern has opened amazing doors for frontend development. Just like [realtime](http://blog.brecht.io/How-we-made-our-app-real-time-in-6-lines-of-code/) became a breeze we can do optimistic updates with almost no effort.
 The reason why you would do optimistic updates is that your application becomes amazingly fast and snappy! When implementing optimistic updates, the user will experience a native, mobile feeling.
 
+Here you can find the npm package I've created for angular, called [ngrx-undo](https://www.npmjs.com/package/ngrx-undo)
+
 Let me know if you enjoyed this article! 
