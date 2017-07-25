@@ -10,17 +10,17 @@ comments: true
 
 RxJS is an awesome library that helps us with creating **reactive web-applications**. Reactive web-applications can be overwhelming in the beginning but they can be really rewarding in the end.
 
-This article is all about making that paradigm-switch from thinking imperative towards **thinking reactive**.
+This article is all about making the paradigm-switch from thinking imperative towards **thinking reactive**.
 In this article we will learn how to write a reactive calendar-application in only a few lines of code.
 
-We will use Angular, Angular material, typescript, RxJS and firebase as our main technology-stack, but article really focusses on reactive programming. Don't expect a deep dive in all RxJS operators, but rather expect how to draw, think and reason about reactive web-applications.
+We will use Angular, Angular material, typescript, RxJS and firebase as our main technology-stack, but this article really focusses on reactive programming. Don't expect a deep dive in all RxJS operators, but rather expect how to draw, think and reason about reactive web-applications.
 
 ## The reactive calendar
 This is the application that we are going to write.
 ![Reactive calendar](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar1.png)
 The reactive calendar is a small but complete (kindoff) calendar application that allows us to:
 
-- Switch between different viewmodes:day, week, month.
+- Switch between different viewmodes: day, week, month.
 - Navigate to previous and next days, weeks and months
 - Add appointments, update appointments and remove them
 - Search for specific appointments
@@ -29,28 +29,32 @@ The user can interact with the following UI-elements:
 
 - **Next button:** Go to next day in Day-mode, week in Week-mode, etc...
 - **Previous button:** Go to previous day in Day-mode, week in week-mode, etc...
-- **Day, Week, Month buttons:** Change to viewmode
-- **searchTerm input:** Filters the appointments live when we type in it
-- **plus-buttons:** Allow the user to create new appointments
-- **trashcan-buttons:** Allow the user to remove appointments
-- **description inputs:** Allow the user to update the description of the appointment
+- **Day, Week, Month buttons:** Change to different viewmode
+- **searchTerm input:** Filters the appointments live when the user types in it
+- **plus-buttons:** Allows the user to create new appointments
+- **trashcan-buttons:** Allows the user to remove appointments
+- **description inputs:** Allows the user to update the description of the appointment
 
-**Note:** One small issue, we can only create appointments at noon =) But hey! Consider it some homework.
+I decided to use firebase as a backend and let me spoil something for you. **This application will be completely real-time, and it will work without an internet connection as well**.
+
+**Note:** One small issue, we can only create lunch-appointments =) But hey! Consider it some homework.
 
 
 ## Setting up the project
 
-I've created a git branch to get us started. It contains the dumb components which are already implemented, it contains the smart component (without the reactive logic part), the setup and the styles. The goal ofcourse is to focus on the reactive part.
+I've created a git branch to get us started. It contains the default logic, setup and styles. There is no reactive code written yet, just plain angular code. The goal is to write the reactive part ourselves.
 
-First of all, we will clone the project locally, and checkout the **initial** branch. This branch already contains all the uninteresting parts we don't want to write right now. 
 
 ### The component tree
 
 ![The component tree](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar3.png)
-The topbar-component, day-view-component, week-view-component, month-view-component and day-detail-component components are already written for us. In this article we will focus on the **app-root**. The smart component that will contain the reactive logic.
+The dumb components are completely implemented. The app-root is the one and only smart component that we will focus on.
+
+If you don't know the difference between smart and dumb components, [read this first](http://blog.brecht.io/components-demystified/#smart-vs-dumb-components).
 
 
 ### Installing the project locally
+First of all, we will clone the project locally, and checkout the **initial** branch. This branch already contains all the uninteresting parts we don't want to write right now. 
 
 In the terminal, go to the folder where you want to install the project and execute the following commands:
 
@@ -113,3 +117,13 @@ In the image below we can see all the different interactions the user might do i
 
 ### Reactive programming: What data will change, and how will it impact the UI?
 
+Now let's completely stop with what we are thinking. Let's free our mind and don't think about corner cases anymore. Think about the things that will change in your application and call these streams of data. Let's call them input-streams or source-streams.
+
+When thinking about our application we can find 4 source-streams:
+
+- **navigation$:** Can contain the values: -1, 0 or 1
+- **viewMode$:** Can contain the vallues: DAY, WEEK or MONTH
+- **searchTerm$:** The value of the search-field
+- **appointments$:** This is an array of appointments, that comes from firebase
+
+![data streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar4.png)
