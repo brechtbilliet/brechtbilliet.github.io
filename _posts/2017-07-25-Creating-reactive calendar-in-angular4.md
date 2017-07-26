@@ -115,7 +115,7 @@ Yes, we would have to update a bunch of stuff. This is imperative thinking and i
 In the image below we can see all the different interactions the user might do in the calendar application.
 ![Application events](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar2.png)
 
-### Reactive programming: What data will change, and how will it impact the UI?
+### Reactive programming: What data will change, and what data do the components need?
 
 Now let's completely stop with what we are thinking. Let's free our mind and don't think about corner cases anymore. Think about the things that will change in your application and call these streams of data. Let's call them input-streams or source-streams.
 
@@ -127,3 +127,35 @@ When thinking about our application we can find 4 source-streams:
 - **appointments$:** This is an array of appointments, that comes from firebase
 
 ![data streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar4.png)
+
+That was pretty easy, we just had to think about the events happening in our application. A user can navigate, change viewmode, search for appointments and the appointments in firebase can change. This is the beginning of thinking reactive. Don't think about who triggers what. Think about the changes as streams.
+
+Now we have to think about the data that our components need.
+Lets take this code sample for instance: 
+
+```html
+<div [ngSwitch]="XX" class="main">
+    <day-view
+            *ngSwitchCase="'DAY'"
+            [appointments]="XX"
+            [date]="XX"
+            ...>
+    </day-view>
+    <week-view
+            *ngSwitchCase="'WEEK'"
+            [appointments]="XX"
+            [year]="XX"
+            [week]="XX"
+            ...>
+    </week-view>
+    <month-view
+            *ngSwitchCase="'MONTH'"
+            [month]="XX"
+            [year]="XX"
+            [appointments]="xxx"
+            ...>
+    </month-view>
+</div>
+```
+
+The input properties marked with XX show us the data we need for our component. Let's call these output streams or presentational streams.
