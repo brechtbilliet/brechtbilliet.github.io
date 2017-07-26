@@ -101,6 +101,7 @@ This is where we start from.
 
 This is what this article is all about, we are trying to forget imperative programming for now, and we are trying to evolve into a reactive mind-set.
 
+### Todo: marble diagrams
 
 ### Imperative programming: What does the app have to do?
 
@@ -119,6 +120,8 @@ In the image below we can see all the different interactions the user might do i
 
 Now let's completely stop with what we are thinking. Let's free our mind and don't think about corner cases anymore. Think about the things that will change in your application and call these streams of data. Let's call them input-streams or source-streams.
 
+**Note:** For readability purposes, we suffix the streams with a '$' symbol.
+
 When thinking about our application we can find 4 source-streams:
 
 - **navigation$:** Can contain the values: -1, 0 or 1
@@ -129,6 +132,8 @@ When thinking about our application we can find 4 source-streams:
 ![data streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar4.png)
 
 That was pretty easy, we just had to think about the events happening in our application. A user can navigate, change viewmode, search for appointments and the appointments in firebase can change. This is the beginning of thinking reactive. Don't think about who triggers what. Think about the changes as streams.
+
+![data stream diagram](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar5.png)
 
 Now we have to think about the data that our components need.
 Lets take this code sample for instance: 
@@ -159,3 +164,43 @@ Lets take this code sample for instance:
 ```
 
 The input properties marked with XX show us the data we need for our component. Let's call these output streams or presentational streams.
+Le'ts fill in the gaps, shall we?!
+
+```html
+<div [ngSwitch]="viewMode$" class="main">
+    <day-view
+            *ngSwitchCase="'DAY'"
+            [appointments]="filteredAppointments$"
+            [date]="currentDate$"
+            ...>
+    </day-view>
+    <week-view
+            *ngSwitchCase="'WEEK'"
+            [appointments]="filteredAppointments$"
+            [year]="currentYear$"
+            [week]="currentWeek$"
+            ...>
+    </week-view>
+    <month-view
+            *ngSwitchCase="'MONTH'"
+            [month]="currentMonth$"
+            [year]="currentYear$"
+            [appointments]="filteredAppointments$"
+            ...>
+    </month-view>
+</div>
+```
+
+As we can se we have gathered the 6 following presentational streams:
+
+- **viewMode$: (string)** needed by the switch statement
+- **filteredAppointments$ (Array < Appointment >):** Needed by day-view, week-view and month-view
+- **currentDate$ (Date):** The current Date for the day-view
+- **currentWeek$ (number):** The current week for the week-view (also needs the year)
+- **currentYear$ (number):** Needed by week-view and month-view
+- **currentMonth$ (number):** Needed by the month-view
+
+Here comes the awesome part. We have create these presentational streams based on the source streams.
+
+![sources to presentational streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar6.png)
+
