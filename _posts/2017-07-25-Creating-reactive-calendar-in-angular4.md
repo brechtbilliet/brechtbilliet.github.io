@@ -11,9 +11,9 @@ comments: true
 RxJS is an awesome library that can help us with creating **reactive web-applications**. Reactive web-applications can be overwhelming in the beginning but they can be really rewarding afterwards.
 
 This article is all about making the paradigm-switch from thinking imperative towards **thinking reactive**.
-In this article we will learn how to write a reactive calendar-application in only a few lines of code.
+In this article we will learn how to write a reactive calendar-application in only a few lines of code (**spoiler: It's gonna be realtime too**).
 
-We will use Angular, Angular material, typescript, RxJS, firebase and angularfire as our main technology-stack, but this article really focusses on reactive programming. Don't expect a deep dive in all RxJS operators, but rather expect how to draw, think and reason about reactive web-applications. 
+We will use Angular, Angular material, typescript, RxJS, firebase and angularfire as our main technology-stack. Keep in mind that this article really focusses on reactive programming. Don't expect a deep dive in all RxJS operators, but rather expect how to draw, think and reason about reactive web-applications. We will learn **how to think in streams**. If you haven't heard about streams yet please read [this awesome article](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754) first.
 
 **Note:** This article contains personal terminology.
 
@@ -30,17 +30,17 @@ This is the application that we are going to write. It's a small but complete (k
 
 The user can interact with the following UI-elements:
 
-- **Next button:** Allows the user to go to the next day in Day-mode, week in Week-mode, etc...
-- **Previous button:** Allows the user to go to the previous day in Day-mode, week in week-mode, etc...
-- **Day, Week, Month buttons:** Allows the user to switch between the different viewmodes
-- **searchTerm input:** Allows the user to filter the appointments on the fly
-- **plus-buttons:** Allows the user to create new appointments
-- **trashcan-buttons:** Allows the user to remove appointments
-- **description inputs:** Allows the user to update the description of an appointment
+- **Next button:** Allows the user to go to the next day in day-mode, week in week-mode, etc...
+- **Previous button:** Allows the user to go to the previous day in day-mode, week in week-mode, etc...
+- **Day, week, month buttons:** Allows the user to switch between the different viewmodes
+- **Searchterm input:** Allows the user to filter the appointments on the fly
+- **Plus-buttons in the grid:** Allows the user to create new appointments
+- **Trashcan-buttons in the grid:** Allows the user to remove appointments
+- **Description inputs:** Allows the user to update the description of an appointment
 
-I decided to use firebase as a backend and let me spoil something for you. **This application will be completely real-time, and it will work without an internet connection as well**.
+I decided to use firebase as a backend and because of that, our application will be realtime and offline first by default!
 
-**Note:** One small issue, we can only create lunch-appointments =) But hey! Consider it some homework.
+**Note:** One small issue, I've been a bit lazy so we can only create lunch-appointments =) But hey! Consider it some homework.
 
 
 ## Setting up the project
@@ -51,7 +51,7 @@ I've created the git branch **initial** to get us started. It contains the defau
 ### The component tree
 
 ![The component tree](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar3.png)
-The dumb components (blue) are completely implemented. The app-root (orange) is the one and only smart component in the application and the only place where we will write reactive code.
+The dumb components (blue) are already implemented. The app-root (orange) is the one and only smart component in the application and the only place where we will write code.
 
 If you don't know the difference between smart and dumb components, [read this first](http://blog.brecht.io/components-demystified/#smart-vs-dumb-components).
 
@@ -104,18 +104,38 @@ This is where we start from.
 
 Here comes the tricky part, we are trying to forget imperative programming for now, and we are trying to evolve into a reactive mind-set.
 
-### Todo: marble diagrams
-todo: asci comments
+### Marble diagrams
+
+To be able to think reactive we need some kind of graphical model so we can picture streams in our head. Marble diagrams are a great way to do this. Marble diagrams are a great way to do this.
+As we can see in the image below, a marble represents a value over time.
+
+![Marble diagrams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar12.png)
+
+The website [rxmarbles.com](http://rxmarbles.com/) has a great playground for learning how to use and draw marble diagrams.
+
+#### Ascii documentation
+
+One could argue that code should not be documented and be self-explanatory. I don't believe that to be the case when writing complex streams. When we document complex streams, we can see what's going on inside the stream and it makes it easier for our collegues.
+Streams can be documented by ascii documentation. Since this is not really part of this article, I'm only going to show a small example below.
+
+```typescript
+// a$ gets three values over time and then stops
+// a$: -------a-----b-----c|
+
+// b$ has an initial value (a), has three values in total
+// and will keep on living
+// b$: a------b-----c------...
+```
 
 ### Imperative programming: What does the app have to do?
 
-When we think about the functionality of our application, we quickly notice that there are quite a few cornercases and special scenarios. For every interaction the user makes with the UI, the app needs to handle that specific interaction accordingly. Sometimes it has to combine these interactions together and handle that specific combination as well. Take this crazy (but simple) example for instance.
+When we think about the functionality of our application, we quickly notice that there are quite a few cornercases and special scenarios. For every interaction the user makes in the UI, the app needs to handle that specific interaction accordingly. Sometimes it has to combine these interactions together and handle that specific combination as well. Take this crazy (but simple) example for instance.
 
 <blockquote>
 When the viewMode is changed to Week-mode, and the previous viewMode was Month-mode, and the month was June, and the year was 2017, and an appointment was added, while the searchterm was set to "Brecht", then we would have to update...
 </blockquote>
 
-Yes, we would have to update a bunch of stuff. This is imperative thinking and it can become exhausting. There is a big chance that we forget certain corner-cases. Let's imagine that we have to combine that with asynchronous actions as well.
+Yes, we would have to update a bunch of stuff. This is imperative thinking and it can become exhausting. There is a big chance that we forget certain corner-cases. Let's not even imagine that we have to combine that with asynchronous actions as well.
 
 In the image below we see all the different interactions the user has in the calendar application.
 ![Application events](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar2.png)
@@ -146,7 +166,7 @@ It's always a good idea to draw marble diagrams to make it easier to reason abou
 
 ![data stream diagram](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar5.png)
 
-The appointments$ is a stream that angularfire will provide us, but the viewMode$, searchTerm$ and navigation$ are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves and we use the BehaviorSubject in particular because all our source streams need an initial value.
+The appointments$ is a stream that will be provided to us by angularfire, but the viewMode$, searchTerm$ and navigation$ are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves and we use the BehaviorSubject in particular because all our source streams need an initial value.
 
 ```typescript
 export class AppComponent {
@@ -160,6 +180,50 @@ export class AppComponent {
     constructor(private db: AngularFireDatabase) {
     }
     ...
+}
+
+```
+
+These subject get values from the simple interactions from the template.
+
+```typescript
+@Component({
+    ...
+    template: `
+        <topbar
+                (next)="onNext()"
+                (previous)="onPrevious()"
+                (setViewMode)="onSetViewMode($event)"
+                (searchChanged)="onSearchChanged($event)">
+        </topbar>
+        ...
+    `
+})
+export class AppComponent {
+    ...
+    
+    onSetViewMode(viewMode: string): void {
+    	// when the viewmode changes, update its subject
+        this.viewMode$.next(viewMode);
+    }
+
+    onPrevious(): void {
+    	// when the user clicks the previous button
+    	// update the navigation subject
+        this.navigation$.next(-1);
+    }
+
+    onNext(): void {
+    	// when the user clicks the next button
+    	// update the navigation subject
+        this.navigation$.next(1);
+    }
+
+    onSearchChanged(e: string): void {
+    	// when the user searches
+    	// update the searchterm subject
+        this.searchTerm$.next(e);
+    }
 }
 
 ```
@@ -306,5 +370,58 @@ currentYear$ = this.currentDateM$.map(dateM => year());
 
 #### filteredAppointments$
 
-Calculating this stream is a bit harder. The filteredAppointments$ is dependent on the viewMode$, currentDateM$, appointments$ and searchTerm$.
+This is the most important stream. It is used to show the appointments in all different views and it is dependent on a bunch of streams:
 
+- viewMode$
+- currentDateM$
+- appointments$
+- searchTerm$
+
+This looks is a bit more complex but let's give it a go. 
+
+![filteredAppointment$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar11.png)
+
+Let's take the time to process this image. The operator we will use to combine all these streams is called **combineLatest**. It will create a stream that will wait untill all streams have a value and will start emitting values for every change of every stream. 
+
+So basically it gives us a function where we have all the information we need. The appointmments in firebase, the viewmode, the searchterm and the current date. Based on these values we can calculate the appointments for every view:
+
+```typescript 
+filteredAppointments$ = Observable.combineLatest(
+	[this.viewMode$, this.currentDateM$, 
+	this.appointments$, this.searchTerm$],
+    (viewMode: string, currentDateM: Moment, 
+    	appointments: Array<Appointment>, searchTerm: string) => {
+        switch (viewMode) {
+        	// calculate the appointments for the month-view based on
+            // the current date, the appointments in firebase 
+            // and the searchterm
+            case VIEW_MODE.MONTH:
+                return appointments
+                    .filter(item => moment(item.date).format('MM/YYYY') === currentDateM.format('MM/YYYY'))
+                    .filter(item => this.filterByTerm(item, searchTerm));
+             // calculate the appointments for the week-view based on
+             // the current date, the appointments in firebase
+             // and the searchterm      	
+            case VIEW_MODE.WEEK:
+                return appointments
+                    .filter(item => moment(item.date).format('ww/YYYY') === currentDateM.format('ww/YYYY'))
+                    .filter(item => this.filterByTerm(item, searchTerm));
+            // calculate the appointments for the day-view based on
+            // the current date, the appointments in firebase
+            // and the searchterm
+            case VIEW_MODE.DAY:
+                return appointments
+                    .filter(item => moment(item.date).format('DD/MM/YYYY') === currentDateM.format('DD/MM/YYYY'))
+                    .filter(item => this.filterByTerm(item, searchTerm));
+
+    	}
+})
+private filterByTerm(appointment: Appointment, term: string): boolean {
+    return appointment.description.toLowerCase().indexOf(term.toLowerCase()) > -1;
+}
+```
+
+This is all we have to do, to create a kickass realtime reactive calendar application. We have created it in no-time and in only a few lines of code. If we think about it, we will soon realise that all cornercases have been covered.
+
+todo: 
+publishreplayrefcount + more in depth angularfire explanation
