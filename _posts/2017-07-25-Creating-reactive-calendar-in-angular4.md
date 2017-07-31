@@ -106,7 +106,7 @@ Here comes the tricky part, we are trying to forget imperative programming for n
 
 ### Marble diagrams
 
-To be able to think reactive we need some kind of graphical model so we can picture streams in our head. Marble diagrams are a great way to do this. Marble diagrams are a great way to do this.
+To be able to think reactive we need some kind of graphical model so we can picture streams in our head. Marble diagrams are a great way to do this.
 As we can see in the image below, a marble represents a value over time.
 
 ![Marble diagrams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar12.png)
@@ -172,10 +172,10 @@ The appointments$ is a stream that will be provided to us by angularfire, but th
 export class AppComponent {
     ...
     appointments$ = this.db.list('/appointments');
-   	 // 0--------(+1)----(+1)----(-1)-------------...
+     // 0--------(+1)----(+1)----(-1)-------------...
     viewMode$ = new BehaviorSubject(VIEW_MODE.MONTH);
-	navigation$ = new BehaviorSubject(0);
-	searchTerm$ = new BehaviorSubject('');
+    navigation$ = new BehaviorSubject(0);
+    searchTerm$ = new BehaviorSubject('');
 
     constructor(private db: AngularFireDatabase) {
     }
@@ -203,25 +203,25 @@ export class AppComponent {
     ...
     
     onSetViewMode(viewMode: string): void {
-    	// when the viewmode changes, update its subject
+        // when the viewmode changes, update its subject
         this.viewMode$.next(viewMode);
     }
 
     onPrevious(): void {
-    	// when the user clicks the previous button
-    	// update the navigation subject
+        // when the user clicks the previous button
+        // update the navigation subject
         this.navigation$.next(-1);
     }
 
     onNext(): void {
-    	// when the user clicks the next button
-    	// update the navigation subject
+        // when the user clicks the next button
+        // update the navigation subject
         this.navigation$.next(1);
     }
 
     onSearchChanged(e: string): void {
-    	// when the user searches
-    	// update the searchterm subject
+        // when the user searches
+        // update the searchterm subject
         this.searchTerm$.next(e);
     }
 }
@@ -316,12 +316,12 @@ The first presentational stream we need is viewMode$. This is allready an easy o
 // navigation$:   0---(+1)-(-1)----------(+1)-(-1)------------...
 // currentDateM$: d---d----d---------d---d----d------d--------...
 private currentDateM = this.viewMode$.flatMap((viewMode: string) => {
-	// every time the viewMode changes, the navigation should be reset as well
-	// the dateM variable will contain the navigation and because of the 
-	// flatMap it will reset every time the viewmode changes
-	// if the navigation$ changes afterwards it will manipulate the dateM object
-	// by adding months, weeks or days depending on the viewMode
-    let dateM = moment();
+    // every time the viewMode changes, the navigation should be reset as well
+    // the dateM variable will contain the navigation and because of the 
+    // flatMap it will reset every time the viewmode changes
+    // if the navigation$ changes afterwards it will manipulate the dateM object
+    // by adding months, weeks or days depending on the viewMode
+    const dateM = moment();
     return this.navigation$
         .map((action: number) => {
             switch (viewMode) {
@@ -356,7 +356,7 @@ Just like we calculated the currentWeek$ based on the currentDateM$, we can do t
 ![currentMonth$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar9.png)
 
 ```typescript
-currentMonth$ = this.currentDateM$.map(dateM => month());
+currentMonth$ = this.currentDateM$.map(dateM => dateM.month());
 ```
 #### currentYear$
 
@@ -365,7 +365,7 @@ Just like we calculated the currentWeek$ and the currentMonth$ based on the curr
 ![currentYear$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar10.png)
 
 ```typescript
-currentYear$ = this.currentDateM$.map(dateM => year());
+currentYear$ = this.currentDateM$.map(dateM => dateM.year());
 ```
 
 #### filteredAppointments$
@@ -387,12 +387,12 @@ So basically it gives us a function where we have all the information we need. T
 
 ```typescript 
 filteredAppointments$ = Observable.combineLatest(
-	[this.viewMode$, this.currentDateM$, 
-	this.appointments$, this.searchTerm$],
+    [this.viewMode$, this.currentDateM$, 
+    this.appointments$, this.searchTerm$],
     (viewMode: string, currentDateM: Moment, 
-    	appointments: Array<Appointment>, searchTerm: string) => {
+        appointments: Array<Appointment>, searchTerm: string) => {
         switch (viewMode) {
-        	// calculate the appointments for the month-view based on
+            // calculate the appointments for the month-view based on
             // the current date, the appointments in firebase 
             // and the searchterm
             case VIEW_MODE.MONTH:
@@ -401,7 +401,7 @@ filteredAppointments$ = Observable.combineLatest(
                     .filter(item => this.filterByTerm(item, searchTerm));
              // calculate the appointments for the week-view based on
              // the current date, the appointments in firebase
-             // and the searchterm      	
+             // and the searchterm
             case VIEW_MODE.WEEK:
                 return appointments
                     .filter(item => moment(item.date).format('ww/YYYY') === currentDateM.format('ww/YYYY'))
@@ -414,8 +414,9 @@ filteredAppointments$ = Observable.combineLatest(
                     .filter(item => moment(item.date).format('DD/MM/YYYY') === currentDateM.format('DD/MM/YYYY'))
                     .filter(item => this.filterByTerm(item, searchTerm));
 
-    	}
-})
+        }
+    });
+
 private filterByTerm(appointment: Appointment, term: string): boolean {
     return appointment.description.toLowerCase().indexOf(term.toLowerCase()) > -1;
 }
