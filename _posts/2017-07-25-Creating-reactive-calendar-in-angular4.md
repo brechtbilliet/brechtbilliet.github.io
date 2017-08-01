@@ -18,7 +18,7 @@ We will use Angular, Angular material, typescript, RxJS, firebase and angularfir
 **Note:** This article contains personal terminology.
 
 ## The reactive calendar
-This is the application that we are going to write. It's a small but complete (kindoff) calendar application that allows us to:
+This is the application that we are going to write. It's a small but complete calendar application that allows us to:
 
 - Switch between different viewmodes: day, week, month.
 - Navigate to previous and next days, weeks and months
@@ -51,7 +51,7 @@ I've created the git branch **initial** to get us started. It contains the defau
 ### The component tree
 
 ![The component tree](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar3.png)
-The dumb components (blue) are already implemented. The app-root (orange) is the one and only smart component in the application and the only place where we will write code.
+The dumb components (blue) are already implemented. The ```app-root``` (orange) is the one and only smart component in the application and the only place where we will write code.
 
 If you don't know the difference between smart and dumb components, [read this first](http://blog.brecht.io/components-demystified/#smart-vs-dumb-components).
 
@@ -148,7 +148,7 @@ As we can see, for every specific interaction. The UI will have to update specif
 
 Now let's completely stop with what we are thinking. Let's free our mind and stop thinking about cornercases and special scenarios. We have to learn to think in streams. A stream is a collection of events that will change over time. Think about what can change in your application and call these streams of data. Let's call them **source-streams**. 
 
-**Note:** For readability purposes, we will suffix all the streams with a '$' symbol.
+**Note:** For readability purposes, we will suffix all the streams with a ```$``` symbol.
 
 When can come up with 4 source-streams:
 
@@ -166,7 +166,7 @@ It's always a good idea to draw marble diagrams to make it easier to reason abou
 
 ![data stream diagram](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar5.png)
 
-The appointments$ is a stream that will be provided to us by angularfire, but the viewMode$, searchTerm$ and navigation$ are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves and we use the BehaviorSubject in particular because all our source streams need an initial value.
+```The appointments$``` is a stream that will be provided to us by angularfire, but the ```viewMode$```, ```searchTerm$``` and ```navigation$``` are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves and we use the ```BehaviorSubject``` in particular because all our source streams need an initial value.
 
 ```typescript
 export class AppComponent {
@@ -306,12 +306,12 @@ We know the presentational streams, which are simply the streams that our compon
 
 ![sources to presentational streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar6.png)
 
-The first presentational stream we need is viewMode$. This is allready an easy one since viewMode$ is also a source stream.
+The first presentational stream we need is ```viewMode$```. This is allready an easy one since ```viewMode$``` is also a source stream.
 
 #### currentDate$
 ![currentDate$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar7.png)
 
-**Note:** We use moment.js for date calculation. The Suffix M after the currentDate property show that the type is Moment. So in short, it's not just a date but a moment wrapper.
+**Note:** We use moment.js for date calculation. The Suffix M after the currentDate property show that the type is ```Moment```. So in short, it's not just a date but a moment wrapper.
 
 ```typescript
 // we will need this stream a few times so let's extract the stream 
@@ -346,7 +346,7 @@ currentDate$ = this.currentDateM$.map(dateM => dateM.toDate());
 
 #### currentWeek$
 
-Based on the currentDateM$ we can calculate the current week. The currentDateM$ is just a moment object of the current date based on the navigation and viewMode.
+Based on the ```currentDateM$``` we can calculate the current week. The ```currentDateM$``` is just a moment object of the current date based on the navigation and viewMode.
 
 ![currentWeek$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar8.png)
 
@@ -356,7 +356,7 @@ currentWeek$ = this.currentDateM$.map(dateM => dateM.week());
 
 #### currentMonth$
 
-Just like we calculated the currentWeek$ based on the currentDateM$, we can do the same thing here.
+Just like we calculated the ```currentWeek$``` based on the ```currentDateM$```, we can do the same thing here.
 
 ![currentMonth$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar9.png)
 
@@ -365,7 +365,7 @@ currentMonth$ = this.currentDateM$.map(dateM => dateM.month());
 ```
 #### currentYear$
 
-Just like we calculated the currentWeek$ and the currentMonth$ based on the currentDateM$, we can do the same thing here.
+Just like we calculated the ```currentWeek$``` and the ```currentMonth$``` based on the ```currentDateM$```, we can do the same thing here.
 
 ![currentYear$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar10.png)
 
@@ -384,7 +384,7 @@ This is the most important stream. It is used to show the appointments in all di
 
 This looks is a bit more complex but let's give it a go. 
 
-**Note:** the [] in the image below stands for an empty array, the [.] for an array with one value and so on.
+**Note:** the ```[]``` in the image below stands for an empty array, the ```[.]``` for an array with one value and so on.
 
 ![filteredAppointment$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar11.png)
 
