@@ -76,6 +76,15 @@ We are using [firebase](https://firebase.google.com/) as our backend because it 
 - Click on the "Add project" button and choose a name for your project. Let's take **"reactive-calendar"** to keep it simple. 
 - Click on the "CREATE PROJECT" button. Now we should be redirected to [something like this](https://console.firebase.google.com/project/reactive-calendar/overview).
 - On the Authentication-tab, go to "SIGN-IN METHOD" and enable the "Anonymous" setting.
+- Click on database and navigate to the rules tab. Set the read and write property to true and click publish: 
+```json
+ {
+  "rules": {
+    ".read": "true",
+    ".write": "true"
+  }
+}
+```
 - Go back to the Overview by clicking on the home-symbol and then select "Add Firebase to your web app".
 - Copy the config with the correct properties and replace the firebaseConfig object in src/app/app.module.ts with these properties.
 This might look something like this:
@@ -92,6 +101,7 @@ const firebaseConfig = {
 ```
 
 Let's continue, start the project by running the following command and open your browser on [http://localhost:4200](http://localhost:4200). 
+
 
 ```
 npm start
@@ -431,5 +441,182 @@ private filterByTerm(appointment: Appointment, term: string): boolean {
 
 This is all we have to do, to create a kickass realtime reactive calendar application. We have created it in no-time and in only a few lines of code. If we think about it, we will soon realise that all cornercases have been covered.
 
-todo: 
-publishreplayrefcount + more in depth angularfire explanation
+## Performance improvements
+
+The complete component looks like the codesnippet below now. The calendar should be completely functional in your browser.
+
+```typescript
+import { Component } from '@angular/core';
+import { VIEW_MODE } from '../../constants';
+import * as moment from 'moment';
+import { Appointment } from '../../types/appointment.type';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+import Moment = moment.Moment;
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+
+@Component({
+    selector: 'app-root',
+    template: `
+        <topbar
+                (next)="onNext()"
+                (previous)="onPrevious()"
+                (setViewMode)="onSetViewMode($event)"
+                (searchChanged)="onSearchChanged($event)">
+        </topbar>
+        <div [ngSwitch]="viewMode$|async">
+            <day-view
+                    *ngSwitchCase="VIEW_MODE.DAY"
+                    [appointments]="filteredAppointments$|async"
+                    [date]="currentDate$|async"
+                    (removeAppointment)="onRemoveAppointment($event)"
+                    (addAppointment)="onAddAppointment($event)"
+                    (updateAppointment)="onUpdateAppointment($event)"
+            >
+            </day-view>
+            <week-view
+                    *ngSwitchCase="VIEW_MODE.WEEK"
+                    [appointments]="filteredAppointments$|async"
+                    [year]="currentYear$|async"
+                    [week]="currentWeek$|async"
+                    (removeAppointment)="onRemoveAppointment($event)"
+                    (addAppointment)="onAddAppointment($event)"
+                    (updateAppointment)="onUpdateAppointment($event)"
+            >
+            </week-view>
+            <month-view
+                    *ngSwitchCase="VIEW_MODE.MONTH"
+                    [month]="currentMonth$|async"
+                    [year]="currentYear$|async"
+                    [appointments]="filteredAppointments$|async"
+                    (removeAppointment)="onRemoveAppointment($event)"
+                    (addAppointment)="onAddAppointment($event)"
+                    (updateAppointment)="onUpdateAppointment($event)"
+            >
+            </month-view>
+        </div>
+    `,
+    styleUrls: ['./app.component.less']
+})
+export class AppComponent {
+    VIEW_MODE = VIEW_MODE;
+    viewMode$ = new BehaviorSubject(VIEW_MODE.MONTH);
+    // 0--------(+1)----(+1)----(-1)-------------...
+    navigation$ = new BehaviorSubject<number>(0);
+    searchTerm$ = new BehaviorSubject('');
+
+    // -----MONTH---------------------YEAR------...
+    // -----MONTH-------------------------------...
+    // -----(d)---------------------------------...
+    // --------(+1)----(+1)----(-1)-------------...
+    // -----d---d-------d-------d-----d----------...
+
+    private currentDateM$ = this.viewMode$.flatMap((viewMode: string) => {
+        let dateM = moment();
+        return this.navigation$
+            .map((action: number) => {
+                switch (viewMode) {
+                    case VIEW_MODE.MONTH:
+                        return dateM.startOf('month').add(action, 'months');
+                    case VIEW_MODE.WEEK:
+                        return dateM.startOf('week').add(action, 'weeks');
+                    case VIEW_MODE.DAY:
+                        return dateM.startOf('day').add(action, 'days');
+                }
+                return dateM;
+            })
+    });
+
+    currentDate$ = this.currentDateM$.map(dateM => dateM.toDate());
+    currentYear$ = this.currentDateM$.map(dateM => dateM.year());
+    currentMonth$ = this.currentDateM$.map(dateM => dateM.month());
+    currentWeek$ = this.currentDateM$.map(dateM => dateM.week());
+    appointments$ = this.db.list('/appointments');
+    filteredAppointments$ = Observable.combineLatest([this.viewMode$, this.currentDateM$, this.appointments$, this.searchTerm$],
+        (viewMode: string, currentDateM: Moment, appointments: Array<Appointment>, searchTerm: string) => {
+            switch (viewMode) {
+                case VIEW_MODE.MONTH:
+                    return appointments
+                        .filter(item => moment(item.date).format('MM/YYYY') === currentDateM.format('MM/YYYY'))
+                        .filter(item => this.filterByTerm(item, searchTerm));
+                case VIEW_MODE.WEEK:
+                    return appointments
+                        .filter(item => moment(item.date).format('ww/YYYY') === currentDateM.format('ww/YYYY'))
+                        .filter(item => this.filterByTerm(item, searchTerm));
+                case VIEW_MODE.DAY:
+                    return appointments
+                        .filter(item => moment(item.date).format('DD/MM/YYYY') === currentDateM.format('DD/MM/YYYY'))
+                        .filter(item => this.filterByTerm(item, searchTerm));
+
+            }
+        });
+
+    constructor(private db: AngularFireDatabase) {
+    }
+
+    private filterByTerm(appointment: Appointment, term: string): boolean {
+        return appointment.description.toLowerCase().indexOf(term.toLowerCase()) > -1;
+    }
+
+    onSetViewMode(viewMode: string): void {
+        this.viewMode$.next(viewMode);
+    }
+
+    onPrevious(): void {
+        this.navigation$.next(-1);
+    }
+
+    onNext(): void {
+        this.navigation$.next(1);
+    }
+
+    onSearchChanged(e: string): void {
+        this.searchTerm$.next(e);
+    }
+
+    onRemoveAppointment(id: string): void {
+        this.appointments$.remove(id);
+    }
+
+    onAddAppointment(date: Date): void {
+        this.appointments$.push(new Appointment(date.toDateString(), ''));
+    }
+
+    onUpdateAppointment(appointment: Appointment): void {
+        this.db.object('appointments/' + appointment.$key).set({
+            description: appointment.description,
+            date: appointment.date
+        });
+    }
+}
+
+```
+
+There is only one problem. We use the same observables multiple times in our template. Since observables are cold by default they will get executed every time there is a subscription. In Angular this means a subscription for every async pipe. For performance reasons we only want to recalculate these streams when something actually changes. For this we can try to use the **share()** operator from rxjs. The **share()** operator is an alias for **publish().refCount()** and will share the subscription.
+
+This however gives some problems with angular its async pipe.
+The situation of the problem goes like this:
+
+- Since we are using BehaviorSubjects the streams will get an initial value (which is what we want of course)
+- The share() operator will emit that value when the AppComponent is initialized (before the template and async pipes are loaded)
+- When the app is initialized the async pipes will start subscribing to the stream
+- Because the async pipe subscribed after the value was emitted the value is gone
+
+**Solution: shareReplay() will emit those values but keep track of them, that way the async pipes will never miss a value**
+ 
+
+## Conclusion
+
+We have created a complete reactive calendar which is performant and fixes a bunch of corner case in only a few lines of code. Just by think about source streams and presentational streams it wasn't even that hard. I hope that I can encourage more people to take on this reactive approach and start writing kickass applications.
+
+## Special thanks
+
+I wanted to give my special thanks to the awesome people that reviewed this post and gave me pointers:
+
+- Dominic Elm ([@elmd_](https://twitter.com/elmd_))
+- Manfred Steyer ([@manfredsteyer](https://twitter.com/manfredsteyer))
+- David Müllerchen ([@webdave_de](https://twitter.com/webdave_de))
+- Maxim Robert ([@sizerOne](https://twitter.com/sizerone))
+
+Thanks guys! Means a lot!
