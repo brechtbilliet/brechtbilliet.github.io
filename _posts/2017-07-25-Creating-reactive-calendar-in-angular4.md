@@ -593,15 +593,15 @@ export class AppComponent {
 
 ```
 
-There is only one problem. We use the same observables multiple times in our template. Since observables are cold by default, they will get executed every time there is a subscription. In Angular, this means a subscription for every async pipe. For performance reasons, we only want to recalculate these streams when something actually changes. For that purpose, we can try to use the **share()** operator from RxJS. The **share()** operator is an alias for **publish().refCount()** and will share the subscription.
+There is only one problem. We use the same observables multiple times in our template. Since observables are cold by default, they will get executed every time there is a subscription. In Angular, this means a subscription for every async pipe. For performance reasons, we only want to recalculate these streams when something actually changes. For that purpose, we can try to use the ```share()``` operator from RxJS. The ```share()``` operator is an alias for ```publish().refCount()``` and will share the subscription.
 
 However, that creates some problems with Angular and its async pipe.
 The situation of the problem goes like this:
 
 - Since we are using BehaviorSubjects, the streams will get an initial value (which is what we want, of course).
-- The share() operator will emit that value when the AppComponent is initialized (before the template and async pipes are loaded).
+- The share() operator will emit that value on the first subscription
 - When the app is initialized, the async pipes will start subscribing to the stream.
-- Because the async pipe subscribed after the value was emitted, the value is gone.
+- Because the first async pipe triggered the first emit the rest of the async pipes will miss that value.
 
 **Solution: shareReplay() will emit those values but keep track of them. That way, the async pipes will never miss a value.**
  
