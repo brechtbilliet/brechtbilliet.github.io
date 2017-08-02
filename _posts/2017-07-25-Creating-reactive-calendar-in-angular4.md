@@ -8,47 +8,47 @@ comments: true
 
 ## Foreword
 
-RxJS is an awesome library that can help us with creating **reactive web-applications**. Reactive web-applications can be overwhelming in the beginning but they can be really rewarding afterwards.
+RxJS is an awesome library that can help us with creating **reactive web applications**. Reactive web applications can be overwhelming in the beginning, but eventually, they can be really rewarding.
 
-This article is all about making the paradigm-switch from thinking imperative towards **thinking reactive**.
-In this article we will learn how to write a reactive calendar-application in only a few lines of code (**spoiler: It's gonna be realtime too**).
+This article is all about making the paradigm switch from thinking imperatively towards **thinking reactively**.
+In this article, we will explain how to write a reactive calendar application in only a few lines of code (**spoiler: It's gonna be real time too**).
 
-We will use Angular, Angular material, typescript, RxJS, firebase and angularfire as our main technology-stack. Keep in mind that this article really focusses on reactive programming. Don't expect a deep dive in all RxJS operators, but rather expect how to draw, think and reason about reactive web-applications. We will learn **how to think in streams**. If you haven't heard about streams yet please read [this awesome article](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754) first.
+We will use Angular, Angular Material, TypeScript, RxJS, Firebase, and AngularFire as our main technology stack. Keep in mind that this article really focusses on reactive programming. Don't expect a deep dive into all RxJS operators, but rather expect an explanation of how to draw, think, and reason about reactive web applications. We will learn **how to think in streams**. If you haven't heard of streams yet, please read [this awesome article](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754) first.
 
 **Note:** This article contains personal terminology.
 
-## The reactive calendar
-This is the application that we are going to write. It's a small but complete calendar application that allows us to:
+## The Reactive Calendar
+This is the application we are going to write. It's a small but complete calendar application that allows us to:
 
-- Switch between different viewmodes: day, week, month.
-- Navigate to previous and next days, weeks and months
-- Add appointments, update appointments and remove them
-- Search for specific appointments
+- Switch between different view modes: day, week, month.
+- Navigate to previous and next days, weeks, and months.
+- Add, update, and remove appointments.
+- Search for specific appointments.
 
 ![Reactive calendar](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar1.png)
 
 
-The user can interact with the following UI-elements:
+The user can interact with the following UI elements:
 
-- **Next button:** Allows the user to go to the next day in day-mode, week in week-mode, etc...
-- **Previous button:** Allows the user to go to the previous day in day-mode, week in week-mode, etc...
-- **Day, week, month buttons:** Allows the user to switch between the different viewmodes
-- **Searchterm input:** Allows the user to filter the appointments on the fly
+- **Next button:** Allows the user to go to the next day in day mode, week in week mode, etc.
+- **Previous button:** Allows the user to go to the previous day in day mode, week in week mode, etc.
+- **Day, week, month buttons:** Allows the user to switch between the different view modes
+- **Search term input:** Allows the user to filter the appointments on the fly
 - **Plus-buttons in the grid:** Allows the user to create new appointments
-- **Trashcan-buttons in the grid:** Allows the user to remove appointments
+- **Trashcan buttons in the grid:** Allows the user to remove appointments
 - **Description inputs:** Allows the user to update the description of an appointment
 
-I decided to use firebase as a backend and because of that, our application will be realtime and offline first by default!
+I decided to use Firebase as a backend and because of that, our application will be realtime and offline first by default!
 
-**Note:** One small issue, I've been a bit lazy so we can only create lunch-appointments =) But hey! Consider it some homework.
-
-
-## Setting up the project
-
-I've created the git branch **initial** to get us started. It contains the default logic/components, setup and styles. There is no reactive code written yet, just plain angular code. The goal is to write the reactive part ourselves.
+**Note:** One small issue, I've been a bit lazy so we can only create lunch appointments. =) But hey! Consider it some homework.
 
 
-### The component tree
+## Setting Up the Project
+
+I've created the git branch **initial** to get us started. It contains the default logic/components, setup, and styles. There is no reactive code written yet, just plain Angular code. The goal is to write the reactive part ourselves.
+
+
+### The Component Tree
 
 ![The component tree](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar3.png)
 The dumb components (blue) are already implemented. The ```app-root``` (orange) is the one and only smart component in the application and the only place where we will write code.
@@ -56,8 +56,8 @@ The dumb components (blue) are already implemented. The ```app-root``` (orange) 
 If you don't know the difference between smart and dumb components, [read this first](http://blog.brecht.io/components-demystified/#smart-vs-dumb-components).
 
 
-### Installing the project locally
-First of all, we have to clone the project locally, and checkout the **initial** branch. This branch already contains all the uninteresting parts that don't have anything to do with this article. 
+### Installing the Project Locally
+First of all, we have to clone the project locally and check out the **initial** branch. This branch already contains all the uninteresting parts that don't have anything to do with this article. 
 
 In the terminal, we have to go to the folder where we want to install the project and run the following commands:
 
@@ -68,15 +68,15 @@ $ git checkout initial
 $ npm install
 ```
 
-### Setting up firebase
+### Setting Up Firebase
 
-We are using [firebase](https://firebase.google.com/) as our backend because it requires minimal setup, it's realtime by default and [angularfire](https://github.com/angular/angularfire2) gives us streams for free. In these few steps we can complete the firebase configuration:
+We are using [Firebase](https://firebase.google.com/) as our backend because it requires minimal setup, it's realtime by default, and [AngularFire](https://github.com/angular/angularfire2) gives us streams for free. We can complete the Firebase configuration in a few steps:
 
-- Go to [https://firebase.google.com](https://firebase.google.com/) and click on the "GO TO CONSOLE" button and choose your google account.
+- Go to [https://firebase.google.com](https://firebase.google.com/), click on the "GO TO CONSOLE" button, and choose your Google account.
 - Click on the "Add project" button and choose a name for your project. Let's take **"reactive-calendar"** to keep it simple. 
 - Click on the "CREATE PROJECT" button. Now we should be redirected to [something like this](https://console.firebase.google.com/project/reactive-calendar/overview).
-- On the Authentication-tab, go to "SIGN-IN METHOD" and enable the "Anonymous" setting.
-- Click on database and navigate to the rules tab. Set the read and write property to true and click publish: 
+- In the Authentication tab, go to "SIGN-IN METHOD" and enable the "Anonymous" setting.
+- Click on database and navigate to the rules tab. Set the read and write property to "true" and click "publish": 
 ```json
  {
   "rules": {
@@ -85,9 +85,9 @@ We are using [firebase](https://firebase.google.com/) as our backend because it 
   }
 }
 ```
-- Go back to the Overview by clicking on the home-symbol and then select "Add Firebase to your web app".
+- Go back to the overview by clicking on the home icon, and then select "Add Firebase to your web app".
 - Copy the config with the correct properties and replace the firebaseConfig object in src/app/app.module.ts with these properties.
-This might look something like this:
+It might look something like this:
 
 ```typescript
 const firebaseConfig = {
@@ -100,33 +100,33 @@ const firebaseConfig = {
 };
 ```
 
-Let's continue, start the project by running the following command and open your browser on [http://localhost:4200](http://localhost:4200). 
+Let's continue. Start the project by running the following command and open your browser on [http://localhost:4200](http://localhost:4200). 
 
 
 ```
 npm start
 ```
 
-As you can see this just handles static data, the buttons/inputs won't work and the appointments are not loaded yet.
+As you can see, this just handles static data, the buttons/inputs won't work, and the appointments are not loaded yet.
 This is where we start from.
 
-## Thinking reactive
+## Thinking Reactively
 
-Here comes the tricky part, we are trying to forget imperative programming for now, and we are trying to evolve into a reactive mind-set.
+Now comes the tricky part. We are trying to forget imperative programming for now, and we are trying to evolve into a reactive mindset.
 
-### Marble diagrams
+### Marble Diagrams
 
-To be able to think reactive we need some kind of graphical model so we can picture streams in our head. Marble diagrams are a great way to do this.
-As we can see in the image below, a marble represents a value over time.
+To be able to think reactively, we need some kind of graphic model so we can picture streams in our head. Marble diagrams are a great way to do that.
+As you can see in the image below, a marble represents a value over time.
 
 ![Marble diagrams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar12.png)
 
 The website [rxmarbles.com](http://rxmarbles.com/) has a great playground for learning how to use and draw marble diagrams.
 
-#### Ascii documentation
+#### ASCII Documentation
 
-One could argue that code should not be documented and be self-explanatory. I don't believe that to be the case when writing complex streams. When we document complex streams, we can see what's going on inside the stream and it makes it easier for our collegues.
-Streams can be documented by ascii documentation. Since this is not really part of this article, I'm only going to show a small example below.
+One could argue that code should not be documented and be self-explanatory. I don't believe that to be the case when writing complex streams. When we document complex streams, we can see what's going on inside the stream, which makes it easier for our colleagues.
+Streams can be documented by ASCII documentation. Since that is not really part of this article, I'm only going to show a small example below.
 
 ```typescript
 // a$ gets three values over time and then stops
@@ -137,46 +137,46 @@ Streams can be documented by ascii documentation. Since this is not really part 
 // b$: a------b-----c------...
 ```
 
-### Imperative programming: What does the app have to do?
+### Imperative Programming: What Does the App Have to Do?
 
-When we think about the functionality of our application, we quickly notice that there are quite a few cornercases and special scenarios. For every interaction the user makes in the UI, the app needs to handle that specific interaction accordingly. Sometimes it has to combine these interactions together and handle that specific combination as well. Take this crazy (but simple) example for instance.
+When we think about the functionality of our application, we quickly notice that there are quite a few corner cases and special scenarios. For every interaction the user makes in the UI, the app needs to handle that specific interaction accordingly. Sometimes it has to combine these interactions and handle that specific combination as well. Take this crazy (but simple) example, for instance.
 
 <blockquote>
-When the viewMode is changed to Week-mode, and the previous viewMode was Month-mode, and the month was June, and the year was 2017, and an appointment was added, while the searchterm was set to "Brecht", then we would have to update...
+When the view mode is changed to week mode, and the previous view mode was month mode, and the month was June, and the year was 2017, and an appointment was added, while the search term was set to "Brecht", then we would have to update...
 </blockquote>
 
-Yes, we would have to update a bunch of stuff. This is imperative thinking and it can become exhausting. There is a big chance that we forget certain corner-cases. Let's not even imagine that we have to combine that with asynchronous actions as well.
+Yes, we would have to update a bunch of stuff. This is imperative thinking, and it can become exhausting. There is a big chance that we forget certain corner cases. Let's not even imagine that we have to combine that with asynchronous actions as well.
 
-In the image below we see all the different interactions the user has in the calendar application.
+In the image below, we see all the different interactions the user has in the calendar application.
 ![Application events](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar2.png)
 
-As we can see, for every specific interaction. The UI will have to update specific things.
+As we can see, for every specific interaction, the UI will have to update specific things.
 
-### Reactive programming: What data will change, and what data do the components need?
+### ReactivePprogramming: What Data Will Change, and What Data Do the Components Need?
 
-#### Source streams
+#### Source Streams
 
-Now let's completely stop with what we are thinking. Let's free our mind and stop thinking about cornercases and special scenarios. We have to learn to think in streams. A stream is a collection of events that will change over time. Think about what can change in your application and call these streams of data. Let's call them **source-streams**. 
+Now, let's completely stop with what we are thinking. Let's free our minds and stop thinking about corner cases and special scenarios. We have to learn to think in streams. A stream is a collection of events that will change over time. Think about what can change in your application and call these streams of data. Let's call them **source streams**. 
 
 **Note:** For readability purposes, we will suffix all the streams with a ```$``` symbol.
 
-When can come up with 4 source-streams:
+We can come up with 4 source streams:
 
 - **navigation$:** Can contain the values: -1, 0 or 1
-- **viewMode$:** Can contain the vallues: DAY, WEEK or MONTH
-- **searchTerm$:** The value of the search-field
-- **appointments$:** This is an array of appointments, that comes from firebase
+- **viewMode$:** Can contain the values: DAY, WEEK, or MONTH
+- **searchTerm$:** The value of the search field
+- **appointments$:** This is an array of appointments that comes from Firebase
 
 ![data streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar4.png)
 
-That was pretty easy, we just had to think about the events that can occur in our application. A user can navigate, change viewmode, search for appointments and the appointments in firebase can change. This is the beginning of thinking reactive. Don't think about who triggers what. Think about the changes as streams.
+That was pretty easy. We just had to think about the events that can occur in our application. A user can navigate, change view mode, search for appointments, and the appointments in Firebase can change. This is the beginning of thinking reactively. Don't think about who triggers what. Think about the changes as streams.
 
 
-It's always a good idea to draw marble diagrams to make it easier to reason about.
+It's always a good idea to draw marble diagrams to make it easier to reason.
 
 ![data stream diagram](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar5.png)
 
-```The appointments$``` is a stream that will be provided to us by angularfire, but the ```viewMode$```, ```searchTerm$``` and ```navigation$``` are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves and we use the ```BehaviorSubject``` in particular because all our source streams need an initial value.
+```The appointments$``` is a stream that will be provided to us by AngularFire, but the ```viewMode$```, ```searchTerm$```, and ```navigation$``` are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves, and we use the ```BehaviorSubject``` in particular because all our source streams need an initial value.
 
 ```typescript
 export class AppComponent {
@@ -241,10 +241,10 @@ export class AppComponent {
 
 ```
 
-#### Presentational streams
+#### Presentational Streams
 
 Now we have to think about the data that our components need, because those components will need to be updated based on those source streams.
-Let's take this code sample for instance: 
+Let's take this code sample, for instance: 
 
 ```html
 <div [ngSwitch]="XX" class="main">
@@ -271,11 +271,11 @@ Let's take this code sample for instance:
 </div>
 ```
 
-I marked the input properties with XX to show us what our components need in terms of data. These places will need streams as well, let's call them **presentational streams**.
+I marked the input properties with XX to show what our components need in terms of data. These places will need streams as well. Let's call them **presentational streams**.
 
-Let's try to fill in these gaps, shall we?!
+Let's try to fill in these gaps, shall we?
 
-**Note:** We use the [async pipe](https://angular.io/api/common/AsyncPipe) from angular to subscribe/unsubscribe the streams automatically.
+**Note:** We use the [async pipe](https://angular.io/api/common/AsyncPipe) from Angular to subscribe/unsubscribe the streams automatically.
 
 ```html
 <div [ngSwitch]="viewMode$|async" class="main">
@@ -304,27 +304,27 @@ Let's try to fill in these gaps, shall we?!
 
 We have gathered the 6 following presentational streams:
 
-- **viewMode$ (string):** needed to determine which view has to shown
-- **filteredAppointments$ (Array < Appointment >):** needed by day-view, week-view and month-view to render the correct appointments
-- **currentDate$ (Date):** the current Date for the day-view
-- **currentWeek$ (number):** the current week for the week-view
-- **currentYear$ (number):** needed by week-view and month-view
-- **currentMonth$ (number):** needed by the month-view
+- **viewMode$ (string):** needed to determine which view has to be shown
+- **filteredAppointments$ (Array < Appointment >):** needed by day view, week view, and month view to render the correct appointments
+- **currentDate$ (date):** the current date for the day view
+- **currentWeek$ (number):** the current week for the week view
+- **currentYear$ (number):** needed by week view and month view
+- **currentMonth$ (number):** needed by the month view
 
-Ok great, we know the source streams, which are the sources of change in our application.
+Okay, great, we know the source streams, which are the sources of change in our application.
 We know the presentational streams, which are simply the streams that our components need. Now it's time for the cool part: **We need to create those presentational streams based on the source streams**.
 
 ![sources to presentational streams](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar6.png)
 
-The first presentational stream we need is ```viewMode$```. This is allready an easy one since ```viewMode$``` is also a source stream.
+The first presentational stream we need is ```viewMode$```. This is already an easy one, since ```viewMode$``` is also a source stream.
 
 #### currentDate$
 ![currentDate$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar7.png)
 
-**Note:** We use moment.js for date calculation. The Suffix M after the currentDate property show that the type is ```Moment```. So in short, it's not just a date but a moment wrapper.
+**Note:** We use moment.js for date calculation. The suffix M after the currentDate property shows that the type is ```Moment```. So in short, it's not just a date, but a moment wrapper.
 
 ```typescript
-// we will need this stream a few times so let's extract the stream 
+// we will need this stream a few times, so let's extract the stream 
 // in a currentDateM first
 
 // viewMode$:     M------------------W---------------D--------...
@@ -333,9 +333,9 @@ The first presentational stream we need is ```viewMode$```. This is allready an 
 private currentDateM = this.viewMode$.flatMap((viewMode: string) => {
     // every time the viewMode changes, the navigation should be reset as well
     // the dateM variable will contain the navigation and because of the 
-    // flatMap it will reset every time the viewmode changes
+    // flatMap it will reset every time the view mode changes
     // if the navigation$ changes afterwards it will manipulate the dateM object
-    // by adding months, weeks or days depending on the viewMode
+    // by adding months, weeks, or days depending on the viewMode
     const dateM = moment();
     return this.navigation$
         .map((action: number) => {
@@ -385,22 +385,22 @@ currentYear$ = this.currentDateM$.map(dateM => dateM.year());
 
 #### filteredAppointments$
 
-This is the most important stream. It is used to show the appointments in all different views and it is dependent on a bunch of streams:
+This is the most important stream. It is used to show the appointments in all the different views, and it is dependent on a bunch of streams:
 
 - viewMode$
 - currentDateM$
 - appointments$
 - searchTerm$
 
-This looks is a bit more complex but let's give it a go. 
+This looks a bit more complex, but let's give it a go. 
 
-**Note:** the ```[]``` in the image below stands for an empty array, the ```[.]``` for an array with one value and so on.
+**Note:** the ```[]``` in the image below stands for an empty array, the ```[.]``` for an array with one value, and so on.
 
 ![filteredAppointment$](https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar11.png)
 
-Let's take the time to process this image. The operator we will use to combine all these streams is called **combineLatest**. It will create a stream that will wait untill all streams have a value and will start emitting values for every change of every stream. 
+Let's take the time to process this image. The operator we will use to combine all these streams is called **combineLatest**. It will create a stream that will wait until all streams have a value and will start emitting values for every change of every stream. 
 
-So basically it gives us a function where we have all the information we need. The appointmments in firebase, the viewmode, the searchterm and the current date. Based on these values we can calculate the appointments for every view:
+So basically, it gives us a function where we have all the information we need. The appointments in Firebase, the view mode, the search term, and the current date. Based on those values, we can calculate the appointments for every view:
 
 ```typescript 
 filteredAppointments$ = Observable.combineLatest(
@@ -439,11 +439,11 @@ private filterByTerm(appointment: Appointment, term: string): boolean {
 }
 ```
 
-This is all we have to do, to create a kickass realtime reactive calendar application. We have created it in no-time and in only a few lines of code. If we think about it, we will soon realise that all cornercases have been covered.
+This is all we have to do in order to create a kick-ass realtime reactive calendar application. We have created it in no time and with only a few lines of code. If we think about it, we will soon realize that all corner cases have been covered.
 
-## Performance improvements
+## Performance Improvements
 
-The complete component looks like the codesnippet below now. The calendar should be completely functional in your browser.
+The complete component looks like the code snippet below now. The calendar should be completely functional in your browser.
 
 ```typescript
 import { Component } from '@angular/core';
@@ -593,30 +593,30 @@ export class AppComponent {
 
 ```
 
-There is only one problem. We use the same observables multiple times in our template. Since observables are cold by default they will get executed every time there is a subscription. In Angular this means a subscription for every async pipe. For performance reasons we only want to recalculate these streams when something actually changes. For this we can try to use the **share()** operator from rxjs. The **share()** operator is an alias for **publish().refCount()** and will share the subscription.
+There is only one problem. We use the same observables multiple times in our template. Since observables are cold by default, they will get executed every time there is a subscription. In Angular, this means a subscription for every async pipe. For performance reasons, we only want to recalculate these streams when something actually changes. For that purpose, we can try to use the **share()** operator from RxJS. The **share()** operator is an alias for **publish().refCount()** and will share the subscription.
 
-This however gives some problems with angular its async pipe.
+However, that creates some problems with Angular and its async pipe.
 The situation of the problem goes like this:
 
-- Since we are using BehaviorSubjects the streams will get an initial value (which is what we want of course)
-- The share() operator will emit that value when the AppComponent is initialized (before the template and async pipes are loaded)
-- When the app is initialized the async pipes will start subscribing to the stream
-- Because the async pipe subscribed after the value was emitted the value is gone
+- Since we are using BehaviorSubjects, the streams will get an initial value (which is what we want, of course).
+- The share() operator will emit that value when the AppComponent is initialized (before the template and async pipes are loaded).
+- When the app is initialized, the async pipes will start subscribing to the stream.
+- Because the async pipe subscribed after the value was emitted, the value is gone.
 
-**Solution: shareReplay() will emit those values but keep track of them, that way the async pipes will never miss a value**
+**Solution: shareReplay() will emit those values but keep track of them. That way, the async pipes will never miss a value.**
  
 
 ## Conclusion
 
-We have created a complete reactive calendar which is performant and fixes a bunch of corner case in only a few lines of code. Just by think about source streams and presentational streams it wasn't even that hard. I hope that I can encourage more people to take on this reactive approach and start writing kickass applications.
+We have created a completely reactive calendar that is performant and fixes a bunch of corner cases in only a few lines of code. Just by thinking about source streams and presentational streams, it wasn't even that hard. I hope that I can encourage more people to take on this reactive approach and start writing kick-ass applications.
 
-## Special thanks
+## Special Thanks
 
-I wanted to give my special thanks to the awesome people that reviewed this post and gave me pointers:
+I would like to give special thanks to the awesome people that reviewed this post and gave me pointers:
 
 - Dominic Elm ([@elmd_](https://twitter.com/elmd_))
 - Manfred Steyer ([@manfredsteyer](https://twitter.com/manfredsteyer))
 - David Müllerchen ([@webdave_de](https://twitter.com/webdave_de))
 - Maxim Robert ([@sizerOne](https://twitter.com/sizerone))
 
-Thanks guys! Means a lot!
+Thanks, guys! It means a lot!
