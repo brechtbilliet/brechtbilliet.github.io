@@ -1,0 +1,16 @@
+.social {
+    @extend %no-bullet;
+    margin: $space 0 10px;
+    li {
+        display: inline-block;
+        padding: 0 10px;
+        line-height: 1;
+    }
+    a {
+        color: $colorHeading;
+        transition: color 0.2s ease;
+        &:hover, &:focus {
+            color: $colorPrimary;
+        }
+    }
+}

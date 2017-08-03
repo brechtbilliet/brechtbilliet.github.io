@@ -1,0 +1,49 @@
+/* GONFIG
+-------------------------------------------------*/
+
+/* Fonts
+-------------------------------*/
+
+/* Font family */
+$fontFamilyPrimary: 'Alegreya', sans-serif;
+$fontFamilySecondary: 'Open Sans', serif;
+
+/* Font weight */
+$fontWeightRegular: 400;
+$fontWeightSemi: 600;
+$fontWeightBold: 700;
+
+/* Colors
+-------------------------------*/
+
+/* Descriptive colors */
+$white: #fff;
+$black: #000;
+$grey: #252525;
+$greyLight: #444;
+$greyLighter: #999;
+$mercury: #e9e9e9;
+$shakespear: #52B3D9;
+
+/* Color usage */
+$colorBase: $greyLight;
+$colorHeading: $grey;
+$colorPrimary: $shakespear;
+$colorBorder: $mercury;
+
+/* Spacing
+-------------------------------*/
+$space: 30px;
+$spaceDouble: 60px;
+
+/* Breakpoints
+-------------------------------*/
+$small: 500px;
+$medium: 750px;
+$large: 1200px;
+
+$bpoints: (
+    'small'  : ( min-width:  $small ),
+    'medium' : ( min-width:  $medium ),
+    'large'  : ( min-width: $large )
+);

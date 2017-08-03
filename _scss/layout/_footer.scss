@@ -1,0 +1,10 @@
+/* FOOTER
+-------------------------------------------------*/
+.main-footer {
+    @extend %space;
+    border-top: solid 5px $colorPrimary;
+    text-align: center;
+    small {
+        display: block;
+    }
+}

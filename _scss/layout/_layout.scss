@@ -1,0 +1,18 @@
+/* LAYOUT
+-------------------------------------------------*/
+.container {
+    width: 90%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.site-container {
+    @include breakpoint(medium) {
+        transition: all 0.3s ease 200ms;
+        .nav-trigger & {
+            transform: translate3d(0,82px,0);
+        }
+    }
+}
+
+

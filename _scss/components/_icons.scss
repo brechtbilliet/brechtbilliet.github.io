@@ -1,0 +1,63 @@
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    font-size: 1.3rem;
+    fill: currentColor;
+}
+
+/* =======================================================================================
+Example showing how to change the color/size of the icons:
+.icon-name {
+    font-size: 32px; // works because "width" & "height" were set using em units
+    color: red; // works for single-colored icons, because "fill" was set to "currentColor"
+}
+======================================================================================== */
+
+.icon-twitter {
+    width: 0.9287109375em;
+}
+
+.icon-facebook {
+    width: 0.5712890625em;
+}
+
+.icon-github {
+    width: 0.8571428571428572em;
+}
+
+.icon-feed {
+    width: 0.7861328125em;
+}
+
+.icon-google-plus {
+    width: 0.9287109375em;
+}
+
+.icon-linkedin {
+    width: 0.8571428571428572em;
+}
+
+.icon-youtube {
+    width: 0.8571428571428572em;
+}
+
+.icon-instagram {
+    width: 0.8571428571428572em;
+}
+
+.icon-skype {
+    width: 0.8571428571428572em;
+}
+
+.icon-behance {
+    width: 1.142578125em;
+}
+
+.icon-vine {
+    width: 0.8571428571428572em;
+}
+
+.icon-pinterest-p {
+    width: 0.7138671875em;
+}

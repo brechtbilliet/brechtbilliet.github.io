@@ -1,0 +1,16 @@
+.author {
+    padding-bottom: $spaceDouble;
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        @include breakpoint(small) {
+            width: 150px;
+            height: 150px;
+        }
+    }
+    .written {
+        color: $greyLighter;
+        font-style: italic;
+    }
+}

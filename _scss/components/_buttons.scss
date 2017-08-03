@@ -1,0 +1,6 @@
+.button {
+    @extend %btn;
+    color: $colorPrimary;
+    border-color: $colorBorder;
+    @include buttonState($colorPrimary);
+}

@@ -1,0 +1,62 @@
+/* PLACEHOLDERS
+-------------------------------------------------*/
+
+/* Clearfix
+-------------------------------*/
+%clearfix {
+    &:after {
+        display: block;
+        content: '';
+        clear: both;
+    }
+}
+
+/* Buttons
+-------------------------------*/
+%btn {
+    display: inline-block;
+    padding: 6px 15px;
+    border: solid 2px transparent;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Space
+-------------------------------*/
+%space {
+    padding: $spaceDouble 0;
+}
+
+/* Header link
+-------------------------------*/
+%header-link {
+    a {
+        color: $colorHeading;
+        text-decoration: none;
+        transition: color 0.2s ease;
+        &:hover, &:focus {
+            color: lighten($colorHeading, 25%);
+            text-decoration: none;
+        }
+    }
+}
+
+/* Fonts
+-------------------------------*/
+%font-primary {
+    font-family: $fontFamilyPrimary;
+}
+
+%font-secondary {
+    font-family: $fontFamilySecondary;
+}
+
+/* Lists
+-------------------------------*/
+%no-bullet {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}

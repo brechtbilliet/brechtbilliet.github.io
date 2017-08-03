@@ -1,0 +1,10 @@
+.pagination {
+    @extend %clearfix;
+    margin-top: $spaceDouble;
+    .old-posts {
+        float: left;
+    }
+    .new-posts {
+        float: right;
+    }
+}

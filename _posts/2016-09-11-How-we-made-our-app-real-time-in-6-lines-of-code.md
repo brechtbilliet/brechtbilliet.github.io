@@ -2,6 +2,7 @@
 layout: post
 title: How we made our app real-time in 6 lines of code
 published: true
+description: Kwinten Pisman and me were working on a workshop this weekend with the focus on Reactive applications with Angular, RXJS and @ngrx. Something that can't miss in a reactive workshop are real-time updates. The application we are trying to make real-time is the winecellar app (you can register an account here if you want to test it).
 author: brechtbilliet
 comments: true
 ---

@@ -1,8 +1,10 @@
 ---
 layout: post
-title: Creating a reactive calendar in Angular 4 and RXJS
-published: false
+title: Thinking reactively in Angular and RXJS
+published: true
 author: brechtbilliet
+description: RxJS is an awesome library that can help us with creating reactive web applications. Reactive web applications can be overwhelming in the beginning, but eventually, they can be really rewarding.This article is all about making the paradigm switch from thinking imperatively towards thinking reactively.
+
 comments: true
 ---
 
@@ -78,11 +80,11 @@ We are using [Firebase](https://firebase.google.com/) as our backend because it 
 - In the Authentication tab, go to "SIGN-IN METHOD" and enable the "Anonymous" setting.
 - Click on database and navigate to the rules tab. Set the read and write property to "true" and click "publish": 
 ```json
- {
-  "rules": {
-    ".read": "true",
-    ".write": "true"
-  }
+{
+    "rules": {
+        ".read": "true",
+        ".write": "true"
+    }
 }
 ```
 - Go back to the overview by clicking on the home icon, and then select "Add Firebase to your web app".
