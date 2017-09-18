@@ -1,7 +1,28 @@
 ---
 layout: default
 ---
-
+<style>
+    @media (max-width: 1100px) {
+        .followme {
+            display: none;
+        }
+    }
+    @media (min-width: 1100px) {
+        .followme {
+            background: #f1f1f1;
+            position: fixed;
+            margin-left:786px;
+            padding: 20px;
+        }
+    }
+</style>
+<div class="followme">
+    <h3>Follow me on twitter</h3>
+    <a href="https://twitter.com/brechtbilliet" class="twitter-follow-button"
+       data-size="large"
+       data-show-count="false">Follow @brechtbilliet</a><script
+        async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
 <article class="post">
     <header class="post-header">
         <span class="category">{{ page.categories }}</span>
