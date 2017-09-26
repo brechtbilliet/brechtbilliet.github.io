@@ -16,8 +16,8 @@ It's been over a year now, since I've been introducing that specific architectur
 Often, I ask developers about how they feel about this SPA-architecture and the feedback is mostly this:
 They believe its a **clear and opiniated way** to structure their code, and they have no trouble, finding their way into the codebase.
 
-A big part of the article in question, was about explaining the so called "sandboxes", a personal terminology for a very specific kind of facade.
-Since writing that article raised a bunch of questions about these "sandboxes", it seemed like a good idea to write a followup article.
+A big part of the [article](http://blog.brecht.io/A-scalable-angular2-architecture/) in question, was about explaining the so called "sandboxes", a personal terminology for a very specific kind of facade.
+Since writing that [article](http://blog.brecht.io/A-scalable-angular2-architecture/) raised a bunch of questions about these "sandboxes", it seemed like a good idea to write a followup article.
 
 In this article we will cover what sandboxes are really about and why I introduced them in the first place.
 
@@ -38,22 +38,22 @@ When writing single-page-applications one could face the following challenges:
 
 ### Challenge 1: How do we structure components?
 
-Since this topic is covered in the previous article, we won't do a deepdive in this subject.
+Since this topic is covered in the [previous article](http://blog.brecht.io/A-scalable-angular2-architecture/), we won't do a deepdive in this subject.
 We use the smart/dumb component approach to structure our components. The dumb components mostly have presentational purposes and the smart components interact with the rest of the application.
 
 ### Challenge 2: How do we handle statemanagement?
 
-Another topic covered by the previous article is how handle our statemanagement. In short: we use @ngrx/store, or another redux implementation that embraces reactive programming. 
+Another topic covered by the [previous article](http://blog.brecht.io/A-scalable-angular2-architecture/) is how handle our statemanagement. In short: we use @ngrx/store, or another redux implementation that embraces reactive programming. 
 
 ### Challenge 3
 
 The first two challenges are met: we have a clear and structured presentational layer and because of the fact that we use @ngrx/store (or any statemanagement tool for that matter), we have a clear way of managing state. We can optimise performance with immutable data and still have clear unidirectional dataflow.
 
-Hower, there are still a few pieces of the puzzle missing, which might raise the following questions:
+However, there are still a few pieces of the puzzle missing, which might raise the following questions:
 
 #### How do we separate the presentation-layers from the rest of the application?
 
-If we inject whatever we want in our smart components, their constructors might get huge in no-time. Do those smart components really need to know about everything about the application? Do they need to know where everything lives and what service it should call from which module in the application? Wouldn't it be easier if they had an interface they could talk to, that just handles things for them?
+If we inject whatever we want in our smart components, their constructors might get huge in no-time. Do those smart components really need to know everything about the application? Do they need to know where everything lives and what service it should call from which module in the application? Wouldn't it be easier if they had an interface they could talk to, that just handles things for them?
 It would certainly help to decouple angular modules from each other, and keep the responsibility of those smart components clear and compact. **This is something a sandbox might be able to help us with**
 
 ### Do our components need to know about redux?
@@ -218,3 +218,9 @@ export class StockPageContainer {
 
 I hope this clarifies the purpose of the sandbox and why I have introduced them in my projects.
 If you still have questions about this approach, don't hesitate to contact me =)
+
+### Special thanks
+Special thanks to [Manfred Steyer (@manfredsteyer)]('https://twitter.com/ManfredSteyer') and [Juri Strumpflohner (@juristr)](https://twitter.com/juristr) for reviewing this article!
+
+
+
