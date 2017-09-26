@@ -1,7 +1,7 @@
 ---		
 layout: post		
 title: A scalable angular architecture (part 2)
-published: false
+published: true
 author: brechtbilliet
 description: 
 comments: true
