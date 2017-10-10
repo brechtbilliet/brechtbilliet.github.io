@@ -54,7 +54,7 @@ However, there are still a few pieces of the puzzle missing, which might raise t
 #### How do we separate the presentation-layers from the rest of the application?
 
 If we inject whatever we want in our smart components, their constructors might get huge in no-time. Do those smart components really need to know everything about the application? Do they need to know where everything lives and what service it should call from which module in the application? Wouldn't it be easier if they had an interface they could talk to, that just handles things for them?
-It would certainly help to decouple angular modules from each other, and keep the responsibility of those smart components clear and compact. **This is something a sandbox might be able to help us with**
+It would certainly help to decouple angular modules from each other, and keep the responsibility of those smart components clear and compact. **This is something a sandbox might be able to help us with.**
 
 ### Do our components need to know about redux?
 
@@ -62,7 +62,7 @@ Redux is an awesome library/principle that helps us ace statemanagement, but it'
 It would be a huge depencency... What if you like to switch to firebase for instance, or MOBX, or even write your own statemanagement tool. You would need to refactor your whole application. The sole principle of redux is to manage state, and I prefer to use it that way. That is also why I don't really use effects, thunk or saga. (That's a personal preference)
 For me this means: **Use redux only to manage state, not to trigger backend actions etc**
 One could even argue that the action-dispatching and state-selecting should be combined in central places in your appliction.
- **Let's add that logic to the sandboxes as well**
+ **Let's add that logic to the sandboxes as well.**
 
 #### Do our HTTP services need to know about a redux implementation?
 
@@ -134,7 +134,7 @@ A sandbox has a very specific responsibility:
 ## What doesn't a sandbox do?
 
 - It doesn't contain business logic. It contains sandbox logic (see above).
-- It doesn't contain presentation logicn, like routing etc.
+- It doesn't contain presentation logic, like routing etc.
 - It doesn't do HTTP calls directly, it delegates to http services.
 - It doesn't let your components do whatever they want =)
 
