@@ -134,7 +134,7 @@ A sandbox has a very specific responsibility:
 ## What doesn't a sandbox do?
 
 - It doesn't contain business logic. It contains sandbox logic (see above).
-- It doesn't contain presentation logicn, like routing etc.
+- It doesn't contain presentation logic, like routing etc.
 - It doesn't do HTTP calls directly, it delegates to http services.
 - It doesn't let your components do whatever they want =)
 
