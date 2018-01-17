@@ -9,7 +9,8 @@
     <meta name="google-site-verification" content="{{ site.google_verification }}">
     {% endif %}
 
-    <title>{{page.url}}</title>
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+
 
     {% if page.description %} 
         <meta name="description" content="{{ page.description }}">
@@ -27,4 +28,6 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ site.baseurl }}/img/favicon.png" />
+    <meta http-equiv="refresh" content="0;url=https://blog.strongbrew.io{{ page.url }}" />
+
 </head>
