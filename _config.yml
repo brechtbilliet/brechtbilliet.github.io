@@ -4,7 +4,7 @@
 # Site settings
 title: Frontend software architect living in Belgium
 email: billietbrecht@gmail.com
-description: "A responsive Jekyll theme for a personal blog."
+description: ''
 hero_image: hero.png
 logo_url: img/brecht.png
 sub_title: Brecht Billiet
@@ -32,17 +32,17 @@ avatar: https://avatars3.githubusercontent.com/u/480083?v=3&s=460
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
 # You can find your shortname on the Settings page of your Disqus account
-disqus: "brechtbilliet"
+disqus: 'brechtbilliet'
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url: "https://blog.brecht.io"
+url: 'https://blog.brecht.io'
 
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
 # and NOT your User repository (http://yourusername.github.io)
-# then add in the baseurl here, like this: "/repository-name"
-baseurl: ""
+# then add in the baseurl here, like this: '/repository-name'
+baseurl: ''
 #
 # !! You don't need to change any of the configuration flags below !!
 #
