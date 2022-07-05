@@ -5,7 +5,6 @@
 title: Frontend software architect living in Belgium
 email: billietbrecht@gmail.com
 description: "A responsive Jekyll theme for a personal blog."
-paginate: 5
 hero_image: hero.png
 logo_url: img/brecht.jpg
 sub_title: Brecht Billiet
@@ -37,7 +36,7 @@ disqus: "brechtbilliet"
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url: "http://blog.brecht.io"
+url: "https://blog.brecht.io"
 
 # If you're hosting your site at a Project repository on GitHub pages
 # (http://yourusername.github.io/repository-name)
@@ -53,15 +52,15 @@ permalink: /:title/
 version: v1.2.0
 
 # Jekyll 3 now only supports Kramdown for Markdown
+# Jykell configuration
+#markdown: redcarpet
+#highlighter: pygments
+markdown: kramdown
 kramdown:
-  # Use GitHub flavored markdown, including triple backtick fenced code blocks
   input: GFM
-  # Jekyll 3 and GitHub Pages now only support rouge for syntax highlighting
-  syntax_highlighter: rouge
-  syntax_highlighter_opts:
-    # Use existing pygments syntax highlighting css
-    css_class: 'high_light'
-
+highlighter: none
+paginate: 5
+language: 'en-uk'
 # Set the Sass partials directory, as we're using @imports
 
 # Exclude these files from your production _site
@@ -71,7 +70,6 @@ exclude:
   - LICENSE
   - README.md
   - CNAME
-plugins: [jekyll-sitemap, jekyll-feed, jekyll-paginate]
 # Theme Settings
 analytics: UA-43296458-5
 google_verification:

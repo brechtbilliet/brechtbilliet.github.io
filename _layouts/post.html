@@ -7,25 +7,38 @@ layout: default
             display: none;
         }
     }
+
     @media (min-width: 1100px) {
         .followme {
             background: #f1f1f1;
             position: fixed;
-            margin-left:786px;
+            margin-left: 786px;
             padding: 20px;
         }
     }
+
+    .hire-me-button {
+        background-color: #2aabbf;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 15px;
+    }
+
 </style>
 <div class="followme">
     <h3>Follow me on twitter</h3>
     <a href="https://twitter.com/brechtbilliet" class="twitter-follow-button"
        data-size="large"
-       data-show-count="false">Follow @brechtbilliet</a><script
-        async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+       data-show-count="false">Follow @brechtbilliet</a>
+    <script
+            async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <br/>
+    <br/>
+    <a href="https://brecht.io" class="hire-me-button">Hire me</a>
 </div>
 <article class="post">
     <header class="post-header">
-        <span class="category">{{ page.categories }}</span>
         <h2>{{ page.title }}</h2>
         <span class="date">{{ page.date | date: "%b %-d, %Y" }}</span>
     </header>
@@ -38,21 +51,21 @@ layout: default
 </article>
 
 {% if site.author_name %}
-    <div class="author">
-          
-        <div class="media-object">
-            <img src="{{ site.baseurl }}/img/{{ site.author_image }}" alt="{{ site.author_name }}">
-            <div class="media-bd">
-                <span class="written h5">Written by</span>
-                <h4><a href="{{ site.author_url }}">{{ site.author_name }}</a></h4>
-                <p>{{ site.author_bio }}</p>
-            </div>
-        </div>
+<div class="author">
 
+    <div class="media-object">
+        <img src="{{ site.baseurl }}/img/{{ site.author_image }}" alt="{{ site.author_name }}">
+        <div class="media-bd">
+            <span class="written h5">Written by</span>
+            <h4><a href="{{ site.author_url }}">{{ site.author_name }}</a></h4>
+            <p>{{ site.author_bio }}</p>
+        </div>
     </div>
+
+</div>
 {% endif %}
 
 {% if site.disqus-shortname %}
-    {% include disqus.html %}
+{% include disqus.html %}
 {% endif %}
 
