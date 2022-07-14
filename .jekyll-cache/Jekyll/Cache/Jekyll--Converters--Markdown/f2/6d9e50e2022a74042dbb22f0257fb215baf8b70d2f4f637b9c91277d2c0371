@@ -1,4 +1,4 @@
-I"t'<p><a href="https://angular.io/">Angular 2</a> and <a href="https://github.com/reactjs/redux">redux</a> are 2 technologies that are getting a lot of traction these days. Angular 2 is a SPA (single-page-app) framework and redux is a state management tool. Most developers that are using Angular 2 are using the <a href="https://github.com/ngrx/store">@ngrx/store</a> variant of the redux principle. Because I’m one of them I will be using @ngrx/store instead of redux.js for this article. Don’t let that bother you, what you are about to read can be used with redux.js in the exact same way. If you have never heard about redux, I strongly advice to read the <a href="http://redux.js.org/">documentation</a> first.</p>
+I"iW<p><a href="https://angular.io/">Angular 2</a> and <a href="https://github.com/reactjs/redux">redux</a> are 2 technologies that are getting a lot of traction these days. Angular 2 is a SPA (single-page-app) framework and redux is a state management tool. Most developers that are using Angular 2 are using the <a href="https://github.com/ngrx/store">@ngrx/store</a> variant of the redux principle. Because I’m one of them I will be using @ngrx/store instead of redux.js for this article. Don’t let that bother you, what you are about to read can be used with redux.js in the exact same way. If you have never heard about redux, I strongly advice to read the <a href="http://redux.js.org/">documentation</a> first.</p>
 
 <h2 id="optimistic-updates">Optimistic updates</h2>
 
@@ -11,13 +11,13 @@
 
 <p>The code explained above might look like this:</p>
 
-<pre><code class="language-typescript">remove(wine: Wine): void {
-    this.http.delete(`${API_URL}/wines/${wine._id}`).subscribe(() =&gt; {
-    	// dispatch the action to the store, when the call was successful
-    	this.store.dispatch({type: REMOVE_WINE, payload: {_id: wine._id}});
-    });
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    	<span class="c1">// dispatch the action to the store, when the call was successful</span>
+    	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}});</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This is the traditional way of doing things, but I think we can do it better. What if we would update the store, regardless of the HTTP response the server returns? We click the delete button in the datagrid, call the angular service like we already did. But in that service we update the store directly (parallel with the http call)</p>
 
@@ -25,13 +25,13 @@
 
 <p>The code explained above might look like this:</p>
 
-<pre><code class="language-typescript">remove(wine: Wine): void {
-	// dispatch directly to the store
-	this.store.dispatch({type: REMOVE_WINE, payload: {_id: wine._id}};
-	// we still have to subscribe because http calls return cold observables
-    this.http.delete(`${API_URL}/wines/${wine._id}`).subscribe();
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+	<span class="c1">// dispatch directly to the store</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}};</span>
+	<span class="c1">// we still have to subscribe because http calls return cold observables</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This is a pretty nice change: Our application has just gotten a lot <strong>faster and snappier</strong>. Every time the user does an action, the store gets updated immediately, which means that the components will get updated immediately as well. We never have to wait for http responses again.</p>
 
@@ -45,68 +45,68 @@
 
 <p>We would like to implement something like this:</p>
 
-<pre><code class="language-typescript">remove(wine: Wine): void {
-	// create an action
-	let action = {type: REMOVE_WINE, payload: {_id: wine._id}};
-	//dispatch the action to the store
-	this.store.dispatch(action);
-	// call the backend
-    this.http.delete(`${API_URL}/wines/${wine._id}`)
-    	.subscribe(
-    		// on success, do nothing
-    		() =&gt; {}, 
-	    	// on error, rollback the action
-	    	() =&gt; {
-	    		this.store.dispatch({type: "UNDO_ACTION", payload: action});
-	    	// maybe show somekind of errormessage to show the user that it's action failed
-    	});
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+	<span class="c1">// create an action</span>
+	<span class="kd">let</span> <span class="nx">action</span> <span class="o">=</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}};</span>
+	<span class="c1">//dispatch the action to the store</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+	<span class="c1">// call the backend</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+    	<span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span>
+    		<span class="c1">// on success, do nothing</span>
+    		<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{},</span> 
+	    	<span class="c1">// on error, rollback the action</span>
+	    	<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	    		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">action</span><span class="p">});</span>
+	    	<span class="c1">// maybe show somekind of errormessage to show the user that it's action failed</span>
+    	<span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>It turns out that when using the redux pattern, this only takes 12 lines of code (without comments :-)). We will have to create a parent reducer that will delegate to our root reducer. The parent reducer will keep track of all the actions, so they can be rolled back.
 The implementation looks like this:</p>
 
-<pre><code class="language-typescript">import {ApplicationState} from "../statemanagement/state/ApplicationState";
-import {Action, ActionReducer} from "@ngrx/store";
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">ApplicationState</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../statemanagement/state/ApplicationState</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Action</span><span class="p">,</span> <span class="nx">ActionReducer</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@ngrx/store</span><span class="dl">"</span><span class="p">;</span>
 
-export function handleUndo(rootReducer: ActionReducer&lt;ApplicationState&gt;)
-	: ActionReducer&lt;ApplicationState&gt; {
-	// keep the executedActions
-    let executedActions: Array&lt;Action&gt; = [];
-    return (state: ApplicationState, action: Action) =&gt; {
-        if (action.type === "UNDO_ACTION") {
-        	// if the action is UNDO_ACTION, 
-        	// then call all the actions again on the rootReducer, 
-        	// except the one we want to rollback
-            let newState: any = {};
-            executedActions = executedActions.filter(eAct =&gt; eAct !== action.payload);
-            // update the state for every action untill we get the
-            // exact same state as before, but without the action we want to rollback
-            executedActions.forEach(executedAction =&gt; 
-            	newState = rootReducer(newState, executedAction));
-            return newState;
-        }
-        // push every action that isn't an UNDO_ACTION to the executedActions property
-        executedActions.push(action);
-        // just delegate
-        return rootReducer(state, action);
-    };
-}
-</code></pre>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">)</span>
+	<span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span> <span class="p">{</span>
+	<span class="c1">// keep the executedActions</span>
+    <span class="kd">let</span> <span class="na">executedActions</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Action</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">return</span> <span class="p">(</span><span class="na">state</span><span class="p">:</span> <span class="nx">ApplicationState</span><span class="p">,</span> <span class="na">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+        	<span class="c1">// if the action is UNDO_ACTION, </span>
+        	<span class="c1">// then call all the actions again on the rootReducer, </span>
+        	<span class="c1">// except the one we want to rollback</span>
+            <span class="kd">let</span> <span class="na">newState</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="p">{};</span>
+            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">eAct</span> <span class="o">=&gt;</span> <span class="nx">eAct</span> <span class="o">!==</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">);</span>
+            <span class="c1">// update the state for every action untill we get the</span>
+            <span class="c1">// exact same state as before, but without the action we want to rollback</span>
+            <span class="nx">executedActions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">executedAction</span> <span class="o">=&gt;</span> 
+            	<span class="nx">newState</span> <span class="o">=</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">newState</span><span class="p">,</span> <span class="nx">executedAction</span><span class="p">));</span>
+            <span class="k">return</span> <span class="nx">newState</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">// push every action that isn't an UNDO_ACTION to the executedActions property</span>
+        <span class="nx">executedActions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+        <span class="c1">// just delegate</span>
+        <span class="k">return</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>So basically, when an action is being rolled back, every action that has been taken before is being executed on a piece of state again. When that piece of state is updated, it will return it and the store will be updated with the same state, except the one that our rolled back action created.</p>
 
 <p>To make sure the actions can be undone, we have to make redux use the piece of code above. This is how you could use it in Angular 2.</p>
 
-<pre><code class="language-typescript">@NgModule({
-	// instead of passing the rootReducer directly
-	// like we would have done before, wrap it in the handleUndo function
-    imports: [StoreModule.provideStore(handleUndo(rootReducer))/*, ...*/],
-    /* ... */
-})
-export class AppModule {
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+	<span class="c1">// instead of passing the rootReducer directly</span>
+	<span class="c1">// like we would have done before, wrap it in the handleUndo function</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">StoreModule</span><span class="p">.</span><span class="nx">provideStore</span><span class="p">(</span><span class="nx">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">))</span><span class="cm">/*, ...*/</span><span class="p">],</span>
+    <span class="cm">/* ... */</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h2 id="possible-improvements">Possible improvements</h2>
 
@@ -121,37 +121,37 @@ Some facts:</p>
 <p>What if it would become slow?
 We can implement a buffer. Let’s say that we only want the last 100 actions to be kept.</p>
 
-<pre><code class="language-typescript">export function handleUndo(rootReducer: ActionReducer&lt;ApplicationState&gt;, 
-	bufferSize = 100): ActionReducer&lt;ApplicationState&gt; {
-    let executedActions: Array&lt;Action&gt; = [];
-    let initialState = undefined;
-    return (state: ApplicationState, action: Action) =&gt; {
-        if (action.type === "UNDO_ACTION") {
-        	// if the action is UNDO_ACTION, 
-        	// then call all the actions again on the rootReducer, 
-        	// except the one we want to rollback
-            let newState: any = initialState;
-            executedActions = executedActions.filter(eAct =&gt; eAct !== action.payload);
-            // update the state for every action untill we get the
-            // exact same state as before, but without the action we want to rollback
-            executedActions.forEach(executedAction =&gt; 
-            	newState = rootReducer(newState, executedAction));
-            return newState;
-        }
-       	// push every action that isn't an UNDO_ACTION to the executedActions property
-		executedActions.push(action);
-        let updatedState =  rootReducer(state, action);
-        if (executedActions.length === bufferSize + 1) {
-            let firstAction = executedActions[0];
-            // calculate the state x (buffersize) actions ago
-            initialState = rootReducer(initialState, firstAction);
-            // keep the correct actions
-            executedActions = executedActions.slice(1, bufferSize + 1);
-        }
-        return updatedState;
-    };
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> 
+	<span class="nx">bufferSize</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="na">executedActions</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Action</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="kd">let</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="na">state</span><span class="p">:</span> <span class="nx">ApplicationState</span><span class="p">,</span> <span class="na">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+        	<span class="c1">// if the action is UNDO_ACTION, </span>
+        	<span class="c1">// then call all the actions again on the rootReducer, </span>
+        	<span class="c1">// except the one we want to rollback</span>
+            <span class="kd">let</span> <span class="na">newState</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="nx">initialState</span><span class="p">;</span>
+            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">eAct</span> <span class="o">=&gt;</span> <span class="nx">eAct</span> <span class="o">!==</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">);</span>
+            <span class="c1">// update the state for every action untill we get the</span>
+            <span class="c1">// exact same state as before, but without the action we want to rollback</span>
+            <span class="nx">executedActions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">executedAction</span> <span class="o">=&gt;</span> 
+            	<span class="nx">newState</span> <span class="o">=</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">newState</span><span class="p">,</span> <span class="nx">executedAction</span><span class="p">));</span>
+            <span class="k">return</span> <span class="nx">newState</span><span class="p">;</span>
+        <span class="p">}</span>
+       	<span class="c1">// push every action that isn't an UNDO_ACTION to the executedActions property</span>
+		<span class="nx">executedActions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">updatedState</span> <span class="o">=</span>  <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">executedActions</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">bufferSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">firstAction</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="c1">// calculate the state x (buffersize) actions ago</span>
+            <span class="nx">initialState</span> <span class="o">=</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">initialState</span><span class="p">,</span> <span class="nx">firstAction</span><span class="p">);</span>
+            <span class="c1">// keep the correct actions</span>
+            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">bufferSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">updatedState</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h3 id="conclusion">Conclusion</h3>
 <p>The redux pattern has opened amazing doors for frontend development. Just like <a href="http://blog.brecht.io/How-we-made-our-app-real-time-in-6-lines-of-code/">realtime</a> became a breeze we can do optimistic updates with almost no effort.

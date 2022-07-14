@@ -1,4 +1,4 @@
-I"�<p><a href="https://blog.kwintenp.com/">Kwinten Pisman</a> and me were working on a workshop this weekend with the focus on Reactive applications with <a href="http://angular.io">Angular 2</a>, <a href="https://github.com/ReactiveX/rxjs">RXJS</a> and <a href="https://github.com/ngrx">@ngrx</a>. Something that can’t miss in a reactive workshop are real-time updates. The application we are trying to make real-time is the <a href="http://winecellar.surge.sh">winecellar</a> app (you can register an account here if you want to test it).</p>
+I"0<p><a href="https://blog.kwintenp.com/">Kwinten Pisman</a> and me were working on a workshop this weekend with the focus on Reactive applications with <a href="http://angular.io">Angular 2</a>, <a href="https://github.com/ReactiveX/rxjs">RXJS</a> and <a href="https://github.com/ngrx">@ngrx</a>. Something that can’t miss in a reactive workshop are real-time updates. The application we are trying to make real-time is the <a href="http://winecellar.surge.sh">winecellar</a> app (you can register an account here if you want to test it).</p>
 
 <p>To make this application real-time we changed some code in the node.js backend, but that’s out of scope for this post. 
 The cool thing is, that we only needed <strong>6 lines of code</strong> to make the frontend completely real-time.</p>
@@ -54,14 +54,14 @@ You can find the open-source code of the winecellar project here: <a href="https
 
 <p>Let’s say that we want to add a wine. when we add a wine, we send a XHR request to the backend and send an action to the store, like you can see in the snippet below. That is already how to wine application works</p>
 
-<pre><code class="language-typescript">add(wine: Wine): void {
-    this.http.post(`${API_URL}/wines`, wine, this.authorizedHttpOptions())
-        .map((res: Response) =&gt; res.json())
-    	.subscribe(resp =&gt;
-    		this.store.dispatch({type: DATA_WINES_ADD, payload: {wine:resp}})
-		);
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">add</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines`</span><span class="p">,</span> <span class="nx">wine</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">authorizedHttpOptions</span><span class="p">())</span>
+        <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="na">res</span><span class="p">:</span> <span class="nx">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+    	<span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span>
+    		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">DATA_WINES_ADD</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">wine</span><span class="p">:</span><span class="nx">resp</span><span class="p">}})</span>
+		<span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This doesn’t have anything to do with real-time, right?! You are right, it doesn’t… But what if our backend can send Redux actions as well? If the backend can push redux actions to the frontend, then we can make it real-time with very little effort.</p>
 
@@ -69,32 +69,32 @@ You can find the open-source code of the winecellar project here: <a href="https
 
 <p><strong>These are the 6 lines of code, that we need to make our frontend 100% real-time.</strong></p>
 
-<pre><code class="language-typescript">import * as io from "socket.io-client";
-// connect with socket.io and listen to redux actions
-connect(): void {
-    this.store.select(state =&gt; state.data.authentication.jwtToken)
-    	.take(1).subscribe((token: string) =&gt; {
-	        let socket = io(BACKEND, {query: "jwttoken=" + token});
-	        socket.on("UPDATE_REDUX", action =&gt; this.store.dispatch(action));
-    });
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">io</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">socket.io-client</span><span class="dl">"</span><span class="p">;</span>
+<span class="c1">// connect with socket.io and listen to redux actions</span>
+<span class="nx">connect</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">authentication</span><span class="p">.</span><span class="nx">jwtToken</span><span class="p">)</span>
+    	<span class="p">.</span><span class="nx">take</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">((</span><span class="na">token</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	        <span class="kd">let</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">(</span><span class="nx">BACKEND</span><span class="p">,</span> <span class="p">{</span><span class="na">query</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jwttoken=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">token</span><span class="p">});</span>
+	        <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">UPDATE_REDUX</span><span class="dl">"</span><span class="p">,</span> <span class="nx">action</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">));</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This is a simplified example of what happens on the backend when we add a wine, for instance.</p>
 
-<pre><code class="language-typescript">@Post("/")
-public post(@Req()req: Request, @Res() res: Response): void {
-    let userId = handleAuth(req, res);
-    new Wine(req.body).save((error, response) =&gt; {
-        ...
-        // emit a socket.io event to the client
-        // which contains the redux action
-        this.pushToClient(userId, req, {type: DATA_WINES_ADD, payload: {wine: response}});
-        // return the new user
-        res.send(response);
-    });
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Post</span><span class="p">(</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">)</span>
+<span class="k">public</span> <span class="nx">post</span><span class="p">(@</span><span class="nd">Req</span><span class="p">()</span><span class="nx">req</span><span class="p">:</span> <span class="nx">Request</span><span class="p">,</span> <span class="p">@</span><span class="nd">Res</span><span class="p">()</span> <span class="nx">res</span><span class="p">:</span> <span class="nx">Response</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">userId</span> <span class="o">=</span> <span class="nx">handleAuth</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">);</span>
+    <span class="k">new</span> <span class="nx">Wine</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">).</span><span class="nx">save</span><span class="p">((</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="p">...</span>
+        <span class="c1">// emit a socket.io event to the client</span>
+        <span class="c1">// which contains the redux action</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">pushToClient</span><span class="p">(</span><span class="nx">userId</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">DATA_WINES_ADD</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">wine</span><span class="p">:</span> <span class="nx">response</span><span class="p">}});</span>
+        <span class="c1">// return the new user</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h2 id="check-the-devtools">Check the devtools</h2>
 <p>In The devtools below you’ll see the actions being dispatched during the lifecycle of the application. These actions can be triggered manually or real-time. Be sure to check them out at <a href="https://github.com/ngrx/store-devtools">https://github.com/ngrx/store-devtools</a>

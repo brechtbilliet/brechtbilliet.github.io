@@ -1,4 +1,4 @@
-I"¾0<h2 id="table-of-contents">Table of Contents</h2>
+I"76<h2 id="table-of-contents">Table of Contents</h2>
 
 <ol>
   <li><a href="#foreword">Foreword</a></li>
@@ -36,8 +36,8 @@ Just like other native DOM-tags, components can have custom attributes. Those at
 
 <p>Letâ€™s take a look at the native <strong>anchor-tag</strong> for instance:</p>
 
-<pre><code class="language-html">&lt;a href="http://brecht.io"&gt;my link&lt;/a&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://brecht.io"</span><span class="nt">&gt;</span>my link<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
 
 <dl>
   <dt>Functionality</dt>
@@ -49,8 +49,8 @@ Just like other native DOM-tags, components can have custom attributes. Those at
 
 <h3 id="example-a-custom-rating-tag">Example: A custom rating-tag</h3>
 
-<pre><code class="language-html">&lt;rating value="5"&gt;&lt;/rating&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;rating</span> <span class="na">value=</span><span class="s">"5"</span><span class="nt">&gt;&lt;/rating&gt;</span>
+</code></pre></div></div>
 
 <dl>
   <dt>Functionality</dt>
@@ -62,14 +62,14 @@ Just like other native DOM-tags, components can have custom attributes. Those at
 
 <p>Single page applications will mostly render additional HTML for custom components. The component above might output something like this:</p>
 
-<pre><code class="language-html">&lt;rating&gt;
-	&lt;i class="fa fa-star rating fa-2x starred"&gt;&lt;/i&gt;
-        &lt;i class="fa fa-star rating fa-2x starred"&gt;&lt;/i&gt;
-        &lt;i class="fa fa-star rating fa-2x starred"&gt;&lt;/i&gt;
-        &lt;i class="fa fa-star rating fa-2x starred"&gt;&lt;/i&gt;
-        &lt;i class="fa fa-star rating fa-2x starred"&gt;&lt;/i&gt;
-&lt;/rating&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;rating&gt;</span>
+	<span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-star rating fa-2x starred"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-star rating fa-2x starred"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-star rating fa-2x starred"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-star rating fa-2x starred"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"fa fa-star rating fa-2x starred"</span><span class="nt">&gt;&lt;/i&gt;</span>
+<span class="nt">&lt;/rating&gt;</span>
+</code></pre></div></div>
 
 <h2 id="the-hierarchical-component-tree">The hierarchical component-tree</h2>
 
@@ -113,13 +113,13 @@ When working with a unidirectional dataflow like React or Angular2 this principl
 
 <p>A dumb version of the rating component mensioned before would look like this:</p>
 
-<pre><code class="language-html">&lt;rating value="5" on-set-value="setRating(newRating)"&gt;&lt;/rating&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;rating</span> <span class="na">value=</span><span class="s">"5"</span> <span class="na">on-set-value=</span><span class="s">"setRating(newRating)"</span><span class="nt">&gt;&lt;/rating&gt;</span>
+</code></pre></div></div>
 
 <p>The angular2 code for that could then be:</p>
 
-<pre><code class="language-html">&lt;rating [value]="5" (setValue)="setRating($event)"&gt;&lt;/rating&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;rating</span> <span class="na">[value]=</span><span class="s">"5"</span> <span class="na">(setValue)=</span><span class="s">"setRating($event)"</span><span class="nt">&gt;&lt;/rating&gt;</span>
+</code></pre></div></div>
 
 <p>Dumb components are very easy to reason about and can mostly be ignored in the thinkproces of your application. Therefore, the main groundrule should be: <strong>Try to use dumb components as much as possible! They make your application less complex and easier to reason about</strong></p>
 

@@ -1,4 +1,4 @@
-I"�:<h2 id="why-should-we-pre-render-angular-applications">Why should we pre-render Angular applications?</h2>
+I"1x<h2 id="why-should-we-pre-render-angular-applications">Why should we pre-render Angular applications?</h2>
 
 <p>At the moment of writing this article, there are several ways of optimizing Angular applications - We could compile them <a href="https://angular.io/guide/aot-compiler">ahead-of-time</a> through AOT compilation.
 We could use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> to optimize caching. And there are plenty of other PWA (progressive web app) features that can increase the quality and overall performance of our Angular applications.</p>
@@ -32,209 +32,209 @@ The result went from several seconds to 30 milliseconds.
 
 <p>Enough chit chat! Let’s dive into some code.
 I’ve created this <a href="https://github.com/strongbrewio/prerender-angular-example">GitHub repository</a> just for you! It’s a simple website with a few pages and the build system doesn’t know how to pre-render yet.
-Checkout the branch <code>runtime</code> by running the command <code>git checkout runtime</code>. When running <code>npm i &amp;&amp; npm run start</code>, the bash should install all the NPM dependencies and host the application on <code>http://localhost:4200</code>, just like any default Angular CLI application.</p>
+Checkout the branch <code class="language-plaintext highlighter-rouge">runtime</code> by running the command <code class="language-plaintext highlighter-rouge">git checkout runtime</code>. When running <code class="language-plaintext highlighter-rouge">npm i &amp;&amp; npm run start</code>, the bash should install all the NPM dependencies and host the application on <code class="language-plaintext highlighter-rouge">http://localhost:4200</code>, just like any default Angular CLI application.</p>
 
 <h3 id="installing-the-dependencies">Installing the dependencies</h3>
 
 <p>Great! We have a running website, but nothing is pre-rendered yet.
 The first thing we need to do is to install @angular/platform-server by running
-<code>npm i @angular/platform-server -D</code>. This is the most important bundle for SSR. This module contains the basics to run the Angular application on the server.</p>
+<code class="language-plaintext highlighter-rouge">npm i @angular/platform-server -D</code>. This is the most important bundle for SSR. This module contains the basics to run the Angular application on the server.</p>
 
 <h3 id="applying-the-server-transition">Applying the server transition</h3>
 
-<p>Next, we need to update the <code>app.module.ts</code> to enable server transition. This will make sure that Angular takes over on the frontend when the JavaScript bundles are loaded.</p>
+<p>Next, we need to update the <code class="language-plaintext highlighter-rouge">app.module.ts</code> to enable server transition. This will make sure that Angular takes over on the frontend when the JavaScript bundles are loaded.</p>
 
-<pre><code class="language-typescript">// src/app/app.module.ts
-@NgModule({
-  ...
-  imports: [
-    BrowserModule.withServerTransition(
-        // this is just the name of our application
-        // configured in angular-cli.json
-        { appId: 'prerender-angular-example' }
-    ),
-    ...
-  ],
-  ...
-})
-export class AppModule { }
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/app/app.module.ts</span>
+<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="p">...</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">BrowserModule</span><span class="p">.</span><span class="nx">withServerTransition</span><span class="p">(</span>
+        <span class="c1">// this is just the name of our application</span>
+        <span class="c1">// configured in angular-cli.json</span>
+        <span class="p">{</span> <span class="na">appId</span><span class="p">:</span> <span class="dl">'</span><span class="s1">prerender-angular-example</span><span class="dl">'</span> <span class="p">}</span>
+    <span class="p">),</span>
+    <span class="p">...</span>
+  <span class="p">],</span>
+  <span class="p">...</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
 
 <h3 id="creating-the-prerender-module">Creating the prerender module</h3>
 
-<p>Then, we need to create a specific prerender module that will use the AppModule we have just adjusted. Let’s create an <code>app.prerender.module.ts</code> where we can tell which component it has to bootstrap.</p>
+<p>Then, we need to create a specific prerender module that will use the AppModule we have just adjusted. Let’s create an <code class="language-plaintext highlighter-rouge">app.prerender.module.ts</code> where we can tell which component it has to bootstrap.</p>
 
-<pre><code class="language-typescript">// src/app/app.prerender.module.ts
-import { NgModule } from '@angular/core';
-import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/app/app.prerender.module.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">NgModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ServerModule</span><span class="p">,</span> <span class="nx">ServerTransferStateModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/platform-server</span><span class="dl">'</span><span class="p">;</span>
 
-import { AppModule } from './app.module';
-import { AppComponent } from './app.component';
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app.module</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppComponent</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app.component</span><span class="dl">'</span><span class="p">;</span>
 
-@NgModule({
-  imports: [
-    AppModule,
-    ServerModule,
-    ServerTransferStateModule
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppPrerenderModule {
-}
-</code></pre>
+<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">AppModule</span><span class="p">,</span>
+    <span class="nx">ServerModule</span><span class="p">,</span>
+    <span class="nx">ServerTransferStateModule</span>
+  <span class="p">],</span>
+  <span class="na">bootstrap</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppComponent</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppPrerenderModule</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h3 id="defining-a-prerender-entrypoint">Defining a prerender entrypoint</h3>
 
-<p>To use the SSR logic at build time, we need to have a specific bundle. Since the <code>main.ts</code> file is used to bootstrap the application for the browser, we also need a <code>main.prerender.ts</code> file that will be used to create the prerender bundle.
+<p>To use the SSR logic at build time, we need to have a specific bundle. Since the <code class="language-plaintext highlighter-rouge">main.ts</code> file is used to bootstrap the application for the browser, we also need a <code class="language-plaintext highlighter-rouge">main.prerender.ts</code> file that will be used to create the prerender bundle.
 Let’s create that file, shall we?</p>
 
-<pre><code class="language-typescript">// src/app/main.prerender.ts
-import { enableProdMode } from '@angular/core';
-export { AppPrerenderModule } from './app/app.prerender.module';
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/app/main.prerender.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">enableProdMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">export</span> <span class="p">{</span> <span class="nx">AppPrerenderModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app/app.prerender.module</span><span class="dl">'</span><span class="p">;</span>
 
-enableProdMode();
-</code></pre>
+<span class="nx">enableProdMode</span><span class="p">();</span>
+</code></pre></div></div>
 <h3 id="a-prerender-tsconfigjson">A prerender tsconfig.json</h3>
 
-<p>We are almost there, I promise, but we need a few more things. We need a specific <strong>tsconfig</strong> file that compiles the bundle to something that the node server can read. It’s important for the compiler to compile to a <strong>commonjs</strong> package. This is because node.js uses this by default. So we need to create a <code>tsconfig.prerender.json</code> file:</p>
+<p>We are almost there, I promise, but we need a few more things. We need a specific <strong>tsconfig</strong> file that compiles the bundle to something that the node server can read. It’s important for the compiler to compile to a <strong>commonjs</strong> package. This is because node.js uses this by default. So we need to create a <code class="language-plaintext highlighter-rouge">tsconfig.prerender.json</code> file:</p>
 
-<pre><code class="language-json">/* src/tsconfig.prerender.json */
-{
-  "extends": "./tsconfig.app.json",
-  "compilerOptions": {
-    "outDir": "../out-tsc/prerender",
-    /* node only understands commonjs for now*/
-    "module": "commonjs"
-  },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
-  ],
-  /* Additional informations to bootstrap Angular */
-  "angularCompilerOptions": {
-    "entryModule": "app/app.prerender.module#AppPrerenderModule"
-  }
-}
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">/*</span><span class="w"> </span><span class="err">src/tsconfig.prerender.json</span><span class="w"> </span><span class="err">*/</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./tsconfig.app.json"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"outDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"../out-tsc/prerender"</span><span class="p">,</span><span class="w">
+    </span><span class="err">/*</span><span class="w"> </span><span class="err">node</span><span class="w"> </span><span class="err">only</span><span class="w"> </span><span class="err">understands</span><span class="w"> </span><span class="err">commonjs</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">now*/</span><span class="w">
+    </span><span class="nl">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"commonjs"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"exclude"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"test.ts"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"**/*.spec.ts"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="err">/*</span><span class="w"> </span><span class="err">Additional</span><span class="w"> </span><span class="err">informations</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">bootstrap</span><span class="w"> </span><span class="err">Angular</span><span class="w"> </span><span class="err">*/</span><span class="w">
+  </span><span class="nl">"angularCompilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"entryModule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"app/app.prerender.module#AppPrerenderModule"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
-</code></pre>
+</span></code></pre></div></div>
 
 <h3 id="letting-angular-cli-know-and-generating-the-bundle">Letting Angular CLI know and generating the bundle</h3>
 
-<p>In the apps entry of the <code>angular-cli.json</code> file, we need to add a new app where we refer to the <code>main.prerender.ts</code> file and the <code>tsconfig.prerender.json</code> file. The app section should look like this:</p>
+<p>In the apps entry of the <code class="language-plaintext highlighter-rouge">angular-cli.json</code> file, we need to add a new app where we refer to the <code class="language-plaintext highlighter-rouge">main.prerender.ts</code> file and the <code class="language-plaintext highlighter-rouge">tsconfig.prerender.json</code> file. The app section should look like this:</p>
 
-<pre><code class="language-json">{
-      "name": "prerender",
-      "platform": "server",
-      "root": "src",
-      "outDir": "dist-prerender",
-      "main": "main.prerender.ts",
-      "tsconfig": "tsconfig.prerender.json",
-      "environmentSource": "environments/environment.ts",
-      "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
-      }
-    }
-</code></pre>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"prerender"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"platform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"src"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"outDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dist-prerender"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"main.prerender.ts"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"tsconfig"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tsconfig.prerender.json"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"environmentSource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"environments/environment.ts"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"environments/environment.ts"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"prod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"environments/environment.prod.ts"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
-<p>Update the package JSON so it builds both the normal package and the server package. Set the <strong>output-hashing</strong> to none so that the build generates a clean <code>main.bundle.js</code> without any hash.</p>
-<pre><code>    "build": "ng build --prod &amp;&amp; ng build --prod --app prerender --output-hashing=none",
-</code></pre>
-<p>When running <code>npm run build</code> the following files should be created:</p>
+<p>Update the package JSON so it builds both the normal package and the server package. Set the <strong>output-hashing</strong> to none so that the build generates a clean <code class="language-plaintext highlighter-rouge">main.bundle.js</code> without any hash.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    "build": "ng build --prod &amp;&amp; ng build --prod --app prerender --output-hashing=none",
+</code></pre></div></div>
+<p>When running <code class="language-plaintext highlighter-rouge">npm run build</code> the following files should be created:</p>
 <ul>
   <li>dist (this contains the normal build)</li>
-  <li><code>dist-prerender/main.bundle.js</code></li>
+  <li><code class="language-plaintext highlighter-rouge">dist-prerender/main.bundle.js</code></li>
 </ul>
 
-<p>This <code>main.bundle.js</code> file exports a module called <code>AppPrerenderModuleNgFactory</code>. This is the module that we can use to pre-render the whole thing.</p>
+<p>This <code class="language-plaintext highlighter-rouge">main.bundle.js</code> file exports a module called <code class="language-plaintext highlighter-rouge">AppPrerenderModuleNgFactory</code>. This is the module that we can use to pre-render the whole thing.</p>
 
 <h2 id="generating-the-static-files">Generating the static files</h2>
 
-<p>We have just generated the <code>main.bundle.js</code>, the file that we need to perform server-side rendering. However we don’t want to do server-side rendering in this case, we want to <strong>pre-render</strong> the html at build time. To do that we need a script that will complete the following steps.</p>
+<p>We have just generated the <code class="language-plaintext highlighter-rouge">main.bundle.js</code>, the file that we need to perform server-side rendering. However we don’t want to do server-side rendering in this case, we want to <strong>pre-render</strong> the html at build time. To do that we need a script that will complete the following steps.</p>
 
 <ul>
   <li>Create an array with routes (we could automate this if we want)</li>
   <li>Loop over that array and for every entry:
     <ul>
       <li>create a folder in the dist map with that route name</li>
-      <li>use the <code>main.bundle.js</code> to render the html and store that html as an <code>index.html</code> in the folder we just created.</li>
-      <li>Overwrite the <code>dist/index.html</code> file.</li>
+      <li>use the <code class="language-plaintext highlighter-rouge">main.bundle.js</code> to render the html and store that html as an <code class="language-plaintext highlighter-rouge">index.html</code> in the folder we just created.</li>
+      <li>Overwrite the <code class="language-plaintext highlighter-rouge">dist/index.html</code> file.</li>
     </ul>
   </li>
 </ul>
 
-<p>Let’s call that script <code>prerender.ts</code>. Since I’m a typescript enthusiast, I want to develop the prerender script in typescript and use <a href="https://www.npmjs.com/package/ts-node">ts-node</a> to run it.
-We can start with creating an empty <code>prerender.ts</code> file in the root folder and installing ts-node with <code>npm i -D ts-node</code></p>
+<p>Let’s call that script <code class="language-plaintext highlighter-rouge">prerender.ts</code>. Since I’m a typescript enthusiast, I want to develop the prerender script in typescript and use <a href="https://www.npmjs.com/package/ts-node">ts-node</a> to run it.
+We can start with creating an empty <code class="language-plaintext highlighter-rouge">prerender.ts</code> file in the root folder and installing ts-node with <code class="language-plaintext highlighter-rouge">npm i -D ts-node</code></p>
 
 <p>Now we can update the scripts section of the package.json so that the render function is called when the build is completed:</p>
 
-<pre><code class="language-json"> "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod &amp;&amp; ng build --prod --app prerender --output-hashing=none",
-    "postbuild": "npm run render",
-    "render": "ts-node prerender.ts",
-    ...
-  },
-</code></pre>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"ng"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng serve"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng build --prod &amp;&amp; ng build --prod --app prerender --output-hashing=none"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"postbuild"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run render"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"render"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts-node prerender.ts"</span><span class="p">,</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">}</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
 
-<p>The only puzzle piece that is still missing is implementing the <code>prerender.ts</code> file.</p>
+<p>The only puzzle piece that is still missing is implementing the <code class="language-plaintext highlighter-rouge">prerender.ts</code> file.</p>
 
 <h3 id="completing-the-prerenderts-file">Completing the prerender.ts file</h3>
 
 <p>The following code should be self-explanatory:</p>
 
-<pre><code class="language-typescript">import 'zone.js/dist/zone-node';
-import * as path from 'path';
-import * as fs from 'fs';
-import { enableProdMode } from '@angular/core';
-import { renderModuleFactory } from '@angular/platform-server';
-import { AppPrerenderModuleNgFactory } from './dist-prerender/main.bundle';
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="dl">'</span><span class="s1">zone.js/dist/zone-node</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">path</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">fs</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">enableProdMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">renderModuleFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/platform-server</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppPrerenderModuleNgFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./dist-prerender/main.bundle</span><span class="dl">'</span><span class="p">;</span>
 
-const distFolder = './dist';
-const index = fs
-    .readFileSync(path.resolve(__dirname, `${distFolder}/index.html`), 'utf8')
-    .toString();
+<span class="kd">const</span> <span class="nx">distFolder</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">./dist</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">fs</span>
+    <span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">distFolder</span><span class="p">}</span><span class="s2">/index.html`</span><span class="p">),</span> <span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
 
-// we could automate this based on the app.routes.ts file but
-// to keep it simple let's just create an array with the routes we want
-// to prerender
-const paths = [
-    '/about',
-    '/brews',
-    '/consultancy'];
-enableProdMode();
+<span class="c1">// we could automate this based on the app.routes.ts file but</span>
+<span class="c1">// to keep it simple let's just create an array with the routes we want</span>
+<span class="c1">// to prerender</span>
+<span class="kd">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">'</span><span class="s1">/about</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">/brews</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">/consultancy</span><span class="dl">'</span><span class="p">];</span>
+<span class="nx">enableProdMode</span><span class="p">();</span>
 
-// for every route render the html and save it in the correct folder
-paths.forEach(p =&gt; renderToHtml(p, distFolder + p));
+<span class="c1">// for every route render the html and save it in the correct folder</span>
+<span class="nx">paths</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">distFolder</span> <span class="o">+</span> <span class="nx">p</span><span class="p">));</span>
 
-// don't forget to overwrite the index.html as well
-renderToHtml('/index.html', distFolder);
+<span class="c1">// don't forget to overwrite the index.html as well</span>
+<span class="nx">renderToHtml</span><span class="p">(</span><span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">distFolder</span><span class="p">);</span>
 
-function renderToHtml(url: string, folderPath: string): void {
-  // Render the module with the correct url just 
-  // as the server would do
-  renderModuleFactory(AppPrerenderModuleNgFactory, {
-    url,
-    document: index
-  }).then(html =&gt; {
-    // create the route directory
-    if (url !== '/index.html') {
-    fs.mkdirSync(folderPath);
-    }
-    fs.writeFile(folderPath + '/index.html', html,  (err =&gt;  {
-      if (err) {
-        throw err;
-      }
-      console.log(`success`);
-    });
-  });
-}
+<span class="kd">function</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+  <span class="c1">// Render the module with the correct url just </span>
+  <span class="c1">// as the server would do</span>
+  <span class="nx">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">url</span><span class="p">,</span>
+    <span class="na">document</span><span class="p">:</span> <span class="nx">index</span>
+  <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// create the route directory</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">url</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdirSync</span><span class="p">(</span><span class="nx">folderPath</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`success`</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 <h3 id="testing-the-pre-rendered-application">Testing the pre-rendered application</h3>
 
-<p>To test the website, we can build the project with <code>npm run build</code>. To serve it, we can use http-server. We can install http-server by running <code>npm i -g http-server</code>. By navigating into the <code>dist</code> directory and running <code>http-server</code>, the application will be hosted on port 8080.</p>
+<p>To test the website, we can build the project with <code class="language-plaintext highlighter-rouge">npm run build</code>. To serve it, we can use http-server. We can install http-server by running <code class="language-plaintext highlighter-rouge">npm i -g http-server</code>. By navigating into the <code class="language-plaintext highlighter-rouge">dist</code> directory and running <code class="language-plaintext highlighter-rouge">http-server</code>, the application will be hosted on port 8080.</p>
 
 <p>If we navigate to http://localhost:8080 in the browser, we will see the pre-rendered application. We can test the SPA experience by navigating between the different pages and we can test the pre-rendered part by looking at the source code.</p>
 
@@ -243,26 +243,26 @@ function renderToHtml(url: string, folderPath: string): void {
 <h2 id="closing-words">Closing words</h2>
 
 <p>I hope you liked this article and learned something.
-We can find the full pre-rendered version by checking out branch <code>prerendered</code> by running <code>git checkout prerendered</code>. To test this example, checkout the previous section.</p>
+We can find the full pre-rendered version by checking out branch <code class="language-plaintext highlighter-rouge">prerendered</code> by running <code class="language-plaintext highlighter-rouge">git checkout prerendered</code>. To test this example, checkout the previous section.</p>
 
 <p>Note: to optimize the HTML even more, we could use an HTML minifier like <a href="https://www.npmjs.com/package/html-minifier">this one</a> to shrink the HTML where possible. The example could look something like this:</p>
 
-<pre><code class="language-typescript">const minify = require('html-minifier').minify;
-function renderToHtml(url: string, folderPath: string): void {
-    // Render the module with the correct url just 
-    // as the server would do
-    renderModuleFactory(AppPrerenderModuleNgFactory, {
-        url,
-        document: index
-    }).then(html =&gt; {
-        ...
-        // minify the html
-        fs.writeFile(folderPath + '/index.html', minify(html),  (err =&gt;  {
-          ...
-        });
-    });
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-minifier</span><span class="dl">'</span><span class="p">).</span><span class="nx">minify</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// Render the module with the correct url just </span>
+    <span class="c1">// as the server would do</span>
+    <span class="nx">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">url</span><span class="p">,</span>
+        <span class="na">document</span><span class="p">:</span> <span class="nx">index</span>
+    <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="p">...</span>
+        <span class="c1">// minify the html</span>
+        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">minify</span><span class="p">(</span><span class="nx">html</span><span class="p">),</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
+          <span class="p">...</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h2 id="special-thanks">Special thanks</h2>
 

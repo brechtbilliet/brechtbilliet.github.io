@@ -1,4 +1,4 @@
-I"�U<h2 id="about-this-article">About this article</h2>
+I"�{<h2 id="about-this-article">About this article</h2>
 
 <p>This article contains a set of opinionated guidelines when it comes to building monorepos with <a href="https://nrwl.io/nx">Nx</a>.
 I wrote this article because when I used Nx in the beginning, I struggled a lot with how to structure my workspace, and I’ve hit quite a few walls. That being said, I’ve been using it for a while now, and I finally have the feeling that I’ve reached a structure where I feel comfortable with.</p>
@@ -17,35 +17,35 @@ A monorepo contains only one <a href="https://nrwl.io/nx/guide-nx-workspace">Nx 
 <h2 id="barrel-files">Barrel files</h2>
 
 <p>When it comes to managing monorepos, barrel files are quite important.
-A barrel file is a <code>index.ts</code> file that lives in the <code>src</code> directory of every Nx lib and is meant to expose logic to the rest of the workspace.</p>
+A barrel file is a <code class="language-plaintext highlighter-rouge">index.ts</code> file that lives in the <code class="language-plaintext highlighter-rouge">src</code> directory of every Nx lib and is meant to expose logic to the rest of the workspace.</p>
 
 <p>This file is really important when you understand one of the big potential risks of organizing code in monorepos - overexposure of implementation details.</p>
 
 <p>With code being located right next to each other, it can be easy to import code with deeply nested relative paths and include things that the original author of the code never intended to be used outside of their specific context.</p>
 
-<p>The Nx lib’s <code>index.ts</code> file allows each lib to define its effective public API - only symbols which are explicitly exported from this file should be eligible for consumption in other parts of the workspace.</p>
+<p>The Nx lib’s <code class="language-plaintext highlighter-rouge">index.ts</code> file allows each lib to define its effective public API - only symbols which are explicitly exported from this file should be eligible for consumption in other parts of the workspace.</p>
 
-<p>Let’s say that we have a <code>@strongbrew/users</code> lib which exposes a <code>UserService</code>…
-This is what the barrel file from  <code>@strongbrew/users</code> might look like.</p>
+<p>Let’s say that we have a <code class="language-plaintext highlighter-rouge">@strongbrew/users</code> lib which exposes a <code class="language-plaintext highlighter-rouge">UserService</code>…
+This is what the barrel file from  <code class="language-plaintext highlighter-rouge">@strongbrew/users</code> might look like.</p>
 
-<pre><code class="language-typescript">// libs/users/src/index.ts
-export * from './lib/services/user.service';
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// libs/users/src/index.ts</span>
+<span class="k">export</span> <span class="o">*</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./lib/services/user.service</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div></div>
 
 <p>Although this might seem pretty straight forward, let’s go over a few best-practices…</p>
 
 <h3 id="dont-ever-import-a-lib-from-a-relative-path">Don’t ever import a lib from a relative path</h3>
 
-<p>When we want to import <code>UserService</code> inside another lib or app, we want to import it from <code>@strongbrew/users</code>. This is way cleaner then importing it from a relative path like <code>../../../users/lib/src/index.ts</code> and helps protect us from the overexposure problem described above. Nx also provides a linting rule out of the box to make sure that you are respecting a lib’s API and not doing deep imports.</p>
+<p>When we want to import <code class="language-plaintext highlighter-rouge">UserService</code> inside another lib or app, we want to import it from <code class="language-plaintext highlighter-rouge">@strongbrew/users</code>. This is way cleaner then importing it from a relative path like <code class="language-plaintext highlighter-rouge">../../../users/lib/src/index.ts</code> and helps protect us from the overexposure problem described above. Nx also provides a linting rule out of the box to make sure that you are respecting a lib’s API and not doing deep imports.</p>
 
 <p>Nx uses TypeScript <a href="https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping">path mapping</a> to map these module names to the correct barrel files.</p>
 
-<pre><code class="language-json">"paths": {
-    "@strongbrew/users": {
-        "libs/users/src/index.ts"
-    }
-}
-</code></pre>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"paths"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"@strongbrew/users"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"libs/users/src/index.ts"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <h3 id="only-1-barrel-file-per-lib">Only 1 barrel file per lib</h3>
 
@@ -86,40 +86,40 @@ That being said, our apps mostly not completely empty. In general they also cont
 
 <p>The directory structure of our workspace might look like this:</p>
 <ul>
-  <li><code>apps</code></li>
-  <li><code>libs</code>
+  <li><code class="language-plaintext highlighter-rouge">apps</code></li>
+  <li><code class="language-plaintext highlighter-rouge">libs</code>
     <ul>
-      <li><code>feature</code>
+      <li><code class="language-plaintext highlighter-rouge">feature</code>
         <ul>
-          <li><code>api</code>
+          <li><code class="language-plaintext highlighter-rouge">api</code>
             <ul>
-              <li><code>foo</code></li>
+              <li><code class="language-plaintext highlighter-rouge">foo</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>lazy</code>
+          <li><code class="language-plaintext highlighter-rouge">lazy</code>
             <ul>
-              <li><code>bar</code></li>
+              <li><code class="language-plaintext highlighter-rouge">bar</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>shared</code>
+          <li><code class="language-plaintext highlighter-rouge">shared</code>
             <ul>
-              <li><code>baz</code></li>
+              <li><code class="language-plaintext highlighter-rouge">baz</code></li>
               <li>…</li>
             </ul>
           </li>
         </ul>
       </li>
-      <li><code>ui-kit</code></li>
-      <li><code>utils</code></li>
+      <li><code class="language-plaintext highlighter-rouge">ui-kit</code></li>
+      <li><code class="language-plaintext highlighter-rouge">utils</code></li>
     </ul>
   </li>
   <li>A feature contains logic specific to a certain domain, like managing users or performing authentication.</li>
-  <li>On the other hand, the <code>utils</code> lib contains logic that doesn’t have anything to do with any domain, E.g: HTTP interceptors, shared RxJS operators, a service that handles notifications etc… Consider it a toolkit for your workspace.</li>
+  <li>On the other hand, the <code class="language-plaintext highlighter-rouge">utils</code> lib contains logic that doesn’t have anything to do with any domain, E.g: HTTP interceptors, shared RxJS operators, a service that handles notifications etc… Consider it a toolkit for your workspace.</li>
 </ul>
 
-<p>In the next few sections we are going to cover the 3 types of feature libs, the <code>ui-kit</code> lib and the <code>utils</code> lib.</p>
+<p>In the next few sections we are going to cover the 3 types of feature libs, the <code class="language-plaintext highlighter-rouge">ui-kit</code> lib and the <code class="language-plaintext highlighter-rouge">utils</code> lib.</p>
 
 <h4 id="featureapi">feature/api</h4>
 
@@ -136,94 +136,94 @@ That being said, our apps mostly not completely empty. In general they also cont
 
 <h4 id="featurelazy">feature/lazy</h4>
 
-<p>This directory contains all feature libs that can be lazyloaded. To make sure these libs can be lazy-loaded, they should expose an <code>NgModule</code> in the barrel file and are loaded as such:</p>
+<p>This directory contains all feature libs that can be lazyloaded. To make sure these libs can be lazy-loaded, they should expose an <code class="language-plaintext highlighter-rouge">NgModule</code> in the barrel file and are loaded as such:</p>
 
-<pre><code class="language-typescript">RouterModule.forRoot([
-    {
-        path: 'users',
-        loadChildren: '@strongbrew/feature/lazy/users'
-    }
-])
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">RouterModule</span><span class="p">.</span><span class="nx">forRoot</span><span class="p">([</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">loadChildren</span><span class="p">:</span> <span class="dl">'</span><span class="s1">@strongbrew/feature/lazy/users</span><span class="dl">'</span>
+    <span class="p">}</span>
+<span class="p">])</span>
+</code></pre></div></div>
 
-<p>One of the advantages is that these modules can be loaded on demand or even preloaded upfront. The biggest advantage though is that these modules are completely standalone, and don’t share anything with the rest of the workspace. This means they have nothing inside of their barrel file, other then the <code>NgModule</code> being exported. 
+<p>One of the advantages is that these modules can be loaded on demand or even preloaded upfront. The biggest advantage though is that these modules are completely standalone, and don’t share anything with the rest of the workspace. This means they have nothing inside of their barrel file, other then the <code class="language-plaintext highlighter-rouge">NgModule</code> being exported. 
 <strong>Lazy loaded modules can never share logic with the workspace</strong>
-If we feel that a lazyloaded module needs to export something, we should extract that logic into a separate <code>feature/shared</code> or <code>feature/api</code> lib.</p>
+If we feel that a lazyloaded module needs to export something, we should extract that logic into a separate <code class="language-plaintext highlighter-rouge">feature/shared</code> or <code class="language-plaintext highlighter-rouge">feature/api</code> lib.</p>
 
-<p>When a <code>feature/lazy</code> module needs to perform XHR calls it should delegate it to a <code>feature/api</code> lib. Therefore a <code>feature/lazy</code> lib should never contain api logic.</p>
+<p>When a <code class="language-plaintext highlighter-rouge">feature/lazy</code> module needs to perform XHR calls it should delegate it to a <code class="language-plaintext highlighter-rouge">feature/api</code> lib. Therefore a <code class="language-plaintext highlighter-rouge">feature/lazy</code> lib should never contain api logic.</p>
 
-<p>When using a statemanagement library like <a href="https://github.com/ngrx/platform">ngrx/store</a>, <code>feature/lazy</code> libs would contain their own reducers and use <code>store.forFeature()</code> to attach these to the <code>store</code> instance. This would result in lazy-loaded reducers.</p>
+<p>When using a statemanagement library like <a href="https://github.com/ngrx/platform">ngrx/store</a>, <code class="language-plaintext highlighter-rouge">feature/lazy</code> libs would contain their own reducers and use <code class="language-plaintext highlighter-rouge">store.forFeature()</code> to attach these to the <code class="language-plaintext highlighter-rouge">store</code> instance. This would result in lazy-loaded reducers.</p>
 
 <h4 id="featureshared">feature/shared</h4>
 
-<p>Not every feature can be lazyloaded. Think about feature logic that needs to be shared for instance. In that case we would create an Nx lib that lives inside of the <code>feature/shared</code> directory.</p>
+<p>Not every feature can be lazyloaded. Think about feature logic that needs to be shared for instance. In that case we would create an Nx lib that lives inside of the <code class="language-plaintext highlighter-rouge">feature/shared</code> directory.</p>
 
-<p>When a <code>feature/shared</code> module needs to perform XHR calls it should delegate it to a <code>feature/api</code> lib. Therefore the <code>feature/lazy</code> lib should not contain api logic.</p>
+<p>When a <code class="language-plaintext highlighter-rouge">feature/shared</code> module needs to perform XHR calls it should delegate it to a <code class="language-plaintext highlighter-rouge">feature/api</code> lib. Therefore the <code class="language-plaintext highlighter-rouge">feature/lazy</code> lib should not contain api logic.</p>
 
 <h4 id="ui-kit">ui-kit</h4>
 
-<p>This lib contains all the shared presentational components that can be used in different applications. Think about dropdowns, datepickers and empty modals. A <code>user-detail</code> component for instance does NOT belong here. A monorepo can contain multiple <code>ui-kit</code> libraries. We should name them according to its purpose. E.g <code>ui-kit-mobile</code> is a common use case.</p>
+<p>This lib contains all the shared presentational components that can be used in different applications. Think about dropdowns, datepickers and empty modals. A <code class="language-plaintext highlighter-rouge">user-detail</code> component for instance does NOT belong here. A monorepo can contain multiple <code class="language-plaintext highlighter-rouge">ui-kit</code> libraries. We should name them according to its purpose. E.g <code class="language-plaintext highlighter-rouge">ui-kit-mobile</code> is a common use case.</p>
 
-<p>The Ui-kit module contains an <code>ngModule</code> since we need it to declare and export our components/directives. The barrel file generally only exposes the <code>ngModule</code> since this is the vessel used to export the functionality.</p>
+<p>The Ui-kit module contains an <code class="language-plaintext highlighter-rouge">ngModule</code> since we need it to declare and export our components/directives. The barrel file generally only exposes the <code class="language-plaintext highlighter-rouge">ngModule</code> since this is the vessel used to export the functionality.</p>
 
-<p>However, a <code>ui-kit</code> might also export certain types in its barrel file… Like <code>DatepickerConfiguration</code> or other <code>ui-kit</code> specific types.</p>
+<p>However, a <code class="language-plaintext highlighter-rouge">ui-kit</code> might also export certain types in its barrel file… Like <code class="language-plaintext highlighter-rouge">DatepickerConfiguration</code> or other <code class="language-plaintext highlighter-rouge">ui-kit</code> specific types.</p>
 
 <h4 id="utils">utils</h4>
 
-<p>This lib can contain all kinds of utilities. It could contain shared interceptors, guards, services and custom RxJS operators. Think about it als a framework toolbox that could benefit any application. We will NOT use an <code>ngModule</code> here for tree-shaking purposes.</p>
+<p>This lib can contain all kinds of utilities. It could contain shared interceptors, guards, services and custom RxJS operators. Think about it als a framework toolbox that could benefit any application. We will NOT use an <code class="language-plaintext highlighter-rouge">ngModule</code> here for tree-shaking purposes.</p>
 
-<p>A <code>utils</code> lib will not contain any components. But if it contains pipes or directives we might need an <code>ngModule</code> for that.</p>
+<p>A <code class="language-plaintext highlighter-rouge">utils</code> lib will not contain any components. But if it contains pipes or directives we might need an <code class="language-plaintext highlighter-rouge">ngModule</code> for that.</p>
 
-<p>When your workspace is small, one single <code>utils</code> lib might suffice, but it could become a good idea to split these up when the <code>utils</code> lib gets to big.</p>
+<p>When your workspace is small, one single <code class="language-plaintext highlighter-rouge">utils</code> lib might suffice, but it could become a good idea to split these up when the <code class="language-plaintext highlighter-rouge">utils</code> lib gets to big.</p>
 
 <p>After splitting up, the directory structure of our workspace might look like this:</p>
 <ul>
-  <li><code>apps</code></li>
-  <li><code>libs</code>
+  <li><code class="language-plaintext highlighter-rouge">apps</code></li>
+  <li><code class="language-plaintext highlighter-rouge">libs</code>
     <ul>
-      <li><code>feature</code>
+      <li><code class="language-plaintext highlighter-rouge">feature</code>
         <ul>
-          <li><code>api</code>
+          <li><code class="language-plaintext highlighter-rouge">api</code>
             <ul>
-              <li><code>foo</code></li>
+              <li><code class="language-plaintext highlighter-rouge">foo</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>lazy</code>
+          <li><code class="language-plaintext highlighter-rouge">lazy</code>
             <ul>
-              <li><code>bar</code></li>
+              <li><code class="language-plaintext highlighter-rouge">bar</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>shared</code>
+          <li><code class="language-plaintext highlighter-rouge">shared</code>
             <ul>
-              <li><code>baz</code></li>
+              <li><code class="language-plaintext highlighter-rouge">baz</code></li>
               <li>…</li>
             </ul>
           </li>
         </ul>
       </li>
-      <li><code>ui-kit</code></li>
-      <li><code>utils</code>
+      <li><code class="language-plaintext highlighter-rouge">ui-kit</code></li>
+      <li><code class="language-plaintext highlighter-rouge">utils</code>
         <ul>
-          <li><code>rxjs-operators</code></li>
-          <li><code>forms</code></li>
-          <li><code>http</code></li>
+          <li><code class="language-plaintext highlighter-rouge">rxjs-operators</code></li>
+          <li><code class="language-plaintext highlighter-rouge">forms</code></li>
+          <li><code class="language-plaintext highlighter-rouge">http</code></li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
 
-<p>Do note, that the <code>forms</code> lib would not contain any forms or forms configuration, but it would contain general form logic that can be shared across the workspace.</p>
+<p>Do note, that the <code class="language-plaintext highlighter-rouge">forms</code> lib would not contain any forms or forms configuration, but it would contain general form logic that can be shared across the workspace.</p>
 
 <h3 id="prefixing-libs">Prefixing libs</h3>
 
-<p>Because of the fact that <code>selector</code> names for components and directives should be unique, prefixing them in a monorepo is quite important. 
-Since every project in the <code>angular.json</code> file has a <code>prefix</code> property, we could set that prefix for every project.</p>
+<p>Because of the fact that <code class="language-plaintext highlighter-rouge">selector</code> names for components and directives should be unique, prefixing them in a monorepo is quite important. 
+Since every project in the <code class="language-plaintext highlighter-rouge">angular.json</code> file has a <code class="language-plaintext highlighter-rouge">prefix</code> property, we could set that prefix for every project.</p>
 
-<p>Let’s assume that we need a <code>feature/shared</code> lib called <code>messages</code> then we could generate that lib by running <code>ng g lib messages --prefix sh-mes</code> for instance. 
-<code>sh-mes</code> would be the prefix and if we create a message component in this lib it would have the selector: <code>sh-mes-message</code>.</p>
+<p>Let’s assume that we need a <code class="language-plaintext highlighter-rouge">feature/shared</code> lib called <code class="language-plaintext highlighter-rouge">messages</code> then we could generate that lib by running <code class="language-plaintext highlighter-rouge">ng g lib messages --prefix sh-mes</code> for instance. 
+<code class="language-plaintext highlighter-rouge">sh-mes</code> would be the prefix and if we create a message component in this lib it would have the selector: <code class="language-plaintext highlighter-rouge">sh-mes-message</code>.</p>
 
 <h2 id="linting-and-tags">Linting and tags</h2>
 
@@ -235,7 +235,7 @@ Since every project in the <code>angular.json</code> file has a <code>prefix</co
 
 <p>Nx provides us with the ability to add tags to the different libs and apps and apply <a href="https://palantir.github.io/tslint/">tslint</a> rules to make sure we can’t import whatever we want wherever we want.	Nx provides us with the ability to add tags to the different libs and apps and apply <a href="https://palantir.github.io/tslint/">tslint</a> rules to make sure we can’t import whatever we want wherever we want (potentially leading to circular references and other problems (broken lazyloading, etc…)).</p>
 
-<p>Tags can be added to projects in the <code>nx.json</code> file of the root directory.
+<p>Tags can be added to projects in the <code class="language-plaintext highlighter-rouge">nx.json</code> file of the root directory.
 Tags can be determined in numerous ways. Some of us might like a tag per team, other might like it per domain.</p>
 
 <p>I like to have tags for every lib type. It might be opinionated but it works fine for me (again, that’s a matter of personal preference)</p>
@@ -243,60 +243,60 @@ Tags can be determined in numerous ways. Some of us might like a tag per team, o
 <p>We define 5 types of tags:</p>
 
 <ul>
-  <li><code>app</code>: This tag is added to all the apps</li>
-  <li><code>shared</code>: This tag is added to <code>uikit</code> and <code>utils</code> libs</li>
-  <li><code>feature:lazy</code>: This tag is added to <code>feature/lazy</code> libs</li>
-  <li><code>feature:shared</code>: This tag is added to <code>feature/shared</code> libs</li>
-  <li><code>feature:api</code>: This tag is added to <code>feature/api</code> libs</li>
+  <li><code class="language-plaintext highlighter-rouge">app</code>: This tag is added to all the apps</li>
+  <li><code class="language-plaintext highlighter-rouge">shared</code>: This tag is added to <code class="language-plaintext highlighter-rouge">uikit</code> and <code class="language-plaintext highlighter-rouge">utils</code> libs</li>
+  <li><code class="language-plaintext highlighter-rouge">feature:lazy</code>: This tag is added to <code class="language-plaintext highlighter-rouge">feature/lazy</code> libs</li>
+  <li><code class="language-plaintext highlighter-rouge">feature:shared</code>: This tag is added to <code class="language-plaintext highlighter-rouge">feature/shared</code> libs</li>
+  <li><code class="language-plaintext highlighter-rouge">feature:api</code>: This tag is added to <code class="language-plaintext highlighter-rouge">feature/api</code> libs</li>
 </ul>
 
 <p>The rules could be the same for every workspace that we will create in the future:</p>
 
 <ul>
-  <li>Projects with the type <code>tag</code> can only depend on projects with the tags: <code>shared</code> or <code>feature:shared</code>.</li>
-  <li>Projects with the type <code>shared</code> can only depend on projects with the tags: <code>shared</code> (we don’t want to import domain specific logic in there do we?)</li>
-  <li>Projects with the type <code>feature:lazy</code> can only depend on projects with the tags: <code>shared</code>, <code>feature:shared</code> and <code>feature:api</code>.</li>
-  <li>Projects with the type: <code>feature:shared</code> can only depend on projects with the tags: <code>shared</code> and <code>feature:api</code>.</li>
-  <li>Projects with the type: <code>feature:api</code> can only depend on projects with the tags: <code>feature:api</code> and <code>shared</code>. (we never want to load <code>feature:shared</code> into an feature/api lib right?)</li>
+  <li>Projects with the type <code class="language-plaintext highlighter-rouge">tag</code> can only depend on projects with the tags: <code class="language-plaintext highlighter-rouge">shared</code> or <code class="language-plaintext highlighter-rouge">feature:shared</code>.</li>
+  <li>Projects with the type <code class="language-plaintext highlighter-rouge">shared</code> can only depend on projects with the tags: <code class="language-plaintext highlighter-rouge">shared</code> (we don’t want to import domain specific logic in there do we?)</li>
+  <li>Projects with the type <code class="language-plaintext highlighter-rouge">feature:lazy</code> can only depend on projects with the tags: <code class="language-plaintext highlighter-rouge">shared</code>, <code class="language-plaintext highlighter-rouge">feature:shared</code> and <code class="language-plaintext highlighter-rouge">feature:api</code>.</li>
+  <li>Projects with the type: <code class="language-plaintext highlighter-rouge">feature:shared</code> can only depend on projects with the tags: <code class="language-plaintext highlighter-rouge">shared</code> and <code class="language-plaintext highlighter-rouge">feature:api</code>.</li>
+  <li>Projects with the type: <code class="language-plaintext highlighter-rouge">feature:api</code> can only depend on projects with the tags: <code class="language-plaintext highlighter-rouge">feature:api</code> and <code class="language-plaintext highlighter-rouge">shared</code>. (we never want to load <code class="language-plaintext highlighter-rouge">feature:shared</code> into an feature/api lib right?)</li>
 </ul>
 
 <h3 id="configuring-tslint">Configuring tslint</h3>
 
-<p>To configure the tslint we have to use the <code>nx-enforce-module-boundaries</code> rule from tslint. If you like the rules defined above, you can just copy-paste the module boundaries defined below right in your <code>tslint.json</code> file that lives in the root directory.</p>
+<p>To configure the tslint we have to use the <code class="language-plaintext highlighter-rouge">nx-enforce-module-boundaries</code> rule from tslint. If you like the rules defined above, you can just copy-paste the module boundaries defined below right in your <code class="language-plaintext highlighter-rouge">tslint.json</code> file that lives in the root directory.</p>
 
-<pre><code class="language-json">"nx-enforce-module-boundaries": [
-  true,
-    {
-      "allow": [],
-      "depConstraints": [
-      {
-        "sourceTag": "app",
-        "onlyDependOnLibsWithTags": ["shared", "feature:shared"]
-      },
-      {
-        "sourceTag": "shared",
-        "onlyDependOnLibsWithTags": ["shared"]
-      },
-      {
-        "sourceTag": "feature:lazy",
-        "onlyDependOnLibsWithTags": [
-          "shared",
-          "feature:shared",
-          "feature:api"
-        ]
-      },
-      {
-        "sourceTag": "feature:api",
-        "onlyDependOnLibsWithTags": ["feature:api", "shared"]
-      },
-      {
-        "sourceTag": "feature:shared",
-        "onlyDependOnLibsWithTags": ["shared", "feature:api"]
-      }
-      ]
-    }
-]
-</code></pre>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"nx-enforce-module-boundaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"allow"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"depConstraints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sourceTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"app"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"onlyDependOnLibsWithTags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"shared"</span><span class="p">,</span><span class="w"> </span><span class="s2">"feature:shared"</span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sourceTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shared"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"onlyDependOnLibsWithTags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"shared"</span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sourceTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"feature:lazy"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"onlyDependOnLibsWithTags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"shared"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"feature:shared"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"feature:api"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sourceTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"feature:api"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"onlyDependOnLibsWithTags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"feature:api"</span><span class="p">,</span><span class="w"> </span><span class="s2">"shared"</span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sourceTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"feature:shared"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"onlyDependOnLibsWithTags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"shared"</span><span class="p">,</span><span class="w"> </span><span class="s2">"feature:api"</span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
 
 <p>This tslint config will ensure that the rules defined above are mandatory.</p>
 
@@ -305,59 +305,59 @@ Tags can be determined in numerous ways. Some of us might like a tag per team, o
 <p>No, not at all, this would work perfectly for a monorepo with 5 applications. But if we are thinking about organisation wide monorepos, it might be a good idea to
 combine features app per app. In that case we would have something like:</p>
 <ul>
-  <li><code>apps</code></li>
-  <li><code>libs</code>
+  <li><code class="language-plaintext highlighter-rouge">apps</code></li>
+  <li><code class="language-plaintext highlighter-rouge">libs</code>
     <ul>
-      <li><code>app1</code>
+      <li><code class="language-plaintext highlighter-rouge">app1</code>
         <ul>
-          <li><code>api</code>
+          <li><code class="language-plaintext highlighter-rouge">api</code>
             <ul>
-              <li><code>foo</code></li>
+              <li><code class="language-plaintext highlighter-rouge">foo</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>lazy</code>
+          <li><code class="language-plaintext highlighter-rouge">lazy</code>
             <ul>
-              <li><code>bar</code></li>
+              <li><code class="language-plaintext highlighter-rouge">bar</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>shared</code>
+          <li><code class="language-plaintext highlighter-rouge">shared</code>
             <ul>
-              <li><code>baz</code></li>
+              <li><code class="language-plaintext highlighter-rouge">baz</code></li>
               <li>…</li>
             </ul>
           </li>
         </ul>
       </li>
-      <li><code>app2</code>
+      <li><code class="language-plaintext highlighter-rouge">app2</code>
         <ul>
-          <li><code>api</code>
+          <li><code class="language-plaintext highlighter-rouge">api</code>
             <ul>
-              <li><code>foo</code></li>
+              <li><code class="language-plaintext highlighter-rouge">foo</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>lazy</code>
+          <li><code class="language-plaintext highlighter-rouge">lazy</code>
             <ul>
-              <li><code>bar</code></li>
+              <li><code class="language-plaintext highlighter-rouge">bar</code></li>
               <li>…</li>
             </ul>
           </li>
-          <li><code>shared</code>
+          <li><code class="language-plaintext highlighter-rouge">shared</code>
             <ul>
-              <li><code>baz</code></li>
+              <li><code class="language-plaintext highlighter-rouge">baz</code></li>
               <li>…</li>
             </ul>
           </li>
         </ul>
       </li>
-      <li><code>ui-kit</code></li>
-      <li><code>utils</code>
+      <li><code class="language-plaintext highlighter-rouge">ui-kit</code></li>
+      <li><code class="language-plaintext highlighter-rouge">utils</code>
         <ul>
-          <li><code>rxjs-operators</code></li>
-          <li><code>forms</code></li>
-          <li><code>http</code></li>
+          <li><code class="language-plaintext highlighter-rouge">rxjs-operators</code></li>
+          <li><code class="language-plaintext highlighter-rouge">forms</code></li>
+          <li><code class="language-plaintext highlighter-rouge">http</code></li>
         </ul>
       </li>
     </ul>

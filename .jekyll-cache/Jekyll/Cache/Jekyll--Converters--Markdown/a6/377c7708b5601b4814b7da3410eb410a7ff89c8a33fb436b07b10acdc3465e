@@ -1,4 +1,4 @@
-I"w4<h1 id="the-sandbox-pattern">The sandbox pattern</h1>
+I"gV<h1 id="the-sandbox-pattern">The sandbox pattern</h1>
 
 <h2 id="introduction">Introduction</h2>
 <p>A while ago I released a blogpost called “<a href="http://blog.brecht.io/A-scalable-angular2-architecture/">A scalable angular 2 architecture</a>” which was all about creating large scale enterprise webapplications. The title should actually have been <strong>“A scalable angular architecture”</strong> (It’s just angular) or even, <strong>“A scalable SPA architecture”</strong> since we can use the same architecture for <a href="https://facebook.github.io/react/">React</a> or <a href="https://vuejs.org">Vue.js</a>.</p>
@@ -59,15 +59,15 @@ One could even argue that the action-dispatching and state-selecting should be c
 
 <p>Well, as the name already reveals. An HTTP service is all about doing HTTP communication and returning asynchronous objects to the components. An HTTP service should have no notion about redux at all nor any other statemanagement tool. Its sole purpose is fetching data and returning it. Let’s take a look at the following example for instance. We fetch an array of wines from the backend and we want to persist that in a redux store. This is an example of an HTTP service that is being abused to achieve that:</p>
 
-<pre><code class="language-typescript">class WineService {
-	// bad
-	fetchWines(): void {
-		this.api.get('url')
-			.subscribe(wines =&gt; 
-				this.store.dispatch({type: 'SET_WINES', payload: {wines}});
-	}
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">WineService</span> <span class="p">{</span>
+	<span class="c1">// bad</span>
+	<span class="nx">fetchWines</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">)</span>
+			<span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">wines</span> <span class="o">=&gt;</span> 
+				<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">SET_WINES</span><span class="dl">'</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">wines</span><span class="p">}});</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This code doesn’t belong here, it’s not the responsibility of that service. The question is where does it belong?
 Does it belong in the component? They would get dirty and reduxy in no-time…
@@ -75,13 +75,13 @@ Does it belong in the component? They would get dirty and reduxy in no-time…
 
 <p>An http service should look like this:</p>
 
-<pre><code class="language-typescript">class WineService {
-	// good
-	fetchWines(): Observable&lt;any&gt; {
-		return this.api.get('url')
-	}
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">WineService</span> <span class="p">{</span>
+	<span class="c1">// good</span>
+	<span class="nx">fetchWines</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h4 id="on-what-place-do-we-dispatch-actions-to-the-store">On what place do we dispatch actions to the store?</h4>
 
@@ -135,78 +135,78 @@ Does it belong in the component? They would get dirty and reduxy in no-time…
 
 <h2 id="an-example">An example</h2>
 
-<pre><code class="language-typescript">@Injectable()
-export class StockSandbox {
-	// these are the store select statements
-	// It's pretty dirty to have them all over our components
-	// Our components just want to get streams of data, no matter where they come from
-	wines$ = this.store.select(state =&gt; state.wines);
-	isAuthenticated$ = this.store.select(state =&gt; state.authentication.isAuthenticated);
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">StockSandbox</span> <span class="p">{</span>
+	<span class="c1">// these are the store select statements</span>
+	<span class="c1">// It's pretty dirty to have them all over our components</span>
+	<span class="c1">// Our components just want to get streams of data, no matter where they come from</span>
+	<span class="nx">wines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">wines</span><span class="p">);</span>
+	<span class="nx">isAuthenticated$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">authentication</span><span class="p">.</span><span class="nx">isAuthenticated</span><span class="p">);</span>
 
-	constructor(
-		private store: Store&lt;ApplicationState&gt;, 
-		private stockService: StockService,
-		private fooService: FooService) {
-	}
+	<span class="kd">constructor</span><span class="p">(</span>
+		<span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> 
+		<span class="k">private</span> <span class="nx">stockService</span><span class="p">:</span> <span class="nx">StockService</span><span class="p">,</span>
+		<span class="k">private</span> <span class="nx">fooService</span><span class="p">:</span> <span class="nx">FooService</span><span class="p">)</span> <span class="p">{</span>
+	<span class="p">}</span>
 
-	addWine(wine: Wine): void {
-		// use the stockservice to add a wine
-		// and when it's done handle our statemanagement
-		this.stockService.add(wine).subscribe((wine: Wine) =&gt; {
-			this.store.dispatch(new AddWine(wine));
-		}, () =&gt; this.handleError());
-	}
+	<span class="nx">addWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="c1">// use the stockservice to add a wine</span>
+		<span class="c1">// and when it's done handle our statemanagement</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">wine</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">((</span><span class="na">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nx">AddWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">));</span>
+		<span class="p">},</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleError</span><span class="p">());</span>
+	<span class="p">}</span>
 
-	 removeWine(wine: Wine): void {
-		// removing a wine can be done optimistically!
-		// this would certainly improve the performance and snappyness of our app
-		// this would be sandbox logic
-		let action = new RemoveWine(wine._id);
-		this.store.dispatch(action);
-		this.stockService.remove(wine).subscribe(
-			() =&gt; {}, 
-			// if the call failed, we have to undo an action. This is sandbox logic as well!
-			() =&gt; this.store.dispatch({type: UNDO_ACTION, payload: action}););
-	}
+	 <span class="nx">removeWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="c1">// removing a wine can be done optimistically!</span>
+		<span class="c1">// this would certainly improve the performance and snappyness of our app</span>
+		<span class="c1">// this would be sandbox logic</span>
+		<span class="kd">let</span> <span class="nx">action</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RemoveWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span>
+			<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{},</span> 
+			<span class="c1">// if the call failed, we have to undo an action. This is sandbox logic as well!</span>
+			<span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">UNDO_ACTION</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">action</span><span class="p">}););</span>
+	<span class="p">}</span>
 
-	fetchWine(id: string): Observable&lt;Wine&gt; {
-		// simple delegation of fetching something: Sandbox logic
-		return this.stockService.fetchWine(id).share();
-	}
+	<span class="nx">fetchWine</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Wine</span><span class="o">&gt;</span> <span class="p">{</span>
+		<span class="c1">// simple delegation of fetching something: Sandbox logic</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nx">fetchWine</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nx">share</span><span class="p">();</span>
+	<span class="p">}</span>
 
-	notifyAnotherModule(): void {
-		// our components should NOT know where fooService is, or what it does
-		// it should just tell its sandbox to handle a specific action
-		this.fooService.doSomething();
-	}
-}
-</code></pre>
+	<span class="nx">notifyAnotherModule</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="c1">// our components should NOT know where fooService is, or what it does</span>
+		<span class="c1">// it should just tell its sandbox to handle a specific action</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fooService</span><span class="p">.</span><span class="nx">doSomething</span><span class="p">();</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>Look how clean this smart component has become:</p>
-<pre><code class="language-typescript">export class StockPageContainer {
-    wines$ = this.sb.wines$; // Does this stream comes from Redux? or Firebase (I don't need to know)
-    numberOfWines$ = this.wines$.map(wines =&gt; sumBy(wines, (wine: Wine) =&gt; wine.inStock));
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">StockPageContainer</span> <span class="p">{</span>
+    <span class="nx">wines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nx">wines$</span><span class="p">;</span> <span class="c1">// Does this stream comes from Redux? or Firebase (I don't need to know)</span>
+    <span class="nx">numberOfWines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wines$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">wines</span> <span class="o">=&gt;</span> <span class="nx">sumBy</span><span class="p">(</span><span class="nx">wines</span><span class="p">,</span> <span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">inStock</span><span class="p">));</span>
 
-	// a clean constructor makes it easy to test.
-	// Util dependencies or presentational dependencies like a router
-	// do not belong in the sandbox.
-	// They belong right here in the component, in the presentational layer.
-    constructor(private sb: StockSandbox, private router: Router) {
-    }
+	<span class="c1">// a clean constructor makes it easy to test.</span>
+	<span class="c1">// Util dependencies or presentational dependencies like a router</span>
+	<span class="c1">// do not belong in the sandbox.</span>
+	<span class="c1">// They belong right here in the component, in the presentational layer.</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">sb</span><span class="p">:</span> <span class="nx">StockSandbox</span><span class="p">,</span> <span class="k">private</span> <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
 
-    onRemove(wine: Wine): void {
-		// Hey Sandbox! Remove the wine please, I don't care how you do it
-		// I don't even care that you do optimistic updates, it's not my business
-        this.sb.removeWine(wine);
-    }
+    <span class="nx">onRemove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="c1">// Hey Sandbox! Remove the wine please, I don't care how you do it</span>
+		<span class="c1">// I don't even care that you do optimistic updates, it's not my business</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nx">removeWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    notifyAnotherModule(): void {
-		// I don't know what will happen, but that's okay... It's not my responsability
-        this.sb.notifyAnotherModule(); 
-    }
-}
+    <span class="nx">notifyAnotherModule</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="c1">// I don't know what will happen, but that's okay... It's not my responsability</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nx">notifyAnotherModule</span><span class="p">();</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 
 <p>I hope this clarifies the purpose of the sandbox and why I have introduced them in my projects.
 If you still have questions about this approach, don’t hesitate to contact me =)</p>

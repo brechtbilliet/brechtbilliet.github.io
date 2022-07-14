@@ -1,4 +1,4 @@
-I"h@<h2 id="foreword">Foreword</h2>
+I"e<h2 id="foreword">Foreword</h2>
 
 <p>This article might be more relevant for <a href="http://angular.io">Angular 2</a> developers, but I believe it can be used with other frameworks as well. It’s just a handbook for writing scalable and maintainable single-page-applications. It’s important to note, that this is not the only way, but it’s a way that works for me in quite a few situations.</p>
 
@@ -25,17 +25,17 @@ They can grow exponentially and are related to each other in a way that is hard 
 <p>So basically the philosophy here is:
 <strong>everything should be a component</strong>, even your pages and your application. An application could look like this:</p>
 
-<pre><code class="language-html">&lt;application&gt;
-	&lt;navbar fullname="Brecht Billiet" logout="logMeOut()"&gt;
-	&lt;/navbar&gt;
-	&lt;users-page&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;application&gt;</span>
+	<span class="nt">&lt;navbar</span> <span class="na">fullname=</span><span class="s">"Brecht Billiet"</span> <span class="na">logout=</span><span class="s">"logMeOut()"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/navbar&gt;</span>
+	<span class="nt">&lt;users-page&gt;</span>
 		...
-		&lt;grid data="users"&gt;
-		&lt;/grid&gt;
+		<span class="nt">&lt;grid</span> <span class="na">data=</span><span class="s">"users"</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;/grid&gt;</span>
 		...
-	&lt;/users-page&gt;
-&lt;/application&gt;
-</code></pre>
+	<span class="nt">&lt;/users-page&gt;</span>
+<span class="nt">&lt;/application&gt;</span>
+</code></pre></div></div>
 
 <p>Some very simple but very important tips in designing components:</p>
 <ul>
@@ -100,13 +100,13 @@ Smart components (also named containers here) should also follow a very strict s
 <p>The following example shows a big constructor with a lot of dependencies. In this scenario <strong>MyComponent</strong> can pretty much do whatever it wants in the application. It gets injected whatever it wants and uses whatever it wants.
 That’s generally not a good idea.</p>
 
-<pre><code class="language-typescript">export class MyComponent{
-	constructor(...,private foo:Foo, private bar: Bar, 
-		private store: Store&lt;ApplicationState&gt;, private authService: AuthService,
-		private fooHttpService: FooHttpService, private barMapper: BarMapper, ...){
-	}
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
+	<span class="kd">constructor</span><span class="p">(...,</span><span class="k">private</span> <span class="nx">foo</span><span class="p">:</span><span class="nx">Foo</span><span class="p">,</span> <span class="k">private</span> <span class="nx">bar</span><span class="p">:</span> <span class="nx">Bar</span><span class="p">,</span> 
+		<span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">private</span> <span class="nx">authService</span><span class="p">:</span> <span class="nx">AuthService</span><span class="p">,</span>
+		<span class="k">private</span> <span class="nx">fooHttpService</span><span class="p">:</span> <span class="nx">FooHttpService</span><span class="p">,</span> <span class="k">private</span> <span class="nx">barMapper</span><span class="p">:</span> <span class="nx">BarMapper</span><span class="p">,</span> <span class="p">...){</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>The example above has too much dependencies in its constructor. It has to many links to the rest of the application. When you persue this kind of design it might end up looking like this: (The REST stands for restful services, so these are just the HTTP blocks)
 <img src="https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/abstraction_step1.png" alt="Abstraction step1" /></p>
@@ -118,14 +118,14 @@ An abstraction layer could really help us here. In the example below we can see 
 
 <p>The abstraction might look something like this:</p>
 
-<pre><code class="language-typescript">export class MyComponent{
-	constructor(private abstraction: SomeAbstractionType){
-	}
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
+	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">abstraction</span><span class="p">:</span> <span class="nx">SomeAbstractionType</span><span class="p">){</span>
+	<span class="p">}</span>
 	
-	doSomething(): void{
-	this.abstraction.doSomething();
-}
-</code></pre>
+	<span class="nx">doSomething</span><span class="p">():</span> <span class="k">void</span><span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">abstraction</span><span class="p">.</span><span class="nx">doSomething</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h3 id="rule-number-two-components-should-not-know-about-the-state-management-layer">Rule number TWO: Components should not know about the state management layer</h3>
 
@@ -133,44 +133,44 @@ An abstraction layer could really help us here. In the example below we can see 
 
 <p>The snippet below might be an example of bad design because the component is very tightly coupled to redux (we use <a href="https://github.com/ngrx/store">ngrx/store</a> in this example)</p>
 
-<pre><code class="language-typescript">export class MyComponent{
-	// we just care about the state, not where it comes from...
-	users$ = this.store.select(state =&gt; state.users);
-	foo$ = this.store.select(state =&gt; state.foo);
-	bar$ = this.store.select(state =&gt; state.bar);
-	constructor(..., 
-		private store: Store&lt;ApplicationState&gt;, ...){
-	}
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
+	<span class="c1">// we just care about the state, not where it comes from...</span>
+	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">users</span><span class="p">);</span>
+	<span class="nx">foo$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">foo</span><span class="p">);</span>
+	<span class="nx">bar$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">bar</span><span class="p">);</span>
+	<span class="kd">constructor</span><span class="p">(...,</span> 
+		<span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">...){</span>
+	<span class="p">}</span>
 	
-	addUser(user: User): void{
-		// we don't care about the actiontype, payload or store
-		this.store.dispatch({type: ADD_USER, payload: {user}}
-	}
-	removeUser(userId: string): void{
-		// we don't care about the actiontype, payload or store
-		this.store.dispatch({type: REMOVE_USER, payload: {userId}}
-	}
-}
-</code></pre>
+	<span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+		<span class="c1">// we don't care about the actiontype, payload or store</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">ADD_USER</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">user</span><span class="p">}}</span>
+	<span class="p">}</span>
+	<span class="nx">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+		<span class="c1">// we don't care about the actiontype, payload or store</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_USER</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">userId</span><span class="p">}}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This might be clearer, and more loosely coupled:</p>
 
-<pre><code class="language-typescript">export class MyComponent{
-	users$ = this.facade.users$;
-	foo$ = this.facade.foo$;
-	bar$ = this.facade.bar$;
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
+	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">users$</span><span class="p">;</span>
+	<span class="nx">foo$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">foo$</span><span class="p">;</span>
+	<span class="nx">bar$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">bar$</span><span class="p">;</span>
 	
-	constructor(private facade: ...){
-	}
+	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">facade</span><span class="p">:</span> <span class="p">...){</span>
+	<span class="p">}</span>
 	
-	addUser(user: User): void{
-		this.facade.addUser(user);
-	}
-	removeUser(userId: string): void{
-		this.facade.removeUser(userId)
-	}
-}
-</code></pre>
+	<span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>Now the component really focusses on its responsibility. It doesn’t know how the user will be added or removed, it doesn’t know who populates the users$-stream, foo$-stream and bar$-stream. It gives that responsibility to its abstraction layer. Right now, the presentation layer is completely decoupled from the rest of the application. Which brings the following advantages</p>
 
@@ -186,41 +186,41 @@ An abstraction layer could really help us here. In the example below we can see 
 <p>At a first glance, it might seem pragmatic to handle the result of a GET call and put it in the store right in the service. But the only goal an HTTP service has, is <strong>to perform HTTP requests and return the result of those requests</strong>.
 This might look pragmatic:</p>
 
-<pre><code class="language-typescript">export class UserService{
-	// expose the users$-stream directly in the service
-	users$ = this.store.select(state =&gt; state.users);
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserService</span><span class="p">{</span>
+	<span class="c1">// expose the users$-stream directly in the service</span>
+	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">users</span><span class="p">);</span>
 	
-	constructor(private store: Store&lt;ApplicationState&gt;, private http: Http){
-	}
+	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span>
+	<span class="p">}</span>
 	
-	fetchUsers(): void{
-		this.http.get("...")
-			.map(...)
-			.subscribe((users) =&gt; {
-				// when successful, put the users in the store
-				// is this really my responsibility?
-				this.store.dispatch({type: SET_USERS, payload: {users}});
-			});
-	}
-}
-</code></pre>
+	<span class="nx">fetchUsers</span><span class="p">():</span> <span class="k">void</span><span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">)</span>
+			<span class="p">.</span><span class="nx">map</span><span class="p">(...)</span>
+			<span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">users</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+				<span class="c1">// when successful, put the users in the store</span>
+				<span class="c1">// is this really my responsibility?</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">SET_USERS</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">users</span><span class="p">}});</span>
+			<span class="p">});</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>But now our http services are very tightly coupled to our state management system.
 <img src="https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/scalableng2architecture/abstraction_step3.png" alt="Abstraction step3" /></p>
 
 <p>This is actually the only responsibility an http service should have.</p>
 
-<pre><code class="language-typescript">export class UserService{
-	constructor(private http: Http){
-	}
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserService</span><span class="p">{</span>
+	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span>
+	<span class="p">}</span>
 	
-	// just let the consumer of this service handle the store interaction
-	// this will just return a stream of users
-	fetchUsers(): Observable&lt;Array&lt;User&gt;&gt;{
-		return this.http.get("...").map(...)
-	}
-}
-</code></pre>
+	<span class="c1">// just let the consumer of this service handle the store interaction</span>
+	<span class="c1">// this will just return a stream of users</span>
+	<span class="nx">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;&gt;</span><span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">).</span><span class="nx">map</span><span class="p">(...)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h3 id="a-possible-solution">A possible solution</h3>
 <p>This is not the only solution of course, but it’s a solution that has worked most of the times for me.

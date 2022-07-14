@@ -1,0 +1,2 @@
+I"!<p>Since the browser just loads this image through a normal HTTP call, how is the server supposed to know if user A or user B is trying to consume an image? The server needs some kind of authorization to be passed to it. This article explains how to add security to images in Angular.</p>
+:ET

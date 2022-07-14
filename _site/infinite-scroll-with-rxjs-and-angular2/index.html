@@ -24,8 +24,8 @@
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://blog.brecht.io/feed.xml" title="Frontend software architect living in Belgium" /></head>
 <body>
 <section class="app">
-    <nav class="app__menu ">
-        <button name="menu-button" class="app__menu-button" type="button"
+    <nav class="app__menu" id="app__menu">
+        <button name="menu-button" class="app__menu-button" id="menu-button" type="button"
         ><i class="fa-solid fa-bars"></i></button>
         <ul>
             <li>
@@ -92,7 +92,7 @@
             </li>
         </ul>
     </nav>
-    <div class="container-wrapper">
+    <div class="container-wrapper" id="container__wrapper">
         <div class="container">
             <main class="page-content" aria-label="Content">
                 <div class="wrapper">
@@ -400,22 +400,56 @@ Let’s say that we would like to free up DOM-elements and use only 100 items at
 </div>
 </section>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
-<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
+        charset="UTF-8"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
-        cookieconsent.run({"notice_banner_type":"simple","consent_type":"implied","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"brecht.io"});
+        cookieconsent.run({
+            "notice_banner_type": "simple",
+            "consent_type": "implied",
+            "palette": "light",
+            "language": "en",
+            "page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
+            "notice_banner_reject_button_hide": false,
+            "preferences_center_close_button_hide": false,
+            "page_refresh_confirmation_buttons": false,
+            "website_name": "brecht.io"
+        });
     });
 </script>
 <script cookie-consent="tracking">
     window.dataLayer = window.dataLayer || [];
-    function gtag(){
+
+    function gtag() {
         dataLayer.push(arguments);
     }
+
     gtag('js', new Date());
 
     gtag('config', 'UA-43296458-4');
 </script>
-<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator website</a></noscript>
+<script lang="text/javascript">
+    window.menuCollapsed = false;
+    const appMenu = document.querySelector('#app__menu');
+    const containerWrapper = document.querySelector('#container__wrapper');
+    document.querySelector('#menu-button').addEventListener('click', () => {
+        window.menuCollapsed = !window.menuCollapsed;
+        if (window.menuCollapsed) {
+            containerWrapper.classList.remove('menu-open')
+            appMenu.classList.add('app__menu--collapsed')
+        } else {
+            appMenu.classList.remove('app__menu--collapsed')
+            containerWrapper.classList.add('menu-open')
+        }
+    })
+    if (window?.innerWidth <= 768) {
+        containerWrapper.classList.remove('menu-open')
+        appMenu.classList.add('app__menu--collapsed')
+    }
+
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator
+    website</a></noscript>
 </body>
 
 </html>

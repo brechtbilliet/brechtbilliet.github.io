@@ -1,4 +1,4 @@
-I"@;<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
+I"��<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
 
 <ul>
   <li>Showing a <em>loading</em> status</li>
@@ -13,47 +13,47 @@
 <p>Before we jump to the solution, let’s have a look at the impact of a non generic way of handling the previous called functionalities.
 A solution that is often used might look like the following: (keep in mind that this functionality has to be implemented over and over again for every component)</p>
 
-<pre><code class="language-typescript">ngOnInit(): void {
-    this.loading = true;
-    const usersCompleted = false;
-    const citiesCompleted = false;
-    this.userService.fetch().subscribe(users =&gt; {
-        usersCompleted = true;
-        this.loading = usersCompleted &amp;&amp; citiesCompleted;
-    });
-    this.citiesService.fetch().subscribe(cities =&gt; {
-        citiesCompleted = true;
-        this.loading = usersCompleted &amp;&amp; citiesCompleted;
-    });
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ngOnInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">usersCompleted</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">citiesCompleted</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">fetch</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">usersCompleted</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="nx">usersCompleted</span> <span class="o">&amp;&amp;</span> <span class="nx">citiesCompleted</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">citiesService</span><span class="p">.</span><span class="nx">fetch</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">cities</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">citiesCompleted</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="nx">usersCompleted</span> <span class="o">&amp;&amp;</span> <span class="nx">citiesCompleted</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 <p>We have to keep track of which call completes first because we can’t set loading to false, if there is call still busy. What happens when there is an error? We would have to implement that as well.</p>
 
 <p>Now this code is only for fetching two lists of data, this becomes ugly pretty quickly and the worst thing about this is that we have to reimplement that for every component that does data fetching.</p>
 
 <p>It becomes even worse if we want to update, add and remove data. Imagine that we have to handle validation errors as well:</p>
 
-<pre><code class="language-typescript">remove(user: User): void {
-    // TODO: set acting to true
-    this.userService.remove(user).subscribe(res =&gt; {
-        // TODO: set acting to false
-    });
-}
-update(user: User): void {
-    // TODO: set acting to true
-    this.userService.update(user).subscribe(res =&gt; {
-        // TODO: set acting to false
-        // TODO: handle validation errors
-    });
-}
-add(user: User): void {
-    // TODO: set acting to true
-    this.userService.add(user).subscribe(res =&gt; {
-        // TODO: set acting to false
-        // TODO: handle validation errors
-    });
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// TODO: set acting to true</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// TODO: set acting to false</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+<span class="nx">update</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// TODO: set acting to true</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// TODO: set acting to false</span>
+        <span class="c1">// TODO: handle validation errors</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+<span class="nx">add</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// TODO: set acting to true</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// TODO: set acting to false</span>
+        <span class="c1">// TODO: handle validation errors</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>To handle validation errors we have to check if the HTTP status code is 400, manually map the data etc.</p>
 
@@ -63,312 +63,312 @@ add(user: User): void {
 
 <p>To achieve this we will use an Angular <em>service</em> in combination with an angular <em>interceptor</em> and Typescript <em>decorators</em>.</p>
 
-<p>The first thing we need is a <code>HttpStatusService</code> that exposes 3 observables:</p>
+<p>The first thing we need is a <code class="language-plaintext highlighter-rouge">HttpStatusService</code> that exposes 3 observables:</p>
 
 <ul>
-  <li><code>loading$</code>: whether the user is fetching data</li>
-  <li><code>acting$</code>: whether the user is removing, updating or adding data</li>
-  <li><code>validationErrors$</code>: whether there are validation errors or not</li>
+  <li><code class="language-plaintext highlighter-rouge">loading$</code>: whether the user is fetching data</li>
+  <li><code class="language-plaintext highlighter-rouge">acting$</code>: whether the user is removing, updating or adding data</li>
+  <li><code class="language-plaintext highlighter-rouge">validationErrors$</code>: whether there are validation errors or not</li>
 </ul>
 
-<pre><code class="language-typescript">// http-status.service.ts
-@Injectable({
-  // important to provide this service to the 
-  // injector of the root module 
-  providedIn: 'root'
-})
-export class HttpStatusService {
-  // regular subject because we don't want to replay
-  // the validationerrors
-  private validationErrorsSub$ 
-    = new Subject&lt;ValidationError[]&gt;();
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// http-status.service.ts</span>
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span>
+  <span class="c1">// important to provide this service to the </span>
+  <span class="c1">// injector of the root module </span>
+  <span class="na">providedIn</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">HttpStatusService</span> <span class="p">{</span>
+  <span class="c1">// regular subject because we don't want to replay</span>
+  <span class="c1">// the validationerrors</span>
+  <span class="k">private</span> <span class="nx">validationErrorsSub$</span> 
+    <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="nx">ValidationError</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">();</span>
 
-  // 2 subjects that replays the last value 
-  // (ideal for state)
-  private loadingSub$ = new ReplaySubject&lt;boolean&gt;(1);
-  private actingSub$ = new ReplaySubject&lt;boolean&gt;(1);
+  <span class="c1">// 2 subjects that replays the last value </span>
+  <span class="c1">// (ideal for state)</span>
+  <span class="k">private</span> <span class="nx">loadingSub$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="nx">boolean</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">actingSub$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="nx">boolean</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
-  // we don't want to expose the subject for
-  // encapsulation purposes. That's why we convert them
-  // into observables
-  getvalidationErrors$ = 
-    this.validationErrorsSub$.asObservable();
-  loading$ = 
-    this.loadingSub$.pipe(distinctUntilChanged());
-  acting$ = 
-    this.actingSub$.pipe(distinctUntilChanged());
+  <span class="c1">// we don't want to expose the subject for</span>
+  <span class="c1">// encapsulation purposes. That's why we convert them</span>
+  <span class="c1">// into observables</span>
+  <span class="nx">getvalidationErrors$</span> <span class="o">=</span> 
+    <span class="k">this</span><span class="p">.</span><span class="nx">validationErrorsSub$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+  <span class="nx">loading$</span> <span class="o">=</span> 
+    <span class="k">this</span><span class="p">.</span><span class="nx">loadingSub$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">distinctUntilChanged</span><span class="p">());</span>
+  <span class="nx">acting$</span> <span class="o">=</span> 
+    <span class="k">this</span><span class="p">.</span><span class="nx">actingSub$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">distinctUntilChanged</span><span class="p">());</span>
 
-  // these are just some regular setters to next 
-  // the values in our subjects
-  set validationErrors(errors: ValidationError[]) {
-    this.validationErrorsSub$.next(errors);
-  }
+  <span class="c1">// these are just some regular setters to next </span>
+  <span class="c1">// the values in our subjects</span>
+  <span class="kd">set</span> <span class="nx">validationErrors</span><span class="p">(</span><span class="nx">errors</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">validationErrorsSub$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">errors</span><span class="p">);</span>
+  <span class="p">}</span>
 
-  set loading(val: boolean) {
-    this.loadingSub$.next(val);
-  }
+  <span class="kd">set</span> <span class="nx">loading</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">loadingSub$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+  <span class="p">}</span>
 
-  set acting(val: boolean) {
-    this.actingSub$.next(val);
-  }
-}
-</code></pre>
+  <span class="kd">set</span> <span class="nx">acting</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">actingSub$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>So we have a service that basically holds the state of our three statuses.
 Now we still have to make sure that the setters of these observables are being called at the right place and the right time.
 We don’t want to manually implement that for every call, so let’s create an interceptor for that.</p>
 
-<pre><code class="language-typescript">@Injectable({
-    providedIn: 'root'
-})
-export class HttpStatusInterceptor implements HttpInterceptor {
-  // keep track of the loading calls
-  private loadingCalls = 0; 
-  // keep track of the acting calls
-  private actingCalls = 0; 
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span>
+    <span class="na">providedIn</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">HttpStatusInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
+  <span class="c1">// keep track of the loading calls</span>
+  <span class="k">private</span> <span class="nx">loadingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
+  <span class="c1">// keep track of the acting calls</span>
+  <span class="k">private</span> <span class="nx">actingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
 
-  constructor(
-    private httpStatusService: HttpStatusService
-  ) {}
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="nx">httpStatusService</span><span class="p">:</span> <span class="nx">HttpStatusService</span>
+  <span class="p">)</span> <span class="p">{}</span>
 
-  private changeStatus(val: boolean, method: string): void {
-    if (['POST', 'PUT', 'DELETE', 'PATCH']
-      .indexOf(method) &gt; -1) {
-      val ? this.actingCalls++ : this.actingCalls--;
-      this.httpStatusService.acting = this.actingCalls &gt; 0;
-    } else if (method === 'GET') {
-      val ? this.loadingCalls++ : this.loadingCalls--;
-      this.httpStatusService.loading = this.loadingCalls &gt; 0;
-    }
-  }
-  ...
-}
+  <span class="k">private</span> <span class="nx">changeStatus</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">,</span> <span class="nx">method</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PATCH</span><span class="dl">'</span><span class="p">]</span>
+      <span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">val</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">--</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">acting</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">val</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">--</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 
-<p>As we can see, we have created a private <code>changeStatus()</code> function that will use the <code>loading</code> and <code>acting</code> 
-setters of our <code>HttpStatusInterceptor</code> class.</p>
+<p>As we can see, we have created a private <code class="language-plaintext highlighter-rouge">changeStatus()</code> function that will use the <code class="language-plaintext highlighter-rouge">loading</code> and <code class="language-plaintext highlighter-rouge">acting</code> 
+setters of our <code class="language-plaintext highlighter-rouge">HttpStatusInterceptor</code> class.</p>
 
-<p>If the HTTP-method is <code>POST</code>, <code>PUT</code>, <code>DELETE</code> or <code>PATCH</code> we have to update the counter of the <code>actingCalls</code> and if that count is bigger then 0, it means the user is acting and we have to update the <code>acting</code> property of the <code>HttpStatusService</code>.</p>
+<p>If the HTTP-method is <code class="language-plaintext highlighter-rouge">POST</code>, <code class="language-plaintext highlighter-rouge">PUT</code>, <code class="language-plaintext highlighter-rouge">DELETE</code> or <code class="language-plaintext highlighter-rouge">PATCH</code> we have to update the counter of the <code class="language-plaintext highlighter-rouge">actingCalls</code> and if that count is bigger then 0, it means the user is acting and we have to update the <code class="language-plaintext highlighter-rouge">acting</code> property of the <code class="language-plaintext highlighter-rouge">HttpStatusService</code>.</p>
 
-<p>If the HTTP-method is <code>GET</code> it should do the same for the <code>loadingCalls</code> property and <code>loading</code> setter of the <code>HttpStatusService</code>.</p>
+<p>If the HTTP-method is <code class="language-plaintext highlighter-rouge">GET</code> it should do the same for the <code class="language-plaintext highlighter-rouge">loadingCalls</code> property and <code class="language-plaintext highlighter-rouge">loading</code> setter of the <code class="language-plaintext highlighter-rouge">HttpStatusService</code>.</p>
 
-<p>Of course we still have to implement the <code>intercept</code> function. Every time we intercept a call we have to change a status to <code>true</code>.
+<p>Of course we still have to implement the <code class="language-plaintext highlighter-rouge">intercept</code> function. Every time we intercept a call we have to change a status to <code class="language-plaintext highlighter-rouge">true</code>.
 Because this means that the user is loading or acting.
 The goal of an interceptor is to intercept a request, clone that request, do something with it and return it.
-The <code>handle</code> function of the <code>HttpHandler</code> returns an observable. This is the perfect place to apply a <code>finalize</code> operator,
-which we can use to set a status to <code>false</code>.</p>
+The <code class="language-plaintext highlighter-rouge">handle</code> function of the <code class="language-plaintext highlighter-rouge">HttpHandler</code> returns an observable. This is the perfect place to apply a <code class="language-plaintext highlighter-rouge">finalize</code> operator,
+which we can use to set a status to <code class="language-plaintext highlighter-rouge">false</code>.</p>
 
-<pre><code class="language-typescript">...
-intercept(
-  req: HttpRequest&lt;any&gt;,
-  next: HttpHandler
-): Observable&lt;HttpEvent&lt;any&gt;&gt; {
-  // there is a new request, so we are definitely
-  // loading or acting, we have to change the status
-  this.changeStatus(true, req.method);
-  return next.handle(req.clone()).pipe(
-    // when the request completes, errors or times out,
-    // we have to change the status as well
-    finalize(() =&gt; {
-      this.changeStatus(false, req.method);
-    })
-  );
-}
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<span class="nx">intercept</span><span class="p">(</span>
+  <span class="nx">req</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span>
+<span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="c1">// there is a new request, so we are definitely</span>
+  <span class="c1">// loading or acting, we have to change the status</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">changeStatus</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">clone</span><span class="p">()).</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="c1">// when the request completes, errors or times out,</span>
+    <span class="c1">// we have to change the status as well</span>
+    <span class="nx">finalize</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">changeStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+    <span class="p">})</span>
+  <span class="p">);</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 
-<p>This should automatically update the <code>loading$</code> and <code>acting$</code> observables in the <code>HttpStatusService</code>.
-However, we have not fixed our validation errors issue yet. For that we can use the <code>catchError</code> operator that we place before the finalize operator:</p>
+<p>This should automatically update the <code class="language-plaintext highlighter-rouge">loading$</code> and <code class="language-plaintext highlighter-rouge">acting$</code> observables in the <code class="language-plaintext highlighter-rouge">HttpStatusService</code>.
+However, we have not fixed our validation errors issue yet. For that we can use the <code class="language-plaintext highlighter-rouge">catchError</code> operator that we place before the finalize operator:</p>
 
-<pre><code class="language-typescript">intercept(
-  req: HttpRequest&lt;any&gt;,
-  next: HttpHandler
-): Observable&lt;HttpEvent&lt;any&gt;&gt; {
-  ..
-  return next.handle(req.clone()).pipe(
-    // catch the error
-    catchError(e =&gt; {
-      // if bad request &gt; validation erors
-      if (e.status === 400) { 
-        // use the validationErrors setter to update
-        this.httpStatusService.validationErrors = 
-          e.error.validationErrors;
-        // make sure that this result never 
-        // reaches the component
-        return NEVER;
-      }
-      // throw the error back
-      // or put that in the `HttpStatusService` as well ;-)      
-      return throwError(e); 
-    }),
-    finalize(...)
-  );
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">intercept</span><span class="p">(</span>
+  <span class="nx">req</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span>
+<span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="p">..</span>
+  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">clone</span><span class="p">()).</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="c1">// catch the error</span>
+    <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="c1">// if bad request &gt; validation erors</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="c1">// use the validationErrors setter to update</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">validationErrors</span> <span class="o">=</span> 
+          <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">;</span>
+        <span class="c1">// make sure that this result never </span>
+        <span class="c1">// reaches the component</span>
+        <span class="k">return</span> <span class="nx">NEVER</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1">// throw the error back</span>
+      <span class="c1">// or put that in the `HttpStatusService` as well ;-)      </span>
+      <span class="k">return</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> 
+    <span class="p">}),</span>
+    <span class="nx">finalize</span><span class="p">(...)</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>The entire interceptor class looks like this:</p>
 
-<pre><code class="language-typescript">@Injectable({
-    providedIn: 'root'
-})
-export class HttpStatusInterceptor implements HttpInterceptor {
-  private loadingCalls = 0; 
-  private actingCalls = 0; 
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span>
+    <span class="na">providedIn</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">HttpStatusInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nx">loadingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
+  <span class="k">private</span> <span class="nx">actingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
 
-  constructor(
-    private httpStatusService: HttpStatusService
-  ) {}
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="nx">httpStatusService</span><span class="p">:</span> <span class="nx">HttpStatusService</span>
+  <span class="p">)</span> <span class="p">{}</span>
 
-  private changeStatus(v: boolean, method: string): void {
-    if (['POST', 'PUT', 'DELETE', 'PATCH']
-      .indexOf(method) &gt; -1) {
-      v ? this.actingCalls++ : this.actingCalls--;
-      this.httpStatusService.acting = this.actingCalls &gt; 0;
-    } else if (method === 'GET') {
-      v ? this.loadingCalls++ : this.loadingCalls--;
-      this.httpStatusService.loading = this.loadingCalls &gt; 0;
-    }
-  }
+  <span class="k">private</span> <span class="nx">changeStatus</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">,</span> <span class="nx">method</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PATCH</span><span class="dl">'</span><span class="p">]</span>
+      <span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">v</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">--</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">acting</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">v</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">--</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
 
-  intercept(
-    req: HttpRequest&lt;any&gt;,
-    next: HttpHandler
-  ): Observable&lt;HttpEvent&lt;any&gt;&gt; {
-    return next.handle(req.clone()).pipe(
-      catchError(e =&gt; {
-        if (e.status === 400) { 
-          this.httpStatusService.validationErrors = 
-            e.error.validationErrors;
-          return NEVER;
-        }
-        return throwError(e); 
-      }),
-      finalize(() =&gt; {
-        this.changeStatus(false, req.method);
-      })
-    );
-  }
-}
-</code></pre>
+  <span class="nx">intercept</span><span class="p">(</span>
+    <span class="nx">req</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span>
+  <span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">clone</span><span class="p">()).</span><span class="nx">pipe</span><span class="p">(</span>
+      <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span> 
+          <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">validationErrors</span> <span class="o">=</span> 
+            <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">;</span>
+          <span class="k">return</span> <span class="nx">NEVER</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> 
+      <span class="p">}),</span>
+      <span class="nx">finalize</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">changeStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+      <span class="p">})</span>
+    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-<p>When registering the interceptor to the root module, the observables in the <code>HttpStatusService</code> will be updated automatically.</p>
+<p>When registering the interceptor to the root module, the observables in the <code class="language-plaintext highlighter-rouge">HttpStatusService</code> will be updated automatically.</p>
 
-<p>So in the rootModule we have to add the following code to the <code>providers</code> property of the <code>@NgModule</code> decorator:</p>
+<p>So in the rootModule we have to add the following code to the <code class="language-plaintext highlighter-rouge">providers</code> property of the <code class="language-plaintext highlighter-rouge">@NgModule</code> decorator:</p>
 
-<pre><code class="language-typescript">providers: [
-  ...
-  {
-    provide: HTTP_INTERCEPTORS,
-    multi: true,
-    deps: [HttpStatusService],
-    useClass: HttpStatusInterceptor
-  }
-]
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">providers</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">...</span>
+  <span class="p">{</span>
+    <span class="nl">provide</span><span class="p">:</span> <span class="nx">HTTP_INTERCEPTORS</span><span class="p">,</span>
+    <span class="nx">multi</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">HttpStatusService</span><span class="p">],</span>
+    <span class="nx">useClass</span><span class="p">:</span> <span class="nx">HttpStatusInterceptor</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></div>
 
-<p>We can now use the <code>HttpStatusService</code> in our code as easy as this:</p>
+<p>We can now use the <code class="language-plaintext highlighter-rouge">HttpStatusService</code> in our code as easy as this:</p>
 
-<pre><code class="language-typescript">export class UserComponent {
-  loading$ = this.httpStatus.loading;
-  validationErrors$ = this.httpStatus.validationErrors;
-  acting$ = this.httpStatus.loading;
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserComponent</span> <span class="p">{</span>
+  <span class="nx">loading$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpStatus</span><span class="p">.</span><span class="nx">loading</span><span class="p">;</span>
+  <span class="nx">validationErrors$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpStatus</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">;</span>
+  <span class="nx">acting$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpStatus</span><span class="p">.</span><span class="nx">loading</span><span class="p">;</span>
 
-  constructor(
-    private httpStatusService: HttpStatusService) {
-  }
-}
-</code></pre>
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="nx">httpStatusService</span><span class="p">:</span> <span class="nx">HttpStatusService</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>We now have 3 observables that can easily be consumed in the template of the component with the use of the <a href="https://angular.io/api/common/AsyncPipe">async</a> pipe. Here is an example:</p>
 
-<pre><code class="language-html">&lt;my-spinner *ngIf="loading$ | async"&gt;&lt;/my-spinner&gt;
-&lt;my-user-form 
-    [validationErrors]="validationErrors$ | async"
-    [disabled]="acting$ | async"&gt;&lt;/my-user-form&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-spinner</span> <span class="na">*ngIf=</span><span class="s">"loading$ | async"</span><span class="nt">&gt;&lt;/my-spinner&gt;</span>
+<span class="nt">&lt;my-user-form</span> 
+    <span class="na">[validationErrors]=</span><span class="s">"validationErrors$ | async"</span>
+    <span class="na">[disabled]=</span><span class="s">"acting$ | async"</span><span class="nt">&gt;&lt;/my-user-form&gt;</span>
 
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="optimizing-with-decorators">Optimizing with decorators</h2>
 
-<p>We have cleaned up a lot, we found an easy way to get the httpstatuses to the component, but we can make it even simpler with the use of decorators. let’s refactor the <code>UserComponent</code> class accordingly:</p>
+<p>We have cleaned up a lot, we found an easy way to get the httpstatuses to the component, but we can make it even simpler with the use of decorators. let’s refactor the <code class="language-plaintext highlighter-rouge">UserComponent</code> class accordingly:</p>
 
-<pre><code class="language-typescript">export class UserComponent {
-  @Loading()loading$;
-  @ValidationErrors() validationErrors$;
-  @Acting() acting$;
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserComponent</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">Loading</span><span class="p">()</span><span class="nx">loading$</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">ValidationErrors</span><span class="p">()</span> <span class="nx">validationErrors$</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Acting</span><span class="p">()</span> <span class="nx">acting$</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-<p>This is very declarative way of working. The component is way cleaner and we don’t have to inject the <code>HttpStatusService</code> anymore.</p>
+<p>This is very declarative way of working. The component is way cleaner and we don’t have to inject the <code class="language-plaintext highlighter-rouge">HttpStatusService</code> anymore.</p>
 
 <p>But how do we create these decorators? I’m glad you asked, it’s pretty easy. A property decorator is simply a function that returns a function that gets the target and key as arguments.</p>
 
-<pre><code class="language-typescript">export function Loading() {
-  return function (target: any, key: string): void {
-    // in this case the target is the component
-    // instance and key the property name
-    // target: userComponent, key: loading$
-    // now we have to set the property to the actual 
-    // loading$ observable that lives in the HttpStatusService
-    target[key] = // todo
-  }
-};
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">Loading</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// in this case the target is the component</span>
+    <span class="c1">// instance and key the property name</span>
+    <span class="c1">// target: userComponent, key: loading$</span>
+    <span class="c1">// now we have to set the property to the actual </span>
+    <span class="c1">// loading$ observable that lives in the HttpStatusService</span>
+    <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="c1">// todo</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
 
-<p>To set the property of the target we need to inject the <code>HttpStatusService</code> instance that is registered on the root injector of our application. After all that’s the instance that contains the actual state. Currently there is no easy way to do that.
+<p>To set the property of the target we need to inject the <code class="language-plaintext highlighter-rouge">HttpStatusService</code> instance that is registered on the root injector of our application. After all that’s the instance that contains the actual state. Currently there is no easy way to do that.
 Until Angular provides us with functionality like <a href="https://github.com/angular/angular/issues/23301">that</a> we can use the following solution:</p>
 
-<p>Next to the <code>http-status.service</code> file, create a file called <code>root-injector.ts</code> and add the following code:</p>
+<p>Next to the <code class="language-plaintext highlighter-rouge">http-status.service</code> file, create a file called <code class="language-plaintext highlighter-rouge">root-injector.ts</code> and add the following code:</p>
 
-<pre><code class="language-typescript">import { Injector } from '@angular/core';
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
 
-export let rootInjector: Injector;
-export function setRootInjector(injector: Injector): void {
-  rootInjector = injector;
-}
-</code></pre>
+<span class="k">export</span> <span class="kd">let</span> <span class="nx">rootInjector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">setRootInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+  <span class="nx">rootInjector</span> <span class="o">=</span> <span class="nx">injector</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-<p>The <code>setRootInjector()</code> function will be used by the rootModule to set the <code>rootInjector</code> variable that we expose here.
-To make it work the rootModule will have to call the <code>setRootInjector()</code> function like this:</p>
+<p>The <code class="language-plaintext highlighter-rouge">setRootInjector()</code> function will be used by the rootModule to set the <code class="language-plaintext highlighter-rouge">rootInjector</code> variable that we expose here.
+To make it work the rootModule will have to call the <code class="language-plaintext highlighter-rouge">setRootInjector()</code> function like this:</p>
 
-<pre><code class="language-typescript">@NgModule({
-    ...
-})
-export class AppModule {
-  constructor(private injector: Injector) {
-    setRootInjector(injector);
-  }
-}
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+    <span class="p">...</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setRootInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 
-<p>The last step is to actually use the <code>rootInjector</code> variable inside the decorators. The result looks like this:</p>
+<p>The last step is to actually use the <code class="language-plaintext highlighter-rouge">rootInjector</code> variable inside the decorators. The result looks like this:</p>
 
-<pre><code class="language-typescript">// loading.decorator.ts
-export function Loading() {
-  return function (target: any, key: string): void {
-    const service = rootInjector.get(HttpStatusService);
-    target[key] = service.loading$;
-  }
-};
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// loading.decorator.ts</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">Loading</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
+    <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">loading$</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
 
-// acting.decorator.ts
-export function Acting() {
-  return function (target: any, key: string): void {
-    const service = rootInjector.get(HttpStatusService);
-    target[key] = service.acting$;
-  }
-};
+<span class="c1">// acting.decorator.ts</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">Acting</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
+    <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">acting$</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
 
-// validation-errors.decorator.ts
-export function ValidationErrors() {
-  return function (target: any, key: string): void {
-    const service = rootInjector.get(HttpStatusService);
-    target[key] = service.validationErrors$;
-  }
-};
-</code></pre>
+<span class="c1">// validation-errors.decorator.ts</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">ValidationErrors</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
+    <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">validationErrors$</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>
 

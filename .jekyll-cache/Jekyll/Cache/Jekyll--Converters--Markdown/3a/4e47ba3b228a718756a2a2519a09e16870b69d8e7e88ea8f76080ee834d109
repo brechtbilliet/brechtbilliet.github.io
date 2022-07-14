@@ -1,4 +1,4 @@
-I"œ<h2 id="about-this-article">About this article</h2>
+I"ê,<h2 id="about-this-article">About this article</h2>
 
 <p>If you are writing Angular, Vue or React applications, chances are big that you have used or encountered the Redux pattern.
 Redux helps us to structure statemanagement in an immutable matter which is great, but in order to use it correctly, we have to write a bunch of boilerplate code.
@@ -30,63 +30,63 @@ It could be a simple value that we want to remember in memory when we are naviga
 <p>While we know that Redux forces you to use immutable datastructures, letâ€™s still challenge the need of Redux shall we?
 If statemanagement is trivial to our applications and we just want to store values we could work with a state service instead of Redux.</p>
 
-<pre><code class="language-typescript">@Injectable()
-export class UsersService {
-    private _users$ = new BehaviorSubject([]);
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersService</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">([]);</span>
 
-    get users$(): Observable&lt;User[]&gt; {
-        return this._users$.asObservable();
-    }
+    <span class="kd">get</span> <span class="nx">users$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+    <span class="p">}</span>
 
-    // IMPORTANT: since we use an immutable dataflow
-    // we have to make sure users is a new instance
-    setUsers(users: User[]): void {
-        this._users$.next(...users);
-    }
-}
+    <span class="c1">// IMPORTANT: since we use an immutable dataflow</span>
+    <span class="c1">// we have to make sure users is a new instance</span>
+    <span class="nx">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 
-<p>This example shows how we can set the simple value of an array of users by calling the <code>setUsers()</code>function. It will store the value into a BehaviorSubject which we will consume as an observable. The spread operator (<code>...</code>) will create a new instance of the <code>users</code> array. That way we know that we are working in an immutable manner. This was pretty easy and we donâ€™t need Redux anymore, nor all the boilerplate that we would had to write. So if the state of our application only contains a few simple properties, the Redux pattern might be overkill.</p>
+<p>This example shows how we can set the simple value of an array of users by calling the <code class="language-plaintext highlighter-rouge">setUsers()</code>function. It will store the value into a BehaviorSubject which we will consume as an observable. The spread operator (<code class="language-plaintext highlighter-rouge">...</code>) will create a new instance of the <code class="language-plaintext highlighter-rouge">users</code> array. That way we know that we are working in an immutable manner. This was pretty easy and we donâ€™t need Redux anymore, nor all the boilerplate that we would had to write. So if the state of our application only contains a few simple properties, the Redux pattern might be overkill.</p>
 
-<p>But what if we need to do more then just set the value of <code>users</code>. What if we want to add and remove users from that stream, and we would have to do it in an immutable manner? Checkout the following example for instance.</p>
+<p>But what if we need to do more then just set the value of <code class="language-plaintext highlighter-rouge">users</code>. What if we want to add and remove users from that stream, and we would have to do it in an immutable manner? Checkout the following example for instance.</p>
 
-<pre><code class="language-typescript">@Injectable()
-export class UsersService {
-    private _users$ = new BehaviorSubject([]);
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersService</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">([]);</span>
 
-    get users$(): Observable&lt;User[]&gt; {
-        return this._users$.asObservable();
-    }
+    <span class="kd">get</span> <span class="nx">users$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+    <span class="p">}</span>
 
-    setUsers(users: User[]): void {
-        this._users$.next(...users);
-    }
+    <span class="nx">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    addUser(user: User): void {
-        // We cannot use array.push because we only want to
-        // pass immutable data to the streame
-        // for the OnPush strategy remmber?
-        this._users$.next([...this._users$.getValue(), user])
-    }
+    <span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// We cannot use array.push because we only want to</span>
+        <span class="c1">// pass immutable data to the streame</span>
+        <span class="c1">// for the OnPush strategy remmber?</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">([...</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">getValue</span><span class="p">(),</span> <span class="nx">user</span><span class="p">])</span>
+    <span class="p">}</span>
 
-    removeUser(id: string) {
-        // Again, we have to create a new Array instance to not break the
-        // immutable dataflow
-        this._users$.next(this._users$.getValue().filter(v =&gt; v.id !== id));
-    }
-}
+    <span class="nx">removeUser</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Again, we have to create a new Array instance to not break the</span>
+        <span class="c1">// immutable dataflow</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">getValue</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-</code></pre>
+</code></pre></div></div>
 <p>The code above is starting to feel a bit weird, and it seems like we are writing reducer logic inside of this state service to keep it immutable. We have also created our own observable implementation so we could subscribe to the changes of our state service. While it could still be overkill to use redux if this is the only state in our application, it might become complex if we are working with multiple states, nested states, etc.</p>
 
-<p>Another example is caching. People use redux to cache data results. A simple <code>shareReplay</code> operator might to the trick as well.</p>
+<p>Another example is caching. People use redux to cache data results. A simple <code class="language-plaintext highlighter-rouge">shareReplay</code> operator might to the trick as well.</p>
 
-<pre><code class="language-typescript">fetchUsers(): Observable&lt;User[]&gt; {
-    ...
-    return this.httpClient.get('').pipe(shareReplay(1));
-}
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">''</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">shareReplay</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <h2 id="summary">Summary</h2>
 
