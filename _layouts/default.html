@@ -1,25 +1,106 @@
-{% include doctype-head.html %}
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: " en" }}">
+
+{%- include head.html -%}
+
 <body>
-    {% include svg-defs.svg %}
-    <!--[if lt IE 10]>
-        <p class="oldie">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
-    <![endif]-->
-
-    <div class="site-container">
-        {% include header.html %}
-
-        <main>
-            <div class="container">
-                {{ content }}
-            </div>
-            {% if paginator.total_posts > site.paginate %}
-                {% include pagination.html %}
-            {% endif %}
-        </main>
-        
-        {% include footer.html %}
+<section class="app">
+    <nav class="app__menu ">
+        <button name="menu-button" class="app__menu-button" type="button"
+        ><i class="fa-solid fa-bars"></i></button>
+        <ul>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-brands fa-angular"></i>
+                        <span class="app__menu-item-label">BRECHT</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/hire-me">
+                        <i class="fa-solid fa-person-walking"></i>
+                        <span class="app__menu-item-label">HIRE ME</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/happy-clients">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                        <span class="app__menu-item-label">CLIENTS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/consultancy">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="app__menu-item-label">CONSULTANCY</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/code-reviews">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span class="app__menu-item-label">CODE REVIEWS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-solid fa-school"></i>
+                        <span class="app__menu-item-label">COACHING</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="link--active" href="https://blog.brecht.io/">
+                        <i class="fa-solid fa-blog"></i>
+                        <span class="app__menu-item-label">BLOG</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a href="https://brecht.io/contact">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span class="app__menu-item-label">CONTACT</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-wrapper">
+        <div class="container">
+            <main class="page-content" aria-label="Content">
+                <div class="wrapper">
+                    {{ content }}
+                </div>
+            </main>
+        </div>
+        {%- include footer.html -%}
     </div>
-    {% include analytics.html %}
-    <script src="{{ site.baseurl }}/js/all.min.js"></script>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({"notice_banner_type":"simple","consent_type":"implied","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"brecht.io"});
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-43296458-4');
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator website</a></noscript>
 </body>
+
 </html>

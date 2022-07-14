@@ -205,6 +205,6 @@ State management is a topic surrounded with discussions and opinions. There is n
 
 Special thanks to the awesome reviewers:
 
-[Tim Deschryver](https://twitter.com/tim_deschryver)
-[Jeffrey Bosch](https://twitter.com/jefiozie)
-[Ruben Vermeulen](https://twitter.com/rubverm)
+- [Tim Deschryver](https://twitter.com/tim_deschryver)
+- [Jeffrey Bosch](https://twitter.com/jefiozie)
+- [Ruben Vermeulen](https://twitter.com/rubverm)

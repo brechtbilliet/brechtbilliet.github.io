@@ -1,0 +1,218 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@import "minima";
+.author-thumb{
+  border-radius: 50%;
+  width:24px;
+  height:24px;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  background: #fff;
+  display: flex;
+}
+
+html, body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  height: 100%;
+}
+
+.footer {
+  background: #b3dbe1;
+  color: #000;
+  width: 100%;
+  min-height: 250px;
+
+  &__inner {
+    padding: 16px;
+    @media (min-width: 768px) {
+      padding: 32px;
+    }
+  }
+  a, h3, #open_preferences_center{
+    color: #000!important;
+  }
+  #open_preferences_center{
+    text-decoration: underline;
+  }
+  &__social-icon {
+    color: #000!important;
+    font-size: 60px;
+    margin-right: 32px;
+  }
+
+  &__social-icons {
+    display: flex;
+    list-style-type: none;
+    padding: 0px;
+    margin:0;
+  }
+
+  h3 {
+    color: #fff;
+    padding: 0px;
+    margin: 0px;
+    padding-bottom: 16px;
+    font-weight:700;
+  }
+}
+
+
+.post-link, .post-link:hover, .post-link:active, .post-link:visited {
+  font-size: 2rem;
+  color:#2e2e2e;
+  line-height:1.15em;
+  font-family: "Open Sans", sans-serif;
+  text-decoration: none;
+  text-rendering: geometricPrecision;
+  font-weight:600;
+}
+.post-meta {
+  color: #9eabb3;
+}
+.post-list li {
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+}
+
+.app {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  font-weight: 200;
+  font-size: 14px;
+  height: 100%;
+
+  .container {
+    margin: 0 auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    display: flex;
+    flex: 1;
+    max-width: 1024px;
+
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: scroll;
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      padding-right: 80px;
+      padding-left: 80px;
+    }
+  }
+  .app__menu {
+    height: 100%;
+    width: 100%;
+    ul{
+      margin: 0;
+      margin-top: 14px;
+    }
+  }
+
+  .container-wrapper.menu-open {
+    display: none;
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  .app__menu {
+    height: 100%;
+
+    padding-left: 20px;
+    &--collapsed {
+      min-width: 40px;
+      width: 40px;
+      align-items: center;
+      padding-left: 0px;
+
+      align-content: center;
+
+      .app__menu-item-label {
+        display: none;
+      }
+    }
+
+    @media (min-width: 768px) {
+      width: 140px;
+      &--collapsed {
+        min-width: 40px;
+        width: 40px;
+
+        align-content: center;
+
+        .app__menu-item-label {
+          display: none;
+        }
+      }
+    }
+  }
+
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #2aabbf;
+    padding-left: 20px;
+    &-button {
+      display: flex;
+      border: none;
+      outline: none;
+      color: #343331;
+      background: none;
+      cursor: pointer;
+      padding: 0px;
+      margin-top: 16px;
+      i {
+        font-size:14px;
+      }
+    }
+
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+
+      li {
+        padding-bottom: 16px;
+
+        i {
+          width: 22px;
+          height: 22px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      a.link--active {
+        color: #000;
+      }
+
+      a {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+      }
+
+      .app__menu-item-label {
+        padding-left: 8px;
+      }
+    }
+  }
+
+}

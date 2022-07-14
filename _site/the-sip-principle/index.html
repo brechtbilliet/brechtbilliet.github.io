@@ -1,102 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="index, follow">
-    
-
-    <title>Thinking reactive with the SIP principle</title>
-
-
-    
-        <meta name="description" content="">
-    
-
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="canonical" href="https://blog.brecht.io/the-sip-principle/">
-
-    <!-- Google Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Alegreya:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/img/favicon.png" />
-</head>
-
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Thinking reactive with the SIP principle | Frontend software architect living in Belgium</title>
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Thinking reactive with the SIP principle" />
+<meta name="author" content="brechtbilliet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”." />
+<meta property="og:description" content="A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”." />
+<link rel="canonical" href="https://blog.brecht.io/the-sip-principle/" />
+<meta property="og:url" content="https://blog.brecht.io/the-sip-principle/" />
+<meta property="og:site_name" content="Frontend software architect living in Belgium" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-06-30T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Thinking reactive with the SIP principle" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"brechtbilliet"},"dateModified":"2018-06-30T00:00:00+02:00","datePublished":"2018-06-30T00:00:00+02:00","description":"A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.","headline":"Thinking reactive with the SIP principle","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.brecht.io/the-sip-principle/"},"url":"https://blog.brecht.io/the-sip-principle/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://blog.brecht.io/feed.xml" title="Frontend software architect living in Belgium" /></head>
 <body>
-    <svg style="display: none;"><symbol viewBox="0 0 16 14" id="icon-behance"><title>behance</title> <path d="M14.438 2.648h-3.992v0.969h3.992v-0.969zM12.469 5.977q-0.703 0-1.141 0.41t-0.484 1.113h3.188q-0.141-1.523-1.563-1.523zM12.594 10.547q0.492 0 0.953-0.25t0.594-0.68h1.727q-0.781 2.398-3.336 2.398-1.672 0-2.66-1.031t-0.988-2.711q0-1.625 1.020-2.699t2.629-1.074q1.078 0 1.879 0.531t1.195 1.398 0.395 1.937q0 0.133-0.016 0.367h-5.141q0 0.867 0.449 1.34t1.301 0.473zM2.164 10.156h2.313q1.602 0 1.602-1.305 0-1.406-1.555-1.406h-2.359v2.711zM2.164 5.961h2.195q0.609 0 0.965-0.285t0.355-0.887q0-1.125-1.484-1.125h-2.031v2.297zM0 1.984h4.641q0.68 0 1.211 0.109t0.988 0.371 0.703 0.754 0.246 1.203q0 1.414-1.344 2.055 0.891 0.25 1.344 0.898t0.453 1.594q0 0.586-0.191 1.066t-0.516 0.809-0.77 0.555-0.945 0.328-1.047 0.102h-4.773v-9.844z"/> </symbol><symbol viewBox="0 0 8 14" id="icon-facebook"><title>facebook</title> <path d="M7.492 0.094v2.062h-1.227q-0.672 0-0.906 0.281t-0.234 0.844v1.477h2.289l-0.305 2.313h-1.984v5.93h-2.391v-5.93h-1.992v-2.313h1.992v-1.703q0-1.453 0.813-2.254t2.164-0.801q1.148 0 1.781 0.094z"/> </symbol><symbol viewBox="0 0 11 14" id="icon-feed"><title>feed</title> <path d="M3 10.5q0 0.625-0.438 1.062t-1.062 0.438-1.062-0.438-0.438-1.062 0.438-1.062 1.062-0.438 1.062 0.438 0.438 1.062zM7 11.461q0.016 0.219-0.133 0.375-0.141 0.164-0.367 0.164h-1.055q-0.195 0-0.336-0.129t-0.156-0.324q-0.172-1.789-1.441-3.059t-3.059-1.441q-0.195-0.016-0.324-0.156t-0.129-0.336v-1.055q0-0.227 0.164-0.367 0.133-0.133 0.336-0.133h0.039q1.25 0.102 2.391 0.629t2.023 1.418q0.891 0.883 1.418 2.023t0.629 2.391zM11 11.477q0.016 0.211-0.141 0.367-0.141 0.156-0.359 0.156h-1.117q-0.203 0-0.348-0.137t-0.152-0.332q-0.094-1.68-0.789-3.191t-1.809-2.625-2.625-1.809-3.191-0.797q-0.195-0.008-0.332-0.152t-0.137-0.34v-1.117q0-0.219 0.156-0.359 0.141-0.141 0.344-0.141h0.023q2.047 0.102 3.918 0.937t3.324 2.297q1.461 1.453 2.297 3.324t0.937 3.918z"/> </symbol><symbol viewBox="0 0 14 14" id="icon-git"><title>git</title> <path d="M4.648 11.828q0-0.781-1.289-0.781-1.234 0-1.234 0.813 0 0.789 1.344 0.789 1.18 0 1.18-0.82zM4.188 5.93q0-0.477-0.234-0.797t-0.695-0.32q-0.969 0-0.969 1.133 0 1.055 0.969 1.055 0.93 0 0.93-1.070zM6.289 3.398v1.578q-0.281 0.094-0.617 0.172 0.125 0.336 0.125 0.656 0 0.992-0.57 1.691t-1.539 0.879q-0.312 0.062-0.465 0.211t-0.152 0.453q0 0.242 0.176 0.402t0.453 0.25 0.613 0.172 0.672 0.199 0.613 0.293 0.453 0.5 0.176 0.77q0 2.375-2.836 2.375-0.539 0-1.016-0.098t-0.906-0.32-0.684-0.641-0.254-0.996q0-1.289 1.422-1.758v-0.031q-0.523-0.32-0.523-0.984 0-0.852 0.492-1.070v-0.031q-0.563-0.187-0.934-0.848t-0.371-1.293q0-1.086 0.742-1.809t1.836-0.723q0.75 0 1.391 0.367 0.766 0 1.703-0.367zM8.773 10.281h-1.734q0.031-0.352 0.031-1.047v-4.758q0-0.734-0.031-1h1.734q-0.031 0.258-0.031 0.969v4.789q0 0.695 0.031 1.047zM13.469 8.547v1.531q-0.555 0.305-1.359 0.305-0.484 0-0.836-0.156t-0.547-0.391-0.309-0.609-0.145-0.719-0.031-0.805v-2.742h0.016v-0.031q-0.055 0-0.148-0.008t-0.141-0.008q-0.164 0-0.461 0.047v-1.484h0.75v-0.594q0-0.422-0.047-0.695h1.773q-0.047 0.32-0.047 1.289h1.336v1.484q-0.117 0-0.34-0.016t-0.332-0.016h-0.664v2.852q0 1.023 0.68 1.023 0.477 0 0.852-0.258zM8.969 1.148q0 0.453-0.305 0.793t-0.75 0.34q-0.453 0-0.766-0.34t-0.312-0.793q0-0.461 0.309-0.805t0.77-0.344q0.453 0 0.754 0.348t0.301 0.801z"/> </symbol><symbol viewBox="0 0 12 14" id="icon-github"><title>github</title> <path d="M12 7q0 1.961-1.145 3.527t-2.957 2.168q-0.211 0.039-0.309-0.055t-0.098-0.234v-1.648q0-0.758-0.406-1.109 0.445-0.047 0.801-0.141t0.734-0.305 0.633-0.52 0.414-0.82 0.16-1.176q0-0.945-0.617-1.609 0.289-0.711-0.062-1.594-0.219-0.070-0.633 0.086t-0.719 0.344l-0.297 0.187q-0.727-0.203-1.5-0.203t-1.5 0.203q-0.125-0.086-0.332-0.211t-0.652-0.301-0.672-0.105q-0.344 0.883-0.055 1.594-0.617 0.664-0.617 1.609 0 0.664 0.16 1.172t0.41 0.82 0.629 0.523 0.734 0.305 0.801 0.141q-0.312 0.281-0.383 0.805-0.164 0.078-0.352 0.117t-0.445 0.039-0.512-0.168-0.434-0.488q-0.148-0.25-0.379-0.406t-0.387-0.187l-0.156-0.023q-0.164 0-0.227 0.035t-0.039 0.090 0.070 0.109 0.102 0.094l0.055 0.039q0.172 0.078 0.34 0.297t0.246 0.398l0.078 0.18q0.102 0.297 0.344 0.48t0.523 0.234 0.543 0.055 0.434-0.027l0.18-0.031q0 0.297 0.004 0.695t0.004 0.422q0 0.141-0.102 0.234t-0.312 0.055q-1.812-0.602-2.957-2.168t-1.145-3.527q0-1.633 0.805-3.012t2.184-2.184 3.012-0.805 3.012 0.805 2.184 2.184 0.805 3.012z"/> </symbol><symbol viewBox="0 0 13 14" id="icon-google-plus"><title>google-plus</title> <path d="M5.742 6.219q0 0.281 0.25 0.551t0.605 0.531 0.707 0.574 0.602 0.813 0.25 1.109q0 0.703-0.375 1.352-0.563 0.953-1.648 1.402t-2.328 0.449q-1.031 0-1.926-0.324t-1.34-1.074q-0.289-0.469-0.289-1.023 0-0.633 0.348-1.172t0.926-0.898q1.023-0.641 3.156-0.781-0.25-0.328-0.371-0.578t-0.121-0.57q0-0.281 0.164-0.664-0.359 0.031-0.531 0.031-1.156 0-1.949-0.754t-0.793-1.91q0-0.641 0.281-1.242t0.773-1.023q0.602-0.516 1.426-0.766t1.699-0.25h3.266l-1.078 0.688h-1.023q0.578 0.492 0.875 1.039t0.297 1.25q0 0.563-0.191 1.012t-0.461 0.727-0.543 0.508-0.465 0.48-0.191 0.516zM4.602 5.469q0.297 0 0.609-0.129t0.516-0.34q0.414-0.445 0.414-1.242 0-0.453-0.133-0.977t-0.379-1.012-0.66-0.809-0.914-0.32q-0.328 0-0.645 0.152t-0.512 0.41q-0.367 0.461-0.367 1.25 0 0.359 0.078 0.762t0.246 0.805 0.406 0.723 0.586 0.523 0.754 0.203zM4.617 12.289q0.453 0 0.871-0.102t0.773-0.305 0.57-0.57 0.215-0.852q0-0.195-0.055-0.383t-0.113-0.328-0.211-0.324-0.23-0.273-0.301-0.27-0.285-0.227-0.324-0.234-0.285-0.203q-0.125-0.016-0.375-0.016-0.414 0-0.82 0.055t-0.84 0.195-0.758 0.359-0.535 0.582-0.211 0.824q0 0.547 0.273 0.965t0.715 0.648 0.93 0.344 0.996 0.113zM10.945 5.445h1.664v0.844h-1.664v1.711h-0.82v-1.711h-1.656v-0.844h1.656v-1.695h0.82v1.695z"/> </symbol><symbol viewBox="0 0 12 14" id="icon-instagram"><title>instagram</title> <path d="M10.641 11.141v-5.063h-1.055q0.156 0.492 0.156 1.023 0 0.984-0.5 1.816t-1.359 1.316-1.875 0.484q-1.539 0-2.633-1.059t-1.094-2.559q0-0.531 0.156-1.023h-1.102v5.063q0 0.203 0.137 0.34t0.34 0.137h8.352q0.195 0 0.336-0.137t0.141-0.34zM8.422 6.977q0-0.969-0.707-1.652t-1.707-0.684q-0.992 0-1.699 0.684t-0.707 1.652 0.707 1.652 1.699 0.684q1 0 1.707-0.684t0.707-1.652zM10.641 4.164v-1.289q0-0.219-0.156-0.379t-0.383-0.16h-1.359q-0.227 0-0.383 0.16t-0.156 0.379v1.289q0 0.227 0.156 0.383t0.383 0.156h1.359q0.227 0 0.383-0.156t0.156-0.383zM12 2.539v8.922q0 0.633-0.453 1.086t-1.086 0.453h-8.922q-0.633 0-1.086-0.453t-0.453-1.086v-8.922q0-0.633 0.453-1.086t1.086-0.453h8.922q0.633 0 1.086 0.453t0.453 1.086z"/> </symbol><symbol viewBox="0 0 12 14" id="icon-linkedin"><title>linkedin</title> <path d="M2.727 4.883v7.742h-2.578v-7.742h2.578zM2.891 2.492q0.008 0.57-0.395 0.953t-1.059 0.383h-0.016q-0.641 0-1.031-0.383t-0.391-0.953q0-0.578 0.402-0.957t1.051-0.379 1.039 0.379 0.398 0.957zM12 8.187v4.437h-2.57v-4.141q0-0.82-0.316-1.285t-0.988-0.465q-0.492 0-0.824 0.27t-0.496 0.668q-0.086 0.234-0.086 0.633v4.32h-2.57q0.016-3.117 0.016-5.055t-0.008-2.313l-0.008-0.375h2.57v1.125h-0.016q0.156-0.25 0.32-0.438t0.441-0.406 0.68-0.34 0.895-0.121q1.336 0 2.148 0.887t0.813 2.598z"/> </symbol><symbol viewBox="0 0 114.25 36.375" id="icon-logo"><title>logo</title> <g> <path d="M0.864,2.65c-0.5-1.45,0.15-2.4,1.7-2.4h2.65c1.2,0,2,0.55,2.35,1.75l7.25,21.401
-		c0.65,2.05,1.35,5.2,1.35,5.2h0.1c0,0,0.65-3.15,1.35-5.2L24.965,2c0.3-1.2,1.1-1.75,2.3-1.75h2.55c1.55,0,2.2,0.95,1.7,2.4
-		L20.165,34.102c-0.4,1.15-1.15,1.65-2.35,1.65h-3.2c-1.2,0-1.95-0.5-2.35-1.65L0.864,2.65z"/> <path d="M36.263,2.351c0-1.35,0.7-2.1,2.05-2.1h2.3c1.35,0,2.05,0.75,2.05,2.1v31.302c0,1.4-0.7,2.1-2.05,2.1h-2.3
-		c-1.35,0-2.05-0.7-2.05-2.1V2.351z"/> <path d="M50.863,2.351c0-1.35,0.7-2.1,2.05-2.1h10.051c10.95,0,18.101,6.5,18.101,17.701
-		s-7.15,17.801-18.101,17.801H52.913c-1.35,0-2.05-0.7-2.05-2.1V2.351z M62.613,30.202c7.201,0,11.801-4.25,11.801-12.251
-		c0-7.9-4.7-12.15-11.801-12.15h-5.35v24.401H62.613z"/> <path d="M94.713,1.95c0.4-1.15,1.15-1.7,2.351-1.7h3.2c1.2,0,2,0.55,2.35,1.7l11.102,31.402
-		c0.5,1.45-0.15,2.4-1.7,2.4h-2.301c-1.2,0-2-0.55-2.35-1.7l-2.5-7.4H92.413l-2.45,7.351c-0.35,1.2-1.15,1.75-2.35,1.75h-2.301
-		c-1.55,0-2.2-0.95-1.7-2.4L94.713,1.95z M103.264,21.401l-3.15-9.5c-0.6-2-1.399-5.5-1.399-5.5h-0.101c0,0-0.8,3.5-1.4,5.5
-		l-3.199,9.5H103.264z"/> </g> </symbol><symbol viewBox="0 0 10 14" id="icon-pinterest-p"><title>pinterest-p</title> <path d="M0 4.664q0-0.844 0.293-1.59t0.809-1.301 1.187-0.961 1.445-0.609 1.578-0.203q1.234 0 2.297 0.52t1.727 1.512 0.664 2.242q0 0.75-0.148 1.469t-0.469 1.383-0.781 1.168-1.133 0.805-1.477 0.301q-0.531 0-1.055-0.25t-0.75-0.688q-0.078 0.305-0.219 0.879t-0.184 0.742-0.16 0.555-0.203 0.555-0.25 0.488-0.359 0.605-0.484 0.676l-0.109 0.039-0.070-0.078q-0.117-1.227-0.117-1.469 0-0.719 0.168-1.613t0.52-2.246 0.406-1.586q-0.25-0.508-0.25-1.32 0-0.648 0.406-1.219t1.031-0.57q0.477 0 0.742 0.316t0.266 0.801q0 0.516-0.344 1.492t-0.344 1.461q0 0.492 0.352 0.816t0.852 0.324q0.43 0 0.797-0.195t0.613-0.531 0.438-0.742 0.297-0.863 0.156-0.867 0.051-0.777q0-1.352-0.855-2.105t-2.23-0.754q-1.563 0-2.609 1.012t-1.047 2.566q0 0.344 0.098 0.664t0.211 0.508 0.211 0.355 0.098 0.238q0 0.219-0.117 0.57t-0.289 0.352q-0.016 0-0.133-0.023-0.398-0.117-0.707-0.438t-0.477-0.738-0.254-0.844-0.086-0.832z"/> </symbol><symbol viewBox="0 0 12 14" id="icon-skype"><title>skype</title> <path d="M9.164 8.305q0-0.391-0.152-0.715t-0.379-0.535-0.57-0.383-0.645-0.266-0.684-0.18l-0.813-0.187q-0.234-0.055-0.344-0.082t-0.273-0.090-0.234-0.125-0.129-0.164-0.059-0.234q0-0.602 1.125-0.602 0.336 0 0.602 0.094t0.422 0.223 0.297 0.262 0.312 0.227 0.375 0.094q0.367 0 0.59-0.25t0.223-0.602q0-0.43-0.438-0.777t-1.109-0.527-1.422-0.18q-0.531 0-1.031 0.121t-0.934 0.367-0.695 0.68-0.262 1.004q0 0.477 0.148 0.832t0.438 0.59 0.625 0.379 0.805 0.254l1.141 0.281q0.703 0.172 0.875 0.281 0.25 0.156 0.25 0.469 0 0.305-0.312 0.504t-0.82 0.199q-0.398 0-0.715-0.125t-0.508-0.301-0.355-0.352-0.359-0.301-0.422-0.125q-0.391 0-0.59 0.234t-0.199 0.586q0 0.719 0.953 1.23t2.273 0.512q0.57 0 1.094-0.145t0.957-0.418 0.691-0.73 0.258-1.027zM12 10q0 1.242-0.879 2.121t-2.121 0.879q-1.016 0-1.828-0.625-0.602 0.125-1.172 0.125-1.117 0-2.137-0.434t-1.758-1.172-1.172-1.758-0.434-2.137q0-0.57 0.125-1.172-0.625-0.813-0.625-1.828 0-1.242 0.879-2.121t2.121-0.879q1.016 0 1.828 0.625 0.602-0.125 1.172-0.125 1.117 0 2.137 0.434t1.758 1.172 1.172 1.758 0.434 2.137q0 0.57-0.125 1.172 0.625 0.813 0.625 1.828z"/> </symbol><symbol viewBox="0 0 13 14" id="icon-twitter"><title>twitter</title> <path d="M12.656 3.188q-0.523 0.766-1.266 1.305 0.008 0.109 0.008 0.328 0 1.016-0.297 2.027t-0.902 1.941-1.441 1.645-2.016 1.141-2.523 0.426q-2.117 0-3.875-1.133 0.273 0.031 0.609 0.031 1.758 0 3.133-1.078-0.82-0.016-1.469-0.504t-0.891-1.246q0.258 0.039 0.477 0.039 0.336 0 0.664-0.086-0.875-0.18-1.449-0.871t-0.574-1.605v-0.031q0.531 0.297 1.141 0.32-0.516-0.344-0.82-0.898t-0.305-1.203q0-0.688 0.344-1.273 0.945 1.164 2.301 1.863t2.902 0.777q-0.062-0.297-0.062-0.578 0-1.047 0.738-1.785t1.785-0.738q1.094 0 1.844 0.797 0.852-0.164 1.602-0.609-0.289 0.898-1.109 1.391 0.727-0.078 1.453-0.391z"/> </symbol><symbol viewBox="0 0 12 14" id="icon-vine"><title>vine</title> <path d="M11.695 6.461v1.547q-0.789 0.18-1.547 0.18-0.508 1.062-1.293 2.117t-1.418 1.684-1 0.832q-0.625 0.352-1.266-0.023-0.219-0.133-0.473-0.34t-0.664-0.652-0.801-1.004-0.84-1.438-0.824-1.906-0.715-2.457-0.551-3.047h2.211q0.203 1.703 0.547 3.113t0.816 2.477 0.949 1.84 1.094 1.523q1.32-1.32 2.242-3.172-1.109-0.563-1.742-1.719t-0.633-2.602q0-1.5 0.813-2.457t2.219-0.957q1.391 0 2.133 0.824t0.742 2.324q0 1.242-0.453 2.234-0.055 0.008-0.152 0.023t-0.359 0.016-0.492-0.047-0.484-0.199-0.395-0.402q0.242-0.805 0.242-1.438 0-0.68-0.227-1.031t-0.617-0.352q-0.414 0-0.664 0.387t-0.25 1.098q0 1.453 0.82 2.293t2.086 0.84q0.484 0 0.945-0.109z"/> </symbol><symbol viewBox="0 0 12 14" id="icon-youtube"><title>youtube</title> <path d="M7.586 9.719v1.648q0 0.523-0.305 0.523-0.18 0-0.352-0.172v-2.352q0.172-0.172 0.352-0.172 0.305 0 0.305 0.523zM10.227 9.727v0.359h-0.703v-0.359q0-0.531 0.352-0.531t0.352 0.531zM2.68 8.023h0.836v-0.734h-2.438v0.734h0.82v4.445h0.781v-4.445zM4.93 12.469h0.695v-3.859h-0.695v2.953q-0.234 0.328-0.445 0.328-0.141 0-0.164-0.164-0.008-0.023-0.008-0.273v-2.844h-0.695v3.055q0 0.383 0.062 0.57 0.094 0.289 0.453 0.289 0.375 0 0.797-0.477v0.422zM8.281 11.313v-1.539q0-0.57-0.070-0.773-0.133-0.438-0.555-0.438-0.391 0-0.727 0.422v-1.695h-0.695v5.18h0.695v-0.375q0.352 0.43 0.727 0.43 0.422 0 0.555-0.43 0.070-0.211 0.070-0.781zM10.922 11.234v-0.102h-0.711q0 0.398-0.016 0.477-0.055 0.281-0.312 0.281-0.359 0-0.359-0.539v-0.68h1.398v-0.805q0-0.617-0.211-0.906-0.305-0.398-0.828-0.398-0.531 0-0.836 0.398-0.219 0.289-0.219 0.906v1.352q0 0.617 0.227 0.906 0.305 0.398 0.844 0.398 0.563 0 0.844-0.414 0.141-0.211 0.164-0.422 0.016-0.070 0.016-0.453zM6.172 4.102v-1.641q0-0.539-0.336-0.539t-0.336 0.539v1.641q0 0.547 0.336 0.547t0.336-0.547zM11.789 9.969q0 1.828-0.203 2.734-0.109 0.461-0.453 0.773t-0.797 0.359q-1.438 0.164-4.336 0.164t-4.336-0.164q-0.453-0.047-0.801-0.359t-0.449-0.773q-0.203-0.875-0.203-2.734 0-1.828 0.203-2.734 0.109-0.461 0.453-0.773t0.805-0.367q1.43-0.156 4.328-0.156t4.336 0.156q0.453 0.055 0.801 0.367t0.449 0.773q0.203 0.875 0.203 2.734zM3.992 0h0.797l-0.945 3.117v2.117h-0.781v-2.117q-0.109-0.578-0.477-1.656-0.289-0.805-0.508-1.461h0.828l0.555 2.055zM6.883 2.602v1.367q0 0.633-0.219 0.922-0.289 0.398-0.828 0.398-0.523 0-0.82-0.398-0.219-0.297-0.219-0.922v-1.367q0-0.625 0.219-0.914 0.297-0.398 0.82-0.398 0.539 0 0.828 0.398 0.219 0.289 0.219 0.914zM9.5 1.336v3.898h-0.711v-0.43q-0.414 0.484-0.805 0.484-0.359 0-0.461-0.289-0.062-0.187-0.062-0.586v-3.078h0.711v2.867q0 0.258 0.008 0.273 0.023 0.172 0.164 0.172 0.211 0 0.445-0.336v-2.977h0.711z"/> </symbol></svg>
-    <!--[if lt IE 10]>
-        <p class="oldie">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
-    <![endif]-->
+<section class="app">
+    <nav class="app__menu ">
+        <button name="menu-button" class="app__menu-button" type="button"
+        ><i class="fa-solid fa-bars"></i></button>
+        <ul>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-brands fa-angular"></i>
+                        <span class="app__menu-item-label">BRECHT</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/hire-me">
+                        <i class="fa-solid fa-person-walking"></i>
+                        <span class="app__menu-item-label">HIRE ME</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/happy-clients">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                        <span class="app__menu-item-label">CLIENTS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/consultancy">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="app__menu-item-label">CONSULTANCY</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/code-reviews">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span class="app__menu-item-label">CODE REVIEWS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-solid fa-school"></i>
+                        <span class="app__menu-item-label">COACHING</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="link--active" href="https://blog.brecht.io/">
+                        <i class="fa-solid fa-blog"></i>
+                        <span class="app__menu-item-label">BLOG</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a href="https://brecht.io/contact">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span class="app__menu-item-label">CONTACT</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-wrapper">
+        <div class="container">
+            <main class="page-content" aria-label="Content">
+                <div class="wrapper">
+                    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-    <div class="site-container">
-        <a href="/">Home</a>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Thinking reactive with the SIP principle</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="2018-06-30T00:00:00+02:00" itemprop="datePublished">Jun 30, 2018
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">brechtbilliet</span></span></p>
+  </header>
 
-
-        <main>
-            <div class="container">
-                <style>
-    @media (max-width: 1100px) {
-        .followme {
-            display: none;
-        }
-    }
-
-    @media (min-width: 1100px) {
-        .followme {
-            background: #f1f1f1;
-            position: fixed;
-            margin-left: 786px;
-            padding: 20px;
-        }
-    }
-
-    .hire-me-button {
-        background-color: #2aabbf;
-        color: #fff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 15px;
-    }
-
-</style>
-<div class="followme">
-    <h3>Follow me on twitter</h3>
-    <a href="https://twitter.com/brechtbilliet" class="twitter-follow-button"
-       data-size="large"
-       data-show-count="false">Follow @brechtbilliet</a>
-    <script
-            async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <br/>
-    <br/>
-    <a href="https://brecht.io" class="hire-me-button">Hire me</a>
-</div>
-<article class="post">
-    <header class="post-header">
-        <h2>Thinking reactive with the SIP principle</h2>
-        <span class="date">Jun 30, 2018</span>
-    </header>
-    
-    <div class="post-content">
-        <p>A few months back we released <a href="https://blog.strongbrew.io/rxjs-best-practices-in-angular/">RxJS best practices in Angular</a> and a while before that <a href="https://blog.strongbrew.io/thinking-reactively-in-angular-and-rxjs/">Thinking reactively in Angular and RxJS</a>. 
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>A few months back we released <a href="https://blog.strongbrew.io/rxjs-best-practices-in-angular/">RxJS best practices in Angular</a> and a while before that <a href="https://blog.strongbrew.io/thinking-reactively-in-angular-and-rxjs/">Thinking reactively in Angular and RxJS</a>. 
 Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.</p>
 
 <p>However, sometimes we like to have structured opinionated ways of tackling problems, especially when things become complex. We like a roadmap of some kind, something to fall back on, something to guide us through these complex reactive scenarios.</p>
@@ -140,68 +151,68 @@ Let’s have a look at our application and look for the source streams there:
 <img src="/assets/images/posts/sip-principle/source-streams.png" alt="Source streams" /></p>
 
 <p>After executing the first step of the SIP principle we have found 4 source streams.
-<code>searchTerm$</code>, <code>selectedModel$</code>, <code>randomModel$</code> and <code>numberOfPassengers$</code>.</p>
+<code class="language-plaintext highlighter-rouge">searchTerm$</code>, <code class="language-plaintext highlighter-rouge">selectedModel$</code>, <code class="language-plaintext highlighter-rouge">randomModel$</code> and <code class="language-plaintext highlighter-rouge">numberOfPassengers$</code>.</p>
 
-<p>What’s important to note here is that we named these streams as <strong>streams of data</strong> rather than naming them as streams of actions. We want to stop thinking in actions and start thinking in streams of data, remember? That’s why we didn’t name the first stream <code>search$</code> (which would be an action), we rather named it <code>searchTerm$</code> so we know it contains a search term.</p>
+<p>What’s important to note here is that we named these streams as <strong>streams of data</strong> rather than naming them as streams of actions. We want to stop thinking in actions and start thinking in streams of data, remember? That’s why we didn’t name the first stream <code class="language-plaintext highlighter-rouge">search$</code> (which would be an action), we rather named it <code class="language-plaintext highlighter-rouge">searchTerm$</code> so we know it contains a search term.</p>
 
 <p>Source streams are <strong>mostly subjects</strong> or streams that come from the framework, e.g. a routing params stream.</p>
 
 <p>In our application the source streams will look like this:</p>
 
-<pre><code class="language-typescript">searchTerm$ = new ReplaySubject&lt;string&gt;(1);
-selectedModel$ = new ReplaySubject&lt;string&gt;(1);
-randomModel$ = new ReplaySubject&lt;string&gt;(1);
-// needs an initial value
-numberOfPassengers$ = new BehaviorSubject(1000000); 
-</code></pre>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">searchTerm$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nx">selectedModel$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nx">randomModel$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="c1">// needs an initial value</span>
+<span class="nx">numberOfPassengers$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span> 
+</code></pre></div></div>
 
 <p>These subjects will be populated by the outputs as shown below:</p>
 
-<pre><code class="language-html">&lt;sidebar 
-    (search)="searchTerm$.next($event)"
-    (selectModel)="selectedModel$.next($event)"
-    (randomModel)="randomModel$.next($event)"
-    (changeNumberOfPassengers)="numberOfPassengers$.next($event)"
-&gt;
-&lt;/sidebar&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;sidebar</span> 
+    <span class="na">(search)=</span><span class="s">"searchTerm$.next($event)"</span>
+    <span class="na">(selectModel)=</span><span class="s">"selectedModel$.next($event)"</span>
+    <span class="na">(randomModel)=</span><span class="s">"randomModel$.next($event)"</span>
+    <span class="na">(changeNumberOfPassengers)=</span><span class="s">"numberOfPassengers$.next($event)"</span>
+<span class="nt">&gt;</span>
+<span class="nt">&lt;/sidebar&gt;</span>
 ...
-</code></pre>
+</code></pre></div></div>
 
 <h3 id="presentation-streams">Presentation streams</h3>
 
 <p>After finding the source streams we need to find the presentation streams.
 These are the streams that our template needs to render properly. These are quite easy to find. We just have to look at the template and see which inputs our components expect. We can have a look at our template. (The outputs are stripped for readability purposes).</p>
 
-<pre><code class="language-html">  &lt;sidebar class="sidebar" 
-    [models]="fixedModels" 
-    [numberOfPassengers]=""
-  &gt;
-  &lt;/sidebar&gt;
-  &lt;div class="main"&gt;
-    &lt;starship-list 
-        [starships]=""
-        [loading]=""&gt;
-    &lt;/starship-list&gt;
-  &lt;/div&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;sidebar</span> <span class="na">class=</span><span class="s">"sidebar"</span> 
+    <span class="na">[models]=</span><span class="s">"fixedModels"</span> 
+    <span class="na">[numberOfPassengers]=</span><span class="s">""</span>
+  <span class="nt">&gt;</span>
+  <span class="nt">&lt;/sidebar&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"main"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;starship-list</span> 
+        <span class="na">[starships]=</span><span class="s">""</span>
+        <span class="na">[loading]=</span><span class="s">""</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/starship-list&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
 
 <p>We can instantly see that we need 3 presentation streams:
 We need the number of passengers, the starships that need to be shown and whether the application is loading or not. Let’s fill in the blanks, shall we?!</p>
 
-<pre><code class="language-html">  &lt;sidebar class="sidebar" 
-    [models]="fixedModels" 
-    [numberOfPassengers]="numberOfPassengers$|async"
-  &gt;
-  &lt;/sidebar&gt;
-  &lt;div class="main"&gt;
-    &lt;starship-list 
-        [starships]="filteredResults$|async"
-        [loading]="loading$|async"&gt;
-    &lt;/starship-list&gt;
-  &lt;/div&gt;
-</code></pre>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;sidebar</span> <span class="na">class=</span><span class="s">"sidebar"</span> 
+    <span class="na">[models]=</span><span class="s">"fixedModels"</span> 
+    <span class="na">[numberOfPassengers]=</span><span class="s">"numberOfPassengers$|async"</span>
+  <span class="nt">&gt;</span>
+  <span class="nt">&lt;/sidebar&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"main"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;starship-list</span> 
+        <span class="na">[starships]=</span><span class="s">"filteredResults$|async"</span>
+        <span class="na">[loading]=</span><span class="s">"loading$|async"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/starship-list&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
 
-<p>So after step 2 we have found the following presentation streams: <code>numberOfPassengers$</code>, <code>filteredResults$</code> and <code>loading$</code>.</p>
+<p>So after step 2 we have found the following presentation streams: <code class="language-plaintext highlighter-rouge">numberOfPassengers$</code>, <code class="language-plaintext highlighter-rouge">filteredResults$</code> and <code class="language-plaintext highlighter-rouge">loading$</code>.</p>
 
 <h3 id="starting-with-the-sip-diagram">Starting with the SIP diagram</h3>
 
@@ -209,14 +220,14 @@ We need the number of passengers, the starships that need to be shown and whethe
 
 <p><img src="/assets/images/posts/sip-principle/sp.png" alt="Source streams, presentation streams" /></p>
 
-<p>The goal is to calculate the presentation streams, based on the source streams. There are 2 presentation streams that we need to calculate: <code>filteredResults$</code> and <code>loading$</code>. We don’t need to calculate <code>numberOfPassengers$</code> since it’s the same stream as the source stream.</p>
+<p>The goal is to calculate the presentation streams, based on the source streams. There are 2 presentation streams that we need to calculate: <code class="language-plaintext highlighter-rouge">filteredResults$</code> and <code class="language-plaintext highlighter-rouge">loading$</code>. We don’t need to calculate <code class="language-plaintext highlighter-rouge">numberOfPassengers$</code> since it’s the same stream as the source stream.</p>
 
-<p>Let’s start with the <code>filteredResults$</code>. The <code>filteredResults$</code> is dependent on <code>searchTerm$</code>, <code>selectedModel$</code>, <code>randomModel$</code> and <code>numberOfPassengers$</code>. To make this calculation easier we can use intermediate streams.</p>
+<p>Let’s start with the <code class="language-plaintext highlighter-rouge">filteredResults$</code>. The <code class="language-plaintext highlighter-rouge">filteredResults$</code> is dependent on <code class="language-plaintext highlighter-rouge">searchTerm$</code>, <code class="language-plaintext highlighter-rouge">selectedModel$</code>, <code class="language-plaintext highlighter-rouge">randomModel$</code> and <code class="language-plaintext highlighter-rouge">numberOfPassengers$</code>. To make this calculation easier we can use intermediate streams.</p>
 
 <h3 id="intermediate-streams">Intermediate streams</h3>
 
 <p>Intermediate streams are streams that are used to make the bridge between the source streams and presentation streams easier.
-Let’s create a <code>query$</code> stream and a <code>results$</code> stream to make the calculation easier.</p>
+Let’s create a <code class="language-plaintext highlighter-rouge">query$</code> stream and a <code class="language-plaintext highlighter-rouge">results$</code> stream to make the calculation easier.</p>
 
 <p><img src="/assets/images/posts/sip-principle/sip1.png" alt="SIP 1" /></p>
 
@@ -224,33 +235,33 @@ Let’s create a <code>query$</code> stream and a <code>results$</code> stream t
 
 <h4 id="calculating-the-query">Calculating the query$</h4>
 
-<p>The first intermediate stream that we have to create is the <code>query$</code> which is simply a merge from the <code>searchTerm$</code>, <code>selectedModel$</code> and <code>randomModel$</code>.</p>
+<p>The first intermediate stream that we have to create is the <code class="language-plaintext highlighter-rouge">query$</code> which is simply a merge from the <code class="language-plaintext highlighter-rouge">searchTerm$</code>, <code class="language-plaintext highlighter-rouge">selectedModel$</code> and <code class="language-plaintext highlighter-rouge">randomModel$</code>.</p>
 
 <p><img src="/assets/images/posts/sip-principle/query.png" alt="Query" /></p>
 
-<p>As we can see these 3 streams are being merged into one new <code>query$</code>. We don’t have to worry about when a user searches or selects a model, or even requests a random model. We only care about that simple stream of data, the <code>query$</code>.</p>
+<p>As we can see these 3 streams are being merged into one new <code class="language-plaintext highlighter-rouge">query$</code>. We don’t have to worry about when a user searches or selects a model, or even requests a random model. We only care about that simple stream of data, the <code class="language-plaintext highlighter-rouge">query$</code>.</p>
 
 <h4 id="calculating-the-results">Calculating the results$</h4>
 
-<p>Every time the <code>query$</code> gets a new value we want to fetch data from the API. For that we will use the <code>switchMap</code> operator.</p>
+<p>Every time the <code class="language-plaintext highlighter-rouge">query$</code> gets a new value we want to fetch data from the API. For that we will use the <code class="language-plaintext highlighter-rouge">switchMap</code> operator.</p>
 
 <p><img src="/assets/images/posts/sip-principle/results.png" alt="Results" /></p>
 
 <h4 id="calculating-filteredresults">Calculating filteredResults$</h4>
 
-<p>We are ready to finish up the <code>filteredResults$</code> stream.
-If we look back at the previous SIP diagram we can see that we can create that stream by combining the <code>results$</code> and the <code>numberOfPassengers$</code>.</p>
+<p>We are ready to finish up the <code class="language-plaintext highlighter-rouge">filteredResults$</code> stream.
+If we look back at the previous SIP diagram we can see that we can create that stream by combining the <code class="language-plaintext highlighter-rouge">results$</code> and the <code class="language-plaintext highlighter-rouge">numberOfPassengers$</code>.</p>
 
 <p><img src="/assets/images/posts/sip-principle/filteredResults.png" alt="Filtered results" /></p>
 
 <h4 id="the-loading">The loading$</h4>
 
-<p>The next presentation stream that we want to create is called the <code>loading$</code>. Let’s update the SIP diagram accordingly. The <code>loading$</code> is based on the <code>query$</code> and the <code>results$</code>.</p>
+<p>The next presentation stream that we want to create is called the <code class="language-plaintext highlighter-rouge">loading$</code>. Let’s update the SIP diagram accordingly. The <code class="language-plaintext highlighter-rouge">loading$</code> is based on the <code class="language-plaintext highlighter-rouge">query$</code> and the <code class="language-plaintext highlighter-rouge">results$</code>.</p>
 
 <p><img src="/assets/images/posts/sip-principle/sip2.png" alt="sip 2" /></p>
 
-<p>Every time the <code>query$</code> gets a new value the <code>loading$</code> should get the value <code>true</code>. Everytime the <code>result$</code> gets a new value the <code>loading$</code> should get the value <code>false</code>.
-So if we map every value of the <code>query$</code> to <code>true</code> and if we map every value of the <code>results$</code> to <code>false</code>, and merge those 2, we have created our <code>loading$</code> stream.</p>
+<p>Every time the <code class="language-plaintext highlighter-rouge">query$</code> gets a new value the <code class="language-plaintext highlighter-rouge">loading$</code> should get the value <code class="language-plaintext highlighter-rouge">true</code>. Everytime the <code class="language-plaintext highlighter-rouge">result$</code> gets a new value the <code class="language-plaintext highlighter-rouge">loading$</code> should get the value <code class="language-plaintext highlighter-rouge">false</code>.
+So if we map every value of the <code class="language-plaintext highlighter-rouge">query$</code> to <code class="language-plaintext highlighter-rouge">true</code> and if we map every value of the <code class="language-plaintext highlighter-rouge">results$</code> to <code class="language-plaintext highlighter-rouge">false</code>, and merge those 2, we have created our <code class="language-plaintext highlighter-rouge">loading$</code> stream.</p>
 
 <p>Let’s create one last marble diagram for that.
 <img src="/assets/images/posts/sip-principle/loading.png" alt="Loading" /></p>
@@ -258,8 +269,8 @@ So if we map every value of the <code>query$</code> to <code>true</code> and if 
 <h3 id="what-do-we-need-to-share">What do we need to share?</h3>
 
 <p>We have came a long way, we have created the complete SIP diagram. We have visualized all the streams by creating marble diagrams, but if we look closely at the SIP diagram we might notice a problem.
-There are 2 arrows leaving the <code>query$</code> and 2 arrows leaving the <code>results$</code>. Every arrow stands for a subscription on the observable where the arrow starts.
-When working with cold observables, the producer function for that observable is executed every time we subscribe. Since <code>query$</code> is a hot stream, it doesn’t really matter, but <code>results$</code> will trigger an HTTP call every time it gets subscribed to. In short: the subscription on <code>loading$</code> and <code>filteredResults$</code> will trigger a subscription on <code>results$</code> twice. The SIP diagram show us which subscriptions need to be shared.</p>
+There are 2 arrows leaving the <code class="language-plaintext highlighter-rouge">query$</code> and 2 arrows leaving the <code class="language-plaintext highlighter-rouge">results$</code>. Every arrow stands for a subscription on the observable where the arrow starts.
+When working with cold observables, the producer function for that observable is executed every time we subscribe. Since <code class="language-plaintext highlighter-rouge">query$</code> is a hot stream, it doesn’t really matter, but <code class="language-plaintext highlighter-rouge">results$</code> will trigger an HTTP call every time it gets subscribed to. In short: the subscription on <code class="language-plaintext highlighter-rouge">loading$</code> and <code class="language-plaintext highlighter-rouge">filteredResults$</code> will trigger a subscription on <code class="language-plaintext highlighter-rouge">results$</code> twice. The SIP diagram show us which subscriptions need to be shared.</p>
 
 <p><img src="/assets/images/posts/sip-principle/sip3.png" alt="sip3" /></p>
 
@@ -274,7 +285,7 @@ When working with cold observables, the producer function for that observable is
 
 <p>If you check the code inside the StackBlitz, you might be surprised about the amount of lines of code that we need to create this application. We have only a few lines of real logic, and we have covered most corner cases by thinking reactive.</p>
 
-<p>Because of the use of the <code>async</code> pipe we don’t need to unsubscribe from any stream manually since the <code>async</code> pipe does that for us.</p>
+<p>Because of the use of the <code class="language-plaintext highlighter-rouge">async</code> pipe we don’t need to unsubscribe from any stream manually since the <code class="language-plaintext highlighter-rouge">async</code> pipe does that for us.</p>
 
 <h2 id="special-thanks">Special thanks</h2>
 
@@ -288,81 +299,43 @@ When working with cold observables, the producer function for that observable is
   <li><a href="https://twitter.com/webdave_de">David Müllerchen</a></li>
 </ul>
 
-    </div>
+  </div><a class="u-url" href="/the-sip-principle/" hidden></a>
 </article>
 
-
-<div class="author">
-
-    <div class="media-object">
-        <img src="/img/brecht.png" alt="Brecht Billiet">
-        <div class="media-bd">
-            <span class="written h5">Written by</span>
-            <h4><a href="http://brecht.io">Brecht Billiet</a></h4>
-            <p>Software architect/trainer/coach/speaker/blogger</p>
-        </div>
-    </div>
-
-</div>
-
-
-
-<div class="comments">
-    <h2>Comments</h2>
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'brechtbilliet'; // required: replace example with your forum shortname
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-
-
-            </div>
-            
-        </main>
-        
-        <!-- Start Footer -->
-<footer class="main-footer">
-    <div class="container">
-        <ul class="social">
-            <li><a href="http://twitter.com/brechtbilliet"><svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg></a></li>
-            
-            
-            
-            <li><a href="http://github.com/brechtbilliet"><svg class="icon icon-github"><use xlink:href="#icon-github"></use></svg></a></li>
-            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426"><svg class="icon icon-linkedin"><use xlink:href="#icon-linkedin"></use></svg></a></li>
-            
-            
-            <li><a href="/feed.xml"><svg class="icon icon-feed"><use xlink:href="#icon-feed"></use></svg></a></li>
+                </div>
+            </main>
+        </div><div class="footer">
+    <div class="footer__inner"><h3>Let's get to know each other!</h3>
+        <ul class="footer__social-icons">
+            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon"><i class="fa-brands fa-linkedin"></i></a></li>
+            <li><a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon"><i
+                    class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="mailto://billietbrecht@gmail.com" target="blank" class="footer__social-icon"><i
+                    class="fa-solid fa-envelope-open"></i></a></li>
         </ul>
-        <small>© Blog Brecht Billiet - All rights reserved </small>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
     </div>
-</footer>
-<!-- End Footer -->
+</div>
+</div>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({"notice_banner_type":"simple","consent_type":"implied","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"brecht.io"});
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
 
-
-    </div>
-    
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        
-        ga('create', 'UA-43296458-5', 'auto');
-        ga('send', 'pageview');
-    </script>
-
-    <script src="/js/all.min.js"></script>
+    gtag('config', 'UA-43296458-4');
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator website</a></noscript>
 </body>
+
 </html>

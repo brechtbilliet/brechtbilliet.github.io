@@ -1,19 +1,13 @@
-<!-- Start Footer -->
-<footer class="main-footer">
-    <div class="container">
-        <ul class="social">
-            {% if site.twitter_username %}<li><a href="{{ site.twitter_username }}"><svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg></a></li>{% endif %}
-            {% if site.facebook_username %}<li><a href="{{ site.facebook_username }}"><svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg></a></li>{% endif %}
-            {% if site.youtube_username %}<li><a href="{{ site.youtube_username }}"><svg class="icon icon-youtube"><use xlink:href="#icon-youtube"></use></svg></a></li>{% endif %}
-            {% if site.instagram_username %}<li><a href="{{ site.instagram_username }}"><svg class="icon icon-instagram"><use xlink:href="#icon-instagram"></use></svg></a></li>{% endif %}
-            {% if site.github_username %}<li><a href="{{ site.github_username }}"><svg class="icon icon-github"><use xlink:href="#icon-github"></use></svg></a></li>{% endif %}
-            {% if site.linkedin_username %}<li><a href="{{ site.linkedin_username }}"><svg class="icon icon-linkedin"><use xlink:href="#icon-linkedin"></use></svg></a></li>{% endif %}
-            {% if site.skype_username %}<li><a href="{{ site.skype_username }}"><svg class="icon icon-skype"><use xlink:href="#icon-skype"></use></svg></a></li>{% endif %}
-            {% if site.behance_username %}<li><a href="{{ site.behance_username }}"><svg class="icon icon-behance"><use xlink:href="#icon-behance"></use></svg></a></li>{% endif %}
-            <li><a href="{{ "/feed.xml" | prepend: site.baseurl }}"><svg class="icon icon-feed"><use xlink:href="#icon-feed"></use></svg></a></li>
+<div class="footer">
+    <div class="footer__inner"><h3>Let's get to know each other!</h3>
+        <ul class="footer__social-icons">
+            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon"><i class="fa-brands fa-linkedin"></i></a></li>
+            <li><a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon"><i
+                    class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="mailto://billietbrecht@gmail.com" target="blank" class="footer__social-icon"><i
+                    class="fa-solid fa-envelope-open"></i></a></li>
         </ul>
-        <small>{% if site.copyright %}{{ site.copyright }} {% endif %}</small>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
     </div>
-</footer>
-<!-- End Footer -->
-
+</div>

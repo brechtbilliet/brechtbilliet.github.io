@@ -1,71 +1,28 @@
 ---
 layout: default
 ---
-<style>
-    @media (max-width: 1100px) {
-        .followme {
-            display: none;
-        }
-    }
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-    @media (min-width: 1100px) {
-        .followme {
-            background: #f1f1f1;
-            position: fixed;
-            margin-left: 786px;
-            padding: 20px;
-        }
-    }
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {{ page.date | date: date_format }}
+      </time>
+      {%- if page.author -%}
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
+      {%- endif -%}</p>
+  </header>
 
-    .hire-me-button {
-        background-color: #2aabbf;
-        color: #fff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 15px;
-    }
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
 
-</style>
-<div class="followme">
-    <h3>Follow me on twitter</h3>
-    <a href="https://twitter.com/brechtbilliet" class="twitter-follow-button"
-       data-size="large"
-       data-show-count="false">Follow @brechtbilliet</a>
-    <script
-            async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <br/>
-    <br/>
-    <a href="https://brecht.io" class="hire-me-button">Hire me</a>
-</div>
-<article class="post">
-    <header class="post-header">
-        <h2>{{ page.title }}</h2>
-        <span class="date">{{ page.date | date: "%b %-d, %Y" }}</span>
-    </header>
-    {% if page.image %}
-    <img src="{{ site.baseurl }}/img/{{ page.image }}" alt="Placeholder">
-    {% endif %}
-    <div class="post-content">
-        {{ content }}
-    </div>
+  {%- if site.disqus.shortname -%}
+    {%- include disqus_comments.html -%}
+  {%- endif -%}
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>
-
-{% if site.author_name %}
-<div class="author">
-
-    <div class="media-object">
-        <img src="{{ site.baseurl }}/img/{{ site.author_image }}" alt="{{ site.author_name }}">
-        <div class="media-bd">
-            <span class="written h5">Written by</span>
-            <h4><a href="{{ site.author_url }}">{{ site.author_name }}</a></h4>
-            <p>{{ site.author_bio }}</p>
-        </div>
-    </div>
-
-</div>
-{% endif %}
-
-{% if site.disqus-shortname %}
-{% include disqus.html %}
-{% endif %}
-
