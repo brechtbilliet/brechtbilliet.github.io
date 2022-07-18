@@ -12,34 +12,34 @@ disqus: true
 
 ## The why
 
-The people from [builder.io](https://builder.io) have done an awesome job in writing [Qwik](https://qwik.builder.io/), amongst an arsenal of other great tools.
-I started playing with [Qwik](https://qwik.builder.io/) some time ago and decided to rewrite my website [brecht.io](https://brecht.io) in that specific technology. 
-I'm also planning to work on more complex apps but I wanted to see that one in production first.
-At the moment I started reworking my website there wasn't a tool that took care of routing, or at least not how I am used to do it in other client-side technologies.
-I'm used to work with SPA routing in angularjs, Angular and react and I wanted to explore how to use these principles in [Qwik](https://qwik.builder.io/) applications.
+The people from [builder.io](https://builder.io) have done an awesome job on writing [Qwik](https://qwik.builder.io/), amongst an arsenal of other great tools.
+I started playing with [Qwik](https://qwik.builder.io/) some time ago and decided to rewrite my website [brecht.io](https://brecht.io) in this technology. 
+I'm also planning to work on more complex apps but I wanted to see my website in production first.
+At the moment I started reworking my website there wasn't a tool that took care of (SPA) routing, or at least not how I am used to do it in other client-side technologies.
+I'm used to work with SPA routing in [Angularjs](https://angularjs.org/), [Angular](https://angular.io) and [React](https://reactjs.org/) and I wanted to explore how to use these routing principles in [Qwik](https://qwik.builder.io/) applications.
 
 There is this thing called Qwik-city which is crazy fast and offers MPA (multiple page application) routing.
 At the moment of writing there was no full-fledged clientside router that offered SPA (single page application) routing.
-Great news for me, because being the nerd that I am I decided to dive deeper and write my own SPA router for [Qwik](https://qwik.builder.io/). It has been an interesting journey
-and it made me appreciate [Qwik](https://qwik.builder.io/) even better and helped me think [Qwik](https://qwik.builder.io/).
+Great news for me, because being the nerd that I am, I decided to dive deeper and write a custom SPA router for [Qwik](https://qwik.builder.io/). It has been an interesting journey
+and it made me appreciate [Qwik](https://qwik.builder.io/) even better and helped me "think" [Qwik](https://qwik.builder.io/).
 
 Now, before I continue, let's allign on the differences between MPA-routing and SPA-routing. 
-In short: with MPA-routing the page does a full page refresh and with
+In short: When we talk about MPA-routing the page does a full page refresh on every navigation and with
 SPA-routing we use the `history` property of the `window` object to manage the routing state. So for SPA routing the page does not refresh completely and the goal
-of that type of routing is to only refresh parts of the page. Looking back at older technologies SPA routing was way faster but with Qwik city
-the difference in performance compared to SPA routing might be trivial.
+of that type of routing is to only refresh parts of the page and not re-render the entire thing. When we look back at older technologies SPA-routing used to be way faster but with Qwik city
+the difference in performance compared to SPA-routing might be trivial.
 
 ### Now why am I writing this?
 
-Well because... it's a cool exercise... I learned a lot, I hit walls I didn't expect and it helped me understand certain pain points I experienced with routers in other frameworks.
-Well that's not enough, right? No, that is not my only driving factor for demystifying SPA-routing in [Qwik](https://qwik.builder.io/).
-I believe SPA routers do have quite a few benefits. I believe in Qwik and I wanted to see it work with SPA-routing.
+Well because... it's a cool exercise... I learned a lot, I have hit walls I didn't expect to hit and it helped me understand certain pain points I experienced with routers in other frameworks.
+But that's not enough, right? No, that is not my only driving factor for demystifying SPA-routing in [Qwik](https://qwik.builder.io/).
+I believe SPA routers do have quite a few benefits. I believe in Qwik and I think it would be even more awesome to see it work with SPA-routing.
 
 #### State
 
 One of the advantages of a SPA-router is that we don't loose application state... 
-Since the instance of your application is only created once and kept alive we can keep the state alive in our application.
-You can not only share state between components, but also between pages. 
+Since the instance of our application is only created once and kept alive we can keep the state alive in our application.
+We can not only share state between components, but also between pages. 
 Some users like their sidebar collapsed, others don't. But it's kind of annoying when we collapse a sidebar, and we navigate to another page
 that the sidebar jumps open again because state is not shared.
 
@@ -47,22 +47,22 @@ that the sidebar jumps open again because state is not shared.
 
 I'm a big fan of putting state in routes. Not all state belongs there but keeping state in routes gives us some benefits:
 
-- We can bookmark a page without losing that state
-- We can copy/paste routes and share them with other people without losing that state
-- It's free to manage, no complex frameworks, no complexity regarding state invalidation etc
-- We can use the browser navigation buttons to go back to previous states
+- We can bookmark a page without losing that state.
+- We can copy/paste routes and share them with other people without losing that state that is kept in that route.
+- It's free to manage, no need for complex frameworks, no complexity regarding state invalidation etc...
+- We can use the browser navigation buttons to go back to previous and next states.
 
 #### Usability 
 
-Having pages refresh on every route change can cause a certain discomfort when it comes to usability of our application.
+Having pages refresh on every route-change can cause a certain discomfort when it comes to the usability of our application.
 
-- Scroll positions being forgotten. The application scrolls back to the top on refresh
-- Cursor position being forgotten.
-- Selected text getting unselected
-- A video call that is being held or even a movie we are watching would be closed on refresh
-- Background sound being interrupted
-- Realtime connections being closed and reopend
-- Open dialogs, snackbars, banners and success messages are hard to show/keep alive on full refresh
+- Scroll positions being forgotten on refresh. The application scrolls back to the top on refresh
+- Cursor position being forgotten on refresh.
+- Selected text getting unselected on refresh.
+- A video call that is being held or even a movie we are watching would be closed on refresh?
+- Background sound being interrupted on refresh.
+- Realtime-connections being closed and reopend on refresh
+- Open dialogs, snackbars, banners and success messages are hard to show/keep alive on full refresh.
   Eg: Sending the contents of a form in page A, and navigating to page B on success. How and when would you show a success message?
 
 #### Performance
@@ -81,22 +81,22 @@ We don't have to keep state of that dialog, we just use the router outlet to ren
 
 #### Eventing
 
-When we have SPA routing it is nice that we can get notified when something in the url changes.
-Let's pretend we are in a user management page with search functionality and we want to make the search bookmarkable. 
+When we have SPA-routing it is nice that we can get notified when something in the url changes.
+Let's pretend we are in a user management page with search functionality and we want to make the search query bookmarkable. 
 In that case when the user types 'Brecht' we want the url to change to `my-website/users/search?q=Brecht` so we can bookmark it.
-We don't want to refresh the entire page every time the user types a character right (that would result in cursor issues with the search input)?
+We don't want to refresh the entire page every time the user types a character right (that would result in cursor issues with the search input)? Think about debouncing as well...
 We want to get notified when that specific `q` parameter changes. When that parameter changes we perform an XHR call and on success we rerender part of the page
-with the results we have just retrieved. You know what's even more awesome? When we do refresh the page we get the exact same result but rendered on
+with the results we have just retrieved. You know what's even more awesome? When we do a full refresh of the page we get the exact same result but rendered on
 the server because that's how awesome Qwik is.
 
-## Writing an SPA-router for Qwik
+## Writing a SPA-router for Qwik
 
-This version of the router is very early stage and it could use some polishing, but the principles are there.
+This version of the router is very early stage and it could use some polishing, but the principles are there. So let's go through the code together.
 
 ### The config
 
-This is where it all starts, we need to create a config file that maps paths to components. A path could contain params.
-And just like angular and nestjs we can use the `:` syntax.
+This is where it all starts, we need to create a config-file that maps paths to components. A path could contain params.
+And just like angular and nestjs we can use the `:` syntax to define params.
 ```typescript
 // routing/routing-types.ts
 export type RoutingConfigItem = {
@@ -124,10 +124,11 @@ export const routingConfig:RoutingConfig = [
 ]
 
 ```
+The base path `/` will resolve in the home page, the `users` path to the `<Users/>` component and the `users/:id` to the `<UserDetail/>` component
 
 ### The state
 
-Qwik provides us with a state mechanism. We want to project the state in the url inside Qwik state.
+[Qwik](https://qwik.builder.io/) provides us with a state mechanism. We want to project the state in the url inside [Qwik](https://qwik.builder.io/) state.
 First we need access to the url on the server. We need to pass the url to the `render` function.
 Then we need to pass it to the `<Root/>` component which passes it along to the `<App/>` component.
 That `<App/>` component will initialize the router with that url.
@@ -196,7 +197,7 @@ export function initializeRouter(url: string): RoutingState {
 export function getRoutingStateByPath(path: string): RoutingState {
     const url = new URL(path);
     const segments = url.pathname?.split('/');
-    segments.splice(0, 1);
+    segments.splice(0, 1); // remove empty segment
     return {
         url: path,
         segments: segments
@@ -209,14 +210,14 @@ The first part of the state is done, we just have to initialize the router in th
 ```typescript
 // containers/app/app.tsx
 export const App = component$((opts: { url: string | undefined }) => {
-    const routingState = initializeRouter(opts.url);
+    initializeRouter(opts.url);
     ...
 });
 ```
 
-All good now we want to actually set the router state when the route changes. There are 2 scenarios:
-- The user clicks on a link and wants to navigate: `navigateTo()`
-- The browser navigation buttons are being used: `listenToRouteChanges()`
+All good! Now we want to actually set the router state when the route changes. There are 2 scenarios:
+- The user clicks on a link and wants to navigate towards a page in our app: `navigateTo()`
+- The browser navigation buttons are being used, and we want to listen to those events: `listenToRouteChanges()`
 
 This is functionality we only want to run in the browser, not on the server
 ```typescript
@@ -264,11 +265,12 @@ export function setRoutingState(routingState: RoutingState, path: string): void 
 
 ### The router outlet
 
-We have a configuration object, we provided router state, we can get router state and we can listen to changes that will automatically set the router state.
-Besides that we also have a `navigateTo` function that will not reload but update the `history` object.
-Now we want to render the right components inside a router outlet.
+We have a configuration object, we provided router state, we can get that router state and we can listen to changes that will automatically set the router state.
+Besides that we also have a `navigateTo()` function that will not reload the page but update the `history` object.
+Now we want to render the right components for the right path inside a router outlet.
 
 Our app component looks like this:
+
 ```typescript
 // containers/app/app.tsx
 export const App = component$((opts: { url: string | undefined }) => {
@@ -374,9 +376,8 @@ The `navigateTo()` requires the routingState, so we use the `useContext` that [Q
 // routing/link.tsx
 import {component$, Slot, useContext} from '@builder.io/qwik';
 import {navigateTo} from './routing';
-import {RoutingState} from './routing-state';
 
-export const Link = component$((opts: { path: string, routingState: RoutingState }) => {
+export const Link = component$((opts: { path: string }) => {
     const routingState = useContext(ROUTING);
     const {path} = opts;
     return (
@@ -444,12 +445,15 @@ export function getSearchParams(routingState: RoutingState): URLSearchParams {
 }
 ```
 
+
 ## Wrapping up
 
-That's it we have a complete clientside SPA router with very limited code that works with lazy loading because
+That's it!! We have a complete clientside SPA router with very limited code that works with lazy loading because
 [Qwik](https://qwik.builder.io/) provides that out of the box. It was a very pleasant journey for me and I sure learned a lot.
+Chances are big the following of my articles will be [Qwik](https://qwik.builder.io/) related.
+You can find the source code of this demo [here](https://github.com/brechtbilliet/qwik-spa-routing-demo/tree/main/spa-routing):
 I hope you found it interesting as well!
-You can find the source code of this demo here:
+
 
 Special thanks to the reviewers:
 - x
