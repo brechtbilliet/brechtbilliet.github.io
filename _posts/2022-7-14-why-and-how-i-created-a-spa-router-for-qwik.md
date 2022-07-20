@@ -13,10 +13,10 @@ disqus: true
 ## The why
 
 The people from [builder.io](https://builder.io) have done an awesome job writing [Qwik](https://qwik.builder.io/), and their arsenal of other great tools.
-I started playing with [Qwik](https://qwik.builder.io/) some time ago and decided to rewrite my website [brecht.io](https://brecht.io) in it. 
+I started playing with Qwik some time ago and decided to rewrite my website [brecht.io](https://brecht.io) in it. 
 (I'm also planning to use Qwik in more complex apps, but I wanted to see my website in production first.)
 When I started reworking my website, there wasn't a tool that took care of in-page SPA (single page application) routing &mdash; or at least not how I'm used to it from other client-side technologies.
-I'm used to working with SPA routing in [AngularJS](https://angularjs.org/), [Angular](https://angular.io), and [React](https://reactjs.org/), so I wanted to explore how their routing principles in Qwik applications.
+I'm used to working with SPA routing in [AngularJS](https://angularjs.org/), [Angular](https://angular.io), and [React](https://reactjs.org/), so I wanted to explore their routing principles in Qwik applications.
 
 There is this thing, called Qwik-city, which is crazy fast and offers MPA (multiple page application) routing.
 At the time of writing, Qwik had no full-fledged client-side router that offered SPA routing.
