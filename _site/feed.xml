@@ -1,4 +1,791 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://blog.brecht.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.brecht.io/" rel="alternate" type="text/html" /><updated>2022-07-14T16:47:59+02:00</updated><id>https://blog.brecht.io/feed.xml</id><title type="html">Frontend software architect living in Belgium</title><subtitle></subtitle><entry><title type="html">How covid affected StrongBrew</title><link href="https://blog.brecht.io/how-covid-affected-strongbrew/" rel="alternate" type="text/html" title="How covid affected StrongBrew" /><published>2020-11-03T00:00:00+01:00</published><updated>2020-11-03T00:00:00+01:00</updated><id>https://blog.brecht.io/how-covid-affected-strongbrew</id><content type="html" xml:base="https://blog.brecht.io/how-covid-affected-strongbrew/"><![CDATA[<h2 id="covid">Covid</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-08-03T18:12:46+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Frontend software architect living in Belgium</title><subtitle></subtitle><entry><title type="html">Why and how I created a SPA router for Qwik</title><link href="http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/" rel="alternate" type="text/html" title="Why and how I created a SPA router for Qwik" /><published>2022-08-03T00:00:00+02:00</published><updated>2022-08-03T00:00:00+02:00</updated><id>http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik</id><content type="html" xml:base="http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/"><![CDATA[<h2 id="the-why">The why</h2>
+
+<p>The people from <a href="https://builder.io">builder.io</a> have done an awesome job writing <a href="https://qwik.builder.io/">Qwik</a>, and their arsenal of other great tools.
+I started playing with Qwik some time ago and decided to rewrite my website <a href="https://brecht.io">brecht.io</a> in it. 
+(I’m also planning to use Qwik in more complex apps, but I wanted to see my website in production first.)
+When I started reworking my website, there wasn’t a tool that took care of in-page SPA (single page application) routing — or at least not how I’m used to it from other client-side technologies.
+I’m used to working with SPA routing in <a href="https://angularjs.org/">AngularJS</a>, <a href="https://angular.io">Angular</a>, and <a href="https://reactjs.org/">React</a>, so I wanted to explore their routing principles in Qwik applications.</p>
+
+<p>There is this thing, called Qwik-city, which is crazy fast and offers MPA (multiple page application) routing.
+At the time of writing, Qwik had no full-fledged client-side router that offered SPA routing.
+Great news for me, the nerd that I am, so I decided to dive deeper and write a custom SPA router for Qwik. It has been an interesting journey
+that made me appreciate Qwik even better and helped me “think in” Qwik.</p>
+
+<p>Now, before I continue, let’s align on the differences between MPA-routing and SPA-routing. 
+In short: In MPA-routing, the page does a full page refresh on every navigation.
+SPA-routing uses the <code class="language-plaintext highlighter-rouge">history</code> property of the <code class="language-plaintext highlighter-rouge">window</code> object to manage routing state. So for SPA-routing, the page does not refresh completely and the goal
+is to only re-render parts of the page. When we look back at older technologies, SPA-routing used to be way faster, but with Qwik-city
+the difference in performance might be trivial.</p>
+
+<h3 id="now-why-am-i-writing-this">Now why am I writing this?</h3>
+
+<p>Well, because… it’s a cool exercise… I learned a lot, I hit walls I didn’t expect to hit, and it helped me understand pain points I experienced with routers in other frameworks.
+But that’s not enough, right? No, that is not my only driving factor for demystifying SPA-routing in Qwik.
+I believe SPA routers do have quite a few benefits. I believe in Qwik, and I think it would be even more awesome to see it work with SPA-routing.</p>
+
+<h4 id="state">State</h4>
+
+<p>One of the advantages of a SPA-router is that we don’t lose application state… 
+Since the instance of our application is only created once and kept alive, we can keep the state alive in our application.
+We can not only share state between components, but also between pages. 
+Some users like their sidebar collapsed, others don’t. It’s kind of annoying when you collapse a sidebar, then navigate to another page
+where the sidebar jumps open again because state is not shared.</p>
+
+<h4 id="the-power-of-routing-state">The power of routing state</h4>
+
+<p>I’m a big fan of putting state (params and searchParams) in routes. Not all state belongs there, but keeping state in routes gives us some benefits:</p>
+
+<ul>
+  <li>We can bookmark a page without losing that state.</li>
+  <li>We can copy/paste URLs to share them with other people without losing that state that is kept in that route.</li>
+  <li>It’s free to manage, no need for complex frameworks, no complexity regarding state invalidation, etc. <!-- This may be true at first, but the Navigation History proposal summarizes some cases where it stops being true: https://github.com/WICG/navigation-api/blob/main/README.md#summary --></li>
+  <li>We can use the browser navigation buttons to go back to previous and next states.</li>
+</ul>
+
+<p>Do note: When using MPA-routing we can also put the state in the url, but the more state that would change in the url, the more page refreshes we would have
+which would result in less usability.</p>
+
+<h4 id="usability">Usability</h4>
+
+<p>Having pages refresh on every route change can cause certain discomforts to the usability of our application.</p>
+
+<ul>
+  <li>Cursor position being forgotten on refresh.</li>
+  <li>Selected text getting unselected on refresh.</li>
+  <li>A video call that is being held or even a movie we are watching would be closed on refresh</li>
+  <li>Background sound being interrupted on refresh.</li>
+  <li>Open dialogs, snackbars, banners and success messages are hard to show/keep alive on full refresh. 
+Eg: Sending the contents of a form in page A, and navigating to page B on success. How and when would you show a success message? 
+MPA frameworks often call this “flash” messaging, but it’s easier to manage in a SPA.</li>
+</ul>
+
+<h4 id="performance">Performance</h4>
+
+<ul>
+  <li>We only want to load stuff we need, that’s the entire idea behind Qwik. Does it makes sense to reload the same DOM when we already have it?</li>
+  <li>Does it make sense to re-render part of the DOM that is already rendered? E.g the menu.</li>
+  <li>Qwik has lazy-loading right out of the box! It just works and it works awesome! Why not use it for routing, too?</li>
+</ul>
+
+<h4 id="architecture">Architecture</h4>
+
+<p>A router outlet is basically a component that will render a page in some kind of placeholder: the DOM of the entire page stays the same, but
+what’s inside the router outlet gets updated. Router outlets can be quite powerful, especially if you can nest them like we can with the Angular router.
+The routing system I wrote does not support multiple nested router outlets yet, but when we have multiple router outlets we can use them to 
+optimise our architecture. We could attach a dialog to a route so we can close that dialog by clicking the native browser Back button.
+We don’t have to keep state of that dialog, we just use the router outlet to render a component and destroy it when it needs to be destroyed.</p>
+
+<h4 id="eventing">Eventing</h4>
+
+<p>When we have SPA-routing, it’s nice to be notified when something in the URL changes.
+Let’s pretend we are in a user management page with search functionality, and we want to make the search query bookmarkable. 
+In that case when the user types ‘Brecht’ we want the URL to change to <code class="language-plaintext highlighter-rouge">/users/search?q=Brecht</code> so we can bookmark it.
+We don’t want to refresh the entire page every time the user types a character, right? That would result in cursor issues with the search input. Think about debouncing as well…
+We want to get notified when that specific <code class="language-plaintext highlighter-rouge">q</code> parameter changes. When it does, we perform an XHR call, and on success we rerender part of the page
+with the results. You know what’s even more awesome? If we do have a full refresh of the page, we get the exact same result rendered on
+the server, because that’s how awesome Qwik is.</p>
+
+<h2 id="writing-a-spa-router-for-qwik">Writing a SPA-router for Qwik</h2>
+
+<p>This version of the router is very early stage and could use polishing, but the principles are there. So let’s go through the code together.</p>
+
+<h3 id="the-config">The config</h3>
+
+<p>This is where it all starts, we need to create a config file that maps paths to components. A path can contain params.
+Like Angular and Nest, we can use the <code class="language-plaintext highlighter-rouge">:</code> syntax to define params.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing-types.ts</span>
+<span class="k">export</span> <span class="kd">type</span> <span class="nx">RoutingConfigItem</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">component</span><span class="p">:</span> <span class="kr">any</span><span class="p">;</span>
+    <span class="nl">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="kd">type</span> <span class="nx">RoutingConfig</span> <span class="o">=</span> <span class="nx">RoutingConfigItem</span><span class="p">[];</span>
+</code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing-config.tsx</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">routingConfig</span><span class="p">:</span><span class="nx">RoutingConfig</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">Home</span><span class="o">/&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">Users</span><span class="o">/&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users/:id</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">UserDetail</span><span class="o">/&gt;</span>
+    <span class="p">}</span>
+  
+<span class="p">]</span>
+
+</code></pre></div></div>
+<p>The base path <code class="language-plaintext highlighter-rouge">/</code> will resolve in the home page, the <code class="language-plaintext highlighter-rouge">users</code> path to the <code class="language-plaintext highlighter-rouge">&lt;Users/&gt;</code> component, and the <code class="language-plaintext highlighter-rouge">users/:id</code> to the <code class="language-plaintext highlighter-rouge">&lt;UserDetail/&gt;</code> component.</p>
+
+<h3 id="the-state">The state</h3>
+
+<p>Qwik provides us with a state mechanism. We want to reflect the state in the URL to Qwik’s state.
+First we need to access the URL on the server, then pass it to the <code class="language-plaintext highlighter-rouge">render</code> function.
+Then we need to pass it to the <code class="language-plaintext highlighter-rouge">&lt;Root/&gt;</code> component, which passes it along to the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component.
+That <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component will initialize the router with the URL.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// entry.dev.tsx</span>
+<span class="p">...</span>
+<span class="nx">render</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="dl">''</span><span class="p">}</span><span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
+</span></code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// entry.ssr.tsx</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="nx">RenderOptions</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">renderToString</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span> <span class="k">as</span> <span class="kr">string</span> <span class="o">||</span> <span class="dl">''</span><span class="p">}</span> <span class="sr">/&gt;, </span><span class="err">{
+</span>    <span class="nx">manifest</span><span class="p">,</span>
+    <span class="p">...</span><span class="nx">opts</span><span class="p">,</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// root.tsx</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> 
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+      <span class="p">...</span>
+      <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">App</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span><span class="sr">/</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/body</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/html</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>So, what we just did here is ensure that the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component gets the URL passed to it in all cases. That’s all!
+Now let’s set up the state.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing-state.ts</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">createContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="c1">// we don't want to store `new URL()` because it is not serializable    </span>
+    <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span> 
+    <span class="nl">segments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[];</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">ROUTING</span> <span class="o">=</span> <span class="nx">createContext</span><span class="o">&lt;</span><span class="nx">RoutingState</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">Routing</span><span class="dl">'</span><span class="p">);</span>
+
+</code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.ts</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ROUTING</span><span class="p">,</span> <span class="nx">RoutingState</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing-state</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">useContextProvider</span><span class="p">,</span> <span class="nx">useStore</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// this one will be called by the &lt;App/&gt; component and initialize </span>
+<span class="c1">// the state once for the entire lifecycle of the application</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="c1">// create a store and state</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useStore</span><span class="o">&lt;</span><span class="nx">RoutingState</span><span class="o">&gt;</span><span class="p">(</span>
+        <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+    <span class="p">);</span>
+
+    <span class="nx">useContextProvider</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">routingState</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// this will retrieve the routingstate by the path (the current url)</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">segments</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">segments</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// remove empty segment </span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">url</span><span class="p">:</span> <span class="nx">path</span><span class="p">,</span>
+        <span class="nx">segments</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first part of the state is done, we just have to initialize the router in the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// containers/app/app.tsx</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="p">...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>All good! Now we want to actually set the router state when the route changes. There are 2 scenarios:</p>
+<ul>
+  <li>The user clicks on a link and wants to navigate towards a page in our app: <code class="language-plaintext highlighter-rouge">navigateTo()</code></li>
+  <li>The browser navigation buttons are being used, and we want to listen to those events: <code class="language-plaintext highlighter-rouge">listenToRouteChanges()</code></li>
+</ul>
+
+<p>This is functionality we only want to run in the browser, not on the server.
+We use <code class="language-plaintext highlighter-rouge">isServer</code> here, but we could also use <code class="language-plaintext highlighter-rouge">isBrowser</code>.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.ts</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">isServer</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik/build</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// safely get the window object</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getWindow</span><span class="p">():</span> <span class="nx">Window</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">typeof</span> <span class="nb">window</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">object</span><span class="dl">'</span> <span class="p">?</span> <span class="nb">window</span> <span class="p">:</span> <span class="kc">undefined</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// we don't actually navigate, but push a new state to</span>
+        <span class="c1">// the history object</span>
+        <span class="nx">getWindow</span><span class="p">()?.</span><span class="nx">history</span><span class="p">?.</span><span class="nx">pushState</span><span class="p">({</span><span class="na">page</span><span class="p">:</span> <span class="nx">path</span><span class="p">},</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">path</span><span class="p">);</span>
+        <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// when the navigation buttons are being used</span>
+        <span class="c1">// we want to set the routing state</span>
+        <span class="nx">getWindow</span><span class="p">()?.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">popstate</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">page</span><span class="p">;</span>
+            <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">oldUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">newUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">oldUrl</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">{</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">url</span><span class="p">}</span> <span class="o">=</span> <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">newUrl</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+    <span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span> <span class="o">=</span> <span class="nx">segments</span><span class="p">;</span>
+    <span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-router-outlet">The router outlet</h3>
+
+<p>We have a configuration object, we provided router state, we can get that router state, and we can listen to changes that will automatically set the router state.
+Besides that we also have a <code class="language-plaintext highlighter-rouge">navigateTo()</code> function that will update the <code class="language-plaintext highlighter-rouge">history</code> object instead of reloading the page.
+Now we want to render the right components for the right path inside a router outlet.</p>
+
+<p>Our app component looks like this:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// containers/app/app.tsx</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">section</span><span class="o">&gt;</span>
+            <span class="p">...</span> <span class="nx">here</span> <span class="nx">comes</span> <span class="nx">the</span> <span class="nx">menu</span>
+            <span class="o">&lt;</span><span class="nx">RouterOutlet</span><span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="sr">/section</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Now let’s create our <code class="language-plaintext highlighter-rouge">&lt;RouterOutlet/&gt;</code> component. We have the segments of the URL, and the routing config that we can map to a component.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/router-outlet.tsx</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ROUTING</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing-state</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">getMatchingConfig</span><span class="p">,}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">routingConfig</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../routing-config</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">(</span>
+    <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+        <span class="c1">// render the correct component</span>
+        <span class="k">return</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">getMatchingConfig()</code> function will translate the segments and config into the actual component that we want to render.
+This requires some logic so that it matches not only the right component, but also takes the params into account.
+Remember this piece of config?</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="nl">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users/:id</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">UserDetail</span><span class="o">/&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Let’s not dive too deeply into the following code, just know that it does the translation for us:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.ts</span>
+<span class="p">...</span>
+<span class="c1">// go over all the RoutingConfigItem objects and if they match return the config</span>
+<span class="c1">// so we know which compnent to render</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">segments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">config</span><span class="p">:</span> <span class="nx">RoutingConfig</span><span class="p">):</span> <span class="nx">RoutingConfigItem</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">segmentsMatch</span><span class="p">(</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">item</span><span class="p">))</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">found</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">segmentsMatch</span><span class="p">(</span><span class="nx">pathSegments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">configItem</span><span class="p">:</span> <span class="nx">RoutingConfigItem</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">configItemSegments</span> <span class="o">=</span> <span class="nx">configItem</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">configItemSegments</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">const</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">segment</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">segment</span> <span class="o">===</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">||</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now the application should work. It should render the right component on the right URL, but we are still not there yet.
+Remember the <code class="language-plaintext highlighter-rouge">listenToRouteChanges()</code> function? We still need to call it. We can call that in the <code class="language-plaintext highlighter-rouge">&lt;RouterOutlet/&gt;</code> component,
+but we have to make sure we only run it on the client: the <code class="language-plaintext highlighter-rouge">window</code> object does not exist on the server.
+For that, Qwik provides us with the <code class="language-plaintext highlighter-rouge">useClientEffect$</code> function. The router outlet now looks like this.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">useClientEffect$</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ROUTING</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing-state</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">getMatchingConfig</span><span class="p">,</span> <span class="nx">listenToRouteChanges</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">routingConfig</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../routing-config</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">(</span>
+    <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+        <span class="nx">useClientEffect$</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">);</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+</code></pre></div></div>
+
+<h3 id="the-link-component">The link component</h3>
+
+<p>The traditional anchor tag <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> will completely refresh the page, which is not what we want. 
+Instead, we want the <code class="language-plaintext highlighter-rouge">navigateTo()</code> function we wrote. Let’s create a <code class="language-plaintext highlighter-rouge">&lt;Link/&gt;</code> component
+that renders an anchor tag, but prevents the default functionality and calls the <code class="language-plaintext highlighter-rouge">navigateTo()</code> function when the user
+clicks. We use the <code class="language-plaintext highlighter-rouge">preventdefault:click</code> syntax to make sure that the actual navigation is blocked, but we still need
+a <code class="language-plaintext highlighter-rouge">href</code> property for good SEO.
+Then, within the <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> tag we use a <code class="language-plaintext highlighter-rouge">&lt;Slot/&gt;</code> for content projection.
+The <code class="language-plaintext highlighter-rouge">navigateTo()</code> requires the <code class="language-plaintext highlighter-rouge">routingState</code>, so we import <code class="language-plaintext highlighter-rouge">useContext</code> from Qwik to retrieve that state.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/link.tsx</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">Slot</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">navigateTo</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">Link</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">path</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">{</span><span class="nx">path</span><span class="p">}</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">;</span>
+    <span class="c1">// check whether the link should be active or not</span>
+    <span class="kd">const</span> <span class="nx">isActive</span> <span class="o">=</span> <span class="s2">`/</span><span class="p">${</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)}</span><span class="s2">`</span> <span class="o">===</span> <span class="nx">path</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">a</span>
+            <span class="c1">// This will prevent the default behavior of the "click" event.</span>
+            <span class="na">preventdefault</span><span class="p">:</span><span class="nx">click</span> 
+            <span class="c1">// set the correct class when the link is active</span>
+            <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">isActive</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">link--active</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">''</span><span class="p">}</span>
+            <span class="nx">href</span><span class="o">=</span><span class="p">{</span><span class="nx">path</span><span class="p">}</span> <span class="nx">onClick$</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">)</span>
+        <span class="p">}}</span><span class="o">&gt;&lt;</span><span class="nx">Slot</span><span class="o">/&gt;&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">.tsx</code> of the app component now looks like this:</p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nt">section</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">path</span><span class="p">=</span><span class="si">{</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="si">}</span><span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">path</span><span class="p">=</span><span class="si">{</span><span class="dl">'</span><span class="s1">/users</span><span class="dl">'</span><span class="si">}</span> <span class="p">&gt;</span>users<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">path</span><span class="p">=</span><span class="si">{</span><span class="dl">'</span><span class="s1">/users/1</span><span class="dl">'</span><span class="si">}</span><span class="p">&gt;</span>Brecht<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nc">RouterOutlet</span><span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+</code></pre></div></div>
+
+<p>We have successfully set up client-side SPA routing with parameter support without too much effort.
+There are 2 last things missing: functionality to get path params and search params.</p>
+
+<p>In the config we have <code class="language-plaintext highlighter-rouge">{path: 'users/:id'}</code>, and in the URL we have <code class="language-plaintext highlighter-rouge">users/1</code>, so we want
+something like <code class="language-plaintext highlighter-rouge">getParams(routingState).id</code> that returns the string <code class="language-plaintext highlighter-rouge">"1"</code>.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">routing/routing.ts</code> we add 2 more functions:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.tsx</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">matchingConfig</span> <span class="o">=</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">matchingConfig</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="na">segment</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">index</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">segment</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="nx">index</span><span class="p">,</span>
+                    <span class="na">paramName</span><span class="p">:</span> <span class="nx">segment</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">,</span> <span class="dl">''</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">undefined</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="na">returnObj</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="na">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">param</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">returnObj</span><span class="p">[</span><span class="nx">param</span><span class="p">.</span><span class="nx">paramName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">[</span><span class="nx">param</span><span class="p">.</span><span class="nx">index</span><span class="p">]</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="nx">returnObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getSearchParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="nx">URLSearchParams</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">searchParams</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s it!! We have a complete client-side SPA router without much code, that works with lazy loading thanks to
+Qwik providing it out of the box. It was a very pleasant journey for me and I sure learned a lot.
+Chances are my upcoming posts will be Qwik-related.</p>
+
+<ul>
+  <li>I learned that we have to block the traditional routing by creating a custom <code class="language-plaintext highlighter-rouge">Link</code> component that also pushes a new state to the 
+history object</li>
+  <li>I realized we couldn’t store the URL prototype into the state because it is not serializable and having the string is enough.</li>
+  <li>I thought it was going to be hard to map a component to a route but that turned out to be quite easy and straightforward.</li>
+  <li>Routers shouldn’t be that complex. We achieved a lot with a small amount of code</li>
+  <li><code class="language-plaintext highlighter-rouge">useClientEffect$</code> is handy when you only want to execute something on the client.</li>
+  <li>I thought it was going to be easy to work with nested router outlets but I believe there is a bigger complexity there,
+but I will definitely check that out in the future</li>
+</ul>
+
+<p>You can also <a href="https://github.com/brechtbilliet/qwik-spa-routing-demo/tree/main/spa-routing">check out the source code of this demo</a>.
+I hope you found it interesting as well!</p>
+
+<p>Special thanks to the reviewers:</p>
+<ul>
+  <li><a href="https://twitter.com/mhevery">Miško Hevery</a></li>
+  <li><a href="https://twitter.com/tigt_">Taylor Hunt</a></li>
+  <li><a href="https://twitter.com/antoinepairet">Antoine Pairet</a></li>
+</ul>]]></content><author><name>brechtbilliet</name></author><summary type="html"><![CDATA[The why]]></summary></entry><entry><title type="html">Reactive dumb components</title><link href="http://localhost:4000/reactive-dumb-components/" rel="alternate" type="text/html" title="Reactive dumb components" /><published>2021-05-17T00:00:00+02:00</published><updated>2021-05-17T00:00:00+02:00</updated><id>http://localhost:4000/reactive-dumb-components</id><content type="html" xml:base="http://localhost:4000/reactive-dumb-components/"><![CDATA[<h2 id="reactive-dumb-components">Reactive dumb components</h2>
+
+<p>When we write RxJS logic inside our presentation layer we mostly wind up with reactive flows inside our smart components (container components). The reasoning behind this, is quite easy:</p>
+
+<p>Because these smart components are the orchestration vessels of our application, they communicate with reactive asynchronous flows such as XHR-calls and state management, but also with events emitted by the dumb components.</p>
+
+<p>That being said, dumb components may also benefit from reactive flows. Especially when the dumb component has multiple <code class="language-plaintext highlighter-rouge">@Input()</code> properties that rely on different sets of asynchronous data.
+The usual way of handling these types of changes is the use of imperative <code class="language-plaintext highlighter-rouge">if else code</code> inside the <code class="language-plaintext highlighter-rouge">ngOnChanges</code> lifecycle hook.</p>
+
+<p>Take this situation for example: We have a <code class="language-plaintext highlighter-rouge">CompanyDetail</code> component that has the responsibility to visualize a company with all its sites. 
+The component has a previous and a next button to navigate between the sites, we also want to show how many sites there are and we want to show the name and address of every specific site.
+The <code class="language-plaintext highlighter-rouge">sites</code> <code class="language-plaintext highlighter-rouge">@Input()</code> property is asynchronous because it is dependant on an XHR request and the <code class="language-plaintext highlighter-rouge">currentSiteId</code> <code class="language-plaintext highlighter-rouge">@Input()</code> property is asynchronous because it is dependant on the router params which is an observable behind the scenes and will change over time when the user is navigating between the different sites of a company.</p>
+
+<p>For this component to properly work we have to make sure that the <code class="language-plaintext highlighter-rouge">sites</code> property has a value at the right time and the <code class="language-plaintext highlighter-rouge">currentSiteId</code> also has a value at the right time, we can already imagine racing conditions etc.
+The component is also responsibile to calculate whether the previous button and next button are disabled or not. When these buttons are clicked, it also has to calculate the next or previous siteId to emit that value to its smart component.</p>
+
+<p>Here we can see the app inside this <a href="https://stackblitz.com/edit/reactive-dumb-components?file=src%2Fapp%2Fcontainers%2Fcompany%2Fcompany.component.ts">Stackblitz example</a></p>
+
+<p>This is the smart component that will use the <code class="language-plaintext highlighter-rouge">app-company-detail</code> as a dumb component.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;app-company-detail
+      [currentSiteId]="currentSiteId$ | async"
+      [sites]="sites$ | async"
+      (siteChanged)="siteChanged($event)"
+    &gt;&lt;/app-company-detail&gt;
+  `</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company.component.css</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyComponent</span> <span class="p">{</span>
+  <span class="c1">// fetch the sites</span>
+  <span class="nx">sites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sitesService</span><span class="p">.</span><span class="nx">getSites</span><span class="p">();</span>
+  <span class="c1">// get the asynchronous siteId from the router params</span>
+  <span class="nx">currentSiteId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">siteId</span><span class="p">));</span>
+
+  <span class="c1">// the dumb app-company-detail component is responsible</span>
+  <span class="c1">// to calculate the siteId that we need to go to</span>
+  <span class="nx">siteChanged</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nx">navigate</span><span class="p">([</span><span class="nx">id</span><span class="p">]);</span>
+  <span class="p">}</span>
+
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="nx">sitesService</span><span class="p">:</span> <span class="nx">SitesService</span><span class="p">,</span>
+    <span class="k">private</span> <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span><span class="p">,</span>
+    <span class="k">private</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span>
+  <span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The imperative implementation of the dumb component looks like this:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company-detail</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;button [disabled]="previousDisabled" (click)="previousClicked()"&gt;
+      Previous site
+    &lt;/button&gt;
+    &lt;button [disabled]="nextDisabled" (click)="nextClicked()"&gt;
+      Next site
+    &lt;/button&gt;
+     / 
+    &lt;h2&gt;&lt;/h2&gt;
+    &lt;p&gt;Address: &lt;/p&gt;
+  `</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company-detail.component.css</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span><span class="p">{</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">currentSiteId</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">sites</span><span class="p">:</span> <span class="kr">any</span><span class="p">[];</span>
+  <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">();</span>
+
+  <span class="c1">// we need to keep track of 5 different local properties</span>
+  <span class="c1">// and calculate and set their values at the right time</span>
+  <span class="nx">currentIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nl">previousDisabled</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+  <span class="nl">nextDisabled</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+  <span class="nl">currentSite</span><span class="p">:</span> <span class="kr">any</span><span class="p">;</span>
+  <span class="nl">currentSiteNumber</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+
+  <span class="nx">ngOnChanges</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// this can become complex really fast</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span><span class="p">);</span>    
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteNumber</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">previousDisabled</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">nextDisabled</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
+  <span class="p">}</span>
+
+  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can see that all the calculation is happening inside the ngOnChanges.
+Although this solution is perfectly fine, there is a more reactive way of approaching this. For this specific example it could be overkill but it might teach you how to tackle more complex situations when tackling <code class="language-plaintext highlighter-rouge">@Input()</code> changes.</p>
+
+<p>Think about a complex calendar view that has to do a bunch of calculations based on dozens of <code class="language-plaintext highlighter-rouge">@Input()</code> properties for instance, where a bunch of them are happening synchronous and there are async properties depending on other async properties.
+Think about <code class="language-plaintext highlighter-rouge">@Input()</code> components that are useless unless other <code class="language-plaintext highlighter-rouge">@Input()</code> components have their values. Or what if you like to combine the <code class="language-plaintext highlighter-rouge">@Input()</code> properties with other async objects inside the dumb component. In the following example every piece of code inside this component is a stream. The first thing we want to do is create observables from the <code class="language-plaintext highlighter-rouge">@Input()</code> properties. I like to use this approach when multiple <code class="language-plaintext highlighter-rouge">@Input()</code> properties need eachother to compute a specific value.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+  <span class="c1">// input state subjects</span>
+  <span class="k">private</span> <span class="nx">currentSiteId$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">sites$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+  <span class="c1">// input stream setters</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><em>Note: We use the <code class="language-plaintext highlighter-rouge">$$</code> suffix so we can see the observable is a <code class="language-plaintext highlighter-rouge">Subject</code>.</em></p>
+
+<p>We have now created observables from these <code class="language-plaintext highlighter-rouge">@Input()</code> properties. I have created the library <a href="https://www.npmjs.com/package/ngx-reactivetoolkit">ngx-reactivetoolkit</a> to make this even easier. We can see an example on how this cleans up the code right below:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">currentSiteId</span><span class="p">:</span> <span class="kr">string</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span>  <span class="nx">sites</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]</span>
+  <span class="p">@</span><span class="nd">Changes</span><span class="p">(</span><span class="dl">'</span><span class="s1">currentSiteId</span><span class="dl">'</span><span class="p">)</span> <span class="nx">currentSiteId$</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Changes</span><span class="p">(</span><span class="dl">'</span><span class="s1">sites</span><span class="dl">'</span><span class="p">)</span> <span class="nx">sites$</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this article we will continue with the native approach but be sure to check it out if you find the time. The toolkit might also gave some other good stuff that could help you.</p>
+
+<p>Moving on… Remember that we mentioned that everything could be a stream? This also means our template events can be linked to streams.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"previousDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"previousClicked()"</span><span class="nt">&gt;</span>
+  Previous site
+<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"nextDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"nextClicked()"</span><span class="nt">&gt;</span>
+  Next site
+<span class="nt">&lt;/button&gt;</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// this will be used to communicate with the siteChanged @Output()</span>
+  <span class="k">private</span> <span class="nx">nav$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
+
+  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// decrement</span>
+  <span class="p">}</span>
+  
+  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// increment</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The next thing that we want to do is determine the presentation streams and the Output streams. For the presentation streams we can simply have a look at the template:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"previousDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"previousClicked()"</span><span class="nt">&gt;</span>
+  Previous site
+<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"nextDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"nextClicked()"</span><span class="nt">&gt;</span>
+  Next site
+<span class="nt">&lt;/button&gt;</span>
+/ 
+<span class="nt">&lt;ng-container</span> <span class="na">*ngIf=</span><span class="s">"currentSite$|async as currentSite"</span><span class="nt">&gt;</span>
+  ...
+<span class="nt">&lt;/ng-container&gt;</span>
+
+</code></pre></div></div>
+
+<p>When looking at this template we can easily determine the presentation streams. These are all the streams that use an <code class="language-plaintext highlighter-rouge">async</code> pipe.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">previousDisabled$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nextDisabled$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">currentSiteNumber$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">totalSites$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">currentSite$</code></li>
+</ul>
+
+<p>The only <code class="language-plaintext highlighter-rouge">@Output()</code> stream for this template is for the <code class="language-plaintext highlighter-rouge">siteChanged</code> <code class="language-plaintext highlighter-rouge">@Output()</code>. Did you know an <code class="language-plaintext highlighter-rouge">EventEmitter</code> is an observable behind the scenes? Well, it is and we can replace the <code class="language-plaintext highlighter-rouge">EventEmitter</code> with any kind of observable.</p>
+
+<p>This means that this code:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>can be refactored to:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged$</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Again, for this example the solution might be personal preference but when the flows become more complex we believe this approach can really shine! Think about a search component that looks like this…</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">search$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchControl</span><span class="p">.</span><span class="nx">valueChanges$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">debounceTime</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="nx">distinctUntilChanged</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>This can become very powerful very fast!</p>
+
+<p>The next thing that we want to do is calculate intermediate private streams. If you don’t know what we mean with that, please check out the article on the <a href="https://blog.strongbrew.io/the-sip-principle/">SIP principle</a>. We use these intermediate streams to calculate the presentation streams, which are the streams that we will use in our template, and in the <code class="language-plaintext highlighter-rouge">@Output()</code> streams</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">currentIndex$</code> stream and the <code class="language-plaintext highlighter-rouge">indexWithSites$</code> stream are streams that are being used to calculate the presentationstreams. The <code class="language-plaintext highlighter-rouge">siteChanged$</code> stream will be used by the <code class="language-plaintext highlighter-rouge">siteChanged</code> <code class="language-plaintext highlighter-rouge">@Output()</code> property later on
+We can see the calculation in this example:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// intermediate streams</span>
+<span class="c1">// the current index, calculated by the current site id and the sites</span>
+<span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
+      <span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
+    <span class="p">)</span>
+  <span class="p">);</span>
+
+<span class="c1">// an array that always contains the currentIndex and all the sites</span>
+<span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
+
+<span class="c1">// every time the nav button is clicked, we need to calculate the id that</span>
+<span class="c1">// needs to be emitted to the siteChanged @Output()</span>
+<span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+  <span class="nx">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
+  <span class="nx">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
+    <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="nx">navigationIndex</span><span class="p">]?.</span><span class="nx">id</span>
+  <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we can start by implementing the  presentation streams and the <code class="language-plaintext highlighter-rouge">@Output()</code> stream.
+In the code snippet below we can see the complete code: You can also check the <a href="https://stackblitz.com/edit/reactive-dumb-components-reactive?file=src/app/components/company-detail/company-detail.component.ts">StackBlitz example</a></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company-detail</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;button [disabled]="previousDisabled$|async" (click)="previousClicked()"&gt;
+      Previous site
+    &lt;/button&gt;
+    &lt;button [disabled]="nextDisabled$|async" (click)="nextClicked()"&gt;
+      Next site
+    &lt;/button&gt;
+    / 
+    &lt;ng-container *ngIf="currentSite$|async as currentSite"&gt;
+      &lt;h2&gt;&lt;/h2&gt;
+      &lt;p&gt;Address: &lt;/p&gt;
+    &lt;/ng-container&gt;
+
+  `</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company-detail.component.css</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+  <span class="c1">// local state subjects and input state subjects</span>
+  <span class="k">private</span> <span class="nx">nav$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="k">private</span> <span class="nx">currentSiteId$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">sites$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+  <span class="c1">// input stream setters</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="c1">// intermediate streams</span>
+  <span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+      <span class="nx">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
+        <span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
+      <span class="p">)</span>
+    <span class="p">);</span>
+  <span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
+
+  <span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
+     <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="nx">navigationIndex</span><span class="p">]?.</span><span class="nx">id</span>
+    <span class="p">)</span>
+  <span class="p">)</span>
+
+  <span class="c1">// output streams and presentational streams</span>
+  <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged$</span><span class="p">;</span>
+  <span class="nx">previousDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(</span><span class="nx">currentIndex</span> <span class="o">=&gt;</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="nx">nextDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">currentIndex</span> <span class="o">===</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="nx">currentSite$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span><span class="p">])</span>
+  <span class="p">)</span>
+  <span class="nx">totalSites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(</span><span class="nx">sites</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="nx">currentSiteNumber$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="p">)</span>
+
+  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>    
+  <span class="p">}</span>
+  
+  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>    
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We can make components completely reactive if we want to by:</p>
+<ul>
+  <li>Binding other observables to <code class="language-plaintext highlighter-rouge">@Output()</code> properties</li>
+  <li>Using setters to populate <code class="language-plaintext highlighter-rouge">@Input()</code> properties</li>
+  <li>We can use <code class="language-plaintext highlighter-rouge">ngx-reactivetoolkit</code> to make the code cleaner</li>
+</ul>
+
+<p>For simple component this can be seen as overkill, but it could definitely help when dumb components become more complex and rely of different streams of data that are happening asynchronously.</p>]]></content><author><name>brechtbilliet</name></author><category term="Rxjs" /><category term="Rxjs" /><summary type="html"><![CDATA[How to make dumb components reactive without imperative ngOnChanges programming]]></summary></entry><entry><title type="html">How covid affected StrongBrew</title><link href="http://localhost:4000/how-covid-affected-strongbrew/" rel="alternate" type="text/html" title="How covid affected StrongBrew" /><published>2020-11-03T00:00:00+01:00</published><updated>2020-11-03T00:00:00+01:00</updated><id>http://localhost:4000/how-covid-affected-strongbrew</id><content type="html" xml:base="http://localhost:4000/how-covid-affected-strongbrew/"><![CDATA[<h2 id="covid">Covid</h2>
 
 <p>These are challenging times… Harsh times for people and companies. Even for some companies it results in fatal decisions.</p>
 
@@ -38,7 +825,7 @@ The services listed below is something that I still do 1/5th of my time:</p>
 <h2 id="conclusion">Conclusion</h2>
 
 <p>Unfortunately our company has died a slow death, but you will be hearing more of StrongBrew in the near future. Stay safe! Stay healthy! And if you have questions don’t hesitate to reach out.
-Cheers! Brecht.</p>]]></content><author><name>brechtbilliet</name></author><category term="Covid" /><category term="COVID" /><summary type="html"><![CDATA[What is the future of StrongBrew? How were we impacted by COVID?]]></summary></entry><entry><title type="html">Managing state in Angular</title><link href="https://blog.brecht.io/managing-state-in-angular/" rel="alternate" type="text/html" title="Managing state in Angular" /><published>2019-07-29T00:00:00+02:00</published><updated>2019-07-29T00:00:00+02:00</updated><id>https://blog.brecht.io/managing-state-in-angular</id><content type="html" xml:base="https://blog.brecht.io/managing-state-in-angular/"><![CDATA[<h2 id="about-this-article">About this article</h2>
+Cheers! Brecht.</p>]]></content><author><name>brechtbilliet</name></author><category term="Covid" /><category term="COVID" /><summary type="html"><![CDATA[What is the future of StrongBrew? How were we impacted by COVID?]]></summary></entry><entry><title type="html">Managing state in Angular</title><link href="http://localhost:4000/managing-state-in-angular/" rel="alternate" type="text/html" title="Managing state in Angular" /><published>2019-07-29T00:00:00+02:00</published><updated>2019-07-29T00:00:00+02:00</updated><id>http://localhost:4000/managing-state-in-angular</id><content type="html" xml:base="http://localhost:4000/managing-state-in-angular/"><![CDATA[<h2 id="about-this-article">About this article</h2>
 
 <p>When we create single-page-applications, there is no way around it. Sooner or later we are going to be facing state. There are a lot of solutions out there to manage that state and together with those solutions there are a lot of opinions.
 Especially when working with experienced developers, there opinions get stronger and often result in interesting discussions.</p>
@@ -239,7 +1026,7 @@ I would suggest to use what works for you and your team and really think about, 
   <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
   <li><a href="https://twitter.com/jefiozie">Jeffrey Bosch</a></li>
   <li><a href="https://twitter.com/rubverm">Ruben Vermeulen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">A generic way of handling loading-status, saving-status and validation errors in Angular</title><link href="https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/" rel="alternate" type="text/html" title="A generic way of handling loading-status, saving-status and validation errors in Angular" /><published>2019-01-25T00:00:00+01:00</published><updated>2019-01-25T00:00:00+01:00</updated><id>https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular</id><content type="html" xml:base="https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/"><![CDATA[<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">A generic way of handling loading-status, saving-status and validation errors in Angular</title><link href="http://localhost:4000/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/" rel="alternate" type="text/html" title="A generic way of handling loading-status, saving-status and validation errors in Angular" /><published>2019-01-25T00:00:00+01:00</published><updated>2019-01-25T00:00:00+01:00</updated><id>http://localhost:4000/generic-way-of-handling-loading-saving-and-validationerrors-in-angular</id><content type="html" xml:base="http://localhost:4000/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/"><![CDATA[<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
 
 <ul>
   <li>Showing a <em>loading</em> status</li>
@@ -627,7 +1414,7 @@ To make it work the rootModule will have to call the <code class="language-plain
   <li><a href="https://twitter.com/maartentibau">Maarten Tibau (@maartentibau)</a></li>
   <li><a href="https://twitter.com/elmd_">Dominic Elm (@elmd_)</a></li>
   <li><a href="https://twitter.com/fabiangosebrink">Fabian Gosebrink (@FabianGosebrink)</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="angular" /><category term="Angular" /><category term="Architecture" /><category term="errorhandling" /><category term="interceptors" /><category term="decorators" /><summary type="html"><![CDATA[In this article we are going to implement a generic solution on how to fix 3 common usecases that involve redundancy in CRUD applications.]]></summary></entry><entry><title type="html">Opinionated guidelines for large nx angular projects</title><link href="https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects/" rel="alternate" type="text/html" title="Opinionated guidelines for large nx angular projects" /><published>2018-12-08T00:00:00+01:00</published><updated>2018-12-08T00:00:00+01:00</updated><id>https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects</id><content type="html" xml:base="https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects/"><![CDATA[<h2 id="about-this-article">About this article</h2>
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="angular" /><category term="Angular" /><category term="Architecture" /><category term="errorhandling" /><category term="interceptors" /><category term="decorators" /><summary type="html"><![CDATA[In this article we are going to implement a generic solution on how to fix 3 common usecases that involve redundancy in CRUD applications.]]></summary></entry><entry><title type="html">Opinionated guidelines for large nx angular projects</title><link href="http://localhost:4000/opinionated-guidelines-for-large-nx-angular-projects/" rel="alternate" type="text/html" title="Opinionated guidelines for large nx angular projects" /><published>2018-12-08T00:00:00+01:00</published><updated>2018-12-08T00:00:00+01:00</updated><id>http://localhost:4000/opinionated-guidelines-for-large-nx-angular-projects</id><content type="html" xml:base="http://localhost:4000/opinionated-guidelines-for-large-nx-angular-projects/"><![CDATA[<h2 id="about-this-article">About this article</h2>
 
 <p>This article contains a set of opinionated guidelines when it comes to building monorepos with <a href="https://nrwl.io/nx">Nx</a>.
 I wrote this article because when I used Nx in the beginning, I struggled a lot with how to structure my workspace, and I’ve hit quite a few walls. That being said, I’ve been using it for a while now, and I finally have the feeling that I’ve reached a structure where I feel comfortable with.</p>
@@ -1019,7 +1806,7 @@ I couldn’t have done it without you!</p>
 <ul>
   <li><a href="https://twitter.com/beeman_nl">@beeman_nl</a></li>
   <li><a href="https://twitter.com/mrjameshenry">@MrJamesHenry</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><category term="nx" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">Safe HTTP calls with RxJS</title><link href="https://blog.brecht.io/safe-http-calls-with-rxjs/" rel="alternate" type="text/html" title="Safe HTTP calls with RxJS" /><published>2018-10-24T00:00:00+02:00</published><updated>2018-10-24T00:00:00+02:00</updated><id>https://blog.brecht.io/safe-http-calls-with-rxjs</id><content type="html" xml:base="https://blog.brecht.io/safe-http-calls-with-rxjs/"><![CDATA[<p>Hi there, since it’s very busy lately this will probably be my one of my shortest articles ever.
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><category term="nx" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">Safe HTTP calls with RxJS</title><link href="http://localhost:4000/safe-http-calls-with-rxjs/" rel="alternate" type="text/html" title="Safe HTTP calls with RxJS" /><published>2018-10-24T00:00:00+02:00</published><updated>2018-10-24T00:00:00+02:00</updated><id>http://localhost:4000/safe-http-calls-with-rxjs</id><content type="html" xml:base="http://localhost:4000/safe-http-calls-with-rxjs/"><![CDATA[<p>Hi there, since it’s very busy lately this will probably be my one of my shortest articles ever.
 Maybe that’s a good thing, because now you don’t have an excuse not to read it. It’s short, compact
 and maybe you will learn a thing or two.</p>
 
@@ -1156,7 +1943,7 @@ This doesn’t only apply to typeahead searches but to every observable where we
   <li><a href="https://twitter.com/tim_deschryver">Tim deschryver</a></li>
   <li><a href="https://twitter.com/webdave_de">David Müllerchen</a></li>
   <li><a href="https://twitter.com/rubenverm">Ruben Vermeulen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="RxJS" /><summary type="html"><![CDATA[How to make sure our ajax calls are being executed on bad connections]]></summary></entry><entry><title type="html">Building a safe autocomplete operator in RxJS</title><link href="https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs/" rel="alternate" type="text/html" title="Building a safe autocomplete operator in RxJS" /><published>2018-07-13T00:00:00+02:00</published><updated>2018-07-13T00:00:00+02:00</updated><id>https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs</id><content type="html" xml:base="https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs/"><![CDATA[<p>A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code.
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="RxJS" /><summary type="html"><![CDATA[How to make sure our ajax calls are being executed on bad connections]]></summary></entry><entry><title type="html">Building a safe autocomplete operator in RxJS</title><link href="http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs/" rel="alternate" type="text/html" title="Building a safe autocomplete operator in RxJS" /><published>2018-07-13T00:00:00+02:00</published><updated>2018-07-13T00:00:00+02:00</updated><id>http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs</id><content type="html" xml:base="http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs/"><![CDATA[<p>A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code.
 This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).</p>
 
 <p>When creating a standard autocomplete with RxJS we most likely implement a <code class="language-plaintext highlighter-rouge">debounceTime</code> operator to throttle the text that the user is typing into the autocomplete and we use a <code class="language-plaintext highlighter-rouge">switchMap</code> operator instead of a <code class="language-plaintext highlighter-rouge">mergeMap</code> operator to abort previous calls.</p>
@@ -1299,7 +2086,7 @@ The operator looks like this:</p>
   <li>Jan-Niklas Wortmann <a href="https://twitter.com/niklas_wortmann">@niklas_wortmann</a></li>
   <li>Maarten Tibau <a href="https://twitter.com/maartentibau">@maartentibau</a></li>
   <li>Kwinten Pisman <a href="https://twitter.com/kwintenp">@kwintenp</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code. This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).]]></summary></entry><entry><title type="html">Thinking reactive with the SIP principle</title><link href="https://blog.brecht.io/the-sip-principle/" rel="alternate" type="text/html" title="Thinking reactive with the SIP principle" /><published>2018-06-30T00:00:00+02:00</published><updated>2018-06-30T00:00:00+02:00</updated><id>https://blog.brecht.io/the-sip-principle</id><content type="html" xml:base="https://blog.brecht.io/the-sip-principle/"><![CDATA[<p>A few months back we released <a href="https://blog.strongbrew.io/rxjs-best-practices-in-angular/">RxJS best practices in Angular</a> and a while before that <a href="https://blog.strongbrew.io/thinking-reactively-in-angular-and-rxjs/">Thinking reactively in Angular and RxJS</a>. 
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code. This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).]]></summary></entry><entry><title type="html">Thinking reactive with the SIP principle</title><link href="http://localhost:4000/the-sip-principle/" rel="alternate" type="text/html" title="Thinking reactive with the SIP principle" /><published>2018-06-30T00:00:00+02:00</published><updated>2018-06-30T00:00:00+02:00</updated><id>http://localhost:4000/the-sip-principle</id><content type="html" xml:base="http://localhost:4000/the-sip-principle/"><![CDATA[<p>A few months back we released <a href="https://blog.strongbrew.io/rxjs-best-practices-in-angular/">RxJS best practices in Angular</a> and a while before that <a href="https://blog.strongbrew.io/thinking-reactively-in-angular-and-rxjs/">Thinking reactively in Angular and RxJS</a>. 
 Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.</p>
 
 <p>However, sometimes we like to have structured opinionated ways of tackling problems, especially when things become complex. We like a roadmap of some kind, something to fall back on, something to guide us through these complex reactive scenarios.</p>
@@ -1489,7 +2276,7 @@ When working with cold observables, the producer function for that observable is
   <li><a href="https://twitter.com/niklas_wortmann">Jan-Niklas Wortmann</a></li>
   <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
   <li><a href="https://twitter.com/webdave_de">David Müllerchen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.]]></summary></entry><entry><title type="html">Redux (@ngrx/store) best practices</title><link href="https://blog.brecht.io/Redux-best-practices/" rel="alternate" type="text/html" title="Redux (@ngrx/store) best practices" /><published>2018-04-27T00:00:00+02:00</published><updated>2018-04-27T00:00:00+02:00</updated><id>https://blog.brecht.io/Redux-best-practices</id><content type="html" xml:base="https://blog.brecht.io/Redux-best-practices/"><![CDATA[<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.]]></summary></entry><entry><title type="html">Redux (@ngrx/store) best practices</title><link href="http://localhost:4000/Redux-best-practices/" rel="alternate" type="text/html" title="Redux (@ngrx/store) best practices" /><published>2018-04-27T00:00:00+02:00</published><updated>2018-04-27T00:00:00+02:00</updated><id>http://localhost:4000/Redux-best-practices</id><content type="html" xml:base="http://localhost:4000/Redux-best-practices/"><![CDATA[<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
 The combination of redux principles and RxJS can be very powerful when it comes to writing reactive applications.
 Since a lot of Angular projects use @ngrx/store, it might be a good idea to write down some best-practices.</p>
 
@@ -1953,380 +2740,4 @@ we can send actions to our application and those actions won’t just perform st
 
 <p><a href="https://twitter.com/ncjamieson">Nicholas Jamieson</a>, <a href="https://twitter.com/elecash">Raúl Jiménez</a> and <a href="https://twitter.com/FabianGosebrink">Fabian Gosebrink</a>: Thank you all so much for reviewing and pointing out some awesome ideas</p>
 
-<p>Your input makes blogging worth while!</p>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Redux" /><category term="@ngrx" /><category term="Angular" /><summary type="html"><![CDATA[This article is all about what to do and what not to do when using Redux (@ngrx/store)]]></summary></entry><entry><title type="html">Do we really need Redux or @ngrx/store</title><link href="https://blog.brecht.io/do-we-really-need-redux/" rel="alternate" type="text/html" title="Do we really need Redux or @ngrx/store" /><published>2018-04-13T00:00:00+02:00</published><updated>2018-04-13T00:00:00+02:00</updated><id>https://blog.brecht.io/do-we-really-need-redux</id><content type="html" xml:base="https://blog.brecht.io/do-we-really-need-redux/"><![CDATA[<h2 id="about-this-article">About this article</h2>
-
-<p>If you are writing Angular, Vue or React applications, chances are big that you have used or encountered the Redux pattern.
-Redux helps us to structure statemanagement in an immutable matter which is great, but in order to use it correctly, we have to write a bunch of boilerplate code.
-In this article I would like to tackle the question on when to use Redux and why.
-The referred plugins/code samples are written in an Angular context. But the principles explained in this articles work for other frameworks as well. This also means that we are using the <a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> package instead of the <a href="https://redux.js.org/">Redux</a> package</p>
-
-<h2 id="to-redux-or-not-to-redux">To Redux or not to Redux?</h2>
-
-<p>First of all it’s important to note that Redux solves certain problems for us. If we are not experiencing those problems, then there is a big chance that the Redux pattern
-is overkill for our application.</p>
-
-<p>The first question that we might want to ask ourselves is:
-<strong>Does My application have state?</strong> State can be the value of a pager that we want to remember, or the fact that a sidebar is collapsed or not. State could be a cached set of data coming from our backend, or user information that we need throughout the whole application.
-It could be a simple value that we want to remember in memory when we are navigating between pages.</p>
-
-<p>Let’s sum up some examples where the Redux principle might shine in our applications:</p>
-<ul>
-  <li>Storing state (like the value of a search filter so it’s still available when the user navigates back to a certain grid)</li>
-  <li>Sharing state between components that have their own route, and thus won’t have a parent component to pass them the state through inputs or properties</li>
-  <li>Optimistic updates: Check <a href="https://blog.strongbrew.io/Cancellable-optimistic-updates-in-Angular2-and-Redux/">this article</a></li>
-  <li>Real-time updates: Check <a href="https://blog.strongbrew.io/How-we-made-our-app-real-time-in-6-lines-of-code/">this article</a></li>
-  <li>When we want undo/redo logic</li>
-  <li>When we want to keep track of all the state changes and debug them with awesome tooling (Redux devtools)</li>
-  <li>When we want an organised way of handling session storage or localstorage. Check <a href="https://github.com/btroncone/ngrx-store-localstorage">this plugin</a></li>
-</ul>
-
-<p>When we are writing Angular applications it’s a best-practice to work with immutable data structures. That way we can make use of the <a href="https://angular-2-training-book.rangle.io/handout/change-detection/change_detection_strategy_onpush.html">OnPush changedetectionstrategy</a> that angular provides us, which results in better performance and less unexpected behavior. In React we could use a <a href="https://reactjs.org/docs/react-api.html#reactpurecomponent">Pure component</a> for that. So, for this article let’s assume that immutable datastructures are the way to go and that our application needs it.</p>
-
-<p>While we know that Redux forces you to use immutable datastructures, let’s still challenge the need of Redux shall we?
-If statemanagement is trivial to our applications and we just want to store values we could work with a state service instead of Redux.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersService</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">([]);</span>
-
-    <span class="kd">get</span> <span class="nx">users$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="c1">// IMPORTANT: since we use an immutable dataflow</span>
-    <span class="c1">// we have to make sure users is a new instance</span>
-    <span class="nx">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>This example shows how we can set the simple value of an array of users by calling the <code class="language-plaintext highlighter-rouge">setUsers()</code>function. It will store the value into a BehaviorSubject which we will consume as an observable. The spread operator (<code class="language-plaintext highlighter-rouge">...</code>) will create a new instance of the <code class="language-plaintext highlighter-rouge">users</code> array. That way we know that we are working in an immutable manner. This was pretty easy and we don’t need Redux anymore, nor all the boilerplate that we would had to write. So if the state of our application only contains a few simple properties, the Redux pattern might be overkill.</p>
-
-<p>But what if we need to do more then just set the value of <code class="language-plaintext highlighter-rouge">users</code>. What if we want to add and remove users from that stream, and we would have to do it in an immutable manner? Checkout the following example for instance.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersService</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">([]);</span>
-
-    <span class="kd">get</span> <span class="nx">users$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="nx">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
-    <span class="p">}</span>
-
-    <span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="c1">// We cannot use array.push because we only want to</span>
-        <span class="c1">// pass immutable data to the streame</span>
-        <span class="c1">// for the OnPush strategy remmber?</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">([...</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">getValue</span><span class="p">(),</span> <span class="nx">user</span><span class="p">])</span>
-    <span class="p">}</span>
-
-    <span class="nx">removeUser</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// Again, we have to create a new Array instance to not break the</span>
-        <span class="c1">// immutable dataflow</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">getValue</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">));</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-<p>The code above is starting to feel a bit weird, and it seems like we are writing reducer logic inside of this state service to keep it immutable. We have also created our own observable implementation so we could subscribe to the changes of our state service. While it could still be overkill to use redux if this is the only state in our application, it might become complex if we are working with multiple states, nested states, etc.</p>
-
-<p>Another example is caching. People use redux to cache data results. A simple <code class="language-plaintext highlighter-rouge">shareReplay</code> operator might to the trick as well.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
-    <span class="p">...</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">''</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">shareReplay</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h2 id="summary">Summary</h2>
-
-<p>I would suggest to not use Redux untill we actually need it, and in my experience most applications that I have written in the past did need redux at a certain point. That being said I also wrote a bunch of applications that didn’t need it at all (CRUD applications for instance.</p>
-
-<p>It’s up to you if you want to use Redux or not, <strong>but keep your applications immutable at all times</strong>.
-It will save you a lot of energy in debugging and it makes sure that you can optimise the change detection cycle in your applications.</p>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Redux" /><summary type="html"><![CDATA[This article explains the cases when Redux is a good idea or when it is overkill for your application]]></summary></entry><entry><title type="html">Pre-rendering Angular Applications</title><link href="https://blog.brecht.io/prerendering-angular-apps/" rel="alternate" type="text/html" title="Pre-rendering Angular Applications" /><published>2018-03-04T00:00:00+01:00</published><updated>2018-03-04T00:00:00+01:00</updated><id>https://blog.brecht.io/prerendering-angular-apps</id><content type="html" xml:base="https://blog.brecht.io/prerendering-angular-apps/"><![CDATA[<h2 id="why-should-we-pre-render-angular-applications">Why should we pre-render Angular applications?</h2>
-
-<p>At the moment of writing this article, there are several ways of optimizing Angular applications - We could compile them <a href="https://angular.io/guide/aot-compiler">ahead-of-time</a> through AOT compilation.
-We could use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> to optimize caching. And there are plenty of other PWA (progressive web app) features that can increase the quality and overall performance of our Angular applications.</p>
-
-<p>However, there are a still a few problems that these optimizations won’t fix:</p>
-<ul>
-  <li><strong>SEO</strong> (search engine optimization): At the time of writing, SPAs (single-page applications) are harder to index by search engines because the content isn’t available on load time. Therefore, the application is likely to fail on several SEO requirements.</li>
-  <li><strong>Initial page load</strong> could be faster: Since the application still needs to be bootstrapped after the page is loaded, there is an initial waiting time until the user can use the application. This results in a bad user experience.</li>
-</ul>
-
-<p>These two problems can be fixed by implementing <a href="https://angular.io/guide/universal">SSR (server-side rendering)</a>. SSR executes the Angular application on the server. That way the server will actually serve the compiled content in a way that search engine crawlers can read it. This is really the best of both worlds: The application will be rendered on the server, but when the JavaScript bundle is loaded, it will turn into a SPA. That way the application is rich and fast at the same time!</p>
-
-<p>To optimize our <a href="https://strongbrew.io">StrongBrew</a> website, we started using this approach. It was pretty fast when we ran it locally. However, the StrongBrew website is hosted on <a href="https://firebase.google.com">Firebase</a> and the SSR part was hosted by Firebase functions.</p>
-
-<p>We really love Firebase and everything it stands for, but for us, SSR on Firebase functions was just too slow. Sometimes it took 4 seconds to serve the content… Since the loading time of a website is very important for keeping our visitors, we had to find another way to serve the content in a more effective manner.</p>
-
-<p>SSR works like this: A user navigates to a URL =&gt; the server compiles the application and serves it.
-But instead of compiling every route when the server receives a request, what if we could execute the SSR logic for every route at build time? That would certainly fix our problem.</p>
-
-<p>That way we would run generated static HTML files, which is insanely fast, and when the JavaScript bundles are loaded, the browser would take over.
-This also uses the best of both worlds: Ultra fast loading time + we don’t need to give up our rich SPA experience.
-The result went from several seconds to 30 milliseconds.
-<img src="/assets/images/posts/prerendering-angular-apps/ssr-vs-prerender.png" alt="SSR vs Prerender" /></p>
-
-<p>This is a super fast and super effective improvement but it has one very important limitation.
-<strong>It’s not possible to prerender dynamic content</strong>. The data in the StrongBrew website isn’t fetched by AJAX calls (at least not the data that has to be indexed). It rather works with simple webpack imports of JSON files. These are inserted at build time.</p>
-
-<p>This does not mean that loading content dynamically isn’t possible at all, it just won’t get prerendered.</p>
-
-<h2 id="lets-dive-in">Let’s dive in</h2>
-
-<p>Enough chit chat! Let’s dive into some code.
-I’ve created this <a href="https://github.com/strongbrewio/prerender-angular-example">GitHub repository</a> just for you! It’s a simple website with a few pages and the build system doesn’t know how to pre-render yet.
-Checkout the branch <code class="language-plaintext highlighter-rouge">runtime</code> by running the command <code class="language-plaintext highlighter-rouge">git checkout runtime</code>. When running <code class="language-plaintext highlighter-rouge">npm i &amp;&amp; npm run start</code>, the bash should install all the NPM dependencies and host the application on <code class="language-plaintext highlighter-rouge">http://localhost:4200</code>, just like any default Angular CLI application.</p>
-
-<h3 id="installing-the-dependencies">Installing the dependencies</h3>
-
-<p>Great! We have a running website, but nothing is pre-rendered yet.
-The first thing we need to do is to install @angular/platform-server by running
-<code class="language-plaintext highlighter-rouge">npm i @angular/platform-server -D</code>. This is the most important bundle for SSR. This module contains the basics to run the Angular application on the server.</p>
-
-<h3 id="applying-the-server-transition">Applying the server transition</h3>
-
-<p>Next, we need to update the <code class="language-plaintext highlighter-rouge">app.module.ts</code> to enable server transition. This will make sure that Angular takes over on the frontend when the JavaScript bundles are loaded.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/app/app.module.ts</span>
-<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
-  <span class="p">...</span>
-  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
-    <span class="nx">BrowserModule</span><span class="p">.</span><span class="nx">withServerTransition</span><span class="p">(</span>
-        <span class="c1">// this is just the name of our application</span>
-        <span class="c1">// configured in angular-cli.json</span>
-        <span class="p">{</span> <span class="na">appId</span><span class="p">:</span> <span class="dl">'</span><span class="s1">prerender-angular-example</span><span class="dl">'</span> <span class="p">}</span>
-    <span class="p">),</span>
-    <span class="p">...</span>
-  <span class="p">],</span>
-  <span class="p">...</span>
-<span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="creating-the-prerender-module">Creating the prerender module</h3>
-
-<p>Then, we need to create a specific prerender module that will use the AppModule we have just adjusted. Let’s create an <code class="language-plaintext highlighter-rouge">app.prerender.module.ts</code> where we can tell which component it has to bootstrap.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/app/app.prerender.module.ts</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">NgModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">ServerModule</span><span class="p">,</span> <span class="nx">ServerTransferStateModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/platform-server</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app.module</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">AppComponent</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app.component</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
-  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
-    <span class="nx">AppModule</span><span class="p">,</span>
-    <span class="nx">ServerModule</span><span class="p">,</span>
-    <span class="nx">ServerTransferStateModule</span>
-  <span class="p">],</span>
-  <span class="na">bootstrap</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppComponent</span><span class="p">]</span>
-<span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppPrerenderModule</span> <span class="p">{</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="defining-a-prerender-entrypoint">Defining a prerender entrypoint</h3>
-
-<p>To use the SSR logic at build time, we need to have a specific bundle. Since the <code class="language-plaintext highlighter-rouge">main.ts</code> file is used to bootstrap the application for the browser, we also need a <code class="language-plaintext highlighter-rouge">main.prerender.ts</code> file that will be used to create the prerender bundle.
-Let’s create that file, shall we?</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/app/main.prerender.ts</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">enableProdMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">export</span> <span class="p">{</span> <span class="nx">AppPrerenderModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app/app.prerender.module</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="nx">enableProdMode</span><span class="p">();</span>
-</code></pre></div></div>
-<h3 id="a-prerender-tsconfigjson">A prerender tsconfig.json</h3>
-
-<p>We are almost there, I promise, but we need a few more things. We need a specific <strong>tsconfig</strong> file that compiles the bundle to something that the node server can read. It’s important for the compiler to compile to a <strong>commonjs</strong> package. This is because node.js uses this by default. So we need to create a <code class="language-plaintext highlighter-rouge">tsconfig.prerender.json</code> file:</p>
-
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">/*</span><span class="w"> </span><span class="err">src/tsconfig.prerender.json</span><span class="w"> </span><span class="err">*/</span><span class="w">
-</span><span class="p">{</span><span class="w">
-  </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./tsconfig.app.json"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"outDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"../out-tsc/prerender"</span><span class="p">,</span><span class="w">
-    </span><span class="err">/*</span><span class="w"> </span><span class="err">node</span><span class="w"> </span><span class="err">only</span><span class="w"> </span><span class="err">understands</span><span class="w"> </span><span class="err">commonjs</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">now*/</span><span class="w">
-    </span><span class="nl">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"commonjs"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="nl">"exclude"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="s2">"test.ts"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"**/*.spec.ts"</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="err">/*</span><span class="w"> </span><span class="err">Additional</span><span class="w"> </span><span class="err">informations</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">bootstrap</span><span class="w"> </span><span class="err">Angular</span><span class="w"> </span><span class="err">*/</span><span class="w">
-  </span><span class="nl">"angularCompilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"entryModule"</span><span class="p">:</span><span class="w"> </span><span class="s2">"app/app.prerender.module#AppPrerenderModule"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-
-</span></code></pre></div></div>
-
-<h3 id="letting-angular-cli-know-and-generating-the-bundle">Letting Angular CLI know and generating the bundle</h3>
-
-<p>In the apps entry of the <code class="language-plaintext highlighter-rouge">angular-cli.json</code> file, we need to add a new app where we refer to the <code class="language-plaintext highlighter-rouge">main.prerender.ts</code> file and the <code class="language-plaintext highlighter-rouge">tsconfig.prerender.json</code> file. The app section should look like this:</p>
-
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"prerender"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"platform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"src"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"outDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dist-prerender"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"main.prerender.ts"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"tsconfig"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tsconfig.prerender.json"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"environmentSource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"environments/environment.ts"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"environments/environment.ts"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"prod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"environments/environment.prod.ts"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-
-<p>Update the package JSON so it builds both the normal package and the server package. Set the <strong>output-hashing</strong> to none so that the build generates a clean <code class="language-plaintext highlighter-rouge">main.bundle.js</code> without any hash.</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    "build": "ng build --prod &amp;&amp; ng build --prod --app prerender --output-hashing=none",
-</code></pre></div></div>
-<p>When running <code class="language-plaintext highlighter-rouge">npm run build</code> the following files should be created:</p>
-<ul>
-  <li>dist (this contains the normal build)</li>
-  <li><code class="language-plaintext highlighter-rouge">dist-prerender/main.bundle.js</code></li>
-</ul>
-
-<p>This <code class="language-plaintext highlighter-rouge">main.bundle.js</code> file exports a module called <code class="language-plaintext highlighter-rouge">AppPrerenderModuleNgFactory</code>. This is the module that we can use to pre-render the whole thing.</p>
-
-<h2 id="generating-the-static-files">Generating the static files</h2>
-
-<p>We have just generated the <code class="language-plaintext highlighter-rouge">main.bundle.js</code>, the file that we need to perform server-side rendering. However we don’t want to do server-side rendering in this case, we want to <strong>pre-render</strong> the html at build time. To do that we need a script that will complete the following steps.</p>
-
-<ul>
-  <li>Create an array with routes (we could automate this if we want)</li>
-  <li>Loop over that array and for every entry:
-    <ul>
-      <li>create a folder in the dist map with that route name</li>
-      <li>use the <code class="language-plaintext highlighter-rouge">main.bundle.js</code> to render the html and store that html as an <code class="language-plaintext highlighter-rouge">index.html</code> in the folder we just created.</li>
-      <li>Overwrite the <code class="language-plaintext highlighter-rouge">dist/index.html</code> file.</li>
-    </ul>
-  </li>
-</ul>
-
-<p>Let’s call that script <code class="language-plaintext highlighter-rouge">prerender.ts</code>. Since I’m a typescript enthusiast, I want to develop the prerender script in typescript and use <a href="https://www.npmjs.com/package/ts-node">ts-node</a> to run it.
-We can start with creating an empty <code class="language-plaintext highlighter-rouge">prerender.ts</code> file in the root folder and installing ts-node with <code class="language-plaintext highlighter-rouge">npm i -D ts-node</code></p>
-
-<p>Now we can update the scripts section of the package.json so that the render function is called when the build is completed:</p>
-
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"ng"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng serve"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ng build --prod &amp;&amp; ng build --prod --app prerender --output-hashing=none"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"postbuild"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run render"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"render"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ts-node prerender.ts"</span><span class="p">,</span><span class="w">
-    </span><span class="err">...</span><span class="w">
-  </span><span class="p">}</span><span class="err">,</span><span class="w">
-</span></code></pre></div></div>
-
-<p>The only puzzle piece that is still missing is implementing the <code class="language-plaintext highlighter-rouge">prerender.ts</code> file.</p>
-
-<h3 id="completing-the-prerenderts-file">Completing the prerender.ts file</h3>
-
-<p>The following code should be self-explanatory:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="dl">'</span><span class="s1">zone.js/dist/zone-node</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">path</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">fs</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">enableProdMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">renderModuleFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/platform-server</span><span class="dl">'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span> <span class="nx">AppPrerenderModuleNgFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./dist-prerender/main.bundle</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">distFolder</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">./dist</span><span class="dl">'</span><span class="p">;</span>
-<span class="kd">const</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">fs</span>
-    <span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">distFolder</span><span class="p">}</span><span class="s2">/index.html`</span><span class="p">),</span> <span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-
-<span class="c1">// we could automate this based on the app.routes.ts file but</span>
-<span class="c1">// to keep it simple let's just create an array with the routes we want</span>
-<span class="c1">// to prerender</span>
-<span class="kd">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="dl">'</span><span class="s1">/about</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">/brews</span><span class="dl">'</span><span class="p">,</span>
-    <span class="dl">'</span><span class="s1">/consultancy</span><span class="dl">'</span><span class="p">];</span>
-<span class="nx">enableProdMode</span><span class="p">();</span>
-
-<span class="c1">// for every route render the html and save it in the correct folder</span>
-<span class="nx">paths</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">distFolder</span> <span class="o">+</span> <span class="nx">p</span><span class="p">));</span>
-
-<span class="c1">// don't forget to overwrite the index.html as well</span>
-<span class="nx">renderToHtml</span><span class="p">(</span><span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">distFolder</span><span class="p">);</span>
-
-<span class="kd">function</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-  <span class="c1">// Render the module with the correct url just </span>
-  <span class="c1">// as the server would do</span>
-  <span class="nx">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
-    <span class="nx">url</span><span class="p">,</span>
-    <span class="na">document</span><span class="p">:</span> <span class="nx">index</span>
-  <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// create the route directory</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">url</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdirSync</span><span class="p">(</span><span class="nx">folderPath</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`success`</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">});</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-<h3 id="testing-the-pre-rendered-application">Testing the pre-rendered application</h3>
-
-<p>To test the website, we can build the project with <code class="language-plaintext highlighter-rouge">npm run build</code>. To serve it, we can use http-server. We can install http-server by running <code class="language-plaintext highlighter-rouge">npm i -g http-server</code>. By navigating into the <code class="language-plaintext highlighter-rouge">dist</code> directory and running <code class="language-plaintext highlighter-rouge">http-server</code>, the application will be hosted on port 8080.</p>
-
-<p>If we navigate to http://localhost:8080 in the browser, we will see the pre-rendered application. We can test the SPA experience by navigating between the different pages and we can test the pre-rendered part by looking at the source code.</p>
-
-<p><img src="/assets/images/posts/prerendering-angular-apps/sourcecode.png" alt="SSR sourcecode" /></p>
-
-<h2 id="closing-words">Closing words</h2>
-
-<p>I hope you liked this article and learned something.
-We can find the full pre-rendered version by checking out branch <code class="language-plaintext highlighter-rouge">prerendered</code> by running <code class="language-plaintext highlighter-rouge">git checkout prerendered</code>. To test this example, checkout the previous section.</p>
-
-<p>Note: to optimize the HTML even more, we could use an HTML minifier like <a href="https://www.npmjs.com/package/html-minifier">this one</a> to shrink the HTML where possible. The example could look something like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-minifier</span><span class="dl">'</span><span class="p">).</span><span class="nx">minify</span><span class="p">;</span>
-<span class="kd">function</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="c1">// Render the module with the correct url just </span>
-    <span class="c1">// as the server would do</span>
-    <span class="nx">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
-        <span class="nx">url</span><span class="p">,</span>
-        <span class="na">document</span><span class="p">:</span> <span class="nx">index</span>
-    <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="p">...</span>
-        <span class="c1">// minify the html</span>
-        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">minify</span><span class="p">(</span><span class="nx">html</span><span class="p">),</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
-          <span class="p">...</span>
-        <span class="p">});</span>
-    <span class="p">});</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h2 id="special-thanks">Special thanks</h2>
-
-<p>A very special thanks to the awesome people that have helped me with their reviews:</p>
-
-<ul>
-  <li>Laurant Duveau <a href="https://twitter.com/laurentduveau">@laurentduveau</a></li>
-  <li>Dominic Elm <a href="https://twitter.com/elmd_">@elmd_</a></li>
-  <li>Sam Vloeberghs <a href="https://twitter.com/samvloeberghs">@samvloeberghs</a></li>
-  <li>Ana Cidre <a href="https://twitter.com/anacidre_">@AnaCidre_</a></li>
-  <li>Ruben Vermeulen <a href="https://twitter.com/CrushTheButton">@CrushTheButton</a></li>
-  <li>Klaas Cuvelier <a href="https://twitter.com/klaascuvelier">@klaascuvelier</a></li>
-</ul>
-
-<h2 id="sources">Sources</h2>
-
-<p><a href="https://hackernoon.com/deploy-angular-universal-w-firebase-ad70ea2413a1">deploy angular universal with firebase</a></p>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><summary type="html"><![CDATA[Learn how to use Server-side rendering to prerender our Angular application at build time.]]></summary></entry></feed>
+<p>Your input makes blogging worth while!</p>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Redux" /><category term="@ngrx" /><category term="Angular" /><summary type="html"><![CDATA[This article is all about what to do and what not to do when using Redux (@ngrx/store)]]></summary></entry></feed>

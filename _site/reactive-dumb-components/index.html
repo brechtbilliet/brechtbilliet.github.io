@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Reactive dumb components | Frontend software architect living in Belgium</title>
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Reactive dumb components" />
+<meta name="author" content="brechtbilliet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How to make dumb components reactive without imperative ngOnChanges programming" />
+<meta property="og:description" content="How to make dumb components reactive without imperative ngOnChanges programming" />
+<link rel="canonical" href="http://localhost:4000/reactive-dumb-components/" />
+<meta property="og:url" content="http://localhost:4000/reactive-dumb-components/" />
+<meta property="og:site_name" content="Frontend software architect living in Belgium" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-05-17T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Reactive dumb components" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"brechtbilliet"},"dateModified":"2021-05-17T00:00:00+02:00","datePublished":"2021-05-17T00:00:00+02:00","description":"How to make dumb components reactive without imperative ngOnChanges programming","headline":"Reactive dumb components","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/reactive-dumb-components/"},"url":"http://localhost:4000/reactive-dumb-components/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Frontend software architect living in Belgium" /></head>
+<body>
+<section class="app">
+    <nav class="app__menu" id="app__menu">
+        <button name="menu-button" class="app__menu-button" id="menu-button" type="button"
+        ><i class="fa-solid fa-bars"></i></button>
+        <ul>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-brands fa-angular"></i>
+                        <span class="app__menu-item-label">BRECHT</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/hire-me">
+                        <i class="fa-solid fa-person-walking"></i>
+                        <span class="app__menu-item-label">HIRE ME</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/happy-clients">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                        <span class="app__menu-item-label">CLIENTS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/consultancy">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="app__menu-item-label">CONSULTANCY</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/code-reviews">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span class="app__menu-item-label">CODE REVIEWS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/coaching">
+                        <i class="fa-solid fa-school"></i>
+                        <span class="app__menu-item-label">COACHING</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="link--active" href="https://blog.brecht.io/">
+                        <i class="fa-solid fa-blog"></i>
+                        <span class="app__menu-item-label">BLOG</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a href="https://brecht.io/contact">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span class="app__menu-item-label">CONTACT</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-wrapper" id="container__wrapper">
+        <div class="container">
+            <main class="page-content" aria-label="Content">
+                <div class="wrapper">
+                    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Reactive dumb components</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="2021-05-17T00:00:00+02:00" itemprop="datePublished">May 17, 2021
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">brechtbilliet</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="reactive-dumb-components">Reactive dumb components</h2>
+
+<p>When we write RxJS logic inside our presentation layer we mostly wind up with reactive flows inside our smart components (container components). The reasoning behind this, is quite easy:</p>
+
+<p>Because these smart components are the orchestration vessels of our application, they communicate with reactive asynchronous flows such as XHR-calls and state management, but also with events emitted by the dumb components.</p>
+
+<p>That being said, dumb components may also benefit from reactive flows. Especially when the dumb component has multiple <code class="language-plaintext highlighter-rouge">@Input()</code> properties that rely on different sets of asynchronous data.
+The usual way of handling these types of changes is the use of imperative <code class="language-plaintext highlighter-rouge">if else code</code> inside the <code class="language-plaintext highlighter-rouge">ngOnChanges</code> lifecycle hook.</p>
+
+<p>Take this situation for example: We have a <code class="language-plaintext highlighter-rouge">CompanyDetail</code> component that has the responsibility to visualize a company with all its sites. 
+The component has a previous and a next button to navigate between the sites, we also want to show how many sites there are and we want to show the name and address of every specific site.
+The <code class="language-plaintext highlighter-rouge">sites</code> <code class="language-plaintext highlighter-rouge">@Input()</code> property is asynchronous because it is dependant on an XHR request and the <code class="language-plaintext highlighter-rouge">currentSiteId</code> <code class="language-plaintext highlighter-rouge">@Input()</code> property is asynchronous because it is dependant on the router params which is an observable behind the scenes and will change over time when the user is navigating between the different sites of a company.</p>
+
+<p>For this component to properly work we have to make sure that the <code class="language-plaintext highlighter-rouge">sites</code> property has a value at the right time and the <code class="language-plaintext highlighter-rouge">currentSiteId</code> also has a value at the right time, we can already imagine racing conditions etc.
+The component is also responsibile to calculate whether the previous button and next button are disabled or not. When these buttons are clicked, it also has to calculate the next or previous siteId to emit that value to its smart component.</p>
+
+<p>Here we can see the app inside this <a href="https://stackblitz.com/edit/reactive-dumb-components?file=src%2Fapp%2Fcontainers%2Fcompany%2Fcompany.component.ts">Stackblitz example</a></p>
+
+<p>This is the smart component that will use the <code class="language-plaintext highlighter-rouge">app-company-detail</code> as a dumb component.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;app-company-detail
+      [currentSiteId]="currentSiteId$ | async"
+      [sites]="sites$ | async"
+      (siteChanged)="siteChanged($event)"
+    &gt;&lt;/app-company-detail&gt;
+  `</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company.component.css</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyComponent</span> <span class="p">{</span>
+  <span class="c1">// fetch the sites</span>
+  <span class="nx">sites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sitesService</span><span class="p">.</span><span class="nx">getSites</span><span class="p">();</span>
+  <span class="c1">// get the asynchronous siteId from the router params</span>
+  <span class="nx">currentSiteId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">siteId</span><span class="p">));</span>
+
+  <span class="c1">// the dumb app-company-detail component is responsible</span>
+  <span class="c1">// to calculate the siteId that we need to go to</span>
+  <span class="nx">siteChanged</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nx">navigate</span><span class="p">([</span><span class="nx">id</span><span class="p">]);</span>
+  <span class="p">}</span>
+
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="nx">sitesService</span><span class="p">:</span> <span class="nx">SitesService</span><span class="p">,</span>
+    <span class="k">private</span> <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span><span class="p">,</span>
+    <span class="k">private</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span>
+  <span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The imperative implementation of the dumb component looks like this:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company-detail</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;button [disabled]="previousDisabled" (click)="previousClicked()"&gt;
+      Previous site
+    &lt;/button&gt;
+    &lt;button [disabled]="nextDisabled" (click)="nextClicked()"&gt;
+      Next site
+    &lt;/button&gt;
+     / 
+    &lt;h2&gt;&lt;/h2&gt;
+    &lt;p&gt;Address: &lt;/p&gt;
+  `</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company-detail.component.css</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span><span class="p">{</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">currentSiteId</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">sites</span><span class="p">:</span> <span class="kr">any</span><span class="p">[];</span>
+  <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">();</span>
+
+  <span class="c1">// we need to keep track of 5 different local properties</span>
+  <span class="c1">// and calculate and set their values at the right time</span>
+  <span class="nx">currentIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nl">previousDisabled</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+  <span class="nl">nextDisabled</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+  <span class="nl">currentSite</span><span class="p">:</span> <span class="kr">any</span><span class="p">;</span>
+  <span class="nl">currentSiteNumber</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+
+  <span class="nx">ngOnChanges</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="c1">// this can become complex really fast</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span><span class="p">);</span>    
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteNumber</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">previousDisabled</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">nextDisabled</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
+  <span class="p">}</span>
+
+  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can see that all the calculation is happening inside the ngOnChanges.
+Although this solution is perfectly fine, there is a more reactive way of approaching this. For this specific example it could be overkill but it might teach you how to tackle more complex situations when tackling <code class="language-plaintext highlighter-rouge">@Input()</code> changes.</p>
+
+<p>Think about a complex calendar view that has to do a bunch of calculations based on dozens of <code class="language-plaintext highlighter-rouge">@Input()</code> properties for instance, where a bunch of them are happening synchronous and there are async properties depending on other async properties.
+Think about <code class="language-plaintext highlighter-rouge">@Input()</code> components that are useless unless other <code class="language-plaintext highlighter-rouge">@Input()</code> components have their values. Or what if you like to combine the <code class="language-plaintext highlighter-rouge">@Input()</code> properties with other async objects inside the dumb component. In the following example every piece of code inside this component is a stream. The first thing we want to do is create observables from the <code class="language-plaintext highlighter-rouge">@Input()</code> properties. I like to use this approach when multiple <code class="language-plaintext highlighter-rouge">@Input()</code> properties need eachother to compute a specific value.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+  <span class="c1">// input state subjects</span>
+  <span class="k">private</span> <span class="nx">currentSiteId$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">sites$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+  <span class="c1">// input stream setters</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><em>Note: We use the <code class="language-plaintext highlighter-rouge">$$</code> suffix so we can see the observable is a <code class="language-plaintext highlighter-rouge">Subject</code>.</em></p>
+
+<p>We have now created observables from these <code class="language-plaintext highlighter-rouge">@Input()</code> properties. I have created the library <a href="https://www.npmjs.com/package/ngx-reactivetoolkit">ngx-reactivetoolkit</a> to make this even easier. We can see an example on how this cleans up the code right below:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">currentSiteId</span><span class="p">:</span> <span class="kr">string</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span>  <span class="nx">sites</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]</span>
+  <span class="p">@</span><span class="nd">Changes</span><span class="p">(</span><span class="dl">'</span><span class="s1">currentSiteId</span><span class="dl">'</span><span class="p">)</span> <span class="nx">currentSiteId$</span><span class="p">;</span>
+  <span class="p">@</span><span class="nd">Changes</span><span class="p">(</span><span class="dl">'</span><span class="s1">sites</span><span class="dl">'</span><span class="p">)</span> <span class="nx">sites$</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this article we will continue with the native approach but be sure to check it out if you find the time. The toolkit might also gave some other good stuff that could help you.</p>
+
+<p>Moving on… Remember that we mentioned that everything could be a stream? This also means our template events can be linked to streams.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"previousDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"previousClicked()"</span><span class="nt">&gt;</span>
+  Previous site
+<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"nextDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"nextClicked()"</span><span class="nt">&gt;</span>
+  Next site
+<span class="nt">&lt;/button&gt;</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// this will be used to communicate with the siteChanged @Output()</span>
+  <span class="k">private</span> <span class="nx">nav$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
+
+  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// decrement</span>
+  <span class="p">}</span>
+  
+  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// increment</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The next thing that we want to do is determine the presentation streams and the Output streams. For the presentation streams we can simply have a look at the template:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"previousDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"previousClicked()"</span><span class="nt">&gt;</span>
+  Previous site
+<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">[disabled]=</span><span class="s">"nextDisabled$|async"</span> <span class="na">(click)=</span><span class="s">"nextClicked()"</span><span class="nt">&gt;</span>
+  Next site
+<span class="nt">&lt;/button&gt;</span>
+/ 
+<span class="nt">&lt;ng-container</span> <span class="na">*ngIf=</span><span class="s">"currentSite$|async as currentSite"</span><span class="nt">&gt;</span>
+  ...
+<span class="nt">&lt;/ng-container&gt;</span>
+
+</code></pre></div></div>
+
+<p>When looking at this template we can easily determine the presentation streams. These are all the streams that use an <code class="language-plaintext highlighter-rouge">async</code> pipe.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">previousDisabled$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nextDisabled$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">currentSiteNumber$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">totalSites$</code></li>
+  <li><code class="language-plaintext highlighter-rouge">currentSite$</code></li>
+</ul>
+
+<p>The only <code class="language-plaintext highlighter-rouge">@Output()</code> stream for this template is for the <code class="language-plaintext highlighter-rouge">siteChanged</code> <code class="language-plaintext highlighter-rouge">@Output()</code>. Did you know an <code class="language-plaintext highlighter-rouge">EventEmitter</code> is an observable behind the scenes? Well, it is and we can replace the <code class="language-plaintext highlighter-rouge">EventEmitter</code> with any kind of observable.</p>
+
+<p>This means that this code:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>can be refactored to:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged$</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Again, for this example the solution might be personal preference but when the flows become more complex we believe this approach can really shine! Think about a search component that looks like this…</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">search$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchControl</span><span class="p">.</span><span class="nx">valueChanges$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">debounceTime</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="nx">distinctUntilChanged</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>This can become very powerful very fast!</p>
+
+<p>The next thing that we want to do is calculate intermediate private streams. If you don’t know what we mean with that, please check out the article on the <a href="https://blog.strongbrew.io/the-sip-principle/">SIP principle</a>. We use these intermediate streams to calculate the presentation streams, which are the streams that we will use in our template, and in the <code class="language-plaintext highlighter-rouge">@Output()</code> streams</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">currentIndex$</code> stream and the <code class="language-plaintext highlighter-rouge">indexWithSites$</code> stream are streams that are being used to calculate the presentationstreams. The <code class="language-plaintext highlighter-rouge">siteChanged$</code> stream will be used by the <code class="language-plaintext highlighter-rouge">siteChanged</code> <code class="language-plaintext highlighter-rouge">@Output()</code> property later on
+We can see the calculation in this example:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// intermediate streams</span>
+<span class="c1">// the current index, calculated by the current site id and the sites</span>
+<span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
+      <span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
+    <span class="p">)</span>
+  <span class="p">);</span>
+
+<span class="c1">// an array that always contains the currentIndex and all the sites</span>
+<span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
+
+<span class="c1">// every time the nav button is clicked, we need to calculate the id that</span>
+<span class="c1">// needs to be emitted to the siteChanged @Output()</span>
+<span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+  <span class="nx">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
+  <span class="nx">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
+    <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="nx">navigationIndex</span><span class="p">]?.</span><span class="nx">id</span>
+  <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we can start by implementing the  presentation streams and the <code class="language-plaintext highlighter-rouge">@Output()</code> stream.
+In the code snippet below we can see the complete code: You can also check the <a href="https://stackblitz.com/edit/reactive-dumb-components-reactive?file=src/app/components/company-detail/company-detail.component.ts">StackBlitz example</a></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app-company-detail</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;button [disabled]="previousDisabled$|async" (click)="previousClicked()"&gt;
+      Previous site
+    &lt;/button&gt;
+    &lt;button [disabled]="nextDisabled$|async" (click)="nextClicked()"&gt;
+      Next site
+    &lt;/button&gt;
+    / 
+    &lt;ng-container *ngIf="currentSite$|async as currentSite"&gt;
+      &lt;h2&gt;&lt;/h2&gt;
+      &lt;p&gt;Address: &lt;/p&gt;
+    &lt;/ng-container&gt;
+
+  `</span><span class="p">,</span>
+  <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company-detail.component.css</span><span class="dl">'</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+  <span class="c1">// local state subjects and input state subjects</span>
+  <span class="k">private</span> <span class="nx">nav$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="k">private</span> <span class="nx">currentSiteId$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">sites$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+  <span class="c1">// input stream setters</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="c1">// intermediate streams</span>
+  <span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+      <span class="nx">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
+        <span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
+      <span class="p">)</span>
+    <span class="p">);</span>
+  <span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
+
+  <span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
+     <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="nx">navigationIndex</span><span class="p">]?.</span><span class="nx">id</span>
+    <span class="p">)</span>
+  <span class="p">)</span>
+
+  <span class="c1">// output streams and presentational streams</span>
+  <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged$</span><span class="p">;</span>
+  <span class="nx">previousDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(</span><span class="nx">currentIndex</span> <span class="o">=&gt;</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="nx">nextDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">currentIndex</span> <span class="o">===</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="nx">currentSite$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span><span class="p">])</span>
+  <span class="p">)</span>
+  <span class="nx">totalSites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(</span><span class="nx">sites</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span><span class="p">)</span>
+  <span class="p">)</span>
+  <span class="nx">currentSiteNumber$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="p">)</span>
+
+  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>    
+  <span class="p">}</span>
+  
+  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>    
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We can make components completely reactive if we want to by:</p>
+<ul>
+  <li>Binding other observables to <code class="language-plaintext highlighter-rouge">@Output()</code> properties</li>
+  <li>Using setters to populate <code class="language-plaintext highlighter-rouge">@Input()</code> properties</li>
+  <li>We can use <code class="language-plaintext highlighter-rouge">ngx-reactivetoolkit</code> to make the code cleaner</li>
+</ul>
+
+<p>For simple component this can be seen as overkill, but it could definitely help when dumb components become more complex and rely of different streams of data that are happening asynchronously.</p>
+
+  </div><a class="u-url" href="/reactive-dumb-components/" hidden></a>
+</article>
+
+                </div>
+            </main>
+        </div><div class="footer">
+    <div class="footer__inner"><h3>Let's get to know each other!</h3>
+        <ul class="footer__social-icons">
+            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon"><i class="fa-brands fa-linkedin"></i></a></li>
+            <li><a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon"><i
+                    class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="mailto://billietbrecht@gmail.com" target="blank" class="footer__social-icon"><i
+                    class="fa-solid fa-envelope-open"></i></a></li>
+        </ul>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
+    </div>
+</div>
+</div>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
+        charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({
+            "notice_banner_type": "simple",
+            "consent_type": "implied",
+            "palette": "light",
+            "language": "en",
+            "page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
+            "notice_banner_reject_button_hide": false,
+            "preferences_center_close_button_hide": false,
+            "page_refresh_confirmation_buttons": false,
+            "website_name": "brecht.io"
+        });
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-43296458-4');
+</script>
+<script lang="text/javascript">
+    window.menuCollapsed = false;
+    const appMenu = document.querySelector('#app__menu');
+    const containerWrapper = document.querySelector('#container__wrapper');
+    document.querySelector('#menu-button').addEventListener('click', () => {
+        window.menuCollapsed = !window.menuCollapsed;
+        if (window.menuCollapsed) {
+            containerWrapper.classList.remove('menu-open')
+            appMenu.classList.add('app__menu--collapsed')
+        } else {
+            appMenu.classList.remove('app__menu--collapsed')
+            containerWrapper.classList.add('menu-open')
+        }
+    })
+    if (window?.innerWidth <= 768) {
+        containerWrapper.classList.remove('menu-open')
+        appMenu.classList.add('app__menu--collapsed')
+    }
+
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator
+    website</a></noscript>
+</body>
+
+</html>

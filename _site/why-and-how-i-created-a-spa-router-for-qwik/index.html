@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Why and how I created a SPA router for Qwik | Frontend software architect living in Belgium</title>
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Why and how I created a SPA router for Qwik" />
+<meta name="author" content="brechtbilliet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The why" />
+<meta property="og:description" content="The why" />
+<link rel="canonical" href="http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/" />
+<meta property="og:url" content="http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/" />
+<meta property="og:site_name" content="Frontend software architect living in Belgium" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-03T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Why and how I created a SPA router for Qwik" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"brechtbilliet"},"dateModified":"2022-08-03T00:00:00+02:00","datePublished":"2022-08-03T00:00:00+02:00","description":"The why","headline":"Why and how I created a SPA router for Qwik","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/"},"url":"http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Frontend software architect living in Belgium" /></head>
+<body>
+<section class="app">
+    <nav class="app__menu" id="app__menu">
+        <button name="menu-button" class="app__menu-button" id="menu-button" type="button"
+        ><i class="fa-solid fa-bars"></i></button>
+        <ul>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-brands fa-angular"></i>
+                        <span class="app__menu-item-label">BRECHT</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/hire-me">
+                        <i class="fa-solid fa-person-walking"></i>
+                        <span class="app__menu-item-label">HIRE ME</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/happy-clients">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                        <span class="app__menu-item-label">CLIENTS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/consultancy">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="app__menu-item-label">CONSULTANCY</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/code-reviews">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span class="app__menu-item-label">CODE REVIEWS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/coaching">
+                        <i class="fa-solid fa-school"></i>
+                        <span class="app__menu-item-label">COACHING</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="link--active" href="https://blog.brecht.io/">
+                        <i class="fa-solid fa-blog"></i>
+                        <span class="app__menu-item-label">BLOG</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a href="https://brecht.io/contact">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span class="app__menu-item-label">CONTACT</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-wrapper" id="container__wrapper">
+        <div class="container">
+            <main class="page-content" aria-label="Content">
+                <div class="wrapper">
+                    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Why and how I created a SPA router for Qwik</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="2022-08-03T00:00:00+02:00" itemprop="datePublished">Aug 3, 2022
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">brechtbilliet</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="the-why">The why</h2>
+
+<p>The people from <a href="https://builder.io">builder.io</a> have done an awesome job writing <a href="https://qwik.builder.io/">Qwik</a>, and their arsenal of other great tools.
+I started playing with Qwik some time ago and decided to rewrite my website <a href="https://brecht.io">brecht.io</a> in it. 
+(I’m also planning to use Qwik in more complex apps, but I wanted to see my website in production first.)
+When I started reworking my website, there wasn’t a tool that took care of in-page SPA (single page application) routing — or at least not how I’m used to it from other client-side technologies.
+I’m used to working with SPA routing in <a href="https://angularjs.org/">AngularJS</a>, <a href="https://angular.io">Angular</a>, and <a href="https://reactjs.org/">React</a>, so I wanted to explore their routing principles in Qwik applications.</p>
+
+<p>There is this thing, called Qwik-city, which is crazy fast and offers MPA (multiple page application) routing.
+At the time of writing, Qwik had no full-fledged client-side router that offered SPA routing.
+Great news for me, the nerd that I am, so I decided to dive deeper and write a custom SPA router for Qwik. It has been an interesting journey
+that made me appreciate Qwik even better and helped me “think in” Qwik.</p>
+
+<p>Now, before I continue, let’s align on the differences between MPA-routing and SPA-routing. 
+In short: In MPA-routing, the page does a full page refresh on every navigation.
+SPA-routing uses the <code class="language-plaintext highlighter-rouge">history</code> property of the <code class="language-plaintext highlighter-rouge">window</code> object to manage routing state. So for SPA-routing, the page does not refresh completely and the goal
+is to only re-render parts of the page. When we look back at older technologies, SPA-routing used to be way faster, but with Qwik-city
+the difference in performance might be trivial.</p>
+
+<h3 id="now-why-am-i-writing-this">Now why am I writing this?</h3>
+
+<p>Well, because… it’s a cool exercise… I learned a lot, I hit walls I didn’t expect to hit, and it helped me understand pain points I experienced with routers in other frameworks.
+But that’s not enough, right? No, that is not my only driving factor for demystifying SPA-routing in Qwik.
+I believe SPA routers do have quite a few benefits. I believe in Qwik, and I think it would be even more awesome to see it work with SPA-routing.</p>
+
+<h4 id="state">State</h4>
+
+<p>One of the advantages of a SPA-router is that we don’t lose application state… 
+Since the instance of our application is only created once and kept alive, we can keep the state alive in our application.
+We can not only share state between components, but also between pages. 
+Some users like their sidebar collapsed, others don’t. It’s kind of annoying when you collapse a sidebar, then navigate to another page
+where the sidebar jumps open again because state is not shared.</p>
+
+<h4 id="the-power-of-routing-state">The power of routing state</h4>
+
+<p>I’m a big fan of putting state (params and searchParams) in routes. Not all state belongs there, but keeping state in routes gives us some benefits:</p>
+
+<ul>
+  <li>We can bookmark a page without losing that state.</li>
+  <li>We can copy/paste URLs to share them with other people without losing that state that is kept in that route.</li>
+  <li>It’s free to manage, no need for complex frameworks, no complexity regarding state invalidation, etc. <!-- This may be true at first, but the Navigation History proposal summarizes some cases where it stops being true: https://github.com/WICG/navigation-api/blob/main/README.md#summary --></li>
+  <li>We can use the browser navigation buttons to go back to previous and next states.</li>
+</ul>
+
+<p>Do note: When using MPA-routing we can also put the state in the url, but the more state that would change in the url, the more page refreshes we would have
+which would result in less usability.</p>
+
+<h4 id="usability">Usability</h4>
+
+<p>Having pages refresh on every route change can cause certain discomforts to the usability of our application.</p>
+
+<ul>
+  <li>Cursor position being forgotten on refresh.</li>
+  <li>Selected text getting unselected on refresh.</li>
+  <li>A video call that is being held or even a movie we are watching would be closed on refresh</li>
+  <li>Background sound being interrupted on refresh.</li>
+  <li>Open dialogs, snackbars, banners and success messages are hard to show/keep alive on full refresh. 
+Eg: Sending the contents of a form in page A, and navigating to page B on success. How and when would you show a success message? 
+MPA frameworks often call this “flash” messaging, but it’s easier to manage in a SPA.</li>
+</ul>
+
+<h4 id="performance">Performance</h4>
+
+<ul>
+  <li>We only want to load stuff we need, that’s the entire idea behind Qwik. Does it makes sense to reload the same DOM when we already have it?</li>
+  <li>Does it make sense to re-render part of the DOM that is already rendered? E.g the menu.</li>
+  <li>Qwik has lazy-loading right out of the box! It just works and it works awesome! Why not use it for routing, too?</li>
+</ul>
+
+<h4 id="architecture">Architecture</h4>
+
+<p>A router outlet is basically a component that will render a page in some kind of placeholder: the DOM of the entire page stays the same, but
+what’s inside the router outlet gets updated. Router outlets can be quite powerful, especially if you can nest them like we can with the Angular router.
+The routing system I wrote does not support multiple nested router outlets yet, but when we have multiple router outlets we can use them to 
+optimise our architecture. We could attach a dialog to a route so we can close that dialog by clicking the native browser Back button.
+We don’t have to keep state of that dialog, we just use the router outlet to render a component and destroy it when it needs to be destroyed.</p>
+
+<h4 id="eventing">Eventing</h4>
+
+<p>When we have SPA-routing, it’s nice to be notified when something in the URL changes.
+Let’s pretend we are in a user management page with search functionality, and we want to make the search query bookmarkable. 
+In that case when the user types ‘Brecht’ we want the URL to change to <code class="language-plaintext highlighter-rouge">/users/search?q=Brecht</code> so we can bookmark it.
+We don’t want to refresh the entire page every time the user types a character, right? That would result in cursor issues with the search input. Think about debouncing as well…
+We want to get notified when that specific <code class="language-plaintext highlighter-rouge">q</code> parameter changes. When it does, we perform an XHR call, and on success we rerender part of the page
+with the results. You know what’s even more awesome? If we do have a full refresh of the page, we get the exact same result rendered on
+the server, because that’s how awesome Qwik is.</p>
+
+<h2 id="writing-a-spa-router-for-qwik">Writing a SPA-router for Qwik</h2>
+
+<p>This version of the router is very early stage and could use polishing, but the principles are there. So let’s go through the code together.</p>
+
+<h3 id="the-config">The config</h3>
+
+<p>This is where it all starts, we need to create a config file that maps paths to components. A path can contain params.
+Like Angular and Nest, we can use the <code class="language-plaintext highlighter-rouge">:</code> syntax to define params.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing-types.ts</span>
+<span class="k">export</span> <span class="kd">type</span> <span class="nx">RoutingConfigItem</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">component</span><span class="p">:</span> <span class="kr">any</span><span class="p">;</span>
+    <span class="nl">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="kd">type</span> <span class="nx">RoutingConfig</span> <span class="o">=</span> <span class="nx">RoutingConfigItem</span><span class="p">[];</span>
+</code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing-config.tsx</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">routingConfig</span><span class="p">:</span><span class="nx">RoutingConfig</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">Home</span><span class="o">/&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">Users</span><span class="o">/&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users/:id</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">UserDetail</span><span class="o">/&gt;</span>
+    <span class="p">}</span>
+  
+<span class="p">]</span>
+
+</code></pre></div></div>
+<p>The base path <code class="language-plaintext highlighter-rouge">/</code> will resolve in the home page, the <code class="language-plaintext highlighter-rouge">users</code> path to the <code class="language-plaintext highlighter-rouge">&lt;Users/&gt;</code> component, and the <code class="language-plaintext highlighter-rouge">users/:id</code> to the <code class="language-plaintext highlighter-rouge">&lt;UserDetail/&gt;</code> component.</p>
+
+<h3 id="the-state">The state</h3>
+
+<p>Qwik provides us with a state mechanism. We want to reflect the state in the URL to Qwik’s state.
+First we need to access the URL on the server, then pass it to the <code class="language-plaintext highlighter-rouge">render</code> function.
+Then we need to pass it to the <code class="language-plaintext highlighter-rouge">&lt;Root/&gt;</code> component, which passes it along to the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component.
+That <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component will initialize the router with the URL.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// entry.dev.tsx</span>
+<span class="p">...</span>
+<span class="nx">render</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="dl">''</span><span class="p">}</span><span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
+</span></code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// entry.ssr.tsx</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="nx">RenderOptions</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">renderToString</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span> <span class="k">as</span> <span class="kr">string</span> <span class="o">||</span> <span class="dl">''</span><span class="p">}</span> <span class="sr">/&gt;, </span><span class="err">{
+</span>    <span class="nx">manifest</span><span class="p">,</span>
+    <span class="p">...</span><span class="nx">opts</span><span class="p">,</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// root.tsx</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> 
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+      <span class="p">...</span>
+      <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">App</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span><span class="sr">/</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/body</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/html</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>So, what we just did here is ensure that the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component gets the URL passed to it in all cases. That’s all!
+Now let’s set up the state.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing-state.ts</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">createContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="c1">// we don't want to store `new URL()` because it is not serializable    </span>
+    <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span> 
+    <span class="nl">segments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[];</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">ROUTING</span> <span class="o">=</span> <span class="nx">createContext</span><span class="o">&lt;</span><span class="nx">RoutingState</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">Routing</span><span class="dl">'</span><span class="p">);</span>
+
+</code></pre></div></div>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.ts</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ROUTING</span><span class="p">,</span> <span class="nx">RoutingState</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing-state</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">useContextProvider</span><span class="p">,</span> <span class="nx">useStore</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// this one will be called by the &lt;App/&gt; component and initialize </span>
+<span class="c1">// the state once for the entire lifecycle of the application</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="c1">// create a store and state</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useStore</span><span class="o">&lt;</span><span class="nx">RoutingState</span><span class="o">&gt;</span><span class="p">(</span>
+        <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+    <span class="p">);</span>
+
+    <span class="nx">useContextProvider</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">routingState</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// this will retrieve the routingstate by the path (the current url)</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">segments</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">segments</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// remove empty segment </span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">url</span><span class="p">:</span> <span class="nx">path</span><span class="p">,</span>
+        <span class="nx">segments</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The first part of the state is done, we just have to initialize the router in the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// containers/app/app.tsx</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="p">...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>All good! Now we want to actually set the router state when the route changes. There are 2 scenarios:</p>
+<ul>
+  <li>The user clicks on a link and wants to navigate towards a page in our app: <code class="language-plaintext highlighter-rouge">navigateTo()</code></li>
+  <li>The browser navigation buttons are being used, and we want to listen to those events: <code class="language-plaintext highlighter-rouge">listenToRouteChanges()</code></li>
+</ul>
+
+<p>This is functionality we only want to run in the browser, not on the server.
+We use <code class="language-plaintext highlighter-rouge">isServer</code> here, but we could also use <code class="language-plaintext highlighter-rouge">isBrowser</code>.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.ts</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">isServer</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik/build</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// safely get the window object</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getWindow</span><span class="p">():</span> <span class="nx">Window</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">typeof</span> <span class="nb">window</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">object</span><span class="dl">'</span> <span class="p">?</span> <span class="nb">window</span> <span class="p">:</span> <span class="kc">undefined</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// we don't actually navigate, but push a new state to</span>
+        <span class="c1">// the history object</span>
+        <span class="nx">getWindow</span><span class="p">()?.</span><span class="nx">history</span><span class="p">?.</span><span class="nx">pushState</span><span class="p">({</span><span class="na">page</span><span class="p">:</span> <span class="nx">path</span><span class="p">},</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">path</span><span class="p">);</span>
+        <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// when the navigation buttons are being used</span>
+        <span class="c1">// we want to set the routing state</span>
+        <span class="nx">getWindow</span><span class="p">()?.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">popstate</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">page</span><span class="p">;</span>
+            <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">oldUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">newUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">oldUrl</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">{</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">url</span><span class="p">}</span> <span class="o">=</span> <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">newUrl</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+    <span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span> <span class="o">=</span> <span class="nx">segments</span><span class="p">;</span>
+    <span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-router-outlet">The router outlet</h3>
+
+<p>We have a configuration object, we provided router state, we can get that router state, and we can listen to changes that will automatically set the router state.
+Besides that we also have a <code class="language-plaintext highlighter-rouge">navigateTo()</code> function that will update the <code class="language-plaintext highlighter-rouge">history</code> object instead of reloading the page.
+Now we want to render the right components for the right path inside a router outlet.</p>
+
+<p>Our app component looks like this:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// containers/app/app.tsx</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">section</span><span class="o">&gt;</span>
+            <span class="p">...</span> <span class="nx">here</span> <span class="nx">comes</span> <span class="nx">the</span> <span class="nx">menu</span>
+            <span class="o">&lt;</span><span class="nx">RouterOutlet</span><span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="sr">/section</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Now let’s create our <code class="language-plaintext highlighter-rouge">&lt;RouterOutlet/&gt;</code> component. We have the segments of the URL, and the routing config that we can map to a component.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/router-outlet.tsx</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ROUTING</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing-state</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">getMatchingConfig</span><span class="p">,}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">routingConfig</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../routing-config</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">(</span>
+    <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+        <span class="c1">// render the correct component</span>
+        <span class="k">return</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">getMatchingConfig()</code> function will translate the segments and config into the actual component that we want to render.
+This requires some logic so that it matches not only the right component, but also takes the params into account.
+Remember this piece of config?</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="nl">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users/:id</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">component</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">UserDetail</span><span class="o">/&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Let’s not dive too deeply into the following code, just know that it does the translation for us:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.ts</span>
+<span class="p">...</span>
+<span class="c1">// go over all the RoutingConfigItem objects and if they match return the config</span>
+<span class="c1">// so we know which compnent to render</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">segments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">config</span><span class="p">:</span> <span class="nx">RoutingConfig</span><span class="p">):</span> <span class="nx">RoutingConfigItem</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">segmentsMatch</span><span class="p">(</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">item</span><span class="p">))</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">found</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">segmentsMatch</span><span class="p">(</span><span class="nx">pathSegments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">configItem</span><span class="p">:</span> <span class="nx">RoutingConfigItem</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">configItemSegments</span> <span class="o">=</span> <span class="nx">configItem</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">configItemSegments</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">const</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">segment</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">segment</span> <span class="o">===</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">||</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now the application should work. It should render the right component on the right URL, but we are still not there yet.
+Remember the <code class="language-plaintext highlighter-rouge">listenToRouteChanges()</code> function? We still need to call it. We can call that in the <code class="language-plaintext highlighter-rouge">&lt;RouterOutlet/&gt;</code> component,
+but we have to make sure we only run it on the client: the <code class="language-plaintext highlighter-rouge">window</code> object does not exist on the server.
+For that, Qwik provides us with the <code class="language-plaintext highlighter-rouge">useClientEffect$</code> function. The router outlet now looks like this.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">useClientEffect$</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ROUTING</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing-state</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">getMatchingConfig</span><span class="p">,</span> <span class="nx">listenToRouteChanges</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">routingConfig</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../routing-config</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">(</span>
+    <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+        <span class="nx">useClientEffect$</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">);</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+</code></pre></div></div>
+
+<h3 id="the-link-component">The link component</h3>
+
+<p>The traditional anchor tag <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> will completely refresh the page, which is not what we want. 
+Instead, we want the <code class="language-plaintext highlighter-rouge">navigateTo()</code> function we wrote. Let’s create a <code class="language-plaintext highlighter-rouge">&lt;Link/&gt;</code> component
+that renders an anchor tag, but prevents the default functionality and calls the <code class="language-plaintext highlighter-rouge">navigateTo()</code> function when the user
+clicks. We use the <code class="language-plaintext highlighter-rouge">preventdefault:click</code> syntax to make sure that the actual navigation is blocked, but we still need
+a <code class="language-plaintext highlighter-rouge">href</code> property for good SEO.
+Then, within the <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> tag we use a <code class="language-plaintext highlighter-rouge">&lt;Slot/&gt;</code> for content projection.
+The <code class="language-plaintext highlighter-rouge">navigateTo()</code> requires the <code class="language-plaintext highlighter-rouge">routingState</code>, so we import <code class="language-plaintext highlighter-rouge">useContext</code> from Qwik to retrieve that state.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/link.tsx</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">Slot</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">navigateTo</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">Link</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">path</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">{</span><span class="nx">path</span><span class="p">}</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">;</span>
+    <span class="c1">// check whether the link should be active or not</span>
+    <span class="kd">const</span> <span class="nx">isActive</span> <span class="o">=</span> <span class="s2">`/</span><span class="p">${</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)}</span><span class="s2">`</span> <span class="o">===</span> <span class="nx">path</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">a</span>
+            <span class="c1">// This will prevent the default behavior of the "click" event.</span>
+            <span class="na">preventdefault</span><span class="p">:</span><span class="nx">click</span> 
+            <span class="c1">// set the correct class when the link is active</span>
+            <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">isActive</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">link--active</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">''</span><span class="p">}</span>
+            <span class="nx">href</span><span class="o">=</span><span class="p">{</span><span class="nx">path</span><span class="p">}</span> <span class="nx">onClick$</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">)</span>
+        <span class="p">}}</span><span class="o">&gt;&lt;</span><span class="nx">Slot</span><span class="o">/&gt;&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">.tsx</code> of the app component now looks like this:</p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nt">section</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">path</span><span class="p">=</span><span class="si">{</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="si">}</span><span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">path</span><span class="p">=</span><span class="si">{</span><span class="dl">'</span><span class="s1">/users</span><span class="dl">'</span><span class="si">}</span> <span class="p">&gt;</span>users<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">path</span><span class="p">=</span><span class="si">{</span><span class="dl">'</span><span class="s1">/users/1</span><span class="dl">'</span><span class="si">}</span><span class="p">&gt;</span>Brecht<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nc">RouterOutlet</span><span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+</code></pre></div></div>
+
+<p>We have successfully set up client-side SPA routing with parameter support without too much effort.
+There are 2 last things missing: functionality to get path params and search params.</p>
+
+<p>In the config we have <code class="language-plaintext highlighter-rouge">{path: 'users/:id'}</code>, and in the URL we have <code class="language-plaintext highlighter-rouge">users/1</code>, so we want
+something like <code class="language-plaintext highlighter-rouge">getParams(routingState).id</code> that returns the string <code class="language-plaintext highlighter-rouge">"1"</code>.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">routing/routing.ts</code> we add 2 more functions:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.tsx</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">matchingConfig</span> <span class="o">=</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">matchingConfig</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="na">segment</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">index</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">segment</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="nx">index</span><span class="p">,</span>
+                    <span class="na">paramName</span><span class="p">:</span> <span class="nx">segment</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">,</span> <span class="dl">''</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">undefined</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="na">returnObj</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="na">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">param</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">returnObj</span><span class="p">[</span><span class="nx">param</span><span class="p">.</span><span class="nx">paramName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">[</span><span class="nx">param</span><span class="p">.</span><span class="nx">index</span><span class="p">]</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="nx">returnObj</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getSearchParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="nx">URLSearchParams</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">searchParams</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s it!! We have a complete client-side SPA router without much code, that works with lazy loading thanks to
+Qwik providing it out of the box. It was a very pleasant journey for me and I sure learned a lot.
+Chances are my upcoming posts will be Qwik-related.</p>
+
+<ul>
+  <li>I learned that we have to block the traditional routing by creating a custom <code class="language-plaintext highlighter-rouge">Link</code> component that also pushes a new state to the 
+history object</li>
+  <li>I realized we couldn’t store the URL prototype into the state because it is not serializable and having the string is enough.</li>
+  <li>I thought it was going to be hard to map a component to a route but that turned out to be quite easy and straightforward.</li>
+  <li>Routers shouldn’t be that complex. We achieved a lot with a small amount of code</li>
+  <li><code class="language-plaintext highlighter-rouge">useClientEffect$</code> is handy when you only want to execute something on the client.</li>
+  <li>I thought it was going to be easy to work with nested router outlets but I believe there is a bigger complexity there,
+but I will definitely check that out in the future</li>
+</ul>
+
+<p>You can also <a href="https://github.com/brechtbilliet/qwik-spa-routing-demo/tree/main/spa-routing">check out the source code of this demo</a>.
+I hope you found it interesting as well!</p>
+
+<p>Special thanks to the reviewers:</p>
+<ul>
+  <li><a href="https://twitter.com/mhevery">Miško Hevery</a></li>
+  <li><a href="https://twitter.com/tigt_">Taylor Hunt</a></li>
+  <li><a href="https://twitter.com/antoinepairet">Antoine Pairet</a></li>
+</ul>
+
+  </div><a class="u-url" href="/why-and-how-i-created-a-spa-router-for-qwik/" hidden></a>
+</article>
+
+                </div>
+            </main>
+        </div><div class="footer">
+    <div class="footer__inner"><h3>Let's get to know each other!</h3>
+        <ul class="footer__social-icons">
+            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon"><i class="fa-brands fa-linkedin"></i></a></li>
+            <li><a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon"><i
+                    class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="mailto://billietbrecht@gmail.com" target="blank" class="footer__social-icon"><i
+                    class="fa-solid fa-envelope-open"></i></a></li>
+        </ul>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
+    </div>
+</div>
+</div>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
+        charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({
+            "notice_banner_type": "simple",
+            "consent_type": "implied",
+            "palette": "light",
+            "language": "en",
+            "page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
+            "notice_banner_reject_button_hide": false,
+            "preferences_center_close_button_hide": false,
+            "page_refresh_confirmation_buttons": false,
+            "website_name": "brecht.io"
+        });
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-43296458-4');
+</script>
+<script lang="text/javascript">
+    window.menuCollapsed = false;
+    const appMenu = document.querySelector('#app__menu');
+    const containerWrapper = document.querySelector('#container__wrapper');
+    document.querySelector('#menu-button').addEventListener('click', () => {
+        window.menuCollapsed = !window.menuCollapsed;
+        if (window.menuCollapsed) {
+            containerWrapper.classList.remove('menu-open')
+            appMenu.classList.add('app__menu--collapsed')
+        } else {
+            appMenu.classList.remove('app__menu--collapsed')
+            containerWrapper.classList.add('menu-open')
+        }
+    })
+    if (window?.innerWidth <= 768) {
+        containerWrapper.classList.remove('menu-open')
+        appMenu.classList.add('app__menu--collapsed')
+    }
+
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator
+    website</a></noscript>
+</body>
+
+</html>
