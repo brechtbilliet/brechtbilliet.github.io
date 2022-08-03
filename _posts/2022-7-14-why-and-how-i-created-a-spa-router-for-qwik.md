@@ -2,10 +2,10 @@
 layout: post
 title: Why and how I created a SPA router for Qwik
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
-date: 2022-07-14
+date: 2022-08-03
 subclass: 'post'
 disqus: true
 ---
@@ -222,6 +222,7 @@ All good! Now we want to actually set the router state when the route changes. T
 - The browser navigation buttons are being used, and we want to listen to those events: `listenToRouteChanges()`
 
 This is functionality we only want to run in the browser, not on the server.
+We use `isServer` here, but we could also use `isBrowser`.
 
 ```typescript
 // routing/routing.ts
@@ -240,7 +241,7 @@ export function navigateTo(path: string, routingState: RoutingState): void {
         // we don't actually navigate, but push a new state to
         // the history object
         getWindow()?.history?.pushState({page: path}, path, path);
-        setRoutingState(routingState, path);
+        setRoutingState(path, routingState);
     }
 }
 
@@ -250,12 +251,12 @@ export function listenToRouteChanges(routingState: RoutingState): void {
         // we want to set the routing state
         getWindow()?.addEventListener('popstate', (e) => {
             const path = e.state.page;
-            setRoutingState(routingState, path);
+            setRoutingState(path, routingState);
         })
     }
 }
 
-export function setRoutingState(routingState: RoutingState, path: string): void {
+export function setRoutingState(path: string, routingState: RoutingState): void {
     const oldUrl = new URL(routingState.url);
     const newUrl = new URL(path, oldUrl);
     const {segments, url} = getRoutingStateByPath(newUrl.toString())
@@ -296,9 +297,9 @@ import {routingConfig} from '../routing-config';
 
 export const RouterOutlet = component$(
     () => {
-        const routing = useContext(ROUTING);
+        const routingState = useContext(ROUTING);
         // render the correct component
-        return getMatchingConfig(routing.segments, routingConfig)?.component
+        return getMatchingConfig(routingState.segments, routingConfig)?.component
     }
 );
 ```
@@ -352,11 +353,11 @@ import {routingConfig} from '../routing-config';
 
 export const RouterOutlet = component$(
     () => {
-        const routing = useContext(ROUTING);
+        const routingState = useContext(ROUTING);
         useClientEffect$(() => {
-            listenToRouteChanges(routing);
+            listenToRouteChanges(routingState);
         });
-        return getMatchingConfig(routing.segments, routingConfig)?.component
+        return getMatchingConfig(routingState.segments, routingConfig)?.component
     }
 );
 
@@ -380,10 +381,14 @@ import {navigateTo} from './routing';
 export const Link = component$((opts: { path: string }) => {
     const routingState = useContext(ROUTING);
     const {path} = opts;
+    // check whether the link should be active or not
+    const isActive = `/${routingState.segments.join('/')}` === path;
     return (
         <a
             // This will prevent the default behavior of the "click" event.
             preventdefault:click 
+            // set the correct class when the link is active
+            className={isActive ? 'link--active' : ''}
             href={path} onClick$={(e) => {
             navigateTo(path, routingState)
         }}><Slot/></a>
@@ -446,11 +451,21 @@ export function getSearchParams(routingState: RoutingState): URLSearchParams {
 ```
 
 
-## Wrapping up
+## Conclusion
 
 That's it!! We have a complete client-side SPA router without much code, that works with lazy loading thanks to
 Qwik providing it out of the box. It was a very pleasant journey for me and I sure learned a lot.
 Chances are my upcoming posts will be Qwik-related.
+
+- I learned that we have to block the traditional routing by creating a custom `Link` component that also pushes a new state to the 
+history object
+- I realized we couldn't store the URL prototype into the state because it is not serializable and having the string is enough.
+- I thought it was going to be hard to map a component to a route but that turned out to be quite easy and straightforward.
+- Routers shouldn't be that complex. We achieved a lot with a small amount of code
+- `useClientEffect$` is handy when you only want to execute something on the client.
+- I thought it was going to be easy to work with nested router outlets but I believe there is a bigger complexity there,
+but I will definitely check that out in the future
+
 You can also [check out the source code of this demo](https://github.com/brechtbilliet/qwik-spa-routing-demo/tree/main/spa-routing).
 I hope you found it interesting as well!
 
