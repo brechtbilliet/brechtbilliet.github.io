@@ -49,7 +49,7 @@ theme: minima
 plugins:
   - jekyll-feed
 
-analytics: UA-43296458-5
+google_analytics: UA-43296458-5
 google_verification:
 disqus-shortname: brechtbilliet
 # Exclude from processing.
