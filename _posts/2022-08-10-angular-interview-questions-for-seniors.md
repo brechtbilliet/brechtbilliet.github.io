@@ -52,7 +52,7 @@ This is a very simple question but can still be used to blow the mind of the int
 I would start that the easiest way for component communication would definitely be the use of `@Input()` and `@Output()` properties. 
 I would mention that data flows from parent components towards child components through `@Input()` properties and we
 pass that data into the component with the parenthesis syntax `(foo)="bar"`. The child component can notify the parent components
-through the famous `@Output()` properties and for that we use the square bracket syntax `[change]="onChange($event)"`.
+through the famous `@Output()` properties and for that we use the square bracket syntax `(change)="onChange($event)"`.
 Yes, yes this is also api specific, but let's face it. If they don't know that api they simply haven't used Angular, and I have gotten
 my share of candidates who were unable to answer that question.
 
@@ -101,8 +101,8 @@ that both solutions could work.
 
 With this question we can really show that we know exactly how angular works in terms of dependency injection.
 I could talk about services and how to make them injectable. I would say that we can provide services in modules and
-that they would be come singletons for the entire application. After that I'd say that we can also provide them in
-lazy loaded modules which would result in singletons at that modules level. Then I could explain how we can also
+that they would become singletone for the entire application. After that I'd say that we can also provide them in
+lazy loaded modules (by using providedIn:'any') which would result in singletone at that modules level. Then I could explain how we can also
 provide them at any component and that the lifecycle would be shared with those components.
 A nice addition there is to mention that if we provide them at component level we could also implement `ngOnDestroy()` lifecycle hooks
 in the services. Some nice examples on services in components would be very welcome and I would probably say I could use it
@@ -166,10 +166,10 @@ This might be a though question but we could really peek into the reasoning of t
 ### <blockquote>8: How would you test Angular applications?</blockquote>
 
 This question has a lot of different answers, and none of them are right or wrong. But it's a great way to see how the
-candidate feels about testing, where the priorities lie and how much experience he or she has with testing Angular applications.
+candidate feels about testing, where the priorities lie and how much experience they have with testing Angular applications.
 
 I would first talk about the testing pyramid vs snowcone and how today I prefer something like the honeycomb principle:
-A small amount of unittests (only the real complex logic), a lot of integration tests for the components, a small amount of E2E tests 
+A small amount of unit tests (only the real complex logic), a lot of integration tests for the components, a small amount of E2E tests 
 to test the happy flows.
 I would say something like I unittest the real logic in services and I don't use TestBed but `jest` just like I would test
 any javascript or typescript class or function. I'd back it up with complexity, performance and why I don't like to be bound to a specific framework.
@@ -177,19 +177,19 @@ For components I use a combination of `cypress` and `storybook` as integration t
 we would test and use `cypress` to do so.
 I would also use `cypress` to tackle the E2E tests, but since these are slow and hard to maintain I wouldn't write too much of them.
 
-I would challenge the use of a huge amount of unittests because they are very brittle (an extra dependency in the constructor breaks every test).
+I would challenge the use of a huge amount of unit tests because they are very brittle (an extra dependency in the constructor breaks every test).
 and if we break a `cypress` `storybook` integration test chances are quite big that we actually broke something.
 
 ### <blockquote>9: Explain to me how change detection works in Angular</blockquote>
 
-Here I could talk about `zone.js` monkey matches all the native browser events and that Angular uses it to get notified when something happens.
+Here I could talk about `zone.js` monkey patches all the native browser events and that Angular uses it to get notified when something happens.
 I could talk about how Angular takes the component hierarchy and by default evaluates all the components from top to bottom.
 I could say that this isn't the most performant thing to do and could explain how the `ChangeDetection.OnPush` strategy helps us with that.
 When talking about that strategy we could explain the `markForCheck` thingy and the difference between `ChangeDetectorRef.markForCheck()` 
 and `ChangeDetectorRef.detectChanges()`. We could also explain that we need immutable data flows to make this work and that it does not make sense
 to use the `ChangeDetection.Onpush` strategy on components that don't have any inputs.
 
-I would sidetrack on the advantages of immutable datastructures and that its predictability is of more essence than the performance gain.
+I would sidetrack on the advantages of immutable data structures and that its predictability is of more essence than the performance gain.
 
 It might also be worth noting that the `async` pipe also triggers a `markForCheck`, but we already said that didn't we?. 
 
@@ -233,7 +233,7 @@ I could talk about schematics and that there is a thing called Nx that takes the
 I could talk about updating to new versions. I could talk about ng-packagr and how I would create a public angular package.
 I would talk about the CLI sets up webpack configs, unit test configurations, prettier config, linting config files etc.
 
-### <blockquote>14: How do you consume params from an activatedRoute and do you see complexities there?
+### <blockquote>14: How do you consume params from an ActivatedRoute and do you see complexities there?
 
 Here I could say is that injecting the `ActivatedRoute` gives us observables of params but also snapshots if we want.
 I could say that it only has access to its own params, and not to the params of its parent router-outlets.
@@ -283,9 +283,9 @@ Again a question where you can validate the experience and reasoning.
 - I'd say every component selector has a prefix, but selectors aren't even mandatory so prefixes aren't either.
 - We pass these prefixes so they are unique and it's easier to see where they live.
 - We use linting rules to validate if the prefixes are used correctly
-- Both components and selectors can have prefixes.
+- Both components and directives can have prefixes.
 - It's a bad practice not to have prefixes.
-- Prefixes are both stored in the `project.json` file for schematic generation of components and directives, and they are also
+- Prefixes are both stored in the `project.json` (for Nx) and `angular.json` (for Angular CLI) file for schematic generation of components and directives, and they are also
 defined in the linting config files
 
 This question is different then the other ones, here the candidate can just make a list of all the things he or she knows about a 
@@ -296,7 +296,7 @@ simple subject.
 This is a very easy question to check on seniority or if the candidate is up to date with the newest version.
 
 At the time of writing I would talk about standalone components and typed forms in Angular 14.
-That' is was pretty weird that there was no angular 3 but that I understand why.
+That is was pretty weird that there was no angular 3 but that I understand why.
 
 I would go on that I was pretty frustrated that Angular2@rc5 had modules when angular2@rc4 had not...
 And that I had to rewrite my angular fundamentals workshop just before my public workshops were planned.
