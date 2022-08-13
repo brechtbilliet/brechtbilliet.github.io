@@ -101,8 +101,8 @@ that both solutions could work.
 
 With this question we can really show that we know exactly how angular works in terms of dependency injection.
 I could talk about services and how to make them injectable. I would say that we can provide services in modules and
-that they would become singletone for the entire application. After that I'd say that we can also provide them in
-lazy loaded modules (by using providedIn:'any') which would result in singletone at that modules level. Then I could explain how we can also
+that they would become singleton for the entire application. After that I'd say that we can also provide them in
+lazy loaded modules (by using providedIn:'any') which would result in singleton at that modules level. Then I could explain how we can also
 provide them at any component and that the lifecycle would be shared with those components.
 A nice addition there is to mention that if we provide them at component level we could also implement `ngOnDestroy()` lifecycle hooks
 in the services. Some nice examples on services in components would be very welcome and I would probably say I could use it
