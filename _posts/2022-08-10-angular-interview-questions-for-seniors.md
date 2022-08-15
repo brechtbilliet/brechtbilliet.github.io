@@ -46,7 +46,7 @@ I love to hear long answers where the candidate can show his or her passion abou
 For every question I will try to explain on how I personally would answer the question and why, so basically what could make me happy as the hypothetical interviewer.
 The concrete answers will not be found here, that is something you have to do on your own.
 
-### <blockquote>1: Name all the ways you can think about on how components communicate with each other in Angular?</blockquote>
+### 1: Name all the ways you can think about on how components communicate with each other in Angular?
 
 This is a very simple question but can still be used to blow the mind of the interviewer. 
 I would start that the easiest way for component communication would definitely be the use of `@Input()` and `@Output()` properties. 
@@ -71,7 +71,7 @@ Lastly I would talk about how to use services to communicate between different c
 children and parents. I'd say that it might be a good idea to let siblings communicate with each other. Although in many cases we can use the parent component for that. 
 When we want to communicate between a parent and a child, but there is a router-outlet in between it might be a good fit to use a service for that.
 
-#### <blockquote>Bonus question: Can you name a bad way to let components communicate with each other and why?</blockquote>
+#### Bonus question: Can you name a bad way to let components communicate with each other and why?
 
 I would probably say we could use the window object to do that, but that it is not a good idea because we lose all the encapsulation and we should not communicate 
 with the window object directly. It would create complexities, dependencies we don't want and we are communicating outside of the framework.
@@ -80,7 +80,7 @@ We could also use redux or @ngrx/store to communicate between components. I woul
 framework for something very simple and we are creating a very hard dependency in every layer of our code. That being said, this is a personal opinion
 and I'd love to hear the perspective of the candidate.
 
-### <blockquote>2: How would you structure components in Angular?</blockquote>
+### 2: How would you structure components in Angular?
 
 I would talk about smart and dumb components and what their responsibility is and how we keep them dumb components ignorant to the rest of the application but
 that they still can have complex logic. I'd probably give an example that a month view of a calendar is stupid, but can be very complex.
@@ -98,11 +98,11 @@ I could talk about when I would extract code from the component. I could talk ab
 or not and share the advantages and disadvantages for both ways. It's important to show that that I am not biased and
 that both solutions could work.
 
-#### <blockquote> Bonus question: Tell me the difference between popes and components</blockquote>
+####  Bonus question: Tell me the difference between popes and components
 
 I don't think this question should be answered here since it's a very straightforward question.
 
-### <blockquote>3: Dependency injection, services, lifecycle of services and use cases. go!</blockquote>
+### 3: Dependency injection, services, lifecycle of services and use cases. go!
 
 With this question we can really show that we know exactly how Angular works in terms of dependency injection.
 I could talk about services and how to make them injectable. I would say that we can provide services in modules and
@@ -122,7 +122,7 @@ on Angular modules in general. By mentioning that Angular modules were introduce
 
 The reason why I am saying this is not to brag, it's to show how deep you could go with this question.
 
-### <blockquote>4: What's the difference between guards and interceptors?</blockquote>
+### 4: What's the difference between guards and interceptors?
 
 I like this question because we ask 2 things at the same time. Guards and interceptors don't have anything to do with each other
 but they are important tools within the framework. After explaining what guards are I could come up with examples on either
@@ -131,7 +131,7 @@ the user has filled in a form and we don't want to block him from navigating awa
 
 I would explain that I don't only use interceptors for adding jwt tokens but I could also use them for loading state, error handling and so much more.
 
-### <blockquote>5: What is the `async` pipe?</blockquote>
+### 5: What is the `async` pipe?
 
 Not only could I say we could use the `async` to subscribe on observables, I could start talking about RxJS and that it is the only real dependency Angular has besides zone.js.
 I would say that the async pipe, subscribes to the observable, also unsubscribes from the observable when the component gets destroyed and I would talk about
@@ -141,7 +141,7 @@ I would say I consider using the `async` pipe as a best practice because it does
 Maybe I would even talk about the `*ngIf=foo$|async as foo` syntax where we can keep the value of the observable inside the template
 and share it like that. I could mention that it can be dangerous if foo has a falsy value.
 
-### <blockquote>6: Tell me about RxJS in Angular, what reactive api's are there?</blockquote>
+### 6: Tell me about RxJS in Angular, what reactive api's are there?
 
 This is a beauty because you can talk about so much here.
 It might be a good idea to start talking about my passion in RxJS first and how I fell in love with it.
@@ -156,7 +156,7 @@ an observable that is performing an XHR call will result in an `xhr.abort()`  be
 If I want to blow the interviewer his mind I'd mention that `@Output()` EventEmitters are also observables behind the scenes and that
 you can replace the EventEmitters with any kind of observable
 
-### <blockquote>7: Give me an easy way to create a memory leak in Angular and how to fix it. Eg setInterval()</blockquote>
+### 7: Give me an easy way to create a memory leak in Angular and how to fix it. Eg setInterval()
 
 If the candidate does not understand the question: You have to add a `setInterval(console.log)` statement somewhere in a piece of code 
 that will be destroyed and we want to keep seeing numbers logged in the console.
@@ -168,7 +168,7 @@ could do the trick. By clearing the interval on `ngOnDestroy()` we could clean u
 I would start on how easy it is to create memory leaks with RxJS and that it's important to always clean up subscriptions.
 This might be a tough question but we could really peek into the reasoning of the attendee here.
 
-### <blockquote>8: How would you test Angular applications?</blockquote>
+### 8: How would you test Angular applications?
 
 This question has a lot of different answers, and none of them are right or wrong. But it's a great way to see how the
 candidate feels about testing, where the priorities lie and how much experience they have with testing Angular applications.
@@ -185,7 +185,7 @@ I would also use `cypress` to tackle the E2E tests, but since these are slow and
 I would challenge the use of a huge amount of unit tests because they are very brittle (an extra dependency in the constructor breaks every test).
 and if we break a `cypress` `storybook` integration test chances are quite big that we actually broke something.
 
-### <blockquote>9: Explain to me how change detection works in Angular</blockquote>
+### 9: Explain to me how change detection works in Angular
 
 Here I could talk about `zone.js` monkey patches all the native browser events and that Angular uses it to get notified when something happens.
 I could talk about how Angular takes the component hierarchy and by default evaluates all the components from top to bottom.
@@ -198,14 +198,14 @@ I would sidetrack on the advantages of immutable data structures and that its pr
 
 It might also be worth noting that the `async` pipe also triggers a `markForCheck`, but we already said that didn't we?. 
 
-#### <blockquote>Bonus question: What happens if you apply the `ChangeDetection.OnPush` strategy on your app component?</blockquote>
+#### Bonus question: What happens if you apply the `ChangeDetection.OnPush` strategy on your app component?
 
 I could explain here that it's not a good idea to do that because it will basically break your change detection and you have to manually
 run `markForCheck()`  for everything. A nice example could be this one:
 When we do an `httpClient.get('url').subscribe(result => this.result = result)` in our code. Our application will never update because it isn't marked for check.
 Also the change detection deep within your component hierarchy could be broken. Another thing is that our app component doesn't have any `@Input()` properties so it is useless anyway.
 
-### <blockquote>10: What is the Expression has changed after it was checked error?</blockquote>
+### 10: What is the Expression has changed after it was checked error?
 
 I would start to laugh about the fact that this bug has bitten me in the butt more than once and explain when and how much it has occurred.
 I would say that the change detection ran twice in development and that both results are compared.
@@ -213,7 +213,7 @@ If the results that are used in the template don't match it means something has 
 
 I could also explain why this isn't run in production and that even the bug is harmless, it does shed some light on problems.
 
-### <blockquote>11: How can you tackle redundancy in Angular?
+### 11: How can you tackle redundancy in Angular?
 
 Very open question, if you are a senior profile you could talk for tens of minutes but I will wrap it up quite shortly here:
 
@@ -223,14 +223,14 @@ Very open question, if you are a senior profile you could talk for tens of minut
 - we can extract logic into reusable functions that we expose in javascript modules (better treeshaking)
 - We can extract logic in services
 
-### <blockquote>12: What is trackBy and how does it work?
+### 12: What is trackBy and how does it work?
 
 This question proves a level of seniority of the candidate within the framework.
 I would explain that every `*ngFor` statement could benefit from that and how the performance is optimised.
 Especially with big lists this property can have a huge impact.
 
 
-### <blockquote>13: Tell me about Angular CLI.
+### 13: Tell me about Angular CLI.
 
 Here I can talk about code generation, about webpack. Maybe if I really want to make an impression I can talk about
 why you think they chose for `webpack` and not `rollup`. Maybe mention why I think it wouldn't work with `vite` now.
@@ -238,7 +238,7 @@ I could talk about schematics and that there is a thing called Nx that takes the
 I could talk about updating to new versions. I could talk about ng-packagr and how I would create a public Angular package.
 I would talk about the CLI sets up webpack configs, unit test configurations, prettier config, linting config files etc.
 
-### <blockquote>14: How do you consume params from an ActivatedRoute and do you see complexities there?
+### 14: How do you consume params from an ActivatedRoute and do you see complexities there?
 
 Here I could say is that injecting the `ActivatedRoute` gives us observables of params but also snapshots if we want.
 I could say that it only has access to its own params, and not to the params of its parent router-outlets.
@@ -252,7 +252,7 @@ takes care of the lifecycle for me.
 
 One last thing to mention here is that when a param changes, the component is not being destroyed and reinstantiated.
 
-### <blockquote>15: Name your 3 favourite Angular characteristics
+### 15: Name your 3 favourite Angular characteristics
 
 This question speaks for itself. You can verify experience, reasoning, passion and the ability to challenge technical decisions
 by listening to the candidate talk.
@@ -260,7 +260,7 @@ by listening to the candidate talk.
 My personal favorite is the integration with RxJS, the fact that it is opinionated and I think it is suited for huge projects.
 
 
-### <blockquote>16: Name your 3 biggest Angular frustrations
+### 16: Name your 3 biggest Angular frustrations
 
 This question also speaks for itself. You can verify experience, reasoning, passion and the ability to challenge technical decisions
 by listening to the candidate.
@@ -268,7 +268,7 @@ by listening to the candidate.
 My biggest frustration is its bundle size, the build time and the ReactiveForms.
 I would continue on the fact that it is nice that Angular 14 gives us typed forms but that I see a lot of improvements there.
 
-### <blockquote>17: Explain how you would do content projection in Angular</blockquote>
+### 17: Explain how you would do content projection in Angular
 
 I could start out by the fact that you can have an `<ng-content>` slot and whatever I put between the tags of my components would be rendered there.
 I could also mention that you can have multiple slots that I could name. And that all these slots can be referenced in the component
@@ -282,7 +282,7 @@ knowing the api by heart.
 I could even say it is possible to render content from the right view into the left view by using services to pass template references, 
 but now I'm just trying to be smart even though it is possible.
 
-### <blockquote>18: Tell me something about selector prefixes.
+### 18: Tell me something about selector prefixes.
 
 Again a question where you can validate the experience and reasoning.
 - I'd say every component selector has a prefix, but selectors aren't even mandatory so prefixes aren't either.
@@ -296,7 +296,7 @@ defined in the linting config files
 This question is different then the other ones, here the candidate can just make a list of all the things he or she knows about a 
 simple subject.
 
-### <blockquote>19: What version upgrades of Angular were really exciting for you and why?
+### 19: What version upgrades of Angular were really exciting for you and why?
 
 This is a very easy question to check on seniority or if the candidate is up to date with the newest version.
 
@@ -314,7 +314,7 @@ but that never seemed to become reality.
 You see the question here shouldn't be about remembering versions, it should trigger the candidate to talk about his or
 hers experience with Angular and which updates were important.
 
-### <blockquote>20: Who do you follow? Which blogs do you read? What do you do to keep up to date with Angular?
+### 20: Who do you follow? Which blogs do you read? What do you do to keep up to date with Angular?
 
 This is one of my favorites. One could talk about pluralsight or egghead trainings.
 They could mention Angular core team members, or interesting pull requests.
