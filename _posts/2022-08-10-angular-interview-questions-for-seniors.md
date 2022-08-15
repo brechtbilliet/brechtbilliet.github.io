@@ -20,7 +20,7 @@ That being said, I do understand technical assessments work for a certain people
 This blog article is the beginning of a set of many blog articles that will focus on interview questions.
 Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for.
 Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews.
-This one is specific to angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I'm pretty sure
+This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I'm pretty sure
 RxJS will also get his own article.
 Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions
 have to be answered thoroughly.
@@ -32,7 +32,7 @@ Questions like that could make our candidate uncomfortable and stressed out.
 I also don't like to ask: 
 <blockquote>What's the difference between `markForCheck()` and `detectChanges()`?</blockquote> 
 I'd love to hear it in a response of
-another question I might ask but we shouldn't focus on api specifics. Maybe sometimes I would ask for api specifics, but then it only means the candidate is answered
+another question I might ask but we shouldn't focus on api specifics. Maybe sometimes I would ask for api specifics, but then it only means the candidate has answered
 most of the other things and he or she is really doing a good job. And let's be honest... Everyone can memorize api's...
 
 Why would we ask people if they could memorize all the api's a framework has to offer? When we can try to understand how they think
@@ -52,7 +52,7 @@ This is a very simple question but can still be used to blow the mind of the int
 I would start that the easiest way for component communication would definitely be the use of `@Input()` and `@Output()` properties. 
 I would mention that data flows from parent components towards child components through `@Input()` properties and we
 pass that data into the component with the parenthesis syntax `(foo)="bar"`. The child component can notify the parent components
-through the famous `@Output()` properties and for that we use the square bracket syntax `(change)="onChange($event)"`.
+through the famous `@Output()` properties and for that we use the curved bracket syntax `(change)="onChange($event)"`.
 Yes, yes this is also api specific, but let's face it. If they don't know that api they simply haven't used Angular, and I have gotten
 my share of candidates who were unable to answer that question.
 
@@ -62,9 +62,9 @@ That is more consistent with the current api of Angular and it's a known best pr
 I could talk about injecting parent components into child components through dependency injection in the constructor. 
 I would focus even more on when I would do that and if it is a good idea in general.
 I personally consider this to be a bad practice in a lot of cases as it breaks the unidirectional dataflow and makes it quite complex. 
-That being said, I can give an example on where I inject a custom Form component into an input-wrapper component to see if the form is submitted or not.
+That being said, I can give an example on where I inject a custom form component into an input-wrapper component to see if the form is submitted or not.
 
-I can go on about ViewChildren where one could gain access to childcomponents within parent components.
+I can go on about ViewChildren where one could gain access to child components within parent components.
 This also creates a form of communication. Maybe I step it up a notch and explain the difference between ViewChildren and ContentChildren.
 
 Lastly I would talk about how to use services to communicate between different components and that in general I wouldn't do that to communicate between
@@ -81,7 +81,7 @@ framework for something very simple and we are creating a very hard dependency i
 
 ### <blockquote>2: How would you structure components in Angular?</blockquote>
 
-I would talk about smart and dumb components and what their responsibility is and how we keep them dumb components ignorent to the rest of the application but
+I would talk about smart and dumb components and what their responsibility is and how we keep them dumb components ignorant to the rest of the application but
 that they still can have complex logic. I'd probably give an example that a month view of a calendar is stupid, but can be very complex.
 I would say that splitting up into more and smaller components is beneficial for:
 - Control over change detection when using the `ChangeDetection.OnPush` strategy
@@ -99,7 +99,7 @@ that both solutions could work.
 
 ### <blockquote>3: Dependency injection, services, lifecycle of services and use cases. go!</blockquote>
 
-With this question we can really show that we know exactly how angular works in terms of dependency injection.
+With this question we can really show that we know exactly how Angular works in terms of dependency injection.
 I could talk about services and how to make them injectable. I would say that we can provide services in modules and
 that they would become singleton for the entire application. After that I'd say that we can also provide them in
 lazy loaded modules (by using providedIn:'any') which would result in singleton at that modules level. Then I could explain how we can also
@@ -113,7 +113,7 @@ A nice addition would be explaining the `providedIn: 'root'` syntax in the `Inje
 application wide singleton instance. It would also be worth mentioning that this improvement was there to make treeshaking possible.
 
 This is a great moment to start about the standalone components that Angular 14 brings with it, and I could give my opinion
-on angular modules in general. By mentioning that angular modules were introduced in Angular2@rc5 I could prove my experience.
+on Angular modules in general. By mentioning that Angular modules were introduced in angular2@rc5 I could prove my experience.
 
 The reason why I am saying this is not to brag, it's to show how deep you could go with this question.
 
@@ -128,9 +128,9 @@ I would explain that I don't only use interceptors for adding jwt tokens but I c
 
 ### <blockquote>5: What is the `async` pipe?</blockquote>
 
-Not only could I say we could use the `async` to subscribe on observables, I could start talking about RxJS and that it is the only real dependency angular has besides zone.js.
+Not only could I say we could use the `async` to subscribe on observables, I could start talking about RxJS and that it is the only real dependency Angular has besides zone.js.
 I would say that the async pipe, subscribes to the observable, also unsubscribes from the observable when the component gets destroyed and I would talk about
-how it runs a `marchForCheck()` as well.
+how it runs a `markForCheck()` as well.
 
 I would say I consider using the `async` pipe as a best practice because it does a lot of management for us.
 Maybe I would even talk about the `*ngIf=foo$|async as foo` syntax where we can keep the value of the observable inside the template
@@ -146,12 +146,12 @@ We could talk about Reactive forms and how the `valueChanges` property is observ
 ViewChildren and ContentChildren can also be observable.
 
 I would also like to talk about the `HttpClient` returning observables instead of promises and that unsubscribing from
-an observable that is performing and XHR call will result in an `xhr.abort()`  behind the scenes.
+an observable that is performing an XHR call will result in an `xhr.abort()`  behind the scenes.
 
 If I want to blow the interviewer his mind I'd mention that `@Output()` EventEmitters are also observables behind the scenes and that
 you can replace the EventEmitters with any kind of observable
 
-### <blockquote>7: Give me an easy way to create a memory leak in angular and how to fix it. Eg setInterval()</blockquote>
+### <blockquote>7: Give me an easy way to create a memory leak in Angular and how to fix it. Eg setInterval()</blockquote>
 
 If the candidate does not understand the question: You have to add a `setInterval(console.log)` statement somewhere in a piece of code 
 that will be destroyed and we want to keep seeing numbers logged in the console.
@@ -161,7 +161,7 @@ So adding that piece of code in the constructor or `ngOnInit()` of a page that i
 could do the trick. By clearing the interval on `ngOnDestroy()` we could clean up that memory leak.
 
 I would start on how easy it is to create memory leaks with RxJS and that it's important to always clean up subscriptions.
-This might be a though question but we could really peek into the reasoning of the attendee here.
+This might be a tough question but we could really peek into the reasoning of the attendee here.
 
 ### <blockquote>8: How would you test Angular applications?</blockquote>
 
@@ -189,7 +189,7 @@ When talking about that strategy we could explain the `markForCheck` thingy and 
 and `ChangeDetectorRef.detectChanges()`. We could also explain that we need immutable data flows to make this work and that it does not make sense
 to use the `ChangeDetection.Onpush` strategy on components that don't have any inputs.
 
-I would sidetrack on the advantages of immutable data structures and that its predictability is of more essence than the performance gain.
+I would sidetrack on the advantages of immutable data structures and that its predictability is of more use than the performance gain.
 
 It might also be worth noting that the `async` pipe also triggers a `markForCheck`, but we already said that didn't we?. 
 
@@ -202,8 +202,8 @@ Also the change detection deep within your component hierarchy could be broken. 
 
 ### <blockquote>10: What is the Expression has changed after it was checked error?</blockquote>
 
-I would start to laugh about the fact that this bug has bitten me in the butt more than once and explain when and how much it has occured.
-I would say that the changedetection is ran twice in development and that both results are compared.
+I would start to laugh about the fact that this bug has bitten me in the butt more than once and explain when and how much it has occurred.
+I would say that the change detection ran twice in development and that both results are compared.
 If the results don't match it means something has changed in between proving that there is something wrong with our "clean" dataflow.
 
 I could also explain why this isn't run in production and that even the bug is harmless, it does shed some light on problems.
@@ -230,7 +230,7 @@ Especially with big lists this property can have a huge impact.
 Here I can talk about code generation, about webpack. Maybe if I really want to make an impression I can talk about
 why you think they chose for `webpack` and not `rollup`. Maybe mention why I think it wouldn't work with `vite` now.
 I could talk about schematics and that there is a thing called Nx that takes the Angular CLI to the next level. 
-I could talk about updating to new versions. I could talk about ng-packagr and how I would create a public angular package.
+I could talk about updating to new versions. I could talk about ng-packagr and how I would create a public Angular package.
 I would talk about the CLI sets up webpack configs, unit test configurations, prettier config, linting config files etc.
 
 ### <blockquote>14: How do you consume params from an ActivatedRoute and do you see complexities there?
@@ -261,7 +261,7 @@ This question also speaks for itself. You can verify experience, reasoning, pass
 by listening to the candidate.
 
 My biggest frustration is its bundle size, the build time and the ReactiveForms.
-I would continue on the fact that it is nice that Angular14 gives us typed forms but that I see a lot of improvements there.
+I would continue on the fact that it is nice that Angular 14 gives us typed forms but that I see a lot of improvements there.
 
 ### <blockquote>17: Explain how you would do content projection in Angular</blockquote>
 
@@ -296,12 +296,12 @@ simple subject.
 This is a very easy question to check on seniority or if the candidate is up to date with the newest version.
 
 At the time of writing I would talk about standalone components and typed forms in Angular 14.
-That is was pretty weird that there was no angular 3 but that I understand why.
+That is was pretty weird that there was no Angular 3 but that I understand why.
 
-I would go on that I was pretty frustrated that Angular2@rc5 had modules when angular2@rc4 had not...
-And that I had to rewrite my angular fundamentals workshop just before my public workshops were planned.
+I would go on that I was pretty frustrated that angular2@rc5 had modules when angular2@rc4 had not...
+And that I had to rewrite my Angular fundamentals workshop just before my public workshops were planned.
 
-I would go on that the upgrade path had gotten easier and that updating to Angular6 was a pain in the butt for me.
+I would go on that the upgrade path had gotten easier and that updating to Angular 6 was a pain in the butt for me.
 
 I'd probably also be a bit more negative about Ivy because at ngVikings they showed a hello world of a few kilobytes
 but that never seemed to become reality.
@@ -312,7 +312,7 @@ hers experience with Angular and which updates were important.
 ### <blockquote>20: Who do you follow? Which blogs do you read? What do you do to keep up to date with Angular?
 
 This is one of my favorites. One could talk about pluralsight or egghead trainings.
-They could mention angular core team members, or interesting pull requests.
+They could mention Angular core team members, or interesting pull requests.
 They could talk about conferences or at least a talk they were interested in.
 They can talk about books, interesting talks with colleagues and so on.
 They can talk about pet projects and stuff they are doing in their own time.
