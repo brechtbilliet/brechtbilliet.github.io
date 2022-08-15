@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Angular interview questions for catching real talent 
+title: Angular interview questions for catching senior talent 
 description:  
 published: true
 author: brechtbilliet
