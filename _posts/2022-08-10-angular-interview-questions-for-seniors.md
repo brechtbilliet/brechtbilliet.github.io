@@ -2,10 +2,10 @@
 layout: post
 title: Angular interview questions for catching real talent 
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
-date: 2022-08-10
+date: 2022-08-12
 subclass: 'post'
 disqus: true
 ---
@@ -77,7 +77,8 @@ I would probably say we could use the window object to do that, but that it is n
 with the window object directly. It would create complexities, dependencies we don't want and we are communicating outside of the framework.
 
 We could also use redux or @ngrx/store to communicate between components. I would also consider this to be a bad practice since we are using a complex
-framework for something very simple and we are creating a very hard dependency in every layer of our code
+framework for something very simple and we are creating a very hard dependency in every layer of our code. That being said, this is a personal opinion
+and I'd love to hear the perspective of the candidate.
 
 ### <blockquote>2: How would you structure components in Angular?</blockquote>
 
@@ -96,6 +97,10 @@ I'd also keep a separate folder for smart and dumb components so they don't get 
 I could talk about when I would extract code from the component. I could talk about preference of inline templates 
 or not and share the advantages and disadvantages for both ways. It's important to show that that I am not biased and
 that both solutions could work.
+
+#### <blockquote> Bonus question: Tell me the difference between popes and components</blockquote>
+
+I don't think this question should be answered here since it's a very straightforward question.
 
 ### <blockquote>3: Dependency injection, services, lifecycle of services and use cases. go!</blockquote>
 
@@ -132,9 +137,9 @@ Not only could I say we could use the `async` to subscribe on observables, I cou
 I would say that the async pipe, subscribes to the observable, also unsubscribes from the observable when the component gets destroyed and I would talk about
 how it runs a `markForCheck()` as well.
 
-I would say I consider using the `async` pipe as a best practice because it does a lot of management for us.
+I would say I consider using the `async` pipe as a best practice because it does a lot of management for us (subscribing, unsubscribing, mark for check).
 Maybe I would even talk about the `*ngIf=foo$|async as foo` syntax where we can keep the value of the observable inside the template
-and share it like that.
+and share it like that. I could mention that it can be dangerous if foo has a falsy value.
 
 ### <blockquote>6: Tell me about RxJS in Angular, what reactive api's are there?</blockquote>
 
@@ -204,7 +209,7 @@ Also the change detection deep within your component hierarchy could be broken. 
 
 I would start to laugh about the fact that this bug has bitten me in the butt more than once and explain when and how much it has occurred.
 I would say that the change detection ran twice in development and that both results are compared.
-If the results don't match it means something has changed in between proving that there is something wrong with our "clean" dataflow.
+If the results that are used in the template don't match it means something has changed in between proving that there is something wrong with our "clean" dataflow.
 
 I could also explain why this isn't run in production and that even the bug is harmless, it does shed some light on problems.
 
@@ -325,5 +330,10 @@ Keep the questions limited, keep them short and expect long answers. You might b
 Every body can learn a framework, but not all of us can learn to reason. And syntax is easily forgotten of it has been a few months or
 even weeks until we have used it in practice. Hope you enjoyed the article!
 
-
+Special thanks to the awesome reviewers:
+- [Tim Deschryver](https://twitter.com/tim_deschryver)
+- [Santosh Yadav](https://twitter.com/SantoshYadavDev)
+- [Gregor Woiwode](https://twitter.com/GregOnNet)
+- [Tom Eustace](https://twitter.com/tomeustace)
+- [Webdave](https://twitter.com/webdave_de)
 
