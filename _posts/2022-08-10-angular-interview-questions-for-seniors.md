@@ -51,8 +51,8 @@ The concrete answers will not be found here, that is something you have to do on
 This is a very simple question but can still be used to blow the mind of the interviewer. 
 I would start that the easiest way for component communication would definitely be the use of `@Input()` and `@Output()` properties. 
 I would mention that data flows from parent components towards child components through `@Input()` properties and we
-pass that data into the component with the curved brackets syntax `[foo]="bar"`. The child component can notify the parent components
-through the famous `@Output()` properties and for that we use the curved bracket syntax `(change)="onChange($event)"`.
+pass that data into the component with the square brackets syntax `[foo]="bar"`. The child component can notify the parent components
+through the famous `@Output()` properties and for that we use the square bracket syntax `(change)="onChange($event)"`.
 Yes, yes this is also api specific, but let's face it. If they don't know that api they simply haven't used Angular, and I have gotten
 my share of candidates who were unable to answer that question.
 
