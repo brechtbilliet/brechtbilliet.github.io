@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="User-agent: *" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Angular interview questions for catching senior talent | Frontend software architect living in Belgium</title>
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Angular interview questions for catching senior talent" />
+<meta name="author" content="brechtbilliet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, I learned a lot from them. By helping out a lot of different clients, I also have been on the other side of the table more than a few times too. This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate the candidate as well. I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines. That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference. This blog article is the beginning of a set of many blog articles that will focus on interview questions. Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for. Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews. This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure RxJS will also get his own article. Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions have to be answered thoroughly." />
+<meta property="og:description" content="Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, I learned a lot from them. By helping out a lot of different clients, I also have been on the other side of the table more than a few times too. This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate the candidate as well. I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines. That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference. This blog article is the beginning of a set of many blog articles that will focus on interview questions. Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for. Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews. This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure RxJS will also get his own article. Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions have to be answered thoroughly." />
+<link rel="canonical" href="http://localhost:4000/angular-interview-questions-for-seniors/" />
+<meta property="og:url" content="http://localhost:4000/angular-interview-questions-for-seniors/" />
+<meta property="og:site_name" content="Frontend software architect living in Belgium" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-12T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Angular interview questions for catching senior talent" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"brechtbilliet"},"dateModified":"2022-08-12T00:00:00+02:00","datePublished":"2022-08-12T00:00:00+02:00","description":"Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, I learned a lot from them. By helping out a lot of different clients, I also have been on the other side of the table more than a few times too. This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate the candidate as well. I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines. That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference. This blog article is the beginning of a set of many blog articles that will focus on interview questions. Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for. Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews. This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure RxJS will also get his own article. Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions have to be answered thoroughly.","headline":"Angular interview questions for catching senior talent","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/angular-interview-questions-for-seniors/"},"url":"http://localhost:4000/angular-interview-questions-for-seniors/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Frontend software architect living in Belgium" /></head>
+<body>
+<section class="app">
+    <nav class="app__menu" id="app__menu">
+        <button name="menu-button" class="app__menu-button" id="menu-button" type="button"
+        ><i class="fa-solid fa-bars"></i></button>
+        <ul>
+            <li>
+                <div>
+                    <a href="https://brecht.io/">
+                        <i class="fa-brands fa-angular"></i>
+                        <span class="app__menu-item-label">BRECHT</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/hire-me">
+                        <i class="fa-solid fa-person-walking"></i>
+                        <span class="app__menu-item-label">HIRE ME</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/happy-clients">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                        <span class="app__menu-item-label">CLIENTS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/consultancy">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="app__menu-item-label">CONSULTANCY</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/code-reviews">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span class="app__menu-item-label">CODE REVIEWS</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/coaching">
+                        <i class="fa-solid fa-school"></i>
+                        <span class="app__menu-item-label">COACHING</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="link--active" href="https://blog.brecht.io/">
+                        <i class="fa-solid fa-blog"></i>
+                        <span class="app__menu-item-label">BLOG</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a href="https://brecht.io/angular-best-practices-workshop">
+                        <i class="fa-brands fa-angular"></i>
+                        <span class="app__menu-item-label">
+                            ANGULAR <br/>BEST PRACTICES WORKSHOP
+                        </span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a href="https://brecht.io/contact">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span class="app__menu-item-label">CONTACT</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-wrapper" id="container__wrapper">
+        <div class="container">
+            <main class="page-content" aria-label="Content">
+                <div class="wrapper">
+                    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Angular interview questions for catching senior talent</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="2022-08-12T00:00:00+02:00" itemprop="datePublished">Aug 12, 2022
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">brechtbilliet</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, 
+I learned a lot from them. 
+By helping out a lot of different clients, I also have been on the other side of the table more than a few times too.
+This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate
+the candidate as well.
+I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines.
+That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference.
+This blog article is the beginning of a set of many blog articles that will focus on interview questions.
+Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for.
+Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews.
+This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure
+RxJS will also get his own article.
+Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions
+have to be answered thoroughly.</p>
+
+<p>I’m not a huge fan of asking a candidate questions like:</p>
+<blockquote>Tell me all the different lifecycle hooks that Angular components offer us, and tell me 
+in which order they are being executed.</blockquote>
+<p>Questions like that could make our candidate uncomfortable and stressed out.
+I also don’t like to ask:</p>
+<blockquote>What's the difference between `markForCheck()` and `detectChanges()`?</blockquote>
+<p>I’d love to hear it in a response of
+another question I might ask but we shouldn’t focus on api specifics. Maybe sometimes I would ask for api specifics, but then it only means the candidate has answered
+most of the other things and he or she is really doing a good job. And let’s be honest… Everyone can memorize api’s…</p>
+
+<p>Why would we ask people if they could memorize all the api’s a framework has to offer? When we can try to understand how they think
+and reason about problems and proper solutions? This is the reason we should focus on open questions that can be answered in many ways.
+The more open our questions are as to the candidates, the more we learn from the piece of talent we are interviewing.
+We only have limited time right?!</p>
+
+<p>Our candidate can give us some nice twists like sidetracking on best-practices and bad-practices.
+I love to hear long answers where the candidate can show his or her passion about Angular and the surrounding experience.</p>
+
+<p>For every question I will try to explain on how I personally would answer the question and why, so basically what could make me happy as the hypothetical interviewer.
+The concrete answers will not be found here, that is something you have to do on your own.</p>
+
+<h3 id="1-name-all-the-ways-you-can-think-about-on-how-components-communicate-with-each-other-in-angular">1: Name all the ways you can think about on how components communicate with each other in Angular?</h3>
+
+<p>This is a very simple question but can still be used to blow the mind of the interviewer. 
+I would start that the easiest way for component communication would definitely be the use of <code class="language-plaintext highlighter-rouge">@Input()</code> and <code class="language-plaintext highlighter-rouge">@Output()</code> properties. 
+I would mention that data flows from parent components towards child components through <code class="language-plaintext highlighter-rouge">@Input()</code> properties and we
+pass that data into the component with the square brackets syntax <code class="language-plaintext highlighter-rouge">[foo]="bar"</code>. The child component can notify the parent components
+through the famous <code class="language-plaintext highlighter-rouge">@Output()</code> properties and for that we use the square bracket syntax <code class="language-plaintext highlighter-rouge">(change)="onChange($event)"</code>.
+Yes, yes this is also api specific, but let’s face it. If they don’t know that api they simply haven’t used Angular, and I have gotten
+my share of candidates who were unable to answer that question.</p>
+
+<p>I would maybe mention that for <code class="language-plaintext highlighter-rouge">@Output()</code> names we should never use <code class="language-plaintext highlighter-rouge">onChange</code> or <code class="language-plaintext highlighter-rouge">onClick</code> but we rather use <code class="language-plaintext highlighter-rouge">change</code> or <code class="language-plaintext highlighter-rouge">click</code>.
+That is more consistent with the current api of Angular and it’s a known best practice.</p>
+
+<p>I could talk about injecting parent components into child components through dependency injection in the constructor. 
+I would focus even more on when I would do that and if it is a good idea in general.
+I personally consider this to be a bad practice in a lot of cases as it breaks the unidirectional dataflow and makes it quite complex. 
+That being said, I can give an example on where I inject a custom form component into an input-wrapper component to see if the form is submitted or not.</p>
+
+<p>I can go on about ViewChildren where one could gain access to child components within parent components.
+This also creates a form of communication. Maybe I step it up a notch and explain the difference between ViewChildren and ContentChildren.</p>
+
+<p>Lastly I would talk about how to use services to communicate between different components and that in general I wouldn’t do that to communicate between
+children and parents. I’d say that it might be a good idea to let siblings communicate with each other. Although in many cases we can use the parent component for that. 
+When we want to communicate between a parent and a child, but there is a router-outlet in between it might be a good fit to use a service for that.</p>
+
+<h4 id="bonus-question-can-you-name-a-bad-way-to-let-components-communicate-with-each-other-and-why">Bonus question: Can you name a bad way to let components communicate with each other and why?</h4>
+
+<p>I would probably say we could use the window object to do that, but that it is not a good idea because we lose all the encapsulation and we should not communicate 
+with the window object directly. It would create complexities, dependencies we don’t want and we are communicating outside of the framework.</p>
+
+<p>We could also use redux or @ngrx/store to communicate between components. I would also consider this to be a bad practice since we are using a complex
+framework for something very simple and we are creating a very hard dependency in every layer of our code. That being said, this is a personal opinion
+and I’d love to hear the perspective of the candidate.</p>
+
+<h3 id="2-how-would-you-structure-components-in-angular">2: How would you structure components in Angular?</h3>
+
+<p>I would talk about smart and dumb components and what their responsibility is and how we keep them dumb components ignorant to the rest of the application but
+that they still can have complex logic. I’d probably give an example that a month view of a calendar is stupid, but can be very complex.
+I would say that splitting up into more and smaller components is beneficial for:</p>
+<ul>
+  <li>Control over change detection when using the <code class="language-plaintext highlighter-rouge">ChangeDetection.OnPush</code> strategy</li>
+  <li>Testability</li>
+  <li>Less observable subscriptions</li>
+  <li>Single responsibility principle</li>
+  <li>Separation of concerns</li>
+  <li>Reusability</li>
+</ul>
+
+<p>I’d also keep a separate folder for smart and dumb components so they don’t get mixed up.</p>
+
+<p>I could talk about when I would extract code from the component. I could talk about preference of inline templates 
+or not and share the advantages and disadvantages for both ways. It’s important to show that that I am not biased and
+that both solutions could work.</p>
+
+<h4 id="bonus-question-tell-me-the-difference-between-pipes-and-components">Bonus question: Tell me the difference between pipes and components</h4>
+
+<p>I don’t think this question should be answered here since it’s a very straightforward question.</p>
+
+<h3 id="3-dependency-injection-services-lifecycle-of-services-and-use-cases-go">3: Dependency injection, services, lifecycle of services and use cases. go!</h3>
+
+<p>With this question we can really show that we know exactly how Angular works in terms of dependency injection.
+I could talk about services and how to make them injectable. I would say that we can provide services in modules and
+that they would become singleton for the entire application. After that I’d say that we can also provide them in
+lazy loaded modules (by using providedIn:’any’) which would result in singleton at that modules level. Then I could explain how we can also
+provide them at any component and that the lifecycle would be shared with those components.
+A nice addition there is to mention that if we provide them at component level we could also implement <code class="language-plaintext highlighter-rouge">ngOnDestroy()</code> lifecycle hooks
+in the services. Some nice examples on services in components would be very welcome and I would probably say I could use it
+to remove redundancy from 2 big fat smart components that share 80% of the same code.
+It would be my moment to mention that I prefer composition over inheritance.</p>
+
+<p>A nice addition would be explaining the <code class="language-plaintext highlighter-rouge">providedIn: 'root'</code> syntax in the <code class="language-plaintext highlighter-rouge">Injectable()</code> decorator and that this creates an
+application wide singleton instance. It would also be worth mentioning that this improvement was there to make treeshaking possible.</p>
+
+<p>This is a great moment to start about the standalone components that Angular 14 brings with it, and I could give my opinion
+on Angular modules in general. By mentioning that Angular modules were introduced in angular2@rc5 I could prove my experience.</p>
+
+<p>The reason why I am saying this is not to brag, it’s to show how deep you could go with this question.</p>
+
+<h3 id="4-whats-the-difference-between-guards-and-interceptors">4: What’s the difference between guards and interceptors?</h3>
+
+<p>I like this question because we ask 2 things at the same time. Guards and interceptors don’t have anything to do with each other
+but they are important tools within the framework. After explaining what guards are I could come up with examples on either
+when to use the <code class="language-plaintext highlighter-rouge">canActivate</code> guard but also explain the less often used <code class="language-plaintext highlighter-rouge">canDeactivate</code> guard. A nice example there would be when
+the user has filled in a form and we don’t want to block him from navigating away.</p>
+
+<p>I would explain that I don’t only use interceptors for adding jwt tokens but I could also use them for loading state, error handling and so much more.</p>
+
+<h3 id="5-what-is-the-async-pipe">5: What is the <code class="language-plaintext highlighter-rouge">async</code> pipe?</h3>
+
+<p>Not only could I say we could use the <code class="language-plaintext highlighter-rouge">async</code> to subscribe on observables, I could start talking about RxJS and that it is the only real dependency Angular has besides zone.js.
+I would say that the async pipe, subscribes to the observable, also unsubscribes from the observable when the component gets destroyed and I would talk about
+how it runs a <code class="language-plaintext highlighter-rouge">markForCheck()</code> as well.</p>
+
+<p>I would say I consider using the <code class="language-plaintext highlighter-rouge">async</code> pipe as a best practice because it does a lot of management for us (subscribing, unsubscribing, mark for check).
+Maybe I would even talk about the <code class="language-plaintext highlighter-rouge">*ngIf=foo$|async as foo</code> syntax where we can keep the value of the observable inside the template
+and share it like that. I could mention that it can be dangerous if foo has a falsy value.</p>
+
+<h3 id="6-tell-me-about-rxjs-in-angular-what-reactive-apis-are-there">6: Tell me about RxJS in Angular, what reactive api’s are there?</h3>
+
+<p>This is a beauty because you can talk about so much here.
+It might be a good idea to start talking about my passion in RxJS first and how I fell in love with it.
+After that could talk about how the router is reactive and that we can subscribe to events.
+The activated route gives us observable params, queryParams and so much more.
+We could talk about Reactive forms and how the <code class="language-plaintext highlighter-rouge">valueChanges</code> property is observable.
+ViewChildren and ContentChildren can also be observable.</p>
+
+<p>I would also like to talk about the <code class="language-plaintext highlighter-rouge">HttpClient</code> returning observables instead of promises and that unsubscribing from
+an observable that is performing an XHR call will result in an <code class="language-plaintext highlighter-rouge">xhr.abort()</code>  behind the scenes.</p>
+
+<p>If I want to blow the interviewer his mind I’d mention that <code class="language-plaintext highlighter-rouge">@Output()</code> EventEmitters are also observables behind the scenes and that
+you can replace the EventEmitters with any kind of observable</p>
+
+<h3 id="7-give-me-an-easy-way-to-create-a-memory-leak-in-angular-and-how-to-fix-it-eg-setinterval">7: Give me an easy way to create a memory leak in Angular and how to fix it. Eg setInterval()</h3>
+
+<p>If the candidate does not understand the question: You have to add a <code class="language-plaintext highlighter-rouge">setInterval(console.log)</code> statement somewhere in a piece of code 
+that will be destroyed and we want to keep seeing numbers logged in the console.</p>
+
+<p>This should help the candidate enough. What will get destroyed and reinstantiated? Components will.
+So adding that piece of code in the constructor or <code class="language-plaintext highlighter-rouge">ngOnInit()</code> of a page that is a component and navigating away from that 
+could do the trick. By clearing the interval on <code class="language-plaintext highlighter-rouge">ngOnDestroy()</code> we could clean up that memory leak.</p>
+
+<p>I would start on how easy it is to create memory leaks with RxJS and that it’s important to always clean up subscriptions.
+This might be a tough question but we could really peek into the reasoning of the attendee here.</p>
+
+<h3 id="8-how-would-you-test-angular-applications">8: How would you test Angular applications?</h3>
+
+<p>This question has a lot of different answers, and none of them are right or wrong. But it’s a great way to see how the
+candidate feels about testing, where the priorities lie and how much experience they have with testing Angular applications.</p>
+
+<p>I would first talk about the testing pyramid vs snowcone and how today I prefer something like the honeycomb principle:
+A small amount of unit tests (only the real complex logic), a lot of integration tests for the components, a small amount of E2E tests 
+to test the happy flows.
+I would say something like I unittest the real logic in services and I don’t use TestBed but <code class="language-plaintext highlighter-rouge">jest</code> just like I would test
+any javascript or typescript class or function. I’d back it up with complexity, performance and why I don’t like to be bound to a specific framework.
+For components I use a combination of <code class="language-plaintext highlighter-rouge">cypress</code> and <code class="language-plaintext highlighter-rouge">storybook</code> as integration tests were we would create a storybook of the usecase
+we would test and use <code class="language-plaintext highlighter-rouge">cypress</code> to do so.
+I would also use <code class="language-plaintext highlighter-rouge">cypress</code> to tackle the E2E tests, but since these are slow and hard to maintain I wouldn’t write too much of them.</p>
+
+<p>I would challenge the use of a huge amount of unit tests because they are very brittle (an extra dependency in the constructor breaks every test).
+and if we break a <code class="language-plaintext highlighter-rouge">cypress</code> <code class="language-plaintext highlighter-rouge">storybook</code> integration test chances are quite big that we actually broke something.</p>
+
+<h3 id="9-explain-to-me-how-change-detection-works-in-angular">9: Explain to me how change detection works in Angular</h3>
+
+<p>Here I could talk about <code class="language-plaintext highlighter-rouge">zone.js</code> monkey patches all the native browser events and that Angular uses it to get notified when something happens.
+I could talk about how Angular takes the component hierarchy and by default evaluates all the components from top to bottom.
+I could say that this isn’t the most performant thing to do and could explain how the <code class="language-plaintext highlighter-rouge">ChangeDetection.OnPush</code> strategy helps us with that.
+When talking about that strategy we could explain the <code class="language-plaintext highlighter-rouge">markForCheck</code> thingy and the difference between <code class="language-plaintext highlighter-rouge">ChangeDetectorRef.markForCheck()</code> 
+and <code class="language-plaintext highlighter-rouge">ChangeDetectorRef.detectChanges()</code>. We could also explain that we need immutable data flows to make this work and that it does not make sense
+to use the <code class="language-plaintext highlighter-rouge">ChangeDetection.Onpush</code> strategy on components that don’t have any inputs.</p>
+
+<p>I would sidetrack on the advantages of immutable data structures and that its predictability is of more use than the performance gain.</p>
+
+<p>It might also be worth noting that the <code class="language-plaintext highlighter-rouge">async</code> pipe also triggers a <code class="language-plaintext highlighter-rouge">markForCheck</code>, but we already said that didn’t we?.</p>
+
+<h4 id="bonus-question-what-happens-if-you-apply-the-changedetectiononpush-strategy-on-your-app-component">Bonus question: What happens if you apply the <code class="language-plaintext highlighter-rouge">ChangeDetection.OnPush</code> strategy on your app component?</h4>
+
+<p>I could explain here that it’s not a good idea to do that because it will basically break your change detection and you have to manually
+run <code class="language-plaintext highlighter-rouge">markForCheck()</code>  for everything. A nice example could be this one:
+When we do an <code class="language-plaintext highlighter-rouge">httpClient.get('url').subscribe(result =&gt; this.result = result)</code> in our code. Our application will never update because it isn’t marked for check.
+Also the change detection deep within your component hierarchy could be broken. Another thing is that our app component doesn’t have any <code class="language-plaintext highlighter-rouge">@Input()</code> properties so it is useless anyway.</p>
+
+<h3 id="10-what-is-the-expression-has-changed-after-it-was-checked-error">10: What is the Expression has changed after it was checked error?</h3>
+
+<p>I would start to laugh about the fact that this bug has bitten me in the butt more than once and explain when and how much it has occurred.
+I would say that the change detection ran twice in development and that both results are compared.
+If the results that are used in the template don’t match it means something has changed in between proving that there is something wrong with our “clean” dataflow.</p>
+
+<p>I could also explain why this isn’t run in production and that even the bug is harmless, it does shed some light on problems.</p>
+
+<h3 id="11-how-can-you-tackle-redundancy-in-angular">11: How can you tackle redundancy in Angular?</h3>
+
+<p>Very open question, if you are a senior profile you could talk for tens of minutes but I will wrap it up quite shortly here:</p>
+
+<ul>
+  <li>We can extract logic into reusable components</li>
+  <li>We can extract logic into reusable directives</li>
+  <li>We can extract logic into reusable pipes</li>
+  <li>we can extract logic into reusable functions that we expose in javascript modules (better treeshaking)</li>
+  <li>We can extract logic in services</li>
+</ul>
+
+<h3 id="12-what-is-trackby-and-how-does-it-work">12: What is trackBy and how does it work?</h3>
+
+<p>This question proves a level of seniority of the candidate within the framework.
+I would explain that every <code class="language-plaintext highlighter-rouge">*ngFor</code> statement could benefit from that and how the performance is optimised.
+Especially with big lists this property can have a huge impact.</p>
+
+<h3 id="13-tell-me-about-angular-cli">13: Tell me about Angular CLI.</h3>
+
+<p>Here I can talk about code generation, about webpack. Maybe if I really want to make an impression I can talk about
+why you think they chose for <code class="language-plaintext highlighter-rouge">webpack</code> and not <code class="language-plaintext highlighter-rouge">rollup</code>. Maybe mention why I think it wouldn’t work with <code class="language-plaintext highlighter-rouge">vite</code> now.
+I could talk about schematics and that there is a thing called Nx that takes the Angular CLI to the next level. 
+I could talk about updating to new versions. I could talk about ng-packagr and how I would create a public Angular package.
+I would talk about the CLI sets up webpack configs, unit test configurations, prettier config, linting config files etc.</p>
+
+<h3 id="14-how-do-you-consume-params-from-an-activatedroute-and-do-you-see-complexities-there">14: How do you consume params from an ActivatedRoute and do you see complexities there?</h3>
+
+<p>Here I could say is that injecting the <code class="language-plaintext highlighter-rouge">ActivatedRoute</code> gives us observables of params but also snapshots if we want.
+I could say that it only has access to its own params, and not to the params of its parent router-outlets.
+Unless we set the <code class="language-plaintext highlighter-rouge">paramsInheritanceStrategy</code> of the routerconfig to <code class="language-plaintext highlighter-rouge">always</code> that is.</p>
+
+<p>I would share frustrations that it is complex to access params from child router outlets and that it should also be available
+because they are available in the url, but that I believe they have developed it like that to support auxiliary routes.</p>
+
+<p>I would use this question to talk about how I love nesting router-outlets and using them to display dialogs so that Angular
+takes care of the lifecycle for me.</p>
+
+<p>One last thing to mention here is that when a param changes, the component is not being destroyed and reinstantiated.</p>
+
+<h3 id="15-name-your-3-favourite-angular-characteristics">15: Name your 3 favourite Angular characteristics</h3>
+
+<p>This question speaks for itself. You can verify experience, reasoning, passion and the ability to challenge technical decisions
+by listening to the candidate talk.</p>
+
+<p>My personal favorite is the integration with RxJS, the fact that it is opinionated and I think it is suited for huge projects.</p>
+
+<h3 id="16-name-your-3-biggest-angular-frustrations">16: Name your 3 biggest Angular frustrations</h3>
+
+<p>This question also speaks for itself. You can verify experience, reasoning, passion and the ability to challenge technical decisions
+by listening to the candidate.</p>
+
+<p>My biggest frustration is its bundle size, the build time and the ReactiveForms.
+I would continue on the fact that it is nice that Angular 14 gives us typed forms but that I see a lot of improvements there.</p>
+
+<h3 id="17-explain-how-you-would-do-content-projection-in-angular">17: Explain how you would do content projection in Angular</h3>
+
+<p>I could start out by the fact that you can have an <code class="language-plaintext highlighter-rouge">&lt;ng-content&gt;</code> slot and whatever I put between the tags of my components would be rendered there.
+I could also mention that you can have multiple slots that I could name. And that all these slots can be referenced in the component
+by using <code class="language-plaintext highlighter-rouge">@ContentChildren()</code>. After that I would probably start giving examples on where to use multiple slots like dialogs that have
+both a title and a body section.</p>
+
+<p>After that I could also explain that there is a thingy called <code class="language-plaintext highlighter-rouge">ngTemplateOutlet</code> but to be quite honest, that kind of stuff is the
+stuff I have to look up every time I need it. That being said, mentioning the existence of it is way more important then
+knowing the api by heart.</p>
+
+<p>I could even say it is possible to render content from the right view into the left view by using services to pass template references, 
+but now I’m just trying to be smart even though it is possible.</p>
+
+<h3 id="18-tell-me-something-about-selector-prefixes">18: Tell me something about selector prefixes.</h3>
+
+<p>Again a question where you can validate the experience and reasoning.</p>
+<ul>
+  <li>I’d say every component selector has a prefix, but selectors aren’t even mandatory so prefixes aren’t either.</li>
+  <li>We pass these prefixes so they are unique and it’s easier to see where they live.</li>
+  <li>We use linting rules to validate if the prefixes are used correctly</li>
+  <li>Both components and directives can have prefixes.</li>
+  <li>It’s a bad practice not to have prefixes.</li>
+  <li>Prefixes are both stored in the <code class="language-plaintext highlighter-rouge">project.json</code> (for Nx) and <code class="language-plaintext highlighter-rouge">angular.json</code> (for Angular CLI) file for schematic generation of components and directives, and they are also
+defined in the linting config files</li>
+</ul>
+
+<p>This question is different then the other ones, here the candidate can just make a list of all the things he or she knows about a 
+simple subject.</p>
+
+<h3 id="19-what-version-upgrades-of-angular-were-really-exciting-for-you-and-why">19: What version upgrades of Angular were really exciting for you and why?</h3>
+
+<p>This is a very easy question to check on seniority or if the candidate is up to date with the newest version.</p>
+
+<p>At the time of writing I would talk about standalone components and typed forms in Angular 14.
+That is was pretty weird that there was no Angular 3 but that I understand why.</p>
+
+<p>I would go on that I was pretty frustrated that angular2@rc5 had modules when angular2@rc4 had not…
+And that I had to rewrite my Angular fundamentals workshop just before my public workshops were planned.</p>
+
+<p>I would go on that the upgrade path had gotten easier and that updating to Angular 6 was a pain in the butt for me.</p>
+
+<p>I’d probably also be a bit more negative about Ivy because at ngVikings they showed a hello world of a few kilobytes
+but that never seemed to become reality.</p>
+
+<p>You see the question here shouldn’t be about remembering versions, it should trigger the candidate to talk about his or
+hers experience with Angular and which updates were important.</p>
+
+<h3 id="20-who-do-you-follow-which-blogs-do-you-read-what-do-you-do-to-keep-up-to-date-with-angular">20: Who do you follow? Which blogs do you read? What do you do to keep up to date with Angular?</h3>
+
+<p>This is one of my favorites. One could talk about pluralsight or egghead trainings.
+They could mention Angular core team members, or interesting pull requests.
+They could talk about conferences or at least a talk they were interested in.
+They can talk about books, interesting talks with colleagues and so on.
+They can talk about pet projects and stuff they are doing in their own time.</p>
+
+<p>This is a great question: not to test seniority, but to test passion and motivation in the framework.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Keep the questions limited, keep them short and expect long answers. You might be surprised how smart our candidate is.
+Every body can learn a framework, but not all of us can learn to reason. And syntax is easily forgotten of it has been a few months or
+even weeks until we have used it in practice. Hope you enjoyed the article!</p>
+
+<p>Special thanks to the awesome reviewers:</p>
+<ul>
+  <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
+  <li><a href="https://twitter.com/SantoshYadavDev">Santosh Yadav</a></li>
+  <li><a href="https://twitter.com/GregOnNet">Gregor Woiwode</a></li>
+  <li><a href="https://twitter.com/tomeustace">Tom Eustace</a></li>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+</ul>
+
+
+  </div><a class="u-url" href="/angular-interview-questions-for-seniors/" hidden></a>
+</article>
+
+                </div>
+            </main>
+        </div><div class="footer">
+    <div class="footer__inner"><h3>Let's get to know each other!</h3>
+        <ul class="footer__social-icons">
+            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon"><i class="fa-brands fa-linkedin"></i></a></li>
+            <li><a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon"><i
+                    class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="mailto://billietbrecht@gmail.com" target="blank" class="footer__social-icon"><i
+                    class="fa-solid fa-envelope-open"></i></a></li>
+        </ul>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
+    </div>
+</div>
+</div>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
+        charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({
+            "notice_banner_type": "simple",
+            "consent_type": "implied",
+            "palette": "light",
+            "language": "en",
+            "page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
+            "notice_banner_reject_button_hide": false,
+            "preferences_center_close_button_hide": false,
+            "page_refresh_confirmation_buttons": false,
+            "website_name": "brecht.io"
+        });
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-43296458-4');
+</script>
+<script lang="text/javascript">
+    window.menuCollapsed = false;
+    const appMenu = document.querySelector('#app__menu');
+    const containerWrapper = document.querySelector('#container__wrapper');
+    document.querySelector('#menu-button').addEventListener('click', () => {
+        window.menuCollapsed = !window.menuCollapsed;
+        if (window.menuCollapsed) {
+            containerWrapper.classList.remove('menu-open')
+            appMenu.classList.add('app__menu--collapsed')
+        } else {
+            appMenu.classList.remove('app__menu--collapsed')
+            containerWrapper.classList.add('menu-open')
+        }
+    })
+    if (window?.innerWidth <= 768) {
+        containerWrapper.classList.remove('menu-open')
+        appMenu.classList.add('app__menu--collapsed')
+    }
+
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator
+    website</a></noscript>
+</body>
+
+</html>

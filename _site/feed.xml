@@ -1,4 +1,335 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://blog.brecht.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.brecht.io/" rel="alternate" type="text/html" /><updated>2022-08-03T18:22:03+02:00</updated><id>https://blog.brecht.io/feed.xml</id><title type="html">Frontend software architect living in Belgium</title><subtitle></subtitle><entry><title type="html">Why and how I created a SPA router for Qwik</title><link href="https://blog.brecht.io/why-and-how-i-created-a-spa-router-for-qwik/" rel="alternate" type="text/html" title="Why and how I created a SPA router for Qwik" /><published>2022-08-03T00:00:00+02:00</published><updated>2022-08-03T00:00:00+02:00</updated><id>https://blog.brecht.io/why-and-how-i-created-a-spa-router-for-qwik</id><content type="html" xml:base="https://blog.brecht.io/why-and-how-i-created-a-spa-router-for-qwik/"><![CDATA[<h2 id="the-why">The why</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-08-25T13:39:27+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Frontend software architect living in Belgium</title><subtitle></subtitle><entry><title type="html">Angular interview questions for catching senior talent</title><link href="http://localhost:4000/angular-interview-questions-for-seniors/" rel="alternate" type="text/html" title="Angular interview questions for catching senior talent" /><published>2022-08-12T00:00:00+02:00</published><updated>2022-08-12T00:00:00+02:00</updated><id>http://localhost:4000/angular-interview-questions-for-seniors</id><content type="html" xml:base="http://localhost:4000/angular-interview-questions-for-seniors/"><![CDATA[<p>Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, 
+I learned a lot from them. 
+By helping out a lot of different clients, I also have been on the other side of the table more than a few times too.
+This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate
+the candidate as well.
+I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines.
+That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference.
+This blog article is the beginning of a set of many blog articles that will focus on interview questions.
+Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for.
+Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews.
+This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure
+RxJS will also get his own article.
+Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions
+have to be answered thoroughly.</p>
+
+<p>I’m not a huge fan of asking a candidate questions like:</p>
+<blockquote>Tell me all the different lifecycle hooks that Angular components offer us, and tell me 
+in which order they are being executed.</blockquote>
+<p>Questions like that could make our candidate uncomfortable and stressed out.
+I also don’t like to ask:</p>
+<blockquote>What's the difference between `markForCheck()` and `detectChanges()`?</blockquote>
+<p>I’d love to hear it in a response of
+another question I might ask but we shouldn’t focus on api specifics. Maybe sometimes I would ask for api specifics, but then it only means the candidate has answered
+most of the other things and he or she is really doing a good job. And let’s be honest… Everyone can memorize api’s…</p>
+
+<p>Why would we ask people if they could memorize all the api’s a framework has to offer? When we can try to understand how they think
+and reason about problems and proper solutions? This is the reason we should focus on open questions that can be answered in many ways.
+The more open our questions are as to the candidates, the more we learn from the piece of talent we are interviewing.
+We only have limited time right?!</p>
+
+<p>Our candidate can give us some nice twists like sidetracking on best-practices and bad-practices.
+I love to hear long answers where the candidate can show his or her passion about Angular and the surrounding experience.</p>
+
+<p>For every question I will try to explain on how I personally would answer the question and why, so basically what could make me happy as the hypothetical interviewer.
+The concrete answers will not be found here, that is something you have to do on your own.</p>
+
+<h3 id="1-name-all-the-ways-you-can-think-about-on-how-components-communicate-with-each-other-in-angular">1: Name all the ways you can think about on how components communicate with each other in Angular?</h3>
+
+<p>This is a very simple question but can still be used to blow the mind of the interviewer. 
+I would start that the easiest way for component communication would definitely be the use of <code class="language-plaintext highlighter-rouge">@Input()</code> and <code class="language-plaintext highlighter-rouge">@Output()</code> properties. 
+I would mention that data flows from parent components towards child components through <code class="language-plaintext highlighter-rouge">@Input()</code> properties and we
+pass that data into the component with the square brackets syntax <code class="language-plaintext highlighter-rouge">[foo]="bar"</code>. The child component can notify the parent components
+through the famous <code class="language-plaintext highlighter-rouge">@Output()</code> properties and for that we use the square bracket syntax <code class="language-plaintext highlighter-rouge">(change)="onChange($event)"</code>.
+Yes, yes this is also api specific, but let’s face it. If they don’t know that api they simply haven’t used Angular, and I have gotten
+my share of candidates who were unable to answer that question.</p>
+
+<p>I would maybe mention that for <code class="language-plaintext highlighter-rouge">@Output()</code> names we should never use <code class="language-plaintext highlighter-rouge">onChange</code> or <code class="language-plaintext highlighter-rouge">onClick</code> but we rather use <code class="language-plaintext highlighter-rouge">change</code> or <code class="language-plaintext highlighter-rouge">click</code>.
+That is more consistent with the current api of Angular and it’s a known best practice.</p>
+
+<p>I could talk about injecting parent components into child components through dependency injection in the constructor. 
+I would focus even more on when I would do that and if it is a good idea in general.
+I personally consider this to be a bad practice in a lot of cases as it breaks the unidirectional dataflow and makes it quite complex. 
+That being said, I can give an example on where I inject a custom form component into an input-wrapper component to see if the form is submitted or not.</p>
+
+<p>I can go on about ViewChildren where one could gain access to child components within parent components.
+This also creates a form of communication. Maybe I step it up a notch and explain the difference between ViewChildren and ContentChildren.</p>
+
+<p>Lastly I would talk about how to use services to communicate between different components and that in general I wouldn’t do that to communicate between
+children and parents. I’d say that it might be a good idea to let siblings communicate with each other. Although in many cases we can use the parent component for that. 
+When we want to communicate between a parent and a child, but there is a router-outlet in between it might be a good fit to use a service for that.</p>
+
+<h4 id="bonus-question-can-you-name-a-bad-way-to-let-components-communicate-with-each-other-and-why">Bonus question: Can you name a bad way to let components communicate with each other and why?</h4>
+
+<p>I would probably say we could use the window object to do that, but that it is not a good idea because we lose all the encapsulation and we should not communicate 
+with the window object directly. It would create complexities, dependencies we don’t want and we are communicating outside of the framework.</p>
+
+<p>We could also use redux or @ngrx/store to communicate between components. I would also consider this to be a bad practice since we are using a complex
+framework for something very simple and we are creating a very hard dependency in every layer of our code. That being said, this is a personal opinion
+and I’d love to hear the perspective of the candidate.</p>
+
+<h3 id="2-how-would-you-structure-components-in-angular">2: How would you structure components in Angular?</h3>
+
+<p>I would talk about smart and dumb components and what their responsibility is and how we keep them dumb components ignorant to the rest of the application but
+that they still can have complex logic. I’d probably give an example that a month view of a calendar is stupid, but can be very complex.
+I would say that splitting up into more and smaller components is beneficial for:</p>
+<ul>
+  <li>Control over change detection when using the <code class="language-plaintext highlighter-rouge">ChangeDetection.OnPush</code> strategy</li>
+  <li>Testability</li>
+  <li>Less observable subscriptions</li>
+  <li>Single responsibility principle</li>
+  <li>Separation of concerns</li>
+  <li>Reusability</li>
+</ul>
+
+<p>I’d also keep a separate folder for smart and dumb components so they don’t get mixed up.</p>
+
+<p>I could talk about when I would extract code from the component. I could talk about preference of inline templates 
+or not and share the advantages and disadvantages for both ways. It’s important to show that that I am not biased and
+that both solutions could work.</p>
+
+<h4 id="bonus-question-tell-me-the-difference-between-pipes-and-components">Bonus question: Tell me the difference between pipes and components</h4>
+
+<p>I don’t think this question should be answered here since it’s a very straightforward question.</p>
+
+<h3 id="3-dependency-injection-services-lifecycle-of-services-and-use-cases-go">3: Dependency injection, services, lifecycle of services and use cases. go!</h3>
+
+<p>With this question we can really show that we know exactly how Angular works in terms of dependency injection.
+I could talk about services and how to make them injectable. I would say that we can provide services in modules and
+that they would become singleton for the entire application. After that I’d say that we can also provide them in
+lazy loaded modules (by using providedIn:’any’) which would result in singleton at that modules level. Then I could explain how we can also
+provide them at any component and that the lifecycle would be shared with those components.
+A nice addition there is to mention that if we provide them at component level we could also implement <code class="language-plaintext highlighter-rouge">ngOnDestroy()</code> lifecycle hooks
+in the services. Some nice examples on services in components would be very welcome and I would probably say I could use it
+to remove redundancy from 2 big fat smart components that share 80% of the same code.
+It would be my moment to mention that I prefer composition over inheritance.</p>
+
+<p>A nice addition would be explaining the <code class="language-plaintext highlighter-rouge">providedIn: 'root'</code> syntax in the <code class="language-plaintext highlighter-rouge">Injectable()</code> decorator and that this creates an
+application wide singleton instance. It would also be worth mentioning that this improvement was there to make treeshaking possible.</p>
+
+<p>This is a great moment to start about the standalone components that Angular 14 brings with it, and I could give my opinion
+on Angular modules in general. By mentioning that Angular modules were introduced in angular2@rc5 I could prove my experience.</p>
+
+<p>The reason why I am saying this is not to brag, it’s to show how deep you could go with this question.</p>
+
+<h3 id="4-whats-the-difference-between-guards-and-interceptors">4: What’s the difference between guards and interceptors?</h3>
+
+<p>I like this question because we ask 2 things at the same time. Guards and interceptors don’t have anything to do with each other
+but they are important tools within the framework. After explaining what guards are I could come up with examples on either
+when to use the <code class="language-plaintext highlighter-rouge">canActivate</code> guard but also explain the less often used <code class="language-plaintext highlighter-rouge">canDeactivate</code> guard. A nice example there would be when
+the user has filled in a form and we don’t want to block him from navigating away.</p>
+
+<p>I would explain that I don’t only use interceptors for adding jwt tokens but I could also use them for loading state, error handling and so much more.</p>
+
+<h3 id="5-what-is-the-async-pipe">5: What is the <code class="language-plaintext highlighter-rouge">async</code> pipe?</h3>
+
+<p>Not only could I say we could use the <code class="language-plaintext highlighter-rouge">async</code> to subscribe on observables, I could start talking about RxJS and that it is the only real dependency Angular has besides zone.js.
+I would say that the async pipe, subscribes to the observable, also unsubscribes from the observable when the component gets destroyed and I would talk about
+how it runs a <code class="language-plaintext highlighter-rouge">markForCheck()</code> as well.</p>
+
+<p>I would say I consider using the <code class="language-plaintext highlighter-rouge">async</code> pipe as a best practice because it does a lot of management for us (subscribing, unsubscribing, mark for check).
+Maybe I would even talk about the <code class="language-plaintext highlighter-rouge">*ngIf=foo$|async as foo</code> syntax where we can keep the value of the observable inside the template
+and share it like that. I could mention that it can be dangerous if foo has a falsy value.</p>
+
+<h3 id="6-tell-me-about-rxjs-in-angular-what-reactive-apis-are-there">6: Tell me about RxJS in Angular, what reactive api’s are there?</h3>
+
+<p>This is a beauty because you can talk about so much here.
+It might be a good idea to start talking about my passion in RxJS first and how I fell in love with it.
+After that could talk about how the router is reactive and that we can subscribe to events.
+The activated route gives us observable params, queryParams and so much more.
+We could talk about Reactive forms and how the <code class="language-plaintext highlighter-rouge">valueChanges</code> property is observable.
+ViewChildren and ContentChildren can also be observable.</p>
+
+<p>I would also like to talk about the <code class="language-plaintext highlighter-rouge">HttpClient</code> returning observables instead of promises and that unsubscribing from
+an observable that is performing an XHR call will result in an <code class="language-plaintext highlighter-rouge">xhr.abort()</code>  behind the scenes.</p>
+
+<p>If I want to blow the interviewer his mind I’d mention that <code class="language-plaintext highlighter-rouge">@Output()</code> EventEmitters are also observables behind the scenes and that
+you can replace the EventEmitters with any kind of observable</p>
+
+<h3 id="7-give-me-an-easy-way-to-create-a-memory-leak-in-angular-and-how-to-fix-it-eg-setinterval">7: Give me an easy way to create a memory leak in Angular and how to fix it. Eg setInterval()</h3>
+
+<p>If the candidate does not understand the question: You have to add a <code class="language-plaintext highlighter-rouge">setInterval(console.log)</code> statement somewhere in a piece of code 
+that will be destroyed and we want to keep seeing numbers logged in the console.</p>
+
+<p>This should help the candidate enough. What will get destroyed and reinstantiated? Components will.
+So adding that piece of code in the constructor or <code class="language-plaintext highlighter-rouge">ngOnInit()</code> of a page that is a component and navigating away from that 
+could do the trick. By clearing the interval on <code class="language-plaintext highlighter-rouge">ngOnDestroy()</code> we could clean up that memory leak.</p>
+
+<p>I would start on how easy it is to create memory leaks with RxJS and that it’s important to always clean up subscriptions.
+This might be a tough question but we could really peek into the reasoning of the attendee here.</p>
+
+<h3 id="8-how-would-you-test-angular-applications">8: How would you test Angular applications?</h3>
+
+<p>This question has a lot of different answers, and none of them are right or wrong. But it’s a great way to see how the
+candidate feels about testing, where the priorities lie and how much experience they have with testing Angular applications.</p>
+
+<p>I would first talk about the testing pyramid vs snowcone and how today I prefer something like the honeycomb principle:
+A small amount of unit tests (only the real complex logic), a lot of integration tests for the components, a small amount of E2E tests 
+to test the happy flows.
+I would say something like I unittest the real logic in services and I don’t use TestBed but <code class="language-plaintext highlighter-rouge">jest</code> just like I would test
+any javascript or typescript class or function. I’d back it up with complexity, performance and why I don’t like to be bound to a specific framework.
+For components I use a combination of <code class="language-plaintext highlighter-rouge">cypress</code> and <code class="language-plaintext highlighter-rouge">storybook</code> as integration tests were we would create a storybook of the usecase
+we would test and use <code class="language-plaintext highlighter-rouge">cypress</code> to do so.
+I would also use <code class="language-plaintext highlighter-rouge">cypress</code> to tackle the E2E tests, but since these are slow and hard to maintain I wouldn’t write too much of them.</p>
+
+<p>I would challenge the use of a huge amount of unit tests because they are very brittle (an extra dependency in the constructor breaks every test).
+and if we break a <code class="language-plaintext highlighter-rouge">cypress</code> <code class="language-plaintext highlighter-rouge">storybook</code> integration test chances are quite big that we actually broke something.</p>
+
+<h3 id="9-explain-to-me-how-change-detection-works-in-angular">9: Explain to me how change detection works in Angular</h3>
+
+<p>Here I could talk about <code class="language-plaintext highlighter-rouge">zone.js</code> monkey patches all the native browser events and that Angular uses it to get notified when something happens.
+I could talk about how Angular takes the component hierarchy and by default evaluates all the components from top to bottom.
+I could say that this isn’t the most performant thing to do and could explain how the <code class="language-plaintext highlighter-rouge">ChangeDetection.OnPush</code> strategy helps us with that.
+When talking about that strategy we could explain the <code class="language-plaintext highlighter-rouge">markForCheck</code> thingy and the difference between <code class="language-plaintext highlighter-rouge">ChangeDetectorRef.markForCheck()</code> 
+and <code class="language-plaintext highlighter-rouge">ChangeDetectorRef.detectChanges()</code>. We could also explain that we need immutable data flows to make this work and that it does not make sense
+to use the <code class="language-plaintext highlighter-rouge">ChangeDetection.Onpush</code> strategy on components that don’t have any inputs.</p>
+
+<p>I would sidetrack on the advantages of immutable data structures and that its predictability is of more use than the performance gain.</p>
+
+<p>It might also be worth noting that the <code class="language-plaintext highlighter-rouge">async</code> pipe also triggers a <code class="language-plaintext highlighter-rouge">markForCheck</code>, but we already said that didn’t we?.</p>
+
+<h4 id="bonus-question-what-happens-if-you-apply-the-changedetectiononpush-strategy-on-your-app-component">Bonus question: What happens if you apply the <code class="language-plaintext highlighter-rouge">ChangeDetection.OnPush</code> strategy on your app component?</h4>
+
+<p>I could explain here that it’s not a good idea to do that because it will basically break your change detection and you have to manually
+run <code class="language-plaintext highlighter-rouge">markForCheck()</code>  for everything. A nice example could be this one:
+When we do an <code class="language-plaintext highlighter-rouge">httpClient.get('url').subscribe(result =&gt; this.result = result)</code> in our code. Our application will never update because it isn’t marked for check.
+Also the change detection deep within your component hierarchy could be broken. Another thing is that our app component doesn’t have any <code class="language-plaintext highlighter-rouge">@Input()</code> properties so it is useless anyway.</p>
+
+<h3 id="10-what-is-the-expression-has-changed-after-it-was-checked-error">10: What is the Expression has changed after it was checked error?</h3>
+
+<p>I would start to laugh about the fact that this bug has bitten me in the butt more than once and explain when and how much it has occurred.
+I would say that the change detection ran twice in development and that both results are compared.
+If the results that are used in the template don’t match it means something has changed in between proving that there is something wrong with our “clean” dataflow.</p>
+
+<p>I could also explain why this isn’t run in production and that even the bug is harmless, it does shed some light on problems.</p>
+
+<h3 id="11-how-can-you-tackle-redundancy-in-angular">11: How can you tackle redundancy in Angular?</h3>
+
+<p>Very open question, if you are a senior profile you could talk for tens of minutes but I will wrap it up quite shortly here:</p>
+
+<ul>
+  <li>We can extract logic into reusable components</li>
+  <li>We can extract logic into reusable directives</li>
+  <li>We can extract logic into reusable pipes</li>
+  <li>we can extract logic into reusable functions that we expose in javascript modules (better treeshaking)</li>
+  <li>We can extract logic in services</li>
+</ul>
+
+<h3 id="12-what-is-trackby-and-how-does-it-work">12: What is trackBy and how does it work?</h3>
+
+<p>This question proves a level of seniority of the candidate within the framework.
+I would explain that every <code class="language-plaintext highlighter-rouge">*ngFor</code> statement could benefit from that and how the performance is optimised.
+Especially with big lists this property can have a huge impact.</p>
+
+<h3 id="13-tell-me-about-angular-cli">13: Tell me about Angular CLI.</h3>
+
+<p>Here I can talk about code generation, about webpack. Maybe if I really want to make an impression I can talk about
+why you think they chose for <code class="language-plaintext highlighter-rouge">webpack</code> and not <code class="language-plaintext highlighter-rouge">rollup</code>. Maybe mention why I think it wouldn’t work with <code class="language-plaintext highlighter-rouge">vite</code> now.
+I could talk about schematics and that there is a thing called Nx that takes the Angular CLI to the next level. 
+I could talk about updating to new versions. I could talk about ng-packagr and how I would create a public Angular package.
+I would talk about the CLI sets up webpack configs, unit test configurations, prettier config, linting config files etc.</p>
+
+<h3 id="14-how-do-you-consume-params-from-an-activatedroute-and-do-you-see-complexities-there">14: How do you consume params from an ActivatedRoute and do you see complexities there?</h3>
+
+<p>Here I could say is that injecting the <code class="language-plaintext highlighter-rouge">ActivatedRoute</code> gives us observables of params but also snapshots if we want.
+I could say that it only has access to its own params, and not to the params of its parent router-outlets.
+Unless we set the <code class="language-plaintext highlighter-rouge">paramsInheritanceStrategy</code> of the routerconfig to <code class="language-plaintext highlighter-rouge">always</code> that is.</p>
+
+<p>I would share frustrations that it is complex to access params from child router outlets and that it should also be available
+because they are available in the url, but that I believe they have developed it like that to support auxiliary routes.</p>
+
+<p>I would use this question to talk about how I love nesting router-outlets and using them to display dialogs so that Angular
+takes care of the lifecycle for me.</p>
+
+<p>One last thing to mention here is that when a param changes, the component is not being destroyed and reinstantiated.</p>
+
+<h3 id="15-name-your-3-favourite-angular-characteristics">15: Name your 3 favourite Angular characteristics</h3>
+
+<p>This question speaks for itself. You can verify experience, reasoning, passion and the ability to challenge technical decisions
+by listening to the candidate talk.</p>
+
+<p>My personal favorite is the integration with RxJS, the fact that it is opinionated and I think it is suited for huge projects.</p>
+
+<h3 id="16-name-your-3-biggest-angular-frustrations">16: Name your 3 biggest Angular frustrations</h3>
+
+<p>This question also speaks for itself. You can verify experience, reasoning, passion and the ability to challenge technical decisions
+by listening to the candidate.</p>
+
+<p>My biggest frustration is its bundle size, the build time and the ReactiveForms.
+I would continue on the fact that it is nice that Angular 14 gives us typed forms but that I see a lot of improvements there.</p>
+
+<h3 id="17-explain-how-you-would-do-content-projection-in-angular">17: Explain how you would do content projection in Angular</h3>
+
+<p>I could start out by the fact that you can have an <code class="language-plaintext highlighter-rouge">&lt;ng-content&gt;</code> slot and whatever I put between the tags of my components would be rendered there.
+I could also mention that you can have multiple slots that I could name. And that all these slots can be referenced in the component
+by using <code class="language-plaintext highlighter-rouge">@ContentChildren()</code>. After that I would probably start giving examples on where to use multiple slots like dialogs that have
+both a title and a body section.</p>
+
+<p>After that I could also explain that there is a thingy called <code class="language-plaintext highlighter-rouge">ngTemplateOutlet</code> but to be quite honest, that kind of stuff is the
+stuff I have to look up every time I need it. That being said, mentioning the existence of it is way more important then
+knowing the api by heart.</p>
+
+<p>I could even say it is possible to render content from the right view into the left view by using services to pass template references, 
+but now I’m just trying to be smart even though it is possible.</p>
+
+<h3 id="18-tell-me-something-about-selector-prefixes">18: Tell me something about selector prefixes.</h3>
+
+<p>Again a question where you can validate the experience and reasoning.</p>
+<ul>
+  <li>I’d say every component selector has a prefix, but selectors aren’t even mandatory so prefixes aren’t either.</li>
+  <li>We pass these prefixes so they are unique and it’s easier to see where they live.</li>
+  <li>We use linting rules to validate if the prefixes are used correctly</li>
+  <li>Both components and directives can have prefixes.</li>
+  <li>It’s a bad practice not to have prefixes.</li>
+  <li>Prefixes are both stored in the <code class="language-plaintext highlighter-rouge">project.json</code> (for Nx) and <code class="language-plaintext highlighter-rouge">angular.json</code> (for Angular CLI) file for schematic generation of components and directives, and they are also
+defined in the linting config files</li>
+</ul>
+
+<p>This question is different then the other ones, here the candidate can just make a list of all the things he or she knows about a 
+simple subject.</p>
+
+<h3 id="19-what-version-upgrades-of-angular-were-really-exciting-for-you-and-why">19: What version upgrades of Angular were really exciting for you and why?</h3>
+
+<p>This is a very easy question to check on seniority or if the candidate is up to date with the newest version.</p>
+
+<p>At the time of writing I would talk about standalone components and typed forms in Angular 14.
+That is was pretty weird that there was no Angular 3 but that I understand why.</p>
+
+<p>I would go on that I was pretty frustrated that angular2@rc5 had modules when angular2@rc4 had not…
+And that I had to rewrite my Angular fundamentals workshop just before my public workshops were planned.</p>
+
+<p>I would go on that the upgrade path had gotten easier and that updating to Angular 6 was a pain in the butt for me.</p>
+
+<p>I’d probably also be a bit more negative about Ivy because at ngVikings they showed a hello world of a few kilobytes
+but that never seemed to become reality.</p>
+
+<p>You see the question here shouldn’t be about remembering versions, it should trigger the candidate to talk about his or
+hers experience with Angular and which updates were important.</p>
+
+<h3 id="20-who-do-you-follow-which-blogs-do-you-read-what-do-you-do-to-keep-up-to-date-with-angular">20: Who do you follow? Which blogs do you read? What do you do to keep up to date with Angular?</h3>
+
+<p>This is one of my favorites. One could talk about pluralsight or egghead trainings.
+They could mention Angular core team members, or interesting pull requests.
+They could talk about conferences or at least a talk they were interested in.
+They can talk about books, interesting talks with colleagues and so on.
+They can talk about pet projects and stuff they are doing in their own time.</p>
+
+<p>This is a great question: not to test seniority, but to test passion and motivation in the framework.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Keep the questions limited, keep them short and expect long answers. You might be surprised how smart our candidate is.
+Every body can learn a framework, but not all of us can learn to reason. And syntax is easily forgotten of it has been a few months or
+even weeks until we have used it in practice. Hope you enjoyed the article!</p>
+
+<p>Special thanks to the awesome reviewers:</p>
+<ul>
+  <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
+  <li><a href="https://twitter.com/SantoshYadavDev">Santosh Yadav</a></li>
+  <li><a href="https://twitter.com/GregOnNet">Gregor Woiwode</a></li>
+  <li><a href="https://twitter.com/tomeustace">Tom Eustace</a></li>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+</ul>]]></content><author><name>brechtbilliet</name></author><summary type="html"><![CDATA[Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, I learned a lot from them. By helping out a lot of different clients, I also have been on the other side of the table more than a few times too. This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate the candidate as well. I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines. That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference. This blog article is the beginning of a set of many blog articles that will focus on interview questions. Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for. Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews. This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure RxJS will also get his own article. Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions have to be answered thoroughly.]]></summary></entry><entry><title type="html">Why and how I created a SPA router for Qwik</title><link href="http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/" rel="alternate" type="text/html" title="Why and how I created a SPA router for Qwik" /><published>2022-08-03T00:00:00+02:00</published><updated>2022-08-03T00:00:00+02:00</updated><id>http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik</id><content type="html" xml:base="http://localhost:4000/why-and-how-i-created-a-spa-router-for-qwik/"><![CDATA[<h2 id="the-why">The why</h2>
 
 <p>The people from <a href="https://builder.io">builder.io</a> have done an awesome job writing <a href="https://qwik.builder.io/">Qwik</a>, and their arsenal of other great tools.
 I started playing with Qwik some time ago and decided to rewrite my website <a href="https://brecht.io">brecht.io</a> in it. 
@@ -454,7 +785,7 @@ I hope you found it interesting as well!</p>
   <li><a href="https://twitter.com/mhevery">Miško Hevery</a></li>
   <li><a href="https://twitter.com/tigt_">Taylor Hunt</a></li>
   <li><a href="https://twitter.com/antoinepairet">Antoine Pairet</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><summary type="html"><![CDATA[The why]]></summary></entry><entry><title type="html">Reactive dumb components</title><link href="https://blog.brecht.io/reactive-dumb-components/" rel="alternate" type="text/html" title="Reactive dumb components" /><published>2021-05-17T00:00:00+02:00</published><updated>2021-05-17T00:00:00+02:00</updated><id>https://blog.brecht.io/reactive-dumb-components</id><content type="html" xml:base="https://blog.brecht.io/reactive-dumb-components/"><![CDATA[<h2 id="reactive-dumb-components">Reactive dumb components</h2>
+</ul>]]></content><author><name>brechtbilliet</name></author><summary type="html"><![CDATA[The why]]></summary></entry><entry><title type="html">Reactive dumb components</title><link href="http://localhost:4000/reactive-dumb-components/" rel="alternate" type="text/html" title="Reactive dumb components" /><published>2021-05-17T00:00:00+02:00</published><updated>2021-05-17T00:00:00+02:00</updated><id>http://localhost:4000/reactive-dumb-components</id><content type="html" xml:base="http://localhost:4000/reactive-dumb-components/"><![CDATA[<h2 id="reactive-dumb-components">Reactive dumb components</h2>
 
 <p>When we write RxJS logic inside our presentation layer we mostly wind up with reactive flows inside our smart components (container components). The reasoning behind this, is quite easy:</p>
 
@@ -785,7 +1116,7 @@ In the code snippet below we can see the complete code: You can also check the <
   <li>We can use <code class="language-plaintext highlighter-rouge">ngx-reactivetoolkit</code> to make the code cleaner</li>
 </ul>
 
-<p>For simple component this can be seen as overkill, but it could definitely help when dumb components become more complex and rely of different streams of data that are happening asynchronously.</p>]]></content><author><name>brechtbilliet</name></author><category term="Rxjs" /><category term="Rxjs" /><summary type="html"><![CDATA[How to make dumb components reactive without imperative ngOnChanges programming]]></summary></entry><entry><title type="html">How covid affected StrongBrew</title><link href="https://blog.brecht.io/how-covid-affected-strongbrew/" rel="alternate" type="text/html" title="How covid affected StrongBrew" /><published>2020-11-03T00:00:00+01:00</published><updated>2020-11-03T00:00:00+01:00</updated><id>https://blog.brecht.io/how-covid-affected-strongbrew</id><content type="html" xml:base="https://blog.brecht.io/how-covid-affected-strongbrew/"><![CDATA[<h2 id="covid">Covid</h2>
+<p>For simple component this can be seen as overkill, but it could definitely help when dumb components become more complex and rely of different streams of data that are happening asynchronously.</p>]]></content><author><name>brechtbilliet</name></author><category term="Rxjs" /><category term="Rxjs" /><summary type="html"><![CDATA[How to make dumb components reactive without imperative ngOnChanges programming]]></summary></entry><entry><title type="html">How covid affected StrongBrew</title><link href="http://localhost:4000/how-covid-affected-strongbrew/" rel="alternate" type="text/html" title="How covid affected StrongBrew" /><published>2020-11-03T00:00:00+01:00</published><updated>2020-11-03T00:00:00+01:00</updated><id>http://localhost:4000/how-covid-affected-strongbrew</id><content type="html" xml:base="http://localhost:4000/how-covid-affected-strongbrew/"><![CDATA[<h2 id="covid">Covid</h2>
 
 <p>These are challenging times… Harsh times for people and companies. Even for some companies it results in fatal decisions.</p>
 
@@ -825,7 +1156,7 @@ The services listed below is something that I still do 1/5th of my time:</p>
 <h2 id="conclusion">Conclusion</h2>
 
 <p>Unfortunately our company has died a slow death, but you will be hearing more of StrongBrew in the near future. Stay safe! Stay healthy! And if you have questions don’t hesitate to reach out.
-Cheers! Brecht.</p>]]></content><author><name>brechtbilliet</name></author><category term="Covid" /><category term="COVID" /><summary type="html"><![CDATA[What is the future of StrongBrew? How were we impacted by COVID?]]></summary></entry><entry><title type="html">Managing state in Angular</title><link href="https://blog.brecht.io/managing-state-in-angular/" rel="alternate" type="text/html" title="Managing state in Angular" /><published>2019-07-29T00:00:00+02:00</published><updated>2019-07-29T00:00:00+02:00</updated><id>https://blog.brecht.io/managing-state-in-angular</id><content type="html" xml:base="https://blog.brecht.io/managing-state-in-angular/"><![CDATA[<h2 id="about-this-article">About this article</h2>
+Cheers! Brecht.</p>]]></content><author><name>brechtbilliet</name></author><category term="Covid" /><category term="COVID" /><summary type="html"><![CDATA[What is the future of StrongBrew? How were we impacted by COVID?]]></summary></entry><entry><title type="html">Managing state in Angular</title><link href="http://localhost:4000/managing-state-in-angular/" rel="alternate" type="text/html" title="Managing state in Angular" /><published>2019-07-29T00:00:00+02:00</published><updated>2019-07-29T00:00:00+02:00</updated><id>http://localhost:4000/managing-state-in-angular</id><content type="html" xml:base="http://localhost:4000/managing-state-in-angular/"><![CDATA[<h2 id="about-this-article">About this article</h2>
 
 <p>When we create single-page-applications, there is no way around it. Sooner or later we are going to be facing state. There are a lot of solutions out there to manage that state and together with those solutions there are a lot of opinions.
 Especially when working with experienced developers, there opinions get stronger and often result in interesting discussions.</p>
@@ -1026,7 +1357,7 @@ I would suggest to use what works for you and your team and really think about, 
   <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
   <li><a href="https://twitter.com/jefiozie">Jeffrey Bosch</a></li>
   <li><a href="https://twitter.com/rubverm">Ruben Vermeulen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">A generic way of handling loading-status, saving-status and validation errors in Angular</title><link href="https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/" rel="alternate" type="text/html" title="A generic way of handling loading-status, saving-status and validation errors in Angular" /><published>2019-01-25T00:00:00+01:00</published><updated>2019-01-25T00:00:00+01:00</updated><id>https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular</id><content type="html" xml:base="https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/"><![CDATA[<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">A generic way of handling loading-status, saving-status and validation errors in Angular</title><link href="http://localhost:4000/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/" rel="alternate" type="text/html" title="A generic way of handling loading-status, saving-status and validation errors in Angular" /><published>2019-01-25T00:00:00+01:00</published><updated>2019-01-25T00:00:00+01:00</updated><id>http://localhost:4000/generic-way-of-handling-loading-saving-and-validationerrors-in-angular</id><content type="html" xml:base="http://localhost:4000/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/"><![CDATA[<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
 
 <ul>
   <li>Showing a <em>loading</em> status</li>
@@ -1414,7 +1745,7 @@ To make it work the rootModule will have to call the <code class="language-plain
   <li><a href="https://twitter.com/maartentibau">Maarten Tibau (@maartentibau)</a></li>
   <li><a href="https://twitter.com/elmd_">Dominic Elm (@elmd_)</a></li>
   <li><a href="https://twitter.com/fabiangosebrink">Fabian Gosebrink (@FabianGosebrink)</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="angular" /><category term="Angular" /><category term="Architecture" /><category term="errorhandling" /><category term="interceptors" /><category term="decorators" /><summary type="html"><![CDATA[In this article we are going to implement a generic solution on how to fix 3 common usecases that involve redundancy in CRUD applications.]]></summary></entry><entry><title type="html">Opinionated guidelines for large nx angular projects</title><link href="https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects/" rel="alternate" type="text/html" title="Opinionated guidelines for large nx angular projects" /><published>2018-12-08T00:00:00+01:00</published><updated>2018-12-08T00:00:00+01:00</updated><id>https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects</id><content type="html" xml:base="https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects/"><![CDATA[<h2 id="about-this-article">About this article</h2>
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="angular" /><category term="Angular" /><category term="Architecture" /><category term="errorhandling" /><category term="interceptors" /><category term="decorators" /><summary type="html"><![CDATA[In this article we are going to implement a generic solution on how to fix 3 common usecases that involve redundancy in CRUD applications.]]></summary></entry><entry><title type="html">Opinionated guidelines for large nx angular projects</title><link href="http://localhost:4000/opinionated-guidelines-for-large-nx-angular-projects/" rel="alternate" type="text/html" title="Opinionated guidelines for large nx angular projects" /><published>2018-12-08T00:00:00+01:00</published><updated>2018-12-08T00:00:00+01:00</updated><id>http://localhost:4000/opinionated-guidelines-for-large-nx-angular-projects</id><content type="html" xml:base="http://localhost:4000/opinionated-guidelines-for-large-nx-angular-projects/"><![CDATA[<h2 id="about-this-article">About this article</h2>
 
 <p>This article contains a set of opinionated guidelines when it comes to building monorepos with <a href="https://nrwl.io/nx">Nx</a>.
 I wrote this article because when I used Nx in the beginning, I struggled a lot with how to structure my workspace, and I’ve hit quite a few walls. That being said, I’ve been using it for a while now, and I finally have the feeling that I’ve reached a structure where I feel comfortable with.</p>
@@ -1806,7 +2137,7 @@ I couldn’t have done it without you!</p>
 <ul>
   <li><a href="https://twitter.com/beeman_nl">@beeman_nl</a></li>
   <li><a href="https://twitter.com/mrjameshenry">@MrJamesHenry</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><category term="nx" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">Safe HTTP calls with RxJS</title><link href="https://blog.brecht.io/safe-http-calls-with-rxjs/" rel="alternate" type="text/html" title="Safe HTTP calls with RxJS" /><published>2018-10-24T00:00:00+02:00</published><updated>2018-10-24T00:00:00+02:00</updated><id>https://blog.brecht.io/safe-http-calls-with-rxjs</id><content type="html" xml:base="https://blog.brecht.io/safe-http-calls-with-rxjs/"><![CDATA[<p>Hi there, since it’s very busy lately this will probably be my one of my shortest articles ever.
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><category term="nx" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">Safe HTTP calls with RxJS</title><link href="http://localhost:4000/safe-http-calls-with-rxjs/" rel="alternate" type="text/html" title="Safe HTTP calls with RxJS" /><published>2018-10-24T00:00:00+02:00</published><updated>2018-10-24T00:00:00+02:00</updated><id>http://localhost:4000/safe-http-calls-with-rxjs</id><content type="html" xml:base="http://localhost:4000/safe-http-calls-with-rxjs/"><![CDATA[<p>Hi there, since it’s very busy lately this will probably be my one of my shortest articles ever.
 Maybe that’s a good thing, because now you don’t have an excuse not to read it. It’s short, compact
 and maybe you will learn a thing or two.</p>
 
@@ -1943,7 +2274,7 @@ This doesn’t only apply to typeahead searches but to every observable where we
   <li><a href="https://twitter.com/tim_deschryver">Tim deschryver</a></li>
   <li><a href="https://twitter.com/webdave_de">David Müllerchen</a></li>
   <li><a href="https://twitter.com/rubenverm">Ruben Vermeulen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="RxJS" /><summary type="html"><![CDATA[How to make sure our ajax calls are being executed on bad connections]]></summary></entry><entry><title type="html">Building a safe autocomplete operator in RxJS</title><link href="https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs/" rel="alternate" type="text/html" title="Building a safe autocomplete operator in RxJS" /><published>2018-07-13T00:00:00+02:00</published><updated>2018-07-13T00:00:00+02:00</updated><id>https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs</id><content type="html" xml:base="https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs/"><![CDATA[<p>A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code.
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="RxJS" /><summary type="html"><![CDATA[How to make sure our ajax calls are being executed on bad connections]]></summary></entry><entry><title type="html">Building a safe autocomplete operator in RxJS</title><link href="http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs/" rel="alternate" type="text/html" title="Building a safe autocomplete operator in RxJS" /><published>2018-07-13T00:00:00+02:00</published><updated>2018-07-13T00:00:00+02:00</updated><id>http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs</id><content type="html" xml:base="http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs/"><![CDATA[<p>A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code.
 This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).</p>
 
 <p>When creating a standard autocomplete with RxJS we most likely implement a <code class="language-plaintext highlighter-rouge">debounceTime</code> operator to throttle the text that the user is typing into the autocomplete and we use a <code class="language-plaintext highlighter-rouge">switchMap</code> operator instead of a <code class="language-plaintext highlighter-rouge">mergeMap</code> operator to abort previous calls.</p>
@@ -2086,7 +2417,7 @@ The operator looks like this:</p>
   <li>Jan-Niklas Wortmann <a href="https://twitter.com/niklas_wortmann">@niklas_wortmann</a></li>
   <li>Maarten Tibau <a href="https://twitter.com/maartentibau">@maartentibau</a></li>
   <li>Kwinten Pisman <a href="https://twitter.com/kwintenp">@kwintenp</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code. This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).]]></summary></entry><entry><title type="html">Thinking reactive with the SIP principle</title><link href="https://blog.brecht.io/the-sip-principle/" rel="alternate" type="text/html" title="Thinking reactive with the SIP principle" /><published>2018-06-30T00:00:00+02:00</published><updated>2018-06-30T00:00:00+02:00</updated><id>https://blog.brecht.io/the-sip-principle</id><content type="html" xml:base="https://blog.brecht.io/the-sip-principle/"><![CDATA[<p>A few months back we released <a href="https://blog.strongbrew.io/rxjs-best-practices-in-angular/">RxJS best practices in Angular</a> and a while before that <a href="https://blog.strongbrew.io/thinking-reactively-in-angular-and-rxjs/">Thinking reactively in Angular and RxJS</a>. 
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code. This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).]]></summary></entry><entry><title type="html">Thinking reactive with the SIP principle</title><link href="http://localhost:4000/the-sip-principle/" rel="alternate" type="text/html" title="Thinking reactive with the SIP principle" /><published>2018-06-30T00:00:00+02:00</published><updated>2018-06-30T00:00:00+02:00</updated><id>http://localhost:4000/the-sip-principle</id><content type="html" xml:base="http://localhost:4000/the-sip-principle/"><![CDATA[<p>A few months back we released <a href="https://blog.strongbrew.io/rxjs-best-practices-in-angular/">RxJS best practices in Angular</a> and a while before that <a href="https://blog.strongbrew.io/thinking-reactively-in-angular-and-rxjs/">Thinking reactively in Angular and RxJS</a>. 
 Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.</p>
 
 <p>However, sometimes we like to have structured opinionated ways of tackling problems, especially when things become complex. We like a roadmap of some kind, something to fall back on, something to guide us through these complex reactive scenarios.</p>
@@ -2276,468 +2607,4 @@ When working with cold observables, the producer function for that observable is
   <li><a href="https://twitter.com/niklas_wortmann">Jan-Niklas Wortmann</a></li>
   <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
   <li><a href="https://twitter.com/webdave_de">David Müllerchen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.]]></summary></entry><entry><title type="html">Redux (@ngrx/store) best practices</title><link href="https://blog.brecht.io/Redux-best-practices/" rel="alternate" type="text/html" title="Redux (@ngrx/store) best practices" /><published>2018-04-27T00:00:00+02:00</published><updated>2018-04-27T00:00:00+02:00</updated><id>https://blog.brecht.io/Redux-best-practices</id><content type="html" xml:base="https://blog.brecht.io/Redux-best-practices/"><![CDATA[<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
-The combination of redux principles and RxJS can be very powerful when it comes to writing reactive applications.
-Since a lot of Angular projects use @ngrx/store, it might be a good idea to write down some best-practices.</p>
-
-<p>Note: The best-practices and opinions described in this article are strictly personal. Best practices are almost always a matter of opinion. Nevertheless, we (StrongBrew) are using these best practices at all our customers on a daily basis and they certainly work for us.   From now on @ngrx/store will be reffered to as Redux in this article.</p>
-
-<h2 id="to-redux-or-not-to-redux">To Redux or not to Redux?</h2>
-
-<p>The first question that we might want to ask ourselves is do we really need Redux in our application.
-It is a best practice to only use it when your application demands it.
-<a href="https://blog.strongbrew.io/do-we-really-need-redux">This article</a> tackles this question separately.</p>
-
-<h2 id="basic-best-practices">Basic best practices</h2>
-
-<p>While the following list might be common sense for an experienced Redux developer, let’s sum those up as a refreshment for the sake of completeness.</p>
-<ul>
-  <li>Our application can only count one store, otherwise it would become too complex</li>
-  <li>Reducers have to be pure, this is a principle from functional programming which makes functions predictable and avoids side effects</li>
-  <li>Immutable datastructures are very important to optimise change detection cycles and avoid unexpected behavior, therefore reducers should handle data in an immutable manner</li>
-  <li>Reducers always have to return a value! So don’t forget to implement the default case of the switch statement to return the original state</li>
-</ul>
-
-<h2 id="dont-add-models-to-the-store">Don’t add models to the store</h2>
-
-<p>A model can be seen as a javascript object which has functionality, like the following example:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">User</span><span class="p">{</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="k">private</span> <span class="nx">lastName</span><span class="p">:</span><span class="kr">string</span><span class="p">){</span>
-    <span class="p">}</span>
-
-    <span class="kd">get</span> <span class="nx">fullName</span><span class="p">():</span> <span class="kr">string</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">firstName</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">lastName</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span> 
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>While the Redux package written by Dan Abramov forbids sending these prototyped objects as a payload, @ngrx/store does not forbid it yet.
-However, it is a bad practice because it adds a lot of complexity to the store and chances are big that the models will get broken because of the immutable way of handling data. Check this example for instance:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">Brecht</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Billiet</span><span class="dl">'</span><span class="p">);</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span> <span class="c1">// Brecht Billiet</span>
-<span class="kd">const</span> <span class="nx">updatedUser</span> <span class="o">=</span> <span class="p">{...</span><span class="nx">user</span><span class="p">,</span> <span class="na">lastName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Doe</span><span class="dl">'</span><span class="p">};</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">updatedUser</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span> <span class="c1">// undefined</span>
-</code></pre></div></div>
-
-<p>Since we have updated the user in an immutable way, it has created a new reference and therefore all its functionality has been lost.
-This is exactly what our reducers will do with the data that flows into them. So always send plain objects when it comes to sending payloads in the actions.</p>
-
-<p>Another approach for models is using Interfaces. Interfaces are great because are only interpreted in compile time, doesn’t use memory in runtime and are very expressive. If your model doesn’t need to be computed (like <code class="language-plaintext highlighter-rouge">get fullName()</code> in the previous example), then is advisable to use Interfaces instead.</p>
-
-<p>Using Interfaces allows us to get advantage of some TypeScript features like <code class="language-plaintext highlighter-rouge">Pick&lt;T&gt;</code>. With <code class="language-plaintext highlighter-rouge">Pick&lt;T&gt;</code> we can create Types from Interfaces, which is very handy in some situations, like creating a model and a record with fewer properties:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kr">interface</span> <span class="nx">User</span> <span class="p">{</span>
-    <span class="nl">id</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
-    <span class="nl">name</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">middleName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">fullName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">address</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">city</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">state</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">zip</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">export</span> <span class="kd">type</span> <span class="nx">UserRecord</span> <span class="o">=</span> <span class="nb">Pick</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">,</span> <span class="dl">'</span><span class="s1">id</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">fullName</span><span class="dl">'</span><span class="o">&gt;</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>If the endpoint to get a list of users is returning a partial object instead of the full object then we can create a new Type instead of two Classes or Interfaces. This is a cleaner approach and easier to maintain if your models are prepared for your UI.</p>
-
-<h2 id="what-do-we-put-in-the-store">What do we put in the store?</h2>
-
-<p>We shouldn’t put things in the store just because we can. We have to think about what state needs to be in there and why.
-State that is being shared between components can sometimes be kept in the parent component for instance. We call that inner state:
-The component keeps its own state, the component itself is responsible for that. If that component state does not affect anything from the application state, it does not need to be on the application state or touch redux.</p>
-
-<p>However, when state needs to be shared between different root components (rendered inside a router-outlet) we might want to keep that state in the store.</p>
-
-<p>When we need to remember a value when navigating through the application we could put that in the store as well. An example here could be: Remembering if a sidebar was collapsed or not, so when we navigate back to the page with the sidebar, it would still be collapsed.</p>
-
-<p>Complex state is something that we might want to put in the store as well, since Redux can handle complex state management in an elegant way.
-The general rule of thumb here could be, <strong>Only keep shared state, values that we want to remember and complex state in the store</strong>. Don’t add state in the store if we don’t need to, it would result in unneeded boilerplate and complexity.</p>
-
-<p>That being said, there are 2 more reasons where we might want to add extra state into the store:</p>
-<ul>
-  <li>When we want to make our application real-time. Check out <a href="https://blog.strongbrew.io/How-we-made-our-app-real-time-in-6-lines-of-code/">How we made our app real time in 6 lines of code</a>.</li>
-  <li>When we want to do optimistic updates. Check out <a href="https://blog.strongbrew.io/Cancellable-optimistic-updates-in-Angular2-and-Redux/">Cancellable optimistic updates in Angular2 and Redux</a></li>
-</ul>
-
-<h2 id="dont-forget-about-router-params">Don’t forget about router params</h2>
-
-<p>A common mistake is putting things inside the store that could easily be added in the url.
-The benefit of keeping state in the url is:</p>
-
-<ul>
-  <li>We can use the browser navigation buttons</li>
-  <li>We can bookmark the url</li>
-  <li>We can share that url with other people</li>
-</ul>
-
-<p>If we can put simple things into the url, we should at least consider it.</p>
-
-<h2 id="avoid-huge-lists">Avoid HUGE lists</h2>
-
-<p>Redux can not be seen as a local in-memory database, so we can’t put all our data into the store for performance reasons.
-Redux can be seen as an abstraction of state and data that our application needs at a certain time.</p>
-
-<p>For instance if we have a list of 10000 users, we don’t want to put them all in the store. What we could do is keep track of a list of 500 users in the store, which the user can see at that specific time, and load more users on the background and update that buffered list.</p>
-
-<h2 id="designing-the-state">Designing the state</h2>
-
-<p>Designing the state of our application is an important step, and we recommend to draw that state on a whiteboard first. The most important rule here is: <strong>Keep the state as flat as possible</strong></p>
-
-<p>One of the most common bad practices is deep-nesting the state into something that becomes rather complex:</p>
-
-<pre><code class="language-typscript">
-// this is an example of how not to design state
-export interface ApplicationState {
-    moduleA: {
-        data: {
-            foo: {
-                bar: {
-                    users: User[],
-                    cars: Car[]
-                }
-            }
-        }
-    }
-}  
-
-// keeping it flat makes the application way easier
-export interface ApplicationState {
-    users: User[],
-    cars: Car[]
-}  
-</code></pre>
-
-<p>I’m not saying you cannot nest state, I am saying we have to be very careful when we do. The general rule of thumb here is: <strong>keep the state as flat as possible</strong>
-If we want to compose state in @ngrx/store we can work with feature module reducers and lazy load them as we can see in <a href="https://github.com/ngrx/platform/blob/master/docs/store/api.md#feature-module-state-composition">Feature Module State Composition</a>.</p>
-
-<h2 id="make-everything-readonly">Make everything readonly</h2>
-
-<p>We already covered the reason why we need to work immutable, but how can we enforce this?
-Typescript comes with a readonly keyword which we can use to make a property readonly</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">User</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="k">readonly</span> <span class="na">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="k">readonly</span> <span class="na">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kd">const</span> <span class="nx">user</span><span class="p">:</span> <span class="nx">User</span> <span class="o">=</span> <span class="p">{</span><span class="na">firstName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Brecht</span><span class="dl">'</span><span class="p">,</span> <span class="na">lastName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Billiet</span><span class="dl">'</span><span class="p">};</span>
-<span class="nx">user</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Doe</span><span class="dl">'</span><span class="p">;</span><span class="c1">//cannot assign to 'lastName' </span>
-<span class="c1">// because it is a constant of read-only property</span>
-</code></pre></div></div>
-
-<p>This would certainly make sure we aren’t updating properties in our reducers by accident. It does suck that we have to write readonly for every property.
-The cool thing is that typescript offers us something called “advanced types” where we can do something like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// By using the Readonly&lt;&gt; advanced types all the properties inside the type</span>
-<span class="c1">// are readonly by default</span>
-<span class="kd">type</span> <span class="nx">User</span> <span class="o">=</span> <span class="nb">Readonly</span><span class="o">&lt;</span><span class="p">{</span>
-    <span class="na">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-<span class="p">}</span><span class="o">&gt;</span><span class="p">;</span>
-</code></pre></div></div>
-
-<h2 id="action-design">Action design</h2>
-
-<h3 id="actiontypes">Actiontypes</h3>
-
-<p>An action type should be a string that explains what the action should change in the store. Keep these strings consistent. Don’t make the actiontypes too long, keep them short and clear.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is bad</span>
-<span class="kd">const</span> <span class="nx">DATA_USERS_SET_USER_ADDRESS</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">DATA_USERS_SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="c1">// This is better</span>
-<span class="kd">const</span> <span class="nx">SET_USER_ADDRESS</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">;</span>
-
-</code></pre></div></div>
-
-<p>Another cool idea might be to suffix the action with square brackets and put the whole thing into an action object:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c1">// Easy to read/debug</span>
-<span class="kd">const</span> <span class="nx">UserActions</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">SET_ADDRESS</span><span class="p">:</span> <span class="dl">'</span><span class="s1">[USER] ADDRESS</span><span class="dl">'</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>If the state managment would become very large we could prefix the action, but let’s keep it simple and small as long as we can.</p>
-
-<h3 id="action-creator-classes">Action creator classes</h3>
-
-<p>When we use plain action types and payloads it becomes quite painful to remember all the action type names and all the payloads that belong to them. This example for instance:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user_id</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">1234</span><span class="dl">'</span><span class="p">,</span> <span class="nx">address</span> <span class="o">=</span> <span class="p">{</span><span class="nx">whatevz</span><span class="p">};</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">,</span> 
-        <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">}</span>
-    <span class="p">});</span>
-</code></pre></div></div>
-
-<p>That’s pretty nasty if we want remember all that stuff, so let’s create action creator classes for these. What if we could do this?</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user_id</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">1234</span><span class="dl">'</span><span class="p">,</span> <span class="nx">address</span> <span class="o">=</span> <span class="p">{</span><span class="nx">whatevz</span><span class="p">};</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nx">SetUserAddressAction</span><span class="p">(</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">));</span>
-</code></pre></div></div>
-
-<p>That’s just became way easier to use and we don’t have to remember the payload of the action.</p>
-
-<p>If we wanted to implement the actioncreator class for this action it would look like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">SetUserAddressAction</span> <span class="k">implements</span> <span class="nx">Action</span> <span class="p">{</span>
-    <span class="kd">type</span> <span class="o">=</span> <span class="nx">SET_USER_ADDRESS</span><span class="p">;</span>
-    <span class="nl">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">user_id</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">address</span><span class="p">:</span> <span class="nx">Address</span><span class="p">};</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="nx">user_id</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">address</span><span class="p">:</span> <span class="nx">Address</span><span class="p">){</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">};</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="payload-design">Payload design</h3>
-
-<p>When the action would only have one property for the payload we might be encouraged to use the payload directly instead of creating a property in it. However that would lead to inconsistency, so it might be better to always use subproperties</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is bad (inconsistent with the rest of the actions)</span>
-<span class="kd">class</span> <span class="nx">UpdateUserAction</span> <span class="k">implements</span> <span class="nx">Action</span> <span class="p">{</span>
-    <span class="kd">type</span> <span class="o">=</span> <span class="nx">UPDATE_USER</span><span class="p">;</span>
-    <span class="nl">payload</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">){</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">payload</span> <span class="o">=</span> <span class="nx">user</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="c1">// This is better</span>
-<span class="kd">class</span> <span class="nx">UpdateUserAction</span> <span class="k">implements</span> <span class="nx">Action</span><span class="p">{</span>
-    <span class="kd">type</span> <span class="o">=</span> <span class="nx">UPDATE_USER</span><span class="p">;</span>
-    <span class="nl">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">};</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">){</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span><span class="nx">user</span><span class="p">};</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="type-safety">Type Safety</h3>
-
-<p>Type Safety is a huge win when using Redux with typescript, it requires a bit of boilerplate but it makes developing reducers feel like a walk in the park. It makes sure that our applications won’t compile if they have type errors and it gives us great autocompletion inside our reducers.
-Therefore I would definitely consider it a must. Since <a href="https://twitter.com/KwintenP">Kwinten Pisman</a> already wrote an <a href="https://blog.strongbrew.io/type-safe-actions-in-reducers/">awesome article</a> about this we won’t go in to much detail here.</p>
-
-<h2 id="reducer-design">Reducer design</h2>
-
-<h3 id="destructuring-the-payload">Destructuring the payload</h3>
-
-<p>If we want to make the reducer code more readable and shorter we could use javascript destructuring for that.
-This might be personal preference, but it sure as hell makes our reducers easier to read. Take this example for instance:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">usersReducer</span>
-  <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">case</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
-          <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">.</span><span class="nx">user_id</span> <span class="p">?</span> 
-          <span class="p">{...</span><span class="nx">user</span><span class="p">,</span> <span class="na">address</span><span class="p">:</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">.</span><span class="nx">address</span><span class="p">}</span> <span class="p">:</span> 
-          <span class="nx">v</span>
-        <span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-<p>The <code class="language-plaintext highlighter-rouge">action.payload.</code>code comes back a few times, resulting in longer codelines.
-The following piece of code might be more readable:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">usersReducer</span>
-  <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">case</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
-          <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">user_id</span> <span class="p">?</span> 
-          <span class="p">{...</span><span class="nx">user</span><span class="p">,</span> <span class="nx">address</span><span class="p">}</span> <span class="p">:</span> 
-          <span class="nx">v</span>
-        <span class="p">)</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>As we can see have have used destructuring to extract the properties of the payload into variables.
-Cleaner right? Let’s imagine that our actions has 5 or even more properties on their payloads. In that case this would definitely help.
-Something to note here is that the case implementation is wrapped inside a block statement. This is important because our reducer can have the same payload properties for different actions.</p>
-
-<p>This means that <code class="language-plaintext highlighter-rouge">user_id</code> and <code class="language-plaintext highlighter-rouge">address</code> won’t be available in the other case statements, which is exactly what we want.</p>
-
-<h3 id="dont-write-business-logic-inside-our-reducers">Don’t write business logic inside our reducers</h3>
-
-<p>Reducers should not contain business logic, they are used to handle the state in an immutable fashion. We won’t write business logic inside reducers because:</p>
-
-<ul>
-  <li>It would become very complex</li>
-  <li>Business logic has nothing to do with state management</li>
-  <li>We have services for that</li>
-</ul>
-
-<h3 id="child-reducers">Child reducers</h3>
-
-<p>When reducers need to update a piece of state a few levels down in the tree it can become complex in no-time. Take this example for instance:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">type</span> <span class="nx">User</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">contracts</span><span class="p">:</span> <span class="nx">Contract</span><span class="p">[];</span>
-<span class="p">}</span>
-<span class="kd">type</span> <span class="nx">Contract</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-    <span class="nl">assignees</span><span class="p">:</span> <span class="nx">Assignee</span><span class="p">[];</span>
-<span class="p">}</span>
-<span class="kd">type</span> <span class="nx">ApplicationState</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[];</span>
-<span class="p">}</span>   
-<span class="p">...</span>
-</code></pre></div></div>
-
-<p>If we would put all the logic to add an assignee to a specific contract of a specific user, the code would be hard to read. Checkout the following piece of code:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is bad</span>
-<span class="kd">function</span> <span class="nx">usersReducer</span>
-  <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="dl">'</span><span class="s1">ADD_USER_CONTRACT_ASSIGNEE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">contract_id</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
-        <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">user_id</span> <span class="p">?</span> 
-        <span class="p">{</span>
-          <span class="p">...</span><span class="nx">user</span><span class="p">,</span> 
-          <span class="na">contracts</span><span class="p">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">contracts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">contract</span> <span class="o">=&gt;</span> 
-            <span class="nx">contract</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">contract_id</span> <span class="p">?</span>
-            <span class="p">{</span>
-              <span class="p">...</span><span class="nx">contract</span><span class="p">,</span> 
-              <span class="na">assignees</span><span class="p">:</span> <span class="p">[...</span><span class="nx">contract</span><span class="p">.</span><span class="nx">assignees</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">]</span>
-            <span class="p">}</span> <span class="p">:</span> 
-            <span class="nx">contract</span>
-          <span class="p">)</span>
-        <span class="p">}</span> <span class="p">:</span> 
-        <span class="nx">v</span>
-      <span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nl">default</span><span class="p">:</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>When reducers become complex it might be a good idea to split the reducer up into child reducers. Check the refactored version of the previous example:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is better</span>
-<span class="kd">function</span> <span class="nx">usersReducer</span>
-  <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="dl">'</span><span class="s1">ADD_USER_CONTRACT_ASSIGNEE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">contract_id</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
-        <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">user_id</span> <span class="p">?</span> 
-        <span class="p">{</span>
-          <span class="p">...</span><span class="nx">user</span><span class="p">,</span> 
-          <span class="na">contracts</span><span class="p">:</span> <span class="nx">contractsReducer</span><span class="p">(</span><span class="nx">contracts</span><span class="p">,</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">)</span>
-        <span class="p">}</span> <span class="p">:</span> 
-        <span class="nx">v</span>
-      <span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nl">default</span><span class="p">:</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">contractsReducer</span>
-  <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">Contract</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">Contract</span> <span class="p">[]{</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="dl">'</span><span class="s1">ADD_USER_CONTRACT_ASSIGNEE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="p">{</span> <span class="nx">contract_id</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
-        <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">contract_id</span> <span class="p">?</span> 
-        <span class="p">{</span>
-          <span class="p">...</span><span class="nx">contract</span><span class="p">,</span> 
-          <span class="na">assignees</span><span class="p">:</span> <span class="p">[...</span><span class="nx">assignees</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">]</span>
-        <span class="p">}</span> <span class="p">:</span> 
-        <span class="nx">v</span>
-      <span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nl">default</span><span class="p">:</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>As we can see, we have extracted the handling of contracts into its own reducer, which follows the exact same principles of a regular reducer.</p>
-
-<p>The example just became a lot easier to read and way more maintainable. When traversing complex data structures, reducer nesting can be a really elegant way of managing state.</p>
-
-<h2 id="testing">Testing</h2>
-
-<p>Since reducers are pure functions, unit testing them is very easy.
-We won’t need to mock out any dependencies and we only have to test the value that the reducer returns.</p>
-
-<p>We can also use <a href="https://www.npmjs.com/package/deep-freeze">deepfreeze</a> to freeze the state that when the reducer accidently mutates data, the tests will throw an error. Deepfreeze is nothing more than a recursive <code class="language-plaintext highlighter-rouge">Object.freeze</code></p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">reducer: usersReducer</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">case UPDATE_USER</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should return a new instance with the correct state</span><span class="dl">'</span><span class="p">,</span> 
-    <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="p">[</span><span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">),</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">)];</span>
-      <span class="c1">// deepfreeze makes sure the reducer </span>
-      <span class="c1">// doesn't mutate anything by accident</span>
-      <span class="nx">deepfreeze</span><span class="p">(</span><span class="nx">initialState</span><span class="p">);</span> 
-      <span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">);</span>
-      <span class="kd">const</span> <span class="nx">action</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UpdateUserAction</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
-      <span class="kd">const</span> <span class="nx">newState</span> <span class="o">=</span> <span class="nx">usersReducer</span><span class="p">(</span><span class="nx">initialState</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
-      <span class="c1">// check if the result of the array is a new ref</span>
-      <span class="nx">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">).</span><span class="nx">not</span><span class="p">.</span><span class="nx">toBe</span><span class="p">(</span><span class="nx">initialState</span><span class="p">);</span> 
-      <span class="c1">// check if the result of the user is a new ref</span>
-      <span class="nx">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nx">not</span><span class="p">.</span><span class="nx">toBe</span><span class="p">(</span><span class="nx">initialState</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-      <span class="c1">// check if the user got updated automatically</span>
-      <span class="nx">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nx">toEqual</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-  
-</code></pre></div></div>
-
-<p><strong>Note: Don’t forget to test the default action</strong></p>
-
-<h2 id="decoupling-redux-from-the-presentation-layer">Decoupling redux from the presentation layer</h2>
-
-<p>Having the store injected everywhere in our application is not a good idea. We want to create an Angular, Vue or React application. Not a Redux application.</p>
-
-<p>Therefore we could consider the following as best practices:</p>
-<ul>
-  <li>Components don’t need to know we are using Redux, don’t inject the store in them.</li>
-  <li>Services generally don’t need to know we are using Redux, don’t inject the store in them.</li>
-  <li>We want to be able to refactor Redux away from our application without to much effort</li>
-</ul>
-
-<p>Therefore we want to have some kind of abstraction layer between the presentation layer and the state management layer.</p>
-
-<p>How to abstract away the statemanagement layer can be read in the following two articles: <a href="https://blog.strongbrew.io/A-scalable-angular2-architecture/">A scalable angular architecture</a> and <a href="https://blog.strongbrew.io/A-scalable-angular-architecture-part2/">A scalable angular architecture part 2</a>.
-This is an architecture that we are using at our customers that really works for us.</p>
-
-<h2 id="redux-as-a-messaging-bus-vs-redux-as-a-state-management-layer">Redux as a messaging bus VS redux as a state management layer</h2>
-
-<p>This might be a personal preference, but I like to use Redux as a pure state management layer. Yes, there are tools like @ngrx/effects where
-we can send actions to our application and those actions won’t just perform state management but will do XHR calls among other things.</p>
-
-<p>The nice thing about this approach is that we use some kind of messaging bus. However, I mostly like to keep it simple and abstract Redux away as much as possible. Therefore I don’t use @ngrx/effects and only use Redux to update pieces of state and consume theses pieces. Some part of me believes that Redux shouldn’t be used to perform backend calls nor decide when to optimistically update. I usually tackle optimistic updates <a href="https://blog.strongbrew.io/Cancellable-optimistic-updates-in-Angular2-and-Redux/">this way</a>.</p>
-
-<p>That being said, I wouldn’t call my approach a best practice, but it is a best practice to really think about which way we want it.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>We learned a lot! Once again, the best practices explained in this article are based on personal experiences and projects we have worked on. These are practices that work for us. They are not meant to be seen as the only way of doing things.</p>
-
-<h2 id="special-thanks">Special thanks</h2>
-
-<p>A very warm and much appreciated special thanks to the following people:</p>
-
-<p><a href="https://twitter.com/ncjamieson">Nicholas Jamieson</a>, <a href="https://twitter.com/elecash">Raúl Jiménez</a> and <a href="https://twitter.com/FabianGosebrink">Fabian Gosebrink</a>: Thank you all so much for reviewing and pointing out some awesome ideas</p>
-
-<p>Your input makes blogging worth while!</p>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Redux" /><category term="@ngrx" /><category term="Angular" /><summary type="html"><![CDATA[This article is all about what to do and what not to do when using Redux (@ngrx/store)]]></summary></entry></feed>
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A few months back we released RxJS best practices in Angular and a while before that Thinking reactively in Angular and RxJS. Both of these articles are focussing on “trying to make the mind switch towards reactive programming”.]]></summary></entry></feed>

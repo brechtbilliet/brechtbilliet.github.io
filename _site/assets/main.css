@@ -330,7 +330,7 @@ html, body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-
 
 .app .app__menu--collapsed .app__menu-item-label { display: none; }
 
-@media (min-width: 768px) { .app .app__menu { width: 140px; } .app .app__menu--collapsed { min-width: 40px; width: 40px; align-content: center; } .app .app__menu--collapsed .app__menu-item-label { display: none; } }
+@media (min-width: 768px) { .app .app__menu { width: 160px; } .app .app__menu--collapsed { min-width: 40px; width: 40px; align-content: center; } .app .app__menu--collapsed .app__menu-item-label { display: none; } }
 
 .app__menu { display: flex; flex-direction: column; background-color: #2aabbf; padding-left: 20px; }
 
