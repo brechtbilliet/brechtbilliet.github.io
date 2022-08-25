@@ -127,7 +127,7 @@ Designing the state of our application is an important step, and we recommend to
 
 One of the most common bad practices is deep-nesting the state into something that becomes rather complex:
 
-```typscript
+```typescript
 
 // this is an example of how not to design state
 export interface ApplicationState {

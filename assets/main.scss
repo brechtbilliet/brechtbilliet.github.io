@@ -22,7 +22,7 @@ html, body {
 }
 
 .footer {
-  background: #b3dbe1;
+  background: #f1f1f1;
   color: #000;
   width: 100%;
   min-height: 250px;
@@ -87,8 +87,11 @@ html, body {
   width: 100%;
   font-weight: 200;
   font-size: 14px;
-  p{
-    font-size: 18px;
+
+  .page-content {
+    p, li{
+      font-size: 18px;
+    }
   }
   height: 100%;
 
@@ -218,4 +221,64 @@ html, body {
     }
   }
 
+
+
 }
+.profile {
+  position: fixed;
+  display: none;
+  width: 15%;
+  right: 5%;
+  top: 130px;
+  z-index: 400;
+  @media (min-width: 768px) {
+    display: flex;
+  }
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  h3 {
+    margin-top: 20px;
+  }
+  img {
+    border-radius: 50%;
+    max-width: 150px;
+    box-shadow: 4px 4px #1a100a;
+  }
+  .hire-me-button {
+    background-color: #2aabbf;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 15px;
+    text-decoration: none;
+  }
+}
+.profile-mobile {
+  display: flex;
+  @media (min-width: 768px) {
+    display: none;
+  }
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  h3 {
+    margin-top: 20px;
+  }
+  img {
+    border-radius: 50%;
+    max-width: 150px;
+    box-shadow: 4px 4px #1a100a;
+  }
+  .hire-me-button {
+    background-color: #2aabbf;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 15px;
+    text-decoration: none;
+  }
+}
+
