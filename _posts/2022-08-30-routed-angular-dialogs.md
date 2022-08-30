@@ -86,7 +86,7 @@ I'm not a huge fan of using libraries to do that for us (Except Angular Material
 In this approach we would create a service that handles the creation and destruction of these dialogs for us.
 We could use the approach of my previous article I just mentioned, but it would be better to use the `Angular Material CDK` for that.
 I'm not going into detail for this approach since it's out of scope for this article, but the developer would be in charge of the lifecycle of
-that component. The developer should always manually create the dialog and always manually destroy that dalog.
+that component. The developer should always manually create the dialog and always manually destroy that dialog.
 
 For confirmation-dialogs one could recommend this approach but for more complex dialogs it might be better to have something that
 takes care of the lifecycle of our dialogs automatically.
@@ -235,7 +235,7 @@ we are dealing with 2 nested `router-outlet`'s.
 export class AppModule {}
 ```
 
-That's it. When product management decides that the details of a user should not be shown in a dialog but in a page
+That's it. When product management decides that the details of a user should not be shown in a dialog but on a page
 we should have minimal work to make that happen. We can refresh the page when we want and we don't have to worry
 about the lifecycle of our dialogs.
 
