@@ -1,0 +1,15 @@
+I"�<p>Companies ask me to take care of technical interviews from time to time. Having done quite a lot of these interviews, 
+I learned a lot from them. 
+By helping out a lot of different clients, I also have been on the other side of the table more than a few times too.
+This means I have learned some patterns on how to create a positive impression towards my interviewer, and I know how to estimate
+the candidate as well.
+I don’t like to ask for technical assessments because I value the time of the candidate, and I’d like to think of them as people, not programming machines.
+That being said, I do understand technical assessments work for a certain people and companies, it just might be my gut and preference.
+This blog article is the beginning of a set of many blog articles that will focus on interview questions.
+Every article will contain 20 questions that we can ask as an interviewer + the kind of answer I would be looking for.
+Bear in mind, there is no right answer, but I like to bring you in my chain of thought of how I reason in these kind of interviews.
+This one is specific to Angular, another might be focussed on architecture, and another one maybe on javascript/typescript or testing and I’m pretty sure
+RxJS will also get his own article.
+Bear in mind that most of these questions can be hard for junior profiles. But then again, not all questions
+have to be answered thoroughly.</p>
+:ET

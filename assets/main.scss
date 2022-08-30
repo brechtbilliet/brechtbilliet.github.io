@@ -1,6 +1,11 @@
 ---
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
+$gridunit: 8px;
+$accent: #00cccc;
+$accent2: #339999;
+$dark: #333;
+$light: #f1f1f1;
 
 @import "minima";
 .author-thumb{
@@ -19,48 +24,67 @@ body {
 html, body {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   height: 100%;
+
+  h1, h2, p, a, li {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+  }
+
 }
 
-.footer {
-  background: #f1f1f1;
-  color: #000;
-  width: 100%;
-  min-height: 250px;
-
-  &__inner {
-    padding: 16px;
-    @media (min-width: 768px) {
-      padding: 32px;
+.blog{
+  &__header {
+    background-image: url('/assets/images/banner2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: $gridunit * 5;
+    padding-bottom: $gridunit * 5;
+    color: #fff;
+    background-position: center top;
+    @media (min-width: 1024px) {
+      background-position: center;
     }
   }
-  a, h3, #open_preferences_center{
-    color: #000!important;
-  }
-  #open_preferences_center{
-    text-decoration: underline;
-  }
-  &__social-icon {
-    color: #000!important;
-    font-size: 60px;
-    margin-right: 32px;
-  }
-
-  &__social-icons {
-    display: flex;
-    list-style-type: none;
-    padding: 0px;
-    margin:0;
-  }
-
-  h3 {
-    color: #fff;
-    padding: 0px;
-    margin: 0px;
-    padding-bottom: 16px;
-    font-weight:700;
+  .page__wrapper{
+    margin-top:$gridunit*4;
+    &-right {
+      display:flex;
+      justify-content: center;
+    }
   }
 }
+.page {
+  &__wrapper {
+    max-width: 1280px;
+    margin: auto;
+    padding: 0 $gridunit*2;
+    @media (min-width: 768px) {
+      position: relative;
+    }
 
+    &-left {
+      padding-top: $gridunit*3;
+      @media (min-width: 768px) {
+        padding-top: 0;
+        width: 60%;
+      }
+    }
+
+    &-right {
+      flex: 1;
+    }
+
+    &-flex {
+      display: flex;
+      flex-direction: column-reverse;
+      @media (min-width: 768px) {
+        flex-direction: row;
+      }
+      justify-content: space-between;
+    }
+  }
+
+}
 
 .post-link, .post-link:hover, .post-link:active, .post-link:visited {
   font-size: 2rem;
@@ -79,156 +103,164 @@ html, body {
   padding-bottom: 50px;
   margin-bottom: 50px;
 }
-
 .app {
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  font-weight: 200;
-  font-size: 14px;
+  .footer {
+    display: flex;
+    background: #333;
+    color: #fff;
+    padding: $gridunit;
 
-  .page-content {
-    p, li{
-      font-size: 18px;
+    .page__wrapper {
+      display: flex;
+      flex-direction:column;
+      align-items: center;
+      @media (min-width: 768px) {
+        flex-direction:row;
+      }
+    }
+
+    p {
+      padding: 0;
+      margin: 0;
+    }
+
+    a {
+      color: $accent;
+      text-decoration: none;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      padding-left: $gridunit*3;
+      padding-right: $gridunit*3;
+      list-style-type: none;
+      display: flex;
+
+      a {
+        padding: $gridunit;
+      }
     }
   }
-  height: 100%;
 
-  .container {
-    margin: 0 auto;
-    padding-right: 20px;
-    padding-left: 20px;
-    display: flex;
-    flex: 1;
-    max-width: 1024px;
+  width: 100%;
 
-    &-wrapper {
+  &__nav-wrapper {
+    margin: auto;
+    @media (min-width: 768px) {
+      position: relative;
+    }
+    max-width: 1280px;
+  }
+
+  &__menu {
+    display: none;
+    width: 100%;
+    position: absolute;
+    background: $dark;
+    z-index:999;
+    opacity: 0.94;
+    height: 100%;
+    @media (min-width: 768px) {
+      margin-top: $gridunit*3;
+      background: inherit;
+      opacity: inherit;
+      height: 64px;
+    }
+
+    &--open {
+      display: flex;
+      margin-left: -16px;
+      padding: $gridunit*2;
+      flex-direction: column;
+    }
+
+    li {
+      margin: 0;
+      padding: 0;
+
+      a {
+        padding: $gridunit $gridunit*3;
+        display: flex;
+      }
+
+      @media (min-width: 768px) {
+        a {
+          padding: $gridunit $gridunit*3;
+        }
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      flex: 1;
-      overflow-y: scroll;
-    }
-  }
-  @media (min-width: 768px) {
-    .container {
-      padding-right: 80px;
-      padding-left: 80px;
-    }
-  }
-  .app__menu {
-    height: 100%;
-    width: 100%;
-    ul{
-      margin: 0;
-      margin-top: 14px;
-    }
-  }
+      list-style-type: none;
 
-  .container-wrapper.menu-open {
-    display: none;
+      a {
+        color: #fff;
+        @media (min-width: 768px) {
+          margin-left: $gridunit;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+        text-decoration: none;
+      }
+
+      @media (min-width: 768px) {
+        flex-direction: row;
+      }
+    }
+
+    .link--active {
+      color: $accent;
+      font-weight:400;
+    }
+
     @media (min-width: 768px) {
       display: flex;
+      justify-content: flex-end;
+      .link--active {
+        background: $accent;
+        color: $dark;
+      }
     }
-  }
 
-  .app__menu {
-    height: 100%;
-
-    padding-left: 20px;
-    &--collapsed {
-      min-width: 40px;
-      width: 40px;
-      align-items: center;
-      padding-left: 0px;
-
-      align-content: center;
-
-      .app__menu-item-label {
+    &-close-btn {
+      display: flex;
+      background: none;
+      justify-content: flex-end;
+      outline: none;
+      color: #fff;
+      border: none;
+      @media (min-width: 768px) {
         display: none;
       }
     }
 
-    @media (min-width: 768px) {
-      width: 160px;
-      &--collapsed {
-        min-width: 40px;
-        width: 40px;
-
-        align-content: center;
-
-        .app__menu-item-label {
-          display: none;
-        }
-      }
-    }
-  }
-
-
-  &__menu {
-    display: flex;
-    flex-direction: column;
-    background-color: #2aabbf;
-    padding-left: 20px;
-    &-button {
-      display: flex;
+    &-mobile-btn {
+      background: none;
       border: none;
       outline: none;
-      color: #343331;
-      background: none;
-      cursor: pointer;
-      padding: 0px;
-      margin-top: 16px;
-      i {
-        font-size:14px;
-      }
-    }
-
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-
-      li {
-        padding-bottom: 16px;
-
-        i {
-          width: 22px;
-          height: 22px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+      right:0;
+      position: absolute;
+      color: #fff;
+      padding-top: $gridunit;
+      @media (min-width: 768px) {
+        display: none;
       }
 
-      a.link--active {
-        color: #000;
-      }
-
-      a {
-        color: #fff;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-      }
-
-      .app__menu-item-label {
-        padding-left: 8px;
+      &--hidden {
+        display: none;
       }
     }
   }
-
-
-
 }
+
 .profile {
   position: fixed;
   display: none;
   width: 15%;
-  right: 5%;
   top: 130px;
   z-index: 400;
   @media (min-width: 768px) {

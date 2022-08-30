@@ -25,94 +25,62 @@
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Frontend software architect living in Belgium" /></head>
 <body>
 <section class="app">
-    <nav class="app__menu" id="app__menu">
-        <button name="menu-button" class="app__menu-button" id="menu-button" type="button"
-        ><i class="fa-solid fa-bars"></i></button>
-        <ul>
-            <li>
-                <div>
-                    <a href="https://brecht.io/">
-                        <i class="fa-brands fa-angular"></i>
-                        <span class="app__menu-item-label">BRECHT</span>
+    <div class="app__nav-wrapper">
+        <nav class="app__menu">
+            <button class="app__menu-close-btn">
+                <span>CLOSE</span>&nbsp;
+                <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+            <ul>
+                <li>
+                    <a href="https://brecht.io">
+                        <span class="app__menu-item-label">Home</span>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a href="https://brecht.io/hire-me">
-                        <i class="fa-solid fa-person-walking"></i>
-                        <span class="app__menu-item-label">HIRE ME</span>
+                </li>
+                <li>
+                    <a href="https://brecht.io/about">
+                        <span class="app__menu-item-label">About</span>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a href="https://brecht.io/happy-clients">
-                        <i class="fa-solid fa-hand-holding-heart"></i>
-                        <span class="app__menu-item-label">CLIENTS</span>
+                </li>
+                <li>
+                    <a href="https://brecht.io/services">
+                        <span class="app__menu-item-label">Services</span>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a href="https://brecht.io/consultancy">
-                        <i class="fa-solid fa-user-tie"></i>
-                        <span class="app__menu-item-label">CONSULTANCY</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a href="https://brecht.io/code-reviews">
-                        <i class="fa-solid fa-laptop-code"></i>
-                        <span class="app__menu-item-label">CODE REVIEWS</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a href="https://brecht.io/coaching">
-                        <i class="fa-solid fa-school"></i>
-                        <span class="app__menu-item-label">COACHING</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a class="link--active" href="https://blog.brecht.io/">
-                        <i class="fa-solid fa-blog"></i>
-                        <span class="app__menu-item-label">BLOG</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div>
+                </li>
+                <li>
                     <a href="https://brecht.io/angular-best-practices-workshop">
-                        <i class="fa-brands fa-angular"></i>
-                        <span class="app__menu-item-label">
-                            ANGULAR <br/>BEST PRACTICES WORKSHOP
-                        </span>
+                        <span class="app__menu-item-label">Angular Best Practices Workshop</span>
                     </a>
+                </li>
+                <li>
+                    <a href="https://blog.brecht.io" class="link--active">
+                        <span class="app__menu-item-label">Blog</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/contact">
+                        <span class="app__menu-item-label">Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <button class="app__menu-mobile-btn" id="menu-button">
+        <i class="fa-solid fa-bars"></i>
+        &nbsp;MENU
+    </button>
+
+    <div id="container__wrapper">
+        <div>
+            <header class="blog__header">
+                <div class="page__wrapper">
                 </div>
-            </li>
-            <li>
-                <a href="https://brecht.io/contact">
-                    <i class="fa-solid fa-envelope-open-text"></i>
-                    <span class="app__menu-item-label">CONTACT</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <div class="container-wrapper" id="container__wrapper">
-        <div class="container">
-            <main class="page-content" aria-label="Content">
-                <div class="profile-mobile">
-                    <img  src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
-                    <h3>Hi I'm Brecht!</h3>
-                    <p>I help companies and developers build better web-products.</p>
-                </div>
-                <div class="wrapper">
-                    <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+            </header>
+            <main aria-label="Content">
+                <div class="blog">
+                    <div class="page__wrapper page__wrapper-flex">
+                        <div class="page__wrapper-left">
+                            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">A scalable Angular 2 architecture</h1>
@@ -393,24 +361,40 @@ I hope you enjoyed the article.</p>
   </div><a class="u-url" href="/A-scalable-angular2-architecture/" hidden></a>
 </article>
 
+                        </div>
+                        <div class="page__wrapper-right">
+                            <div class="profile">
+                                <img src="/assets/images/brecht.png" alt="Author image" nopin="nopin"/>
+                                <h3>Hi I'm Brecht!</h3>
+                                <p>I help companies and developers build better web-products.</p>
+                                <a class="hire-me-button" href="https://brecht.io/contact">Hire me</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="profile">
-                    <img  src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
-                    <h3>Hi I'm Brecht!</h3>
-                    <p>I help companies and developers build better web-products.</p>
-                    <a class="hire-me-button" href="https://brecht.io/hire-me">Hire me</a>
-                </div>
+
 
             </main>
         </div><div class="footer">
-    <div class="footer__inner"><h3>Let's get to know each other!</h3>
+    <div class="page__wrapper">
+        <p>Nflow BV - Provinciebaan 120,9270 Laarne</p>
         <ul class="footer__social-icons">
-            <li><a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
-                   class="footer__social-icon"><i class="fa-brands fa-linkedin"></i></a></li>
-            <li><a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon"><i
-                    class="fa-brands fa-twitter"></i></a></li>
-            <li><a href="mailto://billietbrecht@gmail.com" target="blank" class="footer__social-icon"><i
-                    class="fa-solid fa-envelope-open"></i></a></li>
+            <li>
+                <a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </li>
+            <li>
+                <a href="mailto:billietbrecht@gmail.com" target="blank" class="footer__social-icon">
+                    <i class="fa-solid fa-envelope-open"></i>
+                </a>
+            </li>
         </ul>
         <a href="#" id="open_preferences_center">Change your preferences</a>
     </div>
@@ -447,23 +431,22 @@ I hope you enjoyed the article.</p>
     gtag('config', 'UA-43296458-4');
 </script>
 <script lang="text/javascript">
-    window.menuCollapsed = false;
-    const appMenu = document.querySelector('#app__menu');
-    const containerWrapper = document.querySelector('#container__wrapper');
+    window.menuCollapsed = true;
+    const appMenu = document.querySelector('.app__menu');
+    const closeButton = document.querySelector('.app__menu-close-btn');
     document.querySelector('#menu-button').addEventListener('click', () => {
         window.menuCollapsed = !window.menuCollapsed;
-        if (window.menuCollapsed) {
-            containerWrapper.classList.remove('menu-open')
-            appMenu.classList.add('app__menu--collapsed')
+        console.log(window.menuCollapsed);
+        if (!window.menuCollapsed) {
+            appMenu.classList.add('app__menu--open')
         } else {
-            appMenu.classList.remove('app__menu--collapsed')
-            containerWrapper.classList.add('menu-open')
+            appMenu.classList.remove('app__menu--open')
         }
     })
-    if (window?.innerWidth <= 768) {
-        containerWrapper.classList.remove('menu-open')
-        appMenu.classList.add('app__menu--collapsed')
-    }
+    closeButton.addEventListener('click', () => {
+        window.menuCollapsed = true;
+        appMenu.classList.remove('app__menu--open')
+    })
 
 </script>
 <noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator

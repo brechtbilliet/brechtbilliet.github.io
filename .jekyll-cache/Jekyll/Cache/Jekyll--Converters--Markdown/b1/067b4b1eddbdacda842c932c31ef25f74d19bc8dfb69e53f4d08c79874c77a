@@ -1,4 +1,4 @@
-I"„³<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
+I"×·<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
 The combination of redux principles and RxJS can be very powerful when it comes to writing reactive applications.
 Since a lot of Angular projects use @ngrx/store, it might be a good idea to write down some best-practices.</p>
 
@@ -112,27 +112,27 @@ Redux can be seen as an abstraction of state and data that our application needs
 
 <p>One of the most common bad practices is deep-nesting the state into something that becomes rather complex:</p>
 
-<pre><code class="language-typscript">
-// this is an example of how not to design state
-export interface ApplicationState {
-    moduleA: {
-        data: {
-            foo: {
-                bar: {
-                    users: User[],
-                    cars: Car[]
-                }
-            }
-        }
-    }
-}  
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// this is an example of how not to design state</span>
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">ApplicationState</span> <span class="p">{</span>
+    <span class="nl">moduleA</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">foo</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">bar</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="na">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span>
+                    <span class="na">cars</span><span class="p">:</span> <span class="nx">Car</span><span class="p">[]</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>  
 
-// keeping it flat makes the application way easier
-export interface ApplicationState {
-    users: User[],
-    cars: Car[]
-}  
-</code></pre>
+<span class="c1">// keeping it flat makes the application way easier</span>
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">ApplicationState</span> <span class="p">{</span>
+    <span class="nl">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span>
+    <span class="nx">cars</span><span class="p">:</span> <span class="nx">Car</span><span class="p">[]</span>
+<span class="p">}</span>  
+</code></pre></div></div>
 
 <p>Iâ€™m not saying you cannot nest state, I am saying we have to be very careful when we do. The general rule of thumb here is: <strong>keep the state as flat as possible</strong>
 If we want to compose state in @ngrx/store we can work with feature module reducers and lazy load them as we can see in <a href="https://github.com/ngrx/platform/blob/master/docs/store/api.md#feature-module-state-composition">Feature Module State Composition</a>.</p>
