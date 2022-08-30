@@ -17,8 +17,9 @@ at the time of writing this, and I believe there are better solutions now. Come 
 
 ## The dialog itself
 
-A dialog is nothing more than a `<div>` with a `position:fixed` that contains a title and a body. We can use content-projection to pass a title and a body.
+A dialog could be nothing more than a `<div>` with a `position:fixed` that contains a title and a body. We can use content-projection to pass a title and a body.
 `@Input()` properties might not be enough here.
+We could also use the `<dialog>` html element but for simplicity I chose not to use that for this article.
 The simplest implementation can be found here:
 
 ```typescript
@@ -101,6 +102,9 @@ Disadvantages:
 - It's rather complex in general
 - There is a lot of bookkeeping that we need to do just to show simple dialogs.
 
+Use case:
+- Confirmation dialogs
+
 ## Approach two: The *ngIf statement
 
 We can use `*ngIf` statements in our template that would determine whether dialogs are shown or not.
@@ -121,6 +125,9 @@ Disadvantages:
 - It doesn't scale. Imagine having tons of `*ngIf` statements in our code that are only there to determine when dialogs should be shown or not.
 - What if a `<user-row>` component has a dropdown with 10 actions, all actions resulting in another dialog. That would result in 10
 different `*ngIf` statements. This doesn't scale.
+
+Use case:
+- When there is only one dialog we want to show, and we don't want to have it configured to a route.
 
 
 ## Approach 3: Routed dialogs
@@ -246,6 +253,12 @@ Advantages:
 - We can leverage `Guards` to block the user of navigating away from the dialog (maybe they have a dirty form in there)
 - We don't have to worry about memory leaks. We shouldn't even know that the user detail information is shown in a dialog.
 
+Disadvantages:
+- Not ideal for confirmation dialogs (we don't want to have confirm routes everywhere)
+
+Use case:
+- I would use this for all dialogs that are not generic
+
 ## Angular CDK
 
 We could use the Angular CDK to clean up everything with position strategies etc but that can be material for a next article.
@@ -257,3 +270,8 @@ Whether a view is shown in a dialog or another page shouldn't determine the rout
 
 You can check the demo [here](https://stackblitz.com/edit/angular-ivy-3qe9tv?file=src%2Fapp%2Fmy-dialog%2Fmy-dialog.component.ts,src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fmy-dialog%2Fmy-dialog.component.css,src%2Findex.html,src%2Fapp%2Fusers.service.ts,src%2Fapp%2Fusers-detail%2Fusers-detail.component.ts,src%2Fapp%2Fusers%2Fusers.component.ts)
 <iframe src="https://stackblitz.com/edit/angular-ivy-3qe9tv?embed=1&file=src/app/users-detail/users-detail.component.ts"></iframe>
+
+## Reviewers
+
+Special thanks for the awesome reviewers:
+- [Tim Deschryver](https://twitter.com/tim_deschryver)
