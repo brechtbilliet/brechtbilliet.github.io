@@ -1,0 +1,280 @@
+I"M<p>This article should be a rather short one.
+It’s about how we can create dialogs in Angular. Using dialogs in Angular can be tackled in complex ways but can be easy as well.
+When I started out with Angular I created this <a href="https://blog.brecht.io/Modals-in-angular2/">article</a>. This is already 6 years ago
+at the time of writing this, and I believe there are better solutions now. Come to think of it… There already were.</p>
+
+<h2 id="the-dialog-itself">The dialog itself</h2>
+
+<p>A dialog could be nothing more than a <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> with a <code class="language-plaintext highlighter-rouge">position:fixed</code> that contains a title and a body. We can use content-projection to pass a title and a body.
+<code class="language-plaintext highlighter-rouge">@Input()</code> properties might not be enough here.
+We could also use the <code class="language-plaintext highlighter-rouge">&lt;dialog&gt;</code> html element but for simplicity I chose not to use that for this article.
+The simplest implementation can be found here:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">my-dialog</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+  &lt;h1 class="header"&gt;
+    &lt;ng-content select="[my-dialog-header]"&gt;&lt;/ng-content&gt;
+  &lt;/h1&gt;
+  &lt;div class="body"&gt;
+    &lt;ng-content select="[my-dialog-body]"&gt;&lt;/ng-content&gt;
+  &lt;/div&gt;
+
+  `</span><span class="p">,</span>
+  <span class="na">styles</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">`
+    :host {
+      width: 400px;
+      height: 400px;
+      background: #ccc;
+      display: flex;
+      flex-direction: column;
+      opacity: 0.9;
+      position: fixed;
+      left: 50%;
+      padding: 8px;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    `</span><span class="p">,</span>
+  <span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>We use the <code class="language-plaintext highlighter-rouge">my-dialog-header</code> selector to project the header into the component and we use the <code class="language-plaintext highlighter-rouge">my-dialog-body</code> selector to project the body.</p>
+
+<p>How we consume it, can be found here. I won’t add too much information since this should be self-explanatory:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+  &lt;my-dialog&gt;
+    &lt;ng-container my-dialog-header&gt;Hi there!&lt;/ng-container&gt;
+    &lt;ng-container my-dialog-body&gt;What's up?!&lt;/ng-container&gt;
+  &lt;/my-dialog&gt;
+  &lt;p&gt;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce gravida
+   ...
+  &lt;/p&gt;
+
+  `</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{}</span>
+
+</code></pre></div></div>
+
+<p>That was quite easy, we have a dialog that is always shown. In most cases that is not what we want of course. We want to show dialogs conditionally when 
+the user performs actions. There are a few ways of managing the existence and visibility of our dialogs.</p>
+
+<p>I’m not a huge fan of using libraries to do that for us (Except Angular Material CDK) because well, approach 3 is way easier.</p>
+
+<h2 id="approach-one-the-dialog-service">Approach one: the dialog service</h2>
+
+<p>In this approach we would create a service that handles the creation and destruction of these dialogs for us.
+We could use the approach of my previous article I just mentioned, but it would be better to use the <code class="language-plaintext highlighter-rouge">Angular Material CDK</code> for that.
+I’m not going into detail for this approach since it’s out of scope for this article, but the developer would be in charge of the lifecycle of
+that component. The developer should always manually create the dialog and always manually destroy that dialog.</p>
+
+<p>For confirmation-dialogs one could recommend this approach but for more complex dialogs it might be better to have something that
+takes care of the lifecycle of our dialogs automatically.</p>
+
+<p>Advantages:</p>
+<ul>
+  <li>We can easily inject a service that creates and destroys dialogs for us. However the only use-case I see is the one for confirmation dialogs.
+They could always have the same api (no inputs and always a <em>confirm</em> and <em>cancel</em> button).</li>
+</ul>
+
+<p>Disadvantages:</p>
+<ul>
+  <li>We have to take care of dependency injection ourself.</li>
+  <li>It’s not that easy to provide inputs and outputs.</li>
+  <li>It’s rather complex in general.</li>
+  <li>There is a lot of bookkeeping that we need to do just to show simple dialogs.</li>
+</ul>
+
+<p>Use case:</p>
+<ul>
+  <li>Confirmation dialogs.</li>
+</ul>
+
+<h2 id="approach-two-the-ngif-statement">Approach two: The *ngIf statement</h2>
+
+<p>We can use <code class="language-plaintext highlighter-rouge">*ngIf</code> statements in our template that would determine whether dialogs are shown or not.
+The syntax for this is quite easy:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-user-detail-dialog</span> <span class="na">*ngIf=</span><span class="s">"showUserDialog"</span><span class="nt">&gt;&lt;/my-user-detail-dialog&gt;</span>
+</code></pre></div></div>
+
+<p>When the <code class="language-plaintext highlighter-rouge">showUserDialog</code> property is <code class="language-plaintext highlighter-rouge">true</code> the component will be rendered and thus the dialog will be shown.
+When it’s set back to false it will be hidden.</p>
+
+<p>Advantages:</p>
+<ul>
+  <li>We don’t have to worry about the lifecycle of the component. When the dialog is destroyed we don’t need to worry about memory leaks.</li>
+  <li>It’s a very simple and easy approach.</li>
+</ul>
+
+<p>Disadvantages:</p>
+<ul>
+  <li>It doesn’t scale. Imagine having tons of <code class="language-plaintext highlighter-rouge">*ngIf</code> statements in our code that are only there to determine when dialogs should be shown or not.</li>
+  <li>What if a <code class="language-plaintext highlighter-rouge">&lt;user-row&gt;</code> component has a dropdown with 10 actions, all actions resulting in another dialog. That would result in 10
+different <code class="language-plaintext highlighter-rouge">*ngIf</code> statements. This doesn’t scale.</li>
+</ul>
+
+<p>Use case:</p>
+<ul>
+  <li>When there is only one dialog we want to show, and we don’t want to have it configured to a route.</li>
+</ul>
+
+<h2 id="approach-3-routed-dialogs">Approach 3: Routed dialogs</h2>
+
+<p>A best practice in web development is providing functionality that when a user refreshes the page he or she gets the exact same state as before.
+They should not be redirected to the root page but they should stay in the exact same spot. At least that would result in the best user-experience.</p>
+
+<p>Take this example for instance:
+We have a page with a table of users. When we click on the user it would open something with detailed information of that user.
+Whether that is shown in a dialog or a different page is irrelevant. <code class="language-plaintext highlighter-rouge">user/:userId</code> should result in the <code class="language-plaintext highlighter-rouge">&lt;user-detail&gt;</code> component.
+In our minds this is a different page for now but, product management has just decided that <code class="language-plaintext highlighter-rouge">&lt;user-detail&gt;</code> is not a page but a dialog, which means we would have a <code class="language-plaintext highlighter-rouge">&lt;user-detail-dialog&gt;</code> component.</p>
+
+<p>This approach is actually super easy. We create a <code class="language-plaintext highlighter-rouge">&lt;user-detail-dialog&gt;</code> that uses our previous <code class="language-plaintext highlighter-rouge">my-dialog</code> component.
+We bind it to the <code class="language-plaintext highlighter-rouge">user/:userId</code> route with the help of a child <code class="language-plaintext highlighter-rouge">router-outlet</code> and everything works.</p>
+
+<p>We don’t need a lot of code to achieve this:</p>
+
+<p>Our app component just contains a <code class="language-plaintext highlighter-rouge">router-outlet</code>. This will be used to render the top level of routing config components.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app.component.ts</span>
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+  &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  `</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>We have created a <code class="language-plaintext highlighter-rouge">&lt;users&gt;</code> component which loads some mocked user data and shows it in a table. This will be rendered in the
+previously mentioned <code class="language-plaintext highlighter-rouge">router-outlet</code>. It also provides a detail link for every user that will navigate to <code class="language-plaintext highlighter-rouge">users/:userId</code>.
+It’s very important to note here that below the table we have another child <code class="language-plaintext highlighter-rouge">router-outlet</code>. This will be used to render
+the dialog in.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr *ngFor="let user of users$|async"&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;td&gt;
+          &lt;a routerLink=""&gt;Detail&lt;/a&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  `</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersComponent</span> <span class="p">{</span>
+  <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">getUsers</span><span class="p">();</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">usersService</span><span class="p">:</span> <span class="nx">UsersService</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We have created a <code class="language-plaintext highlighter-rouge">&lt;users-detail&gt;</code> component which uses our previous <code class="language-plaintext highlighter-rouge">&lt;my-dialog&gt;</code> component to display the details
+of a user. Based on the <code class="language-plaintext highlighter-rouge">:userId</code> param it uses the <code class="language-plaintext highlighter-rouge">UsersService</code> to retrieve that information and show it with the necessary content projection.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users-detail</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+  &lt;my-dialog *ngIf="user$|async as user"&gt;
+    &lt;ng-container my-dialog-header&gt;Details of  &lt;/ng-container&gt;
+    &lt;ng-container my-dialog-body&gt;Role: &lt;/ng-container&gt;
+  &lt;/my-dialog&gt;
+  `</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersDetailComponent</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nx">userId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">userId</span><span class="p">));</span>
+  <span class="nx">user$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">userId$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
+  <span class="p">)</span>
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span>
+    <span class="k">private</span> <span class="nx">usersService</span><span class="p">:</span> <span class="nx">UsersService</span>
+  <span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In the module below we see the routingConfig. What is important here is that the <code class="language-plaintext highlighter-rouge">UsersDetailComponent</code> class
+is configured within the children of the <code class="language-plaintext highlighter-rouge">UsersComponent</code> class. By looking closely at this config we can see that
+we are dealing with 2 nested <code class="language-plaintext highlighter-rouge">router-outlet</code>’s.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">...</span>
+    <span class="nx">RouterModule</span><span class="p">.</span><span class="nx">forRoot</span><span class="p">([</span>
+      <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">redirectTo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">pathMatch</span><span class="p">:</span> <span class="dl">'</span><span class="s1">full</span><span class="dl">'</span><span class="p">,</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">component</span><span class="p">:</span> <span class="nx">UsersComponent</span><span class="p">,</span>
+        <span class="na">children</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">:userId</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">component</span><span class="p">:</span> <span class="nx">UsersDetailComponent</span><span class="p">,</span>
+          <span class="p">},</span>
+        <span class="p">],</span>
+      <span class="p">},</span>
+    <span class="p">]),</span>
+  <span class="p">],</span>
+  <span class="p">...</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>That’s it. When product management decides that the details of a user should not be shown in a dialog but on a page
+we should have minimal work to make that happen. We can refresh the page when we want and we don’t have to worry
+about the lifecycle of our dialogs.</p>
+
+<p>Advantages:</p>
+<ul>
+  <li>We can bookmark our dialog.</li>
+  <li>We can share our url with colleagues.</li>
+  <li>We can use the previous and back buttons of the browser.</li>
+  <li>We can leverage <code class="language-plaintext highlighter-rouge">Guards</code> to block the user of navigating away from the dialog (maybe they have a dirty form in there).</li>
+  <li>We don’t have to worry about memory leaks. We shouldn’t even know that the user detail information is shown in a dialog.</li>
+</ul>
+
+<p>Disadvantages:</p>
+<ul>
+  <li>Not ideal for confirmation dialogs (we don’t want to have confirm routes everywhere).</li>
+</ul>
+
+<p>Use case:</p>
+<ul>
+  <li>I would use this for all dialogs that are not generic.</li>
+</ul>
+
+<h2 id="angular-cdk">Angular CDK</h2>
+
+<p>We could use the Angular CDK to clean up everything with position strategies etc but that can be material for a next article.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Adding state in routes gives us a bunch of advantages. Using that state can be used to show or hide a dialog.
+Whether a view is shown in a dialog or another page shouldn’t determine the routing configuration.</p>
+
+<p>You can check the demo <a href="https://stackblitz.com/edit/angular-ivy-3qe9tv?file=src%2Fapp%2Fmy-dialog%2Fmy-dialog.component.ts,src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fmy-dialog%2Fmy-dialog.component.css,src%2Findex.html,src%2Fapp%2Fusers.service.ts,src%2Fapp%2Fusers-detail%2Fusers-detail.component.ts,src%2Fapp%2Fusers%2Fusers.component.ts">here</a></p>
+<iframe width="100%" height="500px" src="https://stackblitz.com/edit/angular-ivy-3qe9tv?embed=1&amp;file=src/app/users-detail/users-detail.component.ts"></iframe>
+
+<h2 id="reviewers">Reviewers</h2>
+
+<p>Special thanks for the awesome reviewers:</p>
+<ul>
+  <li><a href="https://twitter.com/tim_deschryver">Tim Deschryver</a></li>
+  <li><a href="https://twitter.com/rubverm">Ruben Vermeulen</a></li>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+</ul>
+:ET

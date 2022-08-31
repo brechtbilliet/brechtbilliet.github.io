@@ -357,9 +357,17 @@ body { font-family: "Open Sans", sans-serif; }
 
 body { background: #fff; display: flex; }
 
-html, body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; height: 100%; }
+html, body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; height: 100%; background: #fff; }
 
-html h1, html h2, html p, html a, html li, body h1, body h2, body p, body a, body li { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 200; }
+html .blog .post-list p, body .blog .post-list p { font-size: 20px; line-height: 32px; font-weight: 100; font-style: normal; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; color: #3b3c3c; font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif; }
+
+html .blog .post-content p, html .blog .post-content ul, html .blog .post-content li, body .blog .post-content p, body .blog .post-content ul, body .blog .post-content li { font-size: 20px; line-height: 32px; font-weight: 100; font-style: normal; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; color: #3b3c3c; font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif; }
+
+html .blog .post-content p a, html .blog .post-content ul a, html .blog .post-content li a, body .blog .post-content p a, body .blog .post-content ul a, body .blog .post-content li a { font-size: 20px; line-height: 32px; font-weight: 600; font-style: normal; text-decoration: underline; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; color: #3b3c3c; font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif; }
+
+html .blog .post-content .post-meta, body .blog .post-content .post-meta { font-weight: 200; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+html h1, html h2, html a, html li, body h1, body h2, body a, body li { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 
 .blog__header { background-image: url("/assets/images/banner2.jpg"); background-size: cover; background-repeat: no-repeat; padding-top: 40px; padding-bottom: 40px; color: #fff; background-position: center top; }
 

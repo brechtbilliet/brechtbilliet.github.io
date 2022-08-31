@@ -24,11 +24,54 @@ body {
 html, body {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   height: 100%;
+  background: #fff;
 
-  h1, h2, p, a, li {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 200;
+  .blog{
+    .post-list {
+      p{
+        font-size: 20px;
+        line-height:32px;
+        font-weight:100;
+        font-style: normal;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        color: #3b3c3c;
+        font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+    }
+    .post-content {
+      p, ul, li{
+        font-size: 20px;
+        line-height:32px;
+        font-weight:100;
+        font-style: normal;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        color: #3b3c3c;
+        font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif;
+        a{
+          font-size: 20px;
+          line-height:32px;
+          font-weight:600;
+          font-style: normal;
+          text-decoration: underline;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          color: #3b3c3c;
+          font-family: charter, Georgia, Cambria, "Times New Roman", Times, serif;
+        }
+      }
+      .post-meta{
+        font-weight: 200;
+        font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+    }
+
   }
+  h1, h2, a, li {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
 
 }
 

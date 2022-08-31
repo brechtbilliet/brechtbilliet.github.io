@@ -2,10 +2,10 @@
 layout: post
 title: Routed Angular dialogs
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
-date: 2022-08-30
+date: 2022-08-31
 subclass: 'post'
 disqus: true
 ---
@@ -269,10 +269,11 @@ Adding state in routes gives us a bunch of advantages. Using that state can be u
 Whether a view is shown in a dialog or another page shouldn't determine the routing configuration.
 
 You can check the demo [here](https://stackblitz.com/edit/angular-ivy-3qe9tv?file=src%2Fapp%2Fmy-dialog%2Fmy-dialog.component.ts,src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fmy-dialog%2Fmy-dialog.component.css,src%2Findex.html,src%2Fapp%2Fusers.service.ts,src%2Fapp%2Fusers-detail%2Fusers-detail.component.ts,src%2Fapp%2Fusers%2Fusers.component.ts)
-<iframe src="https://stackblitz.com/edit/angular-ivy-3qe9tv?embed=1&file=src/app/users-detail/users-detail.component.ts"></iframe>
+<iframe width="100%" height="500px" src="https://stackblitz.com/edit/angular-ivy-3qe9tv?embed=1&file=src/app/users-detail/users-detail.component.ts"></iframe>
 
 ## Reviewers
 
 Special thanks for the awesome reviewers:
 - [Tim Deschryver](https://twitter.com/tim_deschryver)
 - [Ruben Vermeulen](https://twitter.com/rubverm)
+- [Webdave](https://twitter.com/webdave_de)
