@@ -11,7 +11,7 @@ disqus: true
 ---
 
 This article should be a rather short one.
-It's about to how we can create dialogs in Angular. Using dialogs in Angular can be tackled in complex ways but can be easy as well.
+It's about how we can create dialogs in Angular. Using dialogs in Angular can be tackled in complex ways but can be easy as well.
 When I started out with Angular I created this [article](https://blog.brecht.io/Modals-in-angular2/). This is already 6 years ago
 at the time of writing this, and I believe there are better solutions now. Come to think of it... There already were.
 
@@ -57,7 +57,7 @@ export class MyDialogComponent {}
 
 We use the `my-dialog-header` selector to project the header into the component and we use the `my-dialog-body` selector to project the body.
 
-How we consume it can be found here. I won't add too much information since this should be quite self-explanatory:
+How we consume it, can be found here. I won't add too much information since this should be self-explanatory:
 ```typescript
 @Component({
   selector: 'app',
@@ -97,13 +97,13 @@ Advantages:
 They could always have the same api (no inputs and always a *confirm* and *cancel* button).
 
 Disadvantages:
-- We have to take care of dependency injection ourself
-- It's not that easy to provide inputs and outputs
-- It's rather complex in general
+- We have to take care of dependency injection ourself.
+- It's not that easy to provide inputs and outputs.
+- It's rather complex in general.
 - There is a lot of bookkeeping that we need to do just to show simple dialogs.
 
 Use case:
-- Confirmation dialogs
+- Confirmation dialogs.
 
 ## Approach two: The *ngIf statement
 
@@ -118,8 +118,8 @@ When the `showUserDialog` property is `true` the component will be rendered and 
 When it's set back to false it will be hidden.
 
 Advantages:
-- We don't have to worry about the lifecycle of the component and when the dialog should be destroyed (we don't need to worry about memory leaks)
-- It's a very simple and easy approach
+- We don't have to worry about the lifecycle of the component. When the dialog is destroyed we don't need to worry about memory leaks.
+- It's a very simple and easy approach.
 
 Disadvantages:
 - It doesn't scale. Imagine having tons of `*ngIf` statements in our code that are only there to determine when dialogs should be shown or not.
@@ -132,7 +132,7 @@ Use case:
 
 ## Approach 3: Routed dialogs
 
-A best practice in web development is providing functionality that when a user refreshes the page he or she gets the exact same state as before after rerendering that page.
+A best practice in web development is providing functionality that when a user refreshes the page he or she gets the exact same state as before.
 They should not be redirected to the root page but they should stay in the exact same spot. At least that would result in the best user-experience.
 
 Take this example for instance:
@@ -207,7 +207,7 @@ export class UsersDetailComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     private usersService: UsersService
-    ) {}
+  ) {}
 }
 ```
 
@@ -247,17 +247,17 @@ we should have minimal work to make that happen. We can refresh the page when we
 about the lifecycle of our dialogs.
 
 Advantages:
-- We can bookmark our dialog
-- We can share our url with colleagues
-- We can use the previous and back buttons of the browser
-- We can leverage `Guards` to block the user of navigating away from the dialog (maybe they have a dirty form in there)
+- We can bookmark our dialog.
+- We can share our url with colleagues.
+- We can use the previous and back buttons of the browser.
+- We can leverage `Guards` to block the user of navigating away from the dialog (maybe they have a dirty form in there).
 - We don't have to worry about memory leaks. We shouldn't even know that the user detail information is shown in a dialog.
 
 Disadvantages:
-- Not ideal for confirmation dialogs (we don't want to have confirm routes everywhere)
+- Not ideal for confirmation dialogs (we don't want to have confirm routes everywhere).
 
 Use case:
-- I would use this for all dialogs that are not generic
+- I would use this for all dialogs that are not generic.
 
 ## Angular CDK
 
