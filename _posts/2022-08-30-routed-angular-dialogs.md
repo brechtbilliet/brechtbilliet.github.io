@@ -275,3 +275,4 @@ You can check the demo [here](https://stackblitz.com/edit/angular-ivy-3qe9tv?fil
 
 Special thanks for the awesome reviewers:
 - [Tim Deschryver](https://twitter.com/tim_deschryver)
+- [Ruben Vermeulen](https://twitter.com/rubverm)
