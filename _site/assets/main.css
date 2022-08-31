@@ -425,7 +425,7 @@ html h1, html h2, html a, html li, body h1, body h2, body a, body li { font-fami
 
 .app__menu li { margin: 0; padding: 0; }
 
-.app__menu li a { padding: 8px 24px; display: flex; }
+.app__menu li a { padding: 8px 24px; font-weight: 200; display: flex; }
 
 @media (min-width: 768px) { .app__menu li a { padding: 8px 24px; } }
 
