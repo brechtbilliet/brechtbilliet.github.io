@@ -457,7 +457,7 @@ html h1, html h2, html a, html li, body h1, body h2, body a, body li { font-fami
 
 .profile h3 { margin-top: 20px; }
 
-.profile img { border-radius: 50%; max-width: 150px; box-shadow: 4px 4px #1a100a; }
+.profile img { max-width: 150px; }
 
 .profile .hire-me-button { background-color: #2aabbf; color: #fff; border: none; padding: 8px 16px; border-radius: 15px; text-decoration: none; }
 
