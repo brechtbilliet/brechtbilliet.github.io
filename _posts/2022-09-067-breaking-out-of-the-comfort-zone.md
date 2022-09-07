@@ -19,7 +19,7 @@ This article is about personal experiences in my life and career and can be bare
 The reason I'm writing about this is that I think it might help people, sometimes the answer to a happy and fulfilling life is right in front of us.
 
 The people that know me, or at least followed me in the last 7 years, might have experienced a form of silence of me in the last years.
-I used to blog more actively, used to be on conferences and in the frontend community my name dropped by from time to time. 
+I used to blog more actively, used to be at conferences and in the frontend community my name was dropped by from time to time. 
 That stopped for a while, and I'll tell you why later. First let's go back to the start.
 
 ### The beginning of my career
@@ -31,13 +31,13 @@ The thing is I was working alone, with no guidance, no mentoring, no coaching.
 Apparently a customer told my boss there was a bug in my code, and he told him he was going to talk to me, so it wouldn't happen again.
 When he told me my work sucked, and he couldn't even tell me why I decided that was not a company I wanted to work for and I quit my job on the spot.
 
-This was one of my first encounters of **Breaking out of the comfort zone**. I felt like crap, and I had no idea what I needed to do, but for some reason this brought me luck.
+This was one of my first encounters with **Breaking out of the comfort zone**. I felt like crap, and I had no idea what I needed to do, but for some reason this brought me luck.
 It felt good and bad at the same time. I needed to find a job because I needed to pay my rent so there was a level of motivation I didn't knew before.
 By luck, I met interesting people that convinced me to do consultancy, and a few months later I was a .NET consultant working for a Belgian railways company.
-Yes... I had to learn day and night to get to know the technology, but it gave me a certain drive and working day and night actually gave me more energy then
+Yes... I had to learn day and night to get to know the technology, but it gave me a certain drive and working day and night actually gave me more energy than
 it cost me.
 
-2 years later there was a small voice telling me it was better to fail trying then to rust up, so I decided to become self-employed.
+2 years later there was a small voice telling me it was better to fail trying then to get rusty, so I decided to become self-employed.
 Since then every move I made in my career made me feel very uncomfortable in the beginning, but then turned out to pay off every time!
 I'm not going to go into every time I broke out of my comfort zone, I'm writing my book for that. But this article is to wake people up.
 Getting out of your comfort zone, will open up doors you wouldn't expect to. **The more you get out of your comfort zone, the luckier you'll get**.
@@ -46,23 +46,23 @@ Getting out of your comfort zone, will open up doors you wouldn't expect to. **T
 He said it was only for a group of 10 people, and that it was just knowledge sharing. I was scared at first, but since there were only
  10 people in front of me I decided to do it. I created a talk about Angular.js components and unidirectional dataflows and I was ready to impress a dozen of people.
   
-It felt uncomfortable in the beginning, and I even felt more uncomfortable when those 10 people turned out to be 100 people (Thank Yannick! I didn't get the memo... ;-)). 
+It felt uncomfortable in the beginning, and I even felt more uncomfortable when those 10 people turned out to be 100 people (Thanks Yannick! I didn't get the memo... ;-)). 
 Anyways, I was already there on stage and the talk went quite nice. **Breaking out of that comfort zone** resulted in a Belgian publishing company asking me to perform my first 3 day audit for their
 angular.js code. The more I broke out of that comfort zone, the luckier i got. Opportunities started to present themselves.
 
 ### Becoming an international Angular trainer/consultant
 
-A few weeks later Yannick his company asked me to do a training in Angular2 (which was the successor of angular.js at the time).
+A few weeks later Yannick's company asked me to do a training in Angular2 (which was the successor of angular.js at the time).
 I decided to jump on the occasion and give my first Angular workshop, I already had experience in doing that in angular.js at the time.
 Giving that training wasn't uncomfortable but organising a 2-day public workshop in a venue in Ghent weeks later certainly was...
  What if I wasn't going to sell those workshops? I would totally fail then, right?! It wasn't cheap to rent the venue, and I would have had to admit my failure.
 
 I had listened to a talk of [Todd Motto](https://www.twitter.com/toddmotto) a few weeks before that, where he explained **nothing was ever achieved in the comfort zone** and I decided to 
 follow my gut and give my own public Angular workshop. 
-Even people told me I couldn't, I din't just sold one but I sold three public 2-day workshops that month for 8 people per session.
+Even though people told me I couldn't, I didn't just sold one but I sold three public 2-day workshops that month for 8 people per session.
 At the same time there was a famous German Angular training company giving a workshop (also in Ghent), but I listened to my gut and pulled myself out of comfort.
 
-Small sidetrack: Less then a year later that same company asked me to freelance for them and we had an awesome collaboration doing international Angular trainings.
+Small sidetrack: Less than a year later that same company asked me to freelance for them and we had an awesome collaboration doing international Angular trainings.
 
 In one of the workshops I hosted in Ghent, I invited [Jurgen Van de Moere](https://www.twitter.com/jvandemo) who later turned out to be [ng-be](https://ng-be.org/) co-organiser 
 together with [Sam vloeberghs](https://twitter.com/samvloeberghs). 
@@ -77,7 +77,7 @@ and we became international trainers/consultants with focus on Angular and RxJS.
 ### Getting back into my comfort zone
 
 First of all, getting out of that comfort zone, and making big jumps in your career has some consequences. It's not all fun and giggles.
-There is this thing called imposter syndrome where I will probably blog about later. There is the feeling that you are hitting a ceiling, that you need
+There is this thing called imposter syndrome I will probably blog about this later. There is the feeling that you are hitting a ceiling, that you need
 to do more, be more, etc.. There is stress, crazy hours... It can be exhausting. I had a family that I wasn't giving enough attention at times.
 I was getting fatter and it was hard to find balance. That's something you shouldn't forget. It's fine to break free and prosper, but **don't forget to focus on balance**.
 Balance is all. I started working out more, taking more time off and I started to focus more on the quality of life.
@@ -91,7 +91,7 @@ My marriage fell apart, and I had to settle with seeing the kids for only 50% of
 I still had a decent income, worked for an awesome client called [Rosa](https://rosa.be) which is shaping the future of healthcare.
 In the beginning I worked 4/5th of my time for Rosa and 1/5th I was doing remote audits, code-reviews, technical interviews etc.
 After 2 years of working for rosa I was so comfortable I worked full-time for them. 95% of my time I worked remotely in my office. I didn't
-do code-reviews anymore and I was basicaly a developer like everyone else in the company. Before I was always the coach, the architect,
+do code-reviews anymore and I was basically a developer like everyone else in the company. Before I was always the coach, the architect,
 the tech lead, whatever... I didn't mind the title, but I could have been replaced by any senior developer. I didn't provide the value I wanted to.
 I was stuck in my comfort zone... I didn't had to worry about finding business anymore and I was programming comfortably in my chair, drinking quality coffee
 in my warm and cozy office. 
@@ -138,7 +138,7 @@ Making sure you are happy is way more important and if you are happy in your com
 But if you are not happy anymore and you feel there is no way forward, in your career or life in general... Sometimes making the uncomfortable
 decisions will bring you the best chances.
 
-I'm need something to look forward to and I want to live my life fully. I want to bring value and have the feeling
+I need something to look forward to and I want to live my life fully. I want to bring value and have the feeling
 I made a difference. I know that getting out of my comfort zone will bring me chances and for me it's better to take the occasional bad
 decision, instead of not taking any decisions at all.
 
