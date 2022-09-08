@@ -10,7 +10,7 @@ subclass: 'post'
 disqus: true
 ---
 
-The people that are used to read my article will quickly realise that this is not the type of articles I generally write.
+The people that are used to read my articles will quickly realise that this is not the type of articles I generally write.
 Since I'm passionate about this subject, I'm going to write about it anyway. Bear with me, you might take away
 something from it. If not, at least you gave it a shot, right? I'm writing a book as we speak about my life and career as
 a software professional, not sure if I'll ever publish it, but consider this a very slimmed down version of some chapters of that book. 
@@ -19,7 +19,7 @@ This article is about personal experiences in my life and career and can be bare
 The reason I'm writing about this is that I think it might help people, sometimes the answer to a happy and fulfilling life is right in front of us.
 
 The people that know me, or at least followed me in the last 7 years, might have experienced a form of silence of me in the last years.
-I used to blog more actively, used to be at conferences and in the frontend community my name was dropped by from time to time. 
+I used to blog more actively, used to be at conferences and in the frontend community my name was mentioned from time to time. 
 That stopped for a while, and I'll tell you why later. First let's go back to the start.
 
 ### The beginning of my career
@@ -142,3 +142,8 @@ I need something to look forward to and I want to live my life fully. I want to 
 I made a difference. I know that getting out of my comfort zone will bring me chances and for me it's better to take the occasional bad
 decision, instead of not taking any decisions at all.
 
+### Thanks for the reviewers
+- [Aaron Delange](https://twitter.com/aaron_delange)
+- [Álvaro Herrero](https://twitter.com/alvaro_ahc)
+- [Webdave](https://twitter.com/webdave_de)
+- [Raul Sinisterra](https://twitter.com/rsinis)

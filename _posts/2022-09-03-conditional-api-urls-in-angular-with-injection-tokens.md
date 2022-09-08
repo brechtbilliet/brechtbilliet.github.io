@@ -2,10 +2,10 @@
 layout: post
 title: Conditional api urls in Angular with injection tokens
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
-date: 2022-09-03
+date: 2022-09-08
 subclass: 'post'
 disqus: true
 ---
@@ -225,3 +225,10 @@ look at [this article](https://kevinkreuzer.medium.com/angular-inject-33c6ce8cfd
 That's why we have added the contents of the `env.js` file directly into the `index.html`.
 
 
+
+### Thanks for the reviewers
+
+- [Webdave](https://twitter.com/webdave_de)
+- [Jurgen Van de Moere](https://twitter.com/jvandemo)
+
+Thanks, [Wim Holvoet](https://twitter.com/wim_holvoet) for the idea of using injection tokens.
