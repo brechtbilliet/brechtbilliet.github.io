@@ -2,7 +2,7 @@
 layout: post
 title: Breaking out of the comfort zone
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
 date: 2022-09-06
