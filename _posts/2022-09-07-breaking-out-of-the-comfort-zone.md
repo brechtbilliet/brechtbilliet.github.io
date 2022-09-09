@@ -77,7 +77,7 @@ and we became international trainers/consultants with focus on Angular and RxJS.
 ### Getting back into my comfort zone
 
 First of all, getting out of that comfort zone, and making big jumps in your career has some consequences. It's not all fun and giggles.
-There is this thing called imposter syndrome I will probably blog about this later. There is the feeling that you are hitting a ceiling, that you need
+There is this thing called imposter syndrome I will probably blog about later. There is the feeling that you are hitting a ceiling, that you need
 to do more, be more, etc.. There is stress, crazy hours... It can be exhausting. I had a family that I wasn't giving enough attention at times.
 I was getting fatter and it was hard to find balance. That's something you shouldn't forget. It's fine to break free and prosper, but **don't forget to focus on balance**.
 Balance is all. I started working out more, taking more time off and I started to focus more on the quality of life.
@@ -112,7 +112,7 @@ I looked him up, and I haven't stopped looking/reading since then. He made me re
 I decided to break free again, but this time I would find a better balance. No more business flights, no more crazy hours but I wanted to chase discomfort.
 I decided to leave Rosa. A decision I made with a lot of pain in my heart because they became a family and it has been the most awesome company
 I had ever worked for, but staying with Rosa was not an option.
-I related Rosa with comfort, getting stuck, and it felt like a golden cage. 
+I related Rosa with comfort, getting stuck, and it felt like a golden cage to me in that moment in my life. 
 
 I decided to make a change in my life three months ago and by getting out of my comfort zone at a daily basis things changed drastically.
 I signed a contract as frontend software architect at DHL aviation, where I have to go to the office a few times a week.
