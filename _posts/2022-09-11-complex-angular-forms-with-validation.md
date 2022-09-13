@@ -352,25 +352,24 @@ import {
 } from '@angular/forms';
 import { validate, ValidationError } from 'class-validator';
 
-
 export function addAsyncValidators<T extends FormGroup>(
   form: T,
   formType: new () => any
 ): T {
   const groupObj = Object.keys(form.controls).reduce(
-    (obj: {[key in keyof T]: FormControl}, key: keyof T & string) => {
+    (obj: { [key in keyof T]: FormControl }, key: keyof T & string) => {
       const validators = [createValidatorFn(key, formType)];
       const formControl = new FormControl(form.value[key], {
-        validators
+        asyncValidators: validators,
       });
       return {
         ...obj,
         [key]: formControl,
       };
     },
-    {} as {[key in keyof T]: FormControl}
+    {} as { [key in keyof T]: FormControl }
   );
-  return new FormGroup(groupObj as {[key in keyof T]: FormControl}) as T;
+  return new FormGroup(groupObj as { [key in keyof T]: FormControl }) as T;
 }
 
 function createValidatorFn<T>(
@@ -380,20 +379,18 @@ function createValidatorFn<T>(
   return (control: AbstractControl) => {
     const toValidate = new formType();
     toValidate[key] = control.value;
-    return validate(toValidate).then(
-      (validationErrors: ValidationError[]) => {
-        const err = validationErrors.find(
-          (v: ValidationError) => v?.property === key
-        );
+    return validate(toValidate).then((validationErrors: ValidationError[]) => {
+      const err = validationErrors.find(
+        (v: ValidationError) => v?.property === key
+      );
 
-        return err
-          ? ({
-              constraints: err.constraints,
-              contexts: err.contexts,
-            } as ValidationError)
-          : null;
-      }
-    );
+      return err
+        ? ({
+            constraints: err.constraints,
+            contexts: err.contexts,
+          } as ValidationError)
+        : null;
+    });
   };
 }
 
