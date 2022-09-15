@@ -10,12 +10,12 @@ subclass: 'post'
 disqus: true
 ---
 
-Sometimes forms in Angular can be a pain, and I have been struggling with them since the beta phases of Angular2.
-First there was the template driven forms approach which still exists, and then later on the Angular core team
-introduced Reactive forms. The community sold Reactive forms as a best practice and they basically told
+Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2.
+First there was only the template driven forms approach, and then later on the Angular core team
+introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told
 us to stay away from template driven forms.
-The reason was:
-- It's easier to unit-test.
+The reasoning behind this was:
+- Reactive forms are easier to unit-test.
 - Less chance of 2-way databinding on models directly.
 - Reactive api's like `valueChanges` and `statusChanges` returned observables for us.
 - Validation was supposed to be better, but there is some debate around that topic.
@@ -24,24 +24,25 @@ Even though the reactive forms were recommended they also had some disadvantages
 - There was a big pain when it came to type safety but that is something that they "fixed" in version 14 where typed forms were 
 introduced.
 - There was a lot of redundancy when it came to showing validations, error messages, etc...
-- It's also worth noting that `FormGroup` and `FormControl` are not immutable so we can't use `ChangeDetectionStrategy.OnPush` on components
+- It's also worth noting that `FormGroup` and `FormControl` are not immutable, so we can't use `ChangeDetectionStrategy.OnPush` on components
 where we pass those formGroups and formControls as `@Input()`'s, not without having the occasional manual `markForCheck()` statement at least.
 
 It makes sense actually, there are a lot of different ways to handle validations, composing forms etc, and the Angular team has provided us with
-a solution that can be used in a variety of different approaches.
+a solution that can be used in a variety of different approaches. We can make the usage of forms easier, but it's important that we stay close to the
+current api.
 
-Let's mention that there are a few big discussions going on, on whether we should use template driven forms of Reactive forms but let's
+A small mention here is that there are a few discussions going on, on whether we should use template driven forms of Reactive forms but let's
 not go into detail. Both approaches have their advantages and disadvantages. For this article we are going to use Reactive typed forms in Angular.
 
 ## Writing our own wrappers and abstractions
 
-When I help out companies, complex forms is a subject that keeps coming back and I generally introduce some custom form wrappers and abstractions.
-The goal is to reduce both complexity and redundancy and also improve consistency.
-In this article we will create a set of 4 concepts that work together to achieve a clean way of handling forms:
-- `<form-wrapper>` component: This will hold the native form element.
-- `<form-input-wrapper>` component: This has a label and takes care of validation messages.
+When helping out companies, complex forms is a subject that keeps coming back and I generally introduce some custom form components and abstractions.
+The goal is to reduce both complexity and redundancy while we still improve consistency.
+In this article we will create a set of 4 custom written items that work together to achieve a clean way of handling forms:
+- `<form-wrapper>` component: This will hold the native form element and a submitted state.
+- `<form-input-wrapper>` component: This has a label and takes care of validation error messages.
 - `[formInput]` directive: This is used as glue between the `<form-input-wrapper>` and the inputs.
-- `formInputErrors` pipe: This is used to render the errors in a clean way without to much code.
+- `formInputErrors` pipe: This is used to render the errors without to much code.
 
 I'm not a huge fan of writing our own `FormBuilderService`, nor am I a fan of using a third party lib like `formly` that uses huge chunks of
 configurations with embedded logic. We want to stay as close as possible to Angular, but we do want to avoid redundancy.
@@ -49,10 +50,10 @@ configurations with embedded logic. We want to stay as close as possible to Angu
 ### The form-wrapper component
 
 This component is a wrapper for the native `form` element. It can hold some styling to enforce consistency within our application,
-but it also has a `submitted$` observable that we can use to show validation errors only when the form is submitted.
+but it also has a `submitted$` BehaviorSubject that we can use to show validation errors only when the form is submitted.
 We use an observable so it is easier to consume in another class.
 In this case, we don't want to bug the user with validation messages if the form hasn't even been submitted yet (unless the control is dirty).
-We use content projection to add the actual content of the form. This following code shows that this is an easy component:
+We use content projection to add the actual content of the form and that is basically it:
 
 *Note: For this article we have chosen to use the `standalone` component structure, but it could be written with modules as well.*
 
@@ -65,8 +66,7 @@ We use content projection to add the actual content of the form. This following 
           <ng-content></ng-content>
         </form>
     `,
-    standalone: true,
-    styleUrls: ['./form-wrapper.component.css'],
+    standalone: true
 })
 export class FormWrapperComponent {
     @Input() public readonly formGroup: FormGroup;
@@ -82,9 +82,9 @@ export class FormWrapperComponent {
 
 ### form-input-wrapper component
 
-This component will remove the most redundancy. Think about all the `*ngIf` code to show errors or not. Making sure the label
-is on top of the input instead of on the left of it, and there are a few other examples which I won't mention now.
-The `form-input-wrapper` component contains a label and an element that implements `ControlValueAccessor`.
+This component will remove the most of our redundant code. Think about all the `*ngIf` code we have to rewrite for every input. 
+What about making sure the label is on top of the input instead of on the left of it. 
+The `form-input-wrapper` component contains a label, and an element that implements `ControlValueAccessor`.
 
 We could consume the component like this:
 
@@ -116,21 +116,21 @@ export class FormInputWrapperComponent {
 
 ```
 
-As we can see, we don't care about validation errors yet, that is something we will tackle later.
-It's a fairly simple component that will render a label and project some content.
+As we can see, we don't care about validation error messages yet, that is something we will tackle later.
+This fairly simple component will render a label and project some content.
 
 ### form-input directive
 
 In the `<form-input-wrapper>` component we need a reference to the form control, because that form control holds the valid state which
-is exactly what we want to show in the `<form-input-wrapper>` component.
-We could pass that formControl as an input, but that seems like a lot of work to do that every time.
+is exactly what we need to show in the `<form-input-wrapper>` component.
+We could pass that formControl as an input, but that seems like a lot of work to do that every time (It's redundant).
 We need some way to get access to that control from inside the `<form-input-wrapper>` component.
-We could use `@ContentChildren()` for that, but the element can be an `form-input` or a `textarea` or maybe some custom
+We will use `@ContentChildren()` for that, but the element can be an `form-input` or a `textarea` or maybe some custom
 form control that implements the `ControlValueAccessor` interface. We don't know which query we should pass in the `@ContentChildren()`.
-To get access to all the elements that implement the `ControlValueAccessor` interface, we can create an
+To get access to the element that is projected in the content, we can create an
 `[formInput]` directive which is applied on every of those elements. Later on we can use `@ContentChildren(FormInputDirective)` to get that reference.
 
-The implementation of the `[formInput]` directive is quite simple, like we mentioned before: It's just the glue:
+The implementation of the `[formInput]` directive is straightforward, like we mentioned before: It's just the glue that gives access:
 
 ```typescript
 @Directive({
@@ -155,7 +155,7 @@ its `<form-input-wrapper>` component:
 </form-input-wrapper>
 ```
 
-Now we can add the `formInputs` propety to the `<form-input-wrapper>` component which we will later use to retrieve its validity state from.
+By using `@ContentChildren(FormInputDirective)`, we now can add the `formInputs` property to the `<form-input-wrapper>` component which we will later use to retrieve its validity state from.
 
 ```typescript
 export class FormInputWrapperComponent {
@@ -167,9 +167,9 @@ export class FormInputWrapperComponent {
 
 ## The structure
 
-We have one `<form-wrapper>` component which holds the submitted state, and that wraps `<form-input-wrapper>`'s to reduce redundancy with a `[formInput]` directive
-that acts as glue. In the code below we show an example where we have a **general** form group and an **address** form group. This HTML won't change anymore,
-so this is the most redundancy we will have in our HTML.
+A small recap: We have one `<form-wrapper>` component which holds the submitted state, and that wraps `<form-input-wrapper>`'s to reduce redundancy with a `[formInput]` directive
+that acts as glue. In the code below we show an example where we have a **general** form group, and an **address** form group. This HTML won't change anymore,
+so this is the only code we will have to write when creating forms in the future.
 
 ```html
 <form-wrapper [formGroup]="form" (submit)="onSubmit()">
@@ -232,9 +232,8 @@ so this is the most redundancy we will have in our HTML.
 </form-wrapper>
 
 ```
-
-Since we use typed forms we will create 2 classes: The `UserForm` and the `AddressForm`.
-We use the basic `FormBuilder` api to compose our form:
+Typed forms need types. We can create types but we will use classes instead because later on we will leverage decorators to add validation on them.
+We will create the 2 classes `UserForm` and `AddressForm`, and we use the `FormBuilder` api to compose our form:
 
 *Note: Making these properties **readonly** enforces us to work in an immutable way*
 
@@ -253,11 +252,10 @@ export class AddressForm {
 }
 
 @Component({
-    selector: 'my-app',
+    ...
     templateUrl: './app.component.html',
     imports: [FormWrapperComponent, FormInputWrapperComponent, FormInputDirective, ReactiveFormsModule, FormsModule, CommonModule],
     standalone: true,
-    styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
     private readonly addressForm = this.fb.group<AddressForm>({
@@ -287,13 +285,10 @@ export class AppComponent  {
 }
 ```
 
-
-
 ## Validation
 
-To make validation easier let's use `class-validator`. You can use it on the frontend, on the backend and it's
-easy to write our own validators. We already have the `UserForm` class and the `AddressForm` class and to simplify
-validations we can just add decorators on them. They are readable and reusable if we want them to be.
+To have readable consistent validation, let's use [class-validator](https://github.com/typestack/class-validator). We can use it on the frontend, on the backend and it's
+easy to write our own validators. Since class-validator provides us with decorators it's easy to put them on our forms. 
 
 ```typescript
 import { IsNotEmpty, Min, Max } from 'class-validator';
@@ -327,7 +322,8 @@ export class AddressForm {
 ```
 
 The next thing we need to do is translate these classes into lists of validators and apply them on our `userForm` and `addressForm`.
-We want to automate that as much as possible so we only want to create a function called `addAsyncValidators()` that will just do that.
+This is something that we don't want to write for every form so let's create a shared function for that.
+Let's create a function called `addAsyncValidators()` that will just do that.
 In the first argument we pass the form group and in the next one the type of its form class.
 
 ```typescript
@@ -336,20 +332,26 @@ private readonly addressForm = addAsyncValidators(this.fb.group<AddressForm>({
     streetNumber: '',
     city: '',
     zipCode: ''
-}), AddressForm);
+}), AddressForm); // the address form with decorators
 
 private readonly userForm = addAsyncValidators(this.fb.group<UserForm>({
     firstName: '',
     lastName: '',
     age: null
-}), UserForm);
+}), UserForm); // the user form with decorators
+public readonly form = this.fb.group({
+    user: this.userForm,
+    address: this.addressForm
+})
 ```
 
+There is a reason why we compose our form like this. Our form classes will never have nested properties. Each nested property would be a form group, and would 
+use the `addAsyncValidators()`. That way we can keep it simple and still use the regular angular Formbuilder api.
+
 The `addAsyncValidators()` function would loop over the form and would add the correct validators based on the class
-with the decorators. I'm not going to go into detail regarding the following implementation. It is not the goal
- of this article and it's already long enough.
-You can just copy paste it, or improve it and let me know :) This code is something that we only need to write once and
-then consume in different applications. In a nutshell: We loop over the form object, look up the keys in our class with decorators,
+that leverages the decorators. I'm not going to go into detail regarding the following implementation. It is not the goal
+ of this article and it's already long enough. Just know that we only need to write this once and put this in a shared lib.
+You can just copy paste it, or improve it and let me know :) In a nutshell: We loop over the form object, look up the keys in our class with decorators,
 translate the decorators into async validators and create a new form group with those validators attached to it.
 
 ```typescript
@@ -410,7 +412,7 @@ function createValidatorFn<T>(
 
 To show the validators we need to use the `formInputs` property of the `<form-input-wrapper>` component.
 The errors that we want to show live in `formInputs?.first?.formControl?.errors`.
-The validation errors aht `class-validator` spits out has a very specific format: 
+The validation errors that `class-validator` spits out have a very specific format: 
 `constraints[keyname]` holds the validation message. We know multiple validation messages for one
 form input is possible so let's write a pipe to loop over that data and return the list.
 Let's create a `formInputErrors` pipe that checks if there are constraints, and if there are any, it returns a nice list
@@ -436,7 +438,7 @@ export class FormInputErrorsPipe implements PipeTransform {
 ```
 
 To use this pipe we add an `*ngFor` statement in the `<form-input-wrapper>` component.
-Don't forget to add the `FormInputErrorsPipe` into the imports of that component:
+Because we are working with standalone components, don't forget to add the `FormInputErrorsPipe` into the imports of that component:
 
 ```typescript
 import { CommonModule } from '@angular/common';
@@ -449,26 +451,25 @@ import { FormInputDirective } from '../form-input.directive';
     template: `
         <label>{{ label }}</label> <ng-content></ng-content>
         <ul>
-          <li *ngFor="let child of formInputs?.first?.formControl?.errors|formInputErrors; trackBy: tracker">{{child}}</li>
+          <li *ngFor="let child of formInputs?.first?.formControl?.errors|formInputErrors">{{child}}</li>
         </ul>
     `,
     imports: [CommonModule, FormInputDirective, FormInputErrorsPipe],
-    styleUrls: ['./form-input-wrapper.component.css'],
     standalone: true,
 })
 export class FormInputWrapperComponent {
     @Input() public readonly label: string;
+    // search for elements of type FormInputDirective in the <ng-content>
     @ContentChildren(FormInputDirective, { descendants: true })
     public readonly formInputs: QueryList<FormInputDirective>;
-    
-    public readonly tracker = (i) => i;
 }
 
 ```
 
 ### Adding a validation class on the `formInput` directive
 
-We also want to add a css class called `form-input--invalid` when the form input contains errors.
+Sometimes we want to have a red border our another specific style on invalid fields.
+Let's add a css class called `form-input--invalid` when the form input contains errors.
 We can do that by using a `@HostBinding()`, injecting the `FormWrapperComponent` and using the form control that we pass
 through an `@Input()` property.
 
@@ -486,12 +487,13 @@ export class FormInputDirective {
 }
 ```
 
+This will set the `form-input--invalid` class every time the control is invalid, and it has been touched or the form is submitted.
+
 ### Conditionally showing the validations with dependency injection
 
-Now we our validations are shown nicely, but we only want to show them when the form is submitted
-or when the form control is dirty.
+Now the validations are shown, we only want to show them when the form is submitted or when the form control is touched.
 For that we can inject the `FormWrapperComponent` into the `<form-input-wrapper>` component and add an 
-`*ngIf` statement on the `<ul>` element that checks if the form is submitted or the form control is dirty.
+`*ngIf` statement on the `<ul>` element that checks if the form is submitted, or the form control is dirty.
 
 
 ```typescript
@@ -502,14 +504,12 @@ For that we can inject the `FormWrapperComponent` into the `<form-input-wrapper>
         FormInputDirective,
         FormInputErrorsPipe,
     ],
-    styleUrls: ['./form-input-wrapper.component.css'],
     standalone: true,
     template: `
     <label>{{ label }}</label> <ng-content></ng-content>
     <ul *ngIf="(submitted$|async)|| 
         (formInputs?.first?.formControl.touched && formInputs?.first?.formControl?.errors)">
-        <li *ngFor="let child of formInputs?.first?.formControl?.errors|formInputErrors; 
-            trackBy: tracker">{{child}}</li>
+        <li *ngFor="let child of formInputs?.first?.formControl?.errors|formInputErrors">{{child}}</li>
     </ul>
 `,
 
@@ -519,80 +519,79 @@ export class FormInputWrapperComponent {
     @ContentChildren(FormInputDirective, { descendants: true })
     public readonly formInputs: QueryList<FormInputDirective>;
     public readonly submitted$ = inject(FormWrapperComponent).submitted$;
-    public readonly tracker = (i) => i;
 }
 
 ```
 
 ### Custom validator
 
-Creating a custom validator for `class-validator` is not that hard.
-Let's create a `NoSpecialChars` decorator that will throw an error when the user
+Creating a custom validator for `class-validator` is not that hard. 
+Let's create a `noSpecialChars` validator that will throw an error when the user
 types a special character in one of the name fields.
+The usage of our validator looks like this:
 
 We will use our decorator like this:
 ```typescript
+function noSpecialChars(value: string): boolean {
+    const regex = /[\!\@\#\$\%\^\&\*\)\(\+\=\.\<\>\{\}\[\]\:\;\'\"\|\~\`\_]/g;
+    return !regex.test(value);
+}
 export class UserForm {
     @IsNotEmpty()
-    @NoSpecialChars()
+    @CustomValidator(noSpecialChars, {message: 'First name can not contain special chars'})
     public readonly firstName: string;
     
     @IsNotEmpty()
-    @NoSpecialChars()
+    @CustomValidator(noSpecialChars, {message: 'Last name can not contain special chars'})
     public readonly lastName: string;
-    ...
+    
+    @Min(0)
+    @Max(100)
+    public readonly age: number;
 }
 ```
 
-A decorator is just a function that returns a function. In that function we use the `registerDecorator()` function
-that `class-validator` provides us to register our new validator.
-There are multiple ways of doing this. We choose the use of `@ValidatorConstraint` for this article.
-This decorator has to be applied on a class that implements the `ValidatorConstraintInterface` interface.
-For that we need to implement the `validate()` function where we use a regex to test our value.
-In the `defaultMessage` function we can return the message we want to show.
+We have written a `@CustomValidator()` because it's easy to a pass validation function in that.
+The implementation of the `@CustomValidator()` looks like the code sample below. For more information on this, I would
+advice to consult [the docs](https://github.com/typestack/class-validator#custom-validation-decorators)
 
 ```typescript
 import {
     registerDecorator,
+    ValidationArguments,
     ValidationOptions,
-    ValidatorConstraint,
-    ValidatorConstraintInterface,
 } from 'class-validator';
 
-export function NoSpecialChars(validationOptions?: ValidationOptions) {
+export function CustomValidator(validatorFn: Function, options? : ValidationOptions) {
     return function (object: Object, propertyName: string) {
         registerDecorator({
+            name: 'custom',
             target: object.constructor,
             propertyName: propertyName,
-            validator: new RRuleConstraint(),
-            options: validationOptions,
+            options: options,
+            constraints: [],
+            validator: {
+                validate(value: any, args: ValidationArguments) {
+                    return validatorFn(value);
+                }
+            }
         });
     };
-}
-
-@ValidatorConstraint({ name: 'noSpecialChars' })
-class RRuleConstraint implements ValidatorConstraintInterface {
-    public validate(value: string) {
-        const regex = /[\!\@\#\$\%\^\&\*\)\(\+\=\.\<\>\{\}\[\]\:\;\'\"\|\~\`\_]/g;
-        return !regex.test(value);
-    }
-    public defaultMessage(): string {
-        return 'Should not contain special charactes';
-    }
 }
 
 ```
 
 ## Conclusion
 
-That's it folks! We have written some custom logic that we only needed to write once:
-- We have greatly reduced redundant code
-- We saw how easy it was to creat custom validators and create decorators for them
-- We are able to add validators on our classes for typed forms
-- We stayed super close to the Angular api which gives us a lot of flexibility
+That's it folks! We have written some custom logic in order to write less form code in the future.
+- We have less HTML that we need to write in the future
+- We have a consistent way of placing the input and label
+- We have a consistent way of showing validation errors
+- We have clean form classes that we decorate with validators
+- We can write custom decorators and reuse them on the backend
 
 Here you can check out the Stackblitz example:
 
-<iframe src="https://stackblitz.com/edit/angular-ivy-wrdn8k" width="100%"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-ivy-pqriez" width="100%"></iframe>
 
 
