@@ -302,12 +302,12 @@ html, body {
 }
 
 .profile {
-  position: fixed;
-  display: none;
-  width: 15%;
-  top: 130px;
-  z-index: 400;
+
   @media (min-width: 768px) {
+    position: fixed;
+    width: 15%;
+    top: 130px;
+    z-index: 400;
     display: flex;
   }
   flex-direction: column;
@@ -321,12 +321,15 @@ html, body {
     max-width: 150px;
   }
   .hire-me-button {
-    background-color: #2aabbf;
-    color: #fff;
+      background: #cc0033;
+      color: #fff;
+      font-size: 2rem;
+      text-decoration: none;
+      font-weight:200;
+      padding: $gridunit*2 $gridunit*4;
+      border-radius: $gridunit;
     border: none;
     padding: 8px 16px;
-    border-radius: 15px;
-    text-decoration: none;
   }
 }
 .profile-mobile {

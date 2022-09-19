@@ -1,4 +1,354 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-01T17:16:16+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Frontend software architect living in Belgium</title><subtitle></subtitle><entry><title type="html">Routed Angular dialogs</title><link href="http://localhost:4000/routed-angular-dialogs/" rel="alternate" type="text/html" title="Routed Angular dialogs" /><published>2022-08-31T00:00:00+02:00</published><updated>2022-08-31T00:00:00+02:00</updated><id>http://localhost:4000/routed-angular-dialogs</id><content type="html" xml:base="http://localhost:4000/routed-angular-dialogs/"><![CDATA[<p>This article should be a rather short one.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-19T20:21:13+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Frontend software architect living in Belgium</title><subtitle></subtitle><entry><title type="html">Breaking out of the comfort zone</title><link href="http://localhost:4000/breaking-out-of-the-comfort-zone/" rel="alternate" type="text/html" title="Breaking out of the comfort zone" /><published>2022-09-09T00:00:00+02:00</published><updated>2022-09-09T00:00:00+02:00</updated><id>http://localhost:4000/breaking-out-of-the-comfort-zone</id><content type="html" xml:base="http://localhost:4000/breaking-out-of-the-comfort-zone/"><![CDATA[<p>The people that are used to read my articles will quickly realise that this is not the type of articles I generally write.
+Since I’m passionate about this subject, I’m going to write about it anyway. Bear with me, you might take away
+something from it. If not, at least you gave it a shot, right? I’m writing a book as we speak about my life and career as
+a software professional, not sure if I’ll ever publish it, but consider this a very slimmed down version of some chapters of that book.</p>
+
+<p>This article is about personal experiences in my life and career and can be bare, how I struggled with life and how I managed to break free. 
+The reason I’m writing about this is that I think it might help people, sometimes the answer to a happy and fulfilling life is right in front of us.</p>
+
+<p>The people that know me, or at least followed me in the last 7 years, might have experienced a form of silence of me in the last years.
+I used to blog more actively, used to be at conferences and in the frontend community my name was mentioned from time to time. 
+That stopped for a while, and I’ll tell you why later. First let’s go back to the start.</p>
+
+<h3 id="the-beginning-of-my-career">The beginning of my career</h3>
+
+<p>In 2010 my boss called me over to his office and told me my work sucked! Although he wasn’t able to tell me why nor what I did wrong, 
+he seemed to really enjoy telling me that. To give you some context, I was a junior engineer (just left school), and I was the only one doing web development at that company. 
+I did Ruby, PHP, java, C++, C, VB.NET, javascript, photoshop and a bunch of other things. 
+The thing is I was working alone, with no guidance, no mentoring, no coaching. 
+Apparently a customer told my boss there was a bug in my code, and he told him he was going to talk to me, so it wouldn’t happen again.
+When he told me my work sucked, and he couldn’t even tell me why I decided that was not a company I wanted to work for and I quit my job on the spot.</p>
+
+<p>This was one of my first encounters with <strong>Breaking out of the comfort zone</strong>. I felt like crap, and I had no idea what I needed to do, but for some reason this brought me luck.
+It felt good and bad at the same time. I needed to find a job because I needed to pay my rent so there was a level of motivation I didn’t knew before.
+By luck, I met interesting people that convinced me to do consultancy, and a few months later I was a .NET consultant working for a Belgian railways company.
+Yes… I had to learn day and night to get to know the technology, but it gave me a certain drive and working day and night actually gave me more energy than
+it cost me.</p>
+
+<p>2 years later there was a small voice telling me it was better to fail trying then to get rusty, so I decided to become self-employed.
+Since then every move I made in my career made me feel very uncomfortable in the beginning, but then turned out to pay off every time!
+I’m not going to go into every time I broke out of my comfort zone, I’m writing my book for that. But this article is to wake people up.
+Getting out of your comfort zone, will open up doors you wouldn’t expect to. <strong>The more you get out of your comfort zone, the luckier you’ll get</strong>.</p>
+
+<p>7 years ago A colleague of mine called <a href="https://twitter.com/Sh33dafi">Yannick Houbrix</a> asked me to give a talk for the company he worked for. 
+He said it was only for a group of 10 people, and that it was just knowledge sharing. I was scared at first, but since there were only
+ 10 people in front of me I decided to do it. I created a talk about Angular.js components and unidirectional dataflows and I was ready to impress a dozen of people.</p>
+
+<p>It felt uncomfortable in the beginning, and I even felt more uncomfortable when those 10 people turned out to be 100 people (Thanks Yannick! I didn’t get the memo… ;-)). 
+Anyways, I was already there on stage and the talk went quite nice. <strong>Breaking out of that comfort zone</strong> resulted in a Belgian publishing company asking me to perform my first 3 day audit for their
+angular.js code. The more I broke out of that comfort zone, the luckier i got. Opportunities started to present themselves.</p>
+
+<h3 id="becoming-an-international-angular-trainerconsultant">Becoming an international Angular trainer/consultant</h3>
+
+<p>A few weeks later Yannick’s company asked me to do a training in Angular2 (which was the successor of angular.js at the time).
+I decided to jump on the occasion and give my first Angular workshop, I already had experience in doing that in angular.js at the time.
+Giving that training wasn’t uncomfortable but organising a 2-day public workshop in a venue in Ghent weeks later certainly was…
+ What if I wasn’t going to sell those workshops? I would totally fail then, right?! It wasn’t cheap to rent the venue, and I would have had to admit my failure.</p>
+
+<p>I had listened to a talk of <a href="https://www.twitter.com/toddmotto">Todd Motto</a> a few weeks before that, where he explained <strong>nothing was ever achieved in the comfort zone</strong> and I decided to 
+follow my gut and give my own public Angular workshop. 
+Even though people told me I couldn’t, I didn’t just sold one but I sold three public 2-day workshops that month for 8 people per session.
+At the same time there was a famous German Angular training company giving a workshop (also in Ghent), but I listened to my gut and pulled myself out of comfort.</p>
+
+<p>Small sidetrack: Less than a year later that same company asked me to freelance for them and we had an awesome collaboration doing international Angular trainings.</p>
+
+<p>In one of the workshops I hosted in Ghent, I invited <a href="https://www.twitter.com/jvandemo">Jurgen Van de Moere</a> who later turned out to be <a href="https://ng-be.org/">ng-be</a> co-organiser 
+together with <a href="https://twitter.com/samvloeberghs">Sam vloeberghs</a>.</p>
+
+<p>Even though I didn’t knew Jurgen was co-organiser of ng-be, I invited him to my workshop for free because I thought he was an interesting guy (and he is) and since he liked it
+he asked me to give a training at ng-be. Getting out of my comfort zone brought me an opportunity that put me on the map in the Angular community.
+Was it luck? It certainly was partially, but when you stay comfortable, and you are not willing to put yourself out there, it might be very hard for luck to find you.</p>
+
+<p>Years went by, I started a company together with <a href="https://www.twitter.com/kwintenp">Kwinten Pisman</a> called <a href="https://strongbrew.io">StrongBrew</a> 
+and we became international trainers/consultants with focus on Angular and RxJS.</p>
+
+<h3 id="getting-back-into-my-comfort-zone">Getting back into my comfort zone</h3>
+
+<p>First of all, getting out of that comfort zone, and making big jumps in your career has some consequences. It’s not all fun and giggles.
+There is this thing called imposter syndrome I will probably blog about later. There is the feeling that you are hitting a ceiling, that you need
+to do more, be more, etc.. There is stress, crazy hours… It can be exhausting. I had a family that I wasn’t giving enough attention at times.
+I was getting fatter and it was hard to find balance. That’s something you shouldn’t forget. It’s fine to break free and prosper, but <strong>don’t forget to focus on balance</strong>.
+Balance is all. I started working out more, taking more time off and I started to focus more on the quality of life.</p>
+
+<p>While we had 4 awesome years with StrongBrew, COVID-19 happened and Kwinten went to work for StackBlitz. That in combination with my focus
+ change meant the death of StrongBrew. I’m not sorry StrongBrew ceased to exist, it was time for a new chapter.
+I settled working for one client and I started a small company on the side where I gave culinary workshops on ceramic grills.
+That turned out to be quite successful and I was able to focus on that as an (read the quotes) “entrepreneur” on the side.</p>
+
+<p>My marriage fell apart, and I had to settle with seeing the kids for only 50% of the time, and I started to struggle with life.
+I still had a decent income, worked for an awesome client called <a href="https://rosa.be">Rosa</a> which is shaping the future of healthcare.
+In the beginning I worked 4/5th of my time for Rosa and 1/5th I was doing remote audits, code-reviews, technical interviews etc.
+After 2 years of working for rosa I was so comfortable I worked full-time for them. 95% of my time I worked remotely in my office. I didn’t
+do code-reviews anymore and I was basically a developer like everyone else in the company. Before I was always the coach, the architect,
+the tech lead, whatever… I didn’t mind the title, but I could have been replaced by any senior developer. I didn’t provide the value I wanted to.
+I was stuck in my comfort zone… I didn’t had to worry about finding business anymore and I was programming comfortably in my chair, drinking quality coffee
+in my warm and cozy office.</p>
+
+<p>I basically had everything. I was fit, I was able to keep the house after the divorce, my children were healthy, I met a beautiful girlfriend with a great personality.
+Everything was going well in my life and still I had hard time to find happiness. Like a cancer it sneaks up on you. After a while you wake up and
+you realise you are unfulfilled, unmotivated and you are basically agreeing with life, or at least settling with life.</p>
+
+<h3 id="breaking-back-out">Breaking back out</h3>
+
+<p>At a bonfire a friend of me saw the lack of joy in me and asked me to look up <a href="https://twitter.com/TonyRobbins">Tony Robbins</a> who was some kind of life
+coach helping people to become better versions of themselves. I didn’t believe in life coaches, and I was sceptical at first but at a bored Netflix evening
+I looked him up, and I haven’t stopped looking/reading since then. He made me realise some things:</p>
+<ul>
+  <li>Making money is science, it’s not the most important thing. <strong>Being happy… That’s art!</strong></li>
+  <li>Helping/coaching/mentoring people and companies is what makes me happy. I wanted to have an impact, bring value…</li>
+  <li>I needed to break out of my comfort zone once more to achieve it</li>
+</ul>
+
+<p>I decided to break free again, but this time I would find a better balance. No more business flights, no more crazy hours but I wanted to chase discomfort.
+I decided to leave Rosa. A decision I made with a lot of pain in my heart because they became a family and it has been the most awesome company
+I had ever worked for, but staying with Rosa was not an option.
+I related Rosa with comfort, getting stuck, and it felt like a golden cage to me in that moment in my life.</p>
+
+<p>I decided to make a change in my life three months ago and by getting out of my comfort zone at a daily basis things changed drastically.
+I signed a contract as frontend software architect at DHL aviation, where I have to go to the office a few times a week.
+It’s a big commute and it’s a huge company so it won’t be that comfortable but I can bring value there. I can help them set up a clean architecture, I can coach
+people to become better developers and actually make a difference.</p>
+
+<p>I also started blogging again where I hope I can bring value by sharing experience. Not just technical experience but also experience in life and career.</p>
+
+<p>The last thing that I decided to do, was creating another workshop. Not just any workshop, but basically my 6-7 years of Angular experience
+thrown into a one-day rollercoaster of Best Practices. I worked with so many companies, so many people. I have been in over 50 (maybe even 100) projects.
+I have so much to share and I believe this is something I can bring value with.  It would be my only workshop. And I will contribute to it every month, keeping it up to date.
+I don’t know what my path will bring me but that’s my focus for now.</p>
+
+<p>I had broken out of my comfort zone once again and already things are getting brighter. 
+I’ve already sold my <a href="https://brecht.io/angular-best-practices-workshop">Angular Best Practices Workshop</a> to 2 companies and there are some exciting things happening.
+For some reason I’m able to ignore negative events in my life and focus on positive things. I found my zest for life back
+and even though my life isn’t a pony camp, I’m happy and I have never been so motivated.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>I’ve written this article with one reason and one reason only. Earning money, having crazy titles in big companies isn’t what matters.
+Making sure you are happy is way more important and if you are happy in your comfort zone, you could just stay there. 
+But if you are not happy anymore and you feel there is no way forward, in your career or life in general… Sometimes making the uncomfortable
+decisions will bring you the best chances.</p>
+
+<p>I need something to look forward to and I want to live my life fully. I want to bring value and have the feeling
+I made a difference. I know that getting out of my comfort zone will bring me chances and for me it’s better to take the occasional bad
+decision, instead of not taking any decisions at all.</p>
+
+<h3 id="thanks-for-the-reviewers">Thanks for the reviewers</h3>
+<ul>
+  <li><a href="https://twitter.com/aaron_delange">Aaron Delange</a></li>
+  <li><a href="https://twitter.com/alvaro_ahc">Álvaro Herrero</a></li>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+  <li><a href="https://twitter.com/rsinis">Raul Sinisterra</a></li>
+</ul>]]></content><author><name>brechtbilliet</name></author><summary type="html"><![CDATA[The people that are used to read my articles will quickly realise that this is not the type of articles I generally write. Since I’m passionate about this subject, I’m going to write about it anyway. Bear with me, you might take away something from it. If not, at least you gave it a shot, right? I’m writing a book as we speak about my life and career as a software professional, not sure if I’ll ever publish it, but consider this a very slimmed down version of some chapters of that book.]]></summary></entry><entry><title type="html">Conditional api urls in Angular with injection tokens</title><link href="http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens/" rel="alternate" type="text/html" title="Conditional api urls in Angular with injection tokens" /><published>2022-09-08T00:00:00+02:00</published><updated>2022-09-08T00:00:00+02:00</updated><id>http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens</id><content type="html" xml:base="http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens/"><![CDATA[<h2 id="using-envjs-files">Using env.js files</h2>
+<p>When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one
+we connect to in development. This means that this api url should be configurable at some point.
+There are multiple ways of working with environment variables in Angular code-bases.
+I like to choose for a simple <code class="language-plaintext highlighter-rouge">env.js</code> file that can easily be replaced by the continuous integration (<a href="https://www.jvandemo.com/how-to-use-environment-variables-to-configure-your-angular-application-without-a-rebuild/">read this article</a>).
+This way the <code class="language-plaintext highlighter-rouge">env.js</code> file is never really part of the build and can be replaced at all times.
+This file could look like this:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/env.js</span>
+<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:1234/api</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">})(</span><span class="k">this</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>As we can see above we use an immediately invoked function expression (iife) where we just set these environment variables
+directly on the window object. This approach would not work for server-side rendered applications but that’s beyond the goal of this article.</p>
+
+<h3 id="how-do-we-achieve-a-working-solution">How do we achieve a working solution?</h3>
+
+<p>What we need to do in the <code class="language-plaintext highlighter-rouge">angular.json</code> file is to add this <code class="language-plaintext highlighter-rouge">env.js</code> file to the <code class="language-plaintext highlighter-rouge">options.assets</code> array of the <code class="language-plaintext highlighter-rouge">build</code> target, so it will be available after
+compilation time. We also need to import it into the <code class="language-plaintext highlighter-rouge">index.html</code> of our application.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;head&gt;</span>
+    <span class="c">&lt;!-- Load environment variables --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"env.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  ...
+</code></pre></div></div>
+
+<p>What we did so far is we made sure the variable <code class="language-plaintext highlighter-rouge">apiUrl</code> will be available in the <code class="language-plaintext highlighter-rouge">__env</code> property of the <code class="language-plaintext highlighter-rouge">window</code> object which is available everywhere in the frontend.
+Calling the window directly in Angular is seen as a <strong>bad practice</strong> and calling <code class="language-plaintext highlighter-rouge">window['__env'].apiUrl</code> everywhere is even worse.</p>
+
+<p>To consume the <code class="language-plaintext highlighter-rouge">apiUrl</code> in our Angular application in a proper way, we need to create an <code class="language-plaintext highlighter-rouge">InjectionToken</code> that we can use for dependency injection.
+Let’s go ahead and create an <code class="language-plaintext highlighter-rouge">injection-tokens.ts</code> file that exposes the <code class="language-plaintext highlighter-rouge">API_URL</code> token.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/injection-tokens.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">InjectionToken</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/core</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">API_URL</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We have our environment variables living on our <code class="language-plaintext highlighter-rouge">window</code> object and we have an injection token that we will use to inject that in any constructor.
+The last thing that we need to do tell Angular that injecting the <code class="language-plaintext highlighter-rouge">API_URL</code> token into a constructor should retrieve the <code class="language-plaintext highlighter-rouge">apiUrl</code> living on the <code class="language-plaintext highlighter-rouge">__env</code> property of the
+<code class="language-plaintext highlighter-rouge">window</code> object. To do that we have to add some logic to the <code class="language-plaintext highlighter-rouge">providers</code> property of the <code class="language-plaintext highlighter-rouge">@NgModule()</code> decorator of our <code class="language-plaintext highlighter-rouge">AppModule</code>.
+We provide the <code class="language-plaintext highlighter-rouge">API_URL</code> in dthe provide property, we use a factory where <code class="language-plaintext highlighter-rouge">Document</code> is injected and we use <code class="language-plaintext highlighter-rouge">document.defaultView</code> which refers to the <code class="language-plaintext highlighter-rouge">window</code> object
+to retrieve the <code class="language-plaintext highlighter-rouge">apiUrl</code> living in the <code class="language-plaintext highlighter-rouge">__env</code> property. Since we inject <code class="language-plaintext highlighter-rouge">Document</code> we need to add <code class="language-plaintext highlighter-rouge">DOCUMENT</code> to the deps property for it to become available.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="p">...</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">provide</span><span class="p">:</span> <span class="nx">API_URL</span><span class="p">,</span>
+      <span class="na">useFactory</span><span class="p">:</span> <span class="p">(</span><span class="na">document</span><span class="p">:</span> <span class="nx">Document</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">[</span><span class="dl">'</span><span class="s1">__env</span><span class="dl">'</span><span class="p">].</span><span class="nx">apiUrl</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">DOCUMENT</span><span class="p">],</span>
+    <span class="p">},</span>
+  <span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>This is great! Now in our services we can just inject the <code class="language-plaintext highlighter-rouge">API_URL</code> with the <code class="language-plaintext highlighter-rouge">@Inject()</code> decorator, and our service knows exactly where to send its XHR calls to.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span><span class="p">,</span> <span class="nx">Inject</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./injection-tokens</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="extra-problem">Extra problem</h2>
+
+<p>The essence of this article is not to explain environment variables nor InjectionTokens. Let’s dive a bit deeper than that.</p>
+
+<p>A short while ago a client of mine had this specific use-case:
+They had an entire application that was already running in production.
+When their product grew they realised that there was a use-case where they wanted that exact application (the exact same logic) but they needed it to connect to another <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
+
+<p>The first thing that would come to mind, is to change the value of <code class="language-plaintext highlighter-rouge">apiUrl</code> in our <code class="language-plaintext highlighter-rouge">env.js</code> but the thing was they also needed the previous
+flow to keep on working. They actually needed two flows of the same application that both had their own endpoint. Flow one needed to consume the old <code class="language-plaintext highlighter-rouge">apiUrl</code> and flow two needed to consume
+the other <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
+
+<h3 id="lets-try-to-implement-this">Let’s try to implement this:</h3>
+
+<p>Since we don’t want to touch the current routing flow we will pass a QueryParam called <code class="language-plaintext highlighter-rouge">secondary=true</code> to the url of our application. If that QueryParam exists we don’t want to consume
+<code class="language-plaintext highlighter-rouge">window['__env'].apiUrl</code> but <code class="language-plaintext highlighter-rouge">window['__env'].secondaryApiUrl</code> and if it doesn’t exist we want to use <code class="language-plaintext highlighter-rouge">window['__env'].apiUrl</code>.</p>
+
+<p>Let’s add the <code class="language-plaintext highlighter-rouge">secondaryApiUrl</code> to the <code class="language-plaintext highlighter-rouge">env.js</code> file and update the <code class="language-plaintext highlighter-rouge">injection-tokens.ts</code> and <code class="language-plaintext highlighter-rouge">app.module.ts</code> accordingly.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/env.js</span>
+<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:1234/api</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:4321/api</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">})(</span><span class="k">this</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/injection-tokens.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">InjectionToken</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/core</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">API_URL</span><span class="dl">'</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">SECONDARY_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">SECONDARY_API_URL</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/app.module.ts</span>
+<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="p">...</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">provide</span><span class="p">:</span> <span class="nx">API_URL</span><span class="p">,</span>
+      <span class="na">useFactory</span><span class="p">:</span> <span class="p">(</span><span class="na">document</span><span class="p">:</span> <span class="nx">Document</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">[</span><span class="dl">'</span><span class="s1">__env</span><span class="dl">'</span><span class="p">].</span><span class="nx">apiUrl</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">DOCUMENT</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">provide</span><span class="p">:</span> <span class="nx">SECONDARY_API_URL</span><span class="p">,</span>
+      <span class="na">useFactory</span><span class="p">:</span> <span class="p">(</span><span class="na">document</span><span class="p">:</span> <span class="nx">Document</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">[</span><span class="dl">'</span><span class="s1">__env</span><span class="dl">'</span><span class="p">].</span><span class="nx">secondaryApiUrl</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">DOCUMENT</span><span class="p">],</span>
+    <span class="p">},</span>
+  <span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<h3 id="how-will-we-decide-which-apiurl-to-take">How will we decide which apiUrl to take?</h3>
+
+<p>In our <code class="language-plaintext highlighter-rouge">FooService</code> we could inject both the <code class="language-plaintext highlighter-rouge">API_URL</code> and the <code class="language-plaintext highlighter-rouge">SECONDARY_API_URL</code> together with the <code class="language-plaintext highlighter-rouge">ActivatedRoute</code> but
+that seems like a lot of redundant code to implement in every service.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span>
+    <span class="p">@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">,</span>
+    <span class="p">@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">secondaryApiUrl</span><span class="p">,</span>
+
+    <span class="p">){</span>
+      <span class="kd">const</span> <span class="nx">conditionalApiUrl</span> <span class="o">=</span> <span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">.</span><span class="nx">queryParams</span><span class="p">.</span><span class="nx">secondary</span>
+      <span class="p">?</span> <span class="nx">secondaryApiUrl</span>
+      <span class="p">:</span> <span class="nx">apiUrl</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following code would be way nicer and that’s what we will implement in a minute:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span><span class="p">,</span> <span class="nx">Inject</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./injection-tokens</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+
+ <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">CONDITIONAL_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
+   <span class="c1">// console.log(apiUrl);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this to work we need to create a new InjectionToken called <code class="language-plaintext highlighter-rouge">CONDITIONAL_API_URL</code> that will determine
+which api url to choose. <code class="language-plaintext highlighter-rouge">CONDITIONAL_API_URL</code> is just a token that will use the <code class="language-plaintext highlighter-rouge">inject</code> function of Angular to inject
+our 3 dependencies and will decide which api url to use based on the existence of the <code class="language-plaintext highlighter-rouge">secondary</code> QueryParam.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">inject</span><span class="p">,</span> <span class="nx">InjectionToken</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ActivatedRoute</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/router</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">API_URL</span><span class="dl">'</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">SECONDARY_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="dl">'</span><span class="s1">SECONDARY_API_URL</span><span class="dl">'</span>
+<span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="p">(</span><span class="dl">'</span><span class="s1">CONDITIONAL_API_URL</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">factory</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">activatedRoute</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">ActivatedRoute</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">.</span><span class="nx">queryParams</span><span class="p">.</span><span class="nx">secondary</span>
+      <span class="p">?</span> <span class="nx">secondaryApiUrl</span>
+      <span class="p">:</span> <span class="nx">apiUrl</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>There is no need to provide <code class="language-plaintext highlighter-rouge">CONDITIONAL_API_URL</code>, we can just inject it in the <code class="language-plaintext highlighter-rouge">FooService</code> as we just shown.
+Every time the application is loaded with the <code class="language-plaintext highlighter-rouge">secondary</code> queryParam in the url it will use the <code class="language-plaintext highlighter-rouge">SECONDARY_API_URL</code>.
+Otherwise it will use the <code class="language-plaintext highlighter-rouge">API_URL</code>;</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>InjectionTokens are a powerful thing and combining them with the <code class="language-plaintext highlighter-rouge">inject()</code> function of Angular (service locator pattern)
+we can combine tokens and put functionality in them. For more information on the <code class="language-plaintext highlighter-rouge">inject()</code> function of Angular, take a
+look at <a href="https://kevinkreuzer.medium.com/angular-inject-33c6ce8cfd07">this article</a>.</p>
+
+<p><a href="https://stackblitz.com/edit/angular-ivy-byqm8u">Here</a> is a stackblitz example where we can find the source code.
+<strong>Note:</strong> external javascript files in those stackblitz projects are not possible at the time of writing this.
+That’s why we have added the contents of the <code class="language-plaintext highlighter-rouge">env.js</code> file directly into the <code class="language-plaintext highlighter-rouge">index.html</code>.</p>
+
+<h3 id="thanks-for-the-reviewers">Thanks for the reviewers</h3>
+
+<ul>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+  <li><a href="https://twitter.com/jvandemo">Jurgen Van de Moere</a></li>
+</ul>
+
+<p>Thanks, <a href="https://twitter.com/wim_holvoet">Wim Holvoet</a> for the idea of using injection tokens.</p>]]></content><author><name>brechtbilliet</name></author><summary type="html"><![CDATA[Using env.js files When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one we connect to in development. This means that this api url should be configurable at some point. There are multiple ways of working with environment variables in Angular code-bases. I like to choose for a simple env.js file that can easily be replaced by the continuous integration (read this article). This way the env.js file is never really part of the build and can be replaced at all times. This file could look like this:]]></summary></entry><entry><title type="html">Routed Angular dialogs</title><link href="http://localhost:4000/routed-angular-dialogs/" rel="alternate" type="text/html" title="Routed Angular dialogs" /><published>2022-08-31T00:00:00+02:00</published><updated>2022-08-31T00:00:00+02:00</updated><id>http://localhost:4000/routed-angular-dialogs</id><content type="html" xml:base="http://localhost:4000/routed-angular-dialogs/"><![CDATA[<p>This article should be a rather short one.
 It’s about how we can create dialogs in Angular. Using dialogs in Angular can be tackled in complex ways but can be easy as well.
 When I started out with Angular I created this <a href="https://blog.brecht.io/Modals-in-angular2/">article</a>. This is already 6 years ago
 at the time of writing this, and I believe there are better solutions now. Come to think of it… There already were.</p>
@@ -2415,284 +2765,4 @@ I couldn’t have done it without you!</p>
 <ul>
   <li><a href="https://twitter.com/beeman_nl">@beeman_nl</a></li>
   <li><a href="https://twitter.com/mrjameshenry">@MrJamesHenry</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><category term="nx" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry><entry><title type="html">Safe HTTP calls with RxJS</title><link href="http://localhost:4000/safe-http-calls-with-rxjs/" rel="alternate" type="text/html" title="Safe HTTP calls with RxJS" /><published>2018-10-24T00:00:00+02:00</published><updated>2018-10-24T00:00:00+02:00</updated><id>http://localhost:4000/safe-http-calls-with-rxjs</id><content type="html" xml:base="http://localhost:4000/safe-http-calls-with-rxjs/"><![CDATA[<p>Hi there, since it’s very busy lately this will probably be my one of my shortest articles ever.
-Maybe that’s a good thing, because now you don’t have an excuse not to read it. It’s short, compact
-and maybe you will learn a thing or two.</p>
-
-<h2 id="the-problem">The problem</h2>
-
-<p>The article is all about making sure our HTTP calls don’t die on bad connections, since strangely enough, <strong>404 responses can kill your application when using RxJS</strong>.</p>
-
-<p>Remember that RxJS observables have 3 types of events right?</p>
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">next</code>: passing in a new value into the observable</li>
-  <li><code class="language-plaintext highlighter-rouge">error</code>: when an error occurs</li>
-  <li><code class="language-plaintext highlighter-rouge">complete</code>: When the observable is completed</li>
-</ul>
-
-<p>We should not forget that <strong>an Error event will actually stop the observable</strong>. It will cease to exist.</p>
-
-<p>You might say: “That’s not that bad, we’ll just create a new one every time we want to fetch data”.</p>
-
-<p>When you are approaching your application the <em>reactive way</em>, this scenario might be problematic:
-Imagine a typeahead search where we want to retrieve results for every input value. We have an observable of searchterms and we trigger the
-HTTP request for every value using a <code class="language-plaintext highlighter-rouge">switchMap</code>.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// this observable contains the values</span>
-<span class="c1">// of what the user is searching for</span>
-<span class="c1">// over time</span>
-<span class="kd">const</span> <span class="nx">searchTerm$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">;</span>
-
-<span class="c1">// when the term receives a new value...</span>
-<span class="c1">// go fetch some data</span>
-<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">))</span>
-<span class="p">)</span>
-
-<span class="c1">// subscribe to the observable to start listening</span>
-<span class="nx">results$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">response</span><span class="p">:</span> <span class="nx">Result</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
-<span class="p">})</span>
-</code></pre></div></div>
-<p>This all works fine, until an error happens in the observable. This could come from a bad connection, server down-time or anything that went wrong during the HTTP request (500, 404, …) 
-If the user is having a bad connection which might result in a <code class="language-plaintext highlighter-rouge">404</code>, the observable will stop and the application will be broken. The user can search for results as much as he or she wants, the HTTP calls will never happen again.</p>
-
-<h2 id="catcherror">catchError</h2>
-
-<p>We could use the <code class="language-plaintext highlighter-rouge">catchError</code> operator that will basically catch the error for us, and return a brand new observable(containing the error).
-That observable will have the error as a value, instead of throwing it again as an error.
-That way we could actually show the user a decent message.
-This might look something like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-        <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="c1">// return an observable with the error inside</span>
-            <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="nx">results$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span>
-    <span class="p">(</span><span class="nx">response</span><span class="p">:</span> <span class="nx">Result</span><span class="p">[]</span> <span class="o">|</span> <span class="nx">HttpErrorResponse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="nx">response</span> <span class="k">instanceof</span> <span class="nx">HttpErrorResponse</span><span class="p">){</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">oh no:(</span><span class="dl">'</span><span class="p">);</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">do something fancy</span><span class="dl">'</span><span class="p">);</span>
-    <span class="p">});</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<p>Ps: I’m not trying to say that this is the best idea to catch errors. I’m just showing you around some basics.</p>
-
-<p>Do note that the <code class="language-plaintext highlighter-rouge">catchError</code> operator is applied to the result observable that <code class="language-plaintext highlighter-rouge">fetchData()</code> returns, and not added as the second operator of the first pipe. 
-From the moment an observable receives an error, it will die… That’s why it’s important to catch the error on the inner observable.</p>
-
-<h2 id="retrywhen">retryWhen</h2>
-
-<p>Ok, great! The application won’t break anymore, but now imagine the following scenario: Our user is sitting in the train and drives through a tunnel. The connection is gone for a few seconds and the user won’t get results.</p>
-
-<p>We could fix that by telling RxJS to retry a few times</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-        <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="nx">retryWhen</span><span class="p">(</span><span class="nx">e$</span> <span class="o">=&gt;</span> <span class="nx">e$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-                <span class="c1">// try again after 2 seconds</span>
-                <span class="nx">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
-                <span class="c1">// stop trying after 5 times</span>
-                <span class="nx">take</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="c1">// still keep the observable alive if</span>
-            <span class="c1">// the first 5 times fail</span>
-            <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<p>You can find more information about <code class="language-plaintext highlighter-rouge">retryWhen</code><a href="https://www.learnrxjs.io/operators/error_handling/retrywhen.html">here</a></p>
-
-<h2 id="using-the-online-event">Using the online event</h2>
-
-<p>Even though this is a good solution, there is room for improvement. A great choice is to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events">online</a> event from HTML5 to tell the browser to retry when the user regains internet connection. It’s even shorter than before and it’s super elegant</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-        <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="nx">retryWhen</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">'</span><span class="s1">online</span><span class="dl">'</span><span class="p">))</span>
-            <span class="c1">// still keep the observable alive if</span>
-            <span class="c1">// the server would return a different</span>
-            <span class="c1">// HTTP error</span>
-            <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>RxJS gives us great control over HTTP calls! If we know how error handling works it becomes a breeze to take our HTTP calls to the next level.
-This doesn’t only apply to typeahead searches but to every observable where we combine an existing stream with an error-affected one like HTTP. For instance: this can also happen in NgRx effects or with the angular router.</p>
-
-<p>There, I told you it would be short, I hope you learned something though.</p>
-
-<p>Also be sure to check this article: <a href="https://blog.angularindepth.com/power-of-rxjs-when-using-exponential-backoff-a4b8bde276b0">Power of RxJS when using exponential backoff</a></p>
-
-<h2 id="special-thanks">Special thanks</h2>
-
-<ul>
-  <li><a href="https://twitter.com/AmarildoKurtaj">@AmarildoKurtaj</a> The last example was based on his idea</li>
-</ul>
-
-<p>Reviewers:</p>
-<ul>
-  <li><a href="https://twitter.com/fmalcher01">Ferdinand Malcher</a></li>
-  <li><a href="https://twitter.com/FabianGosebrink">Fabian Gosebrink</a></li>
-  <li><a href="https://twitter.com/tim_deschryver">Tim deschryver</a></li>
-  <li><a href="https://twitter.com/webdave_de">David Müllerchen</a></li>
-  <li><a href="https://twitter.com/rubenverm">Ruben Vermeulen</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="RxJS" /><summary type="html"><![CDATA[How to make sure our ajax calls are being executed on bad connections]]></summary></entry><entry><title type="html">Building a safe autocomplete operator in RxJS</title><link href="http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs/" rel="alternate" type="text/html" title="Building a safe autocomplete operator in RxJS" /><published>2018-07-13T00:00:00+02:00</published><updated>2018-07-13T00:00:00+02:00</updated><id>http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs</id><content type="html" xml:base="http://localhost:4000/building-a-safe-autocomplete-operator-with-rxjs/"><![CDATA[<p>A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code.
-This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).</p>
-
-<p>When creating a standard autocomplete with RxJS we most likely implement a <code class="language-plaintext highlighter-rouge">debounceTime</code> operator to throttle the text that the user is typing into the autocomplete and we use a <code class="language-plaintext highlighter-rouge">switchMap</code> operator instead of a <code class="language-plaintext highlighter-rouge">mergeMap</code> operator to abort previous calls.</p>
-
-<p>The implementation of this autocomplete might look like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">term$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">term$</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="c1">// wait until the user stops typing for a second</span>
-        <span class="nx">debounceTime</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
-        <span class="c1">// higher order observable, abort previous</span>
-        <span class="c1">// call if still busy</span>
-        <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> <span class="nx">getAutocompleteSuggestions</span><span class="p">(</span><span class="nx">term</span><span class="p">))</span>
-    <span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="the-problem">The problem</h2>
-
-<p>When the user stops typing for 1 second, the browser will create a new XHR call. From that moment on, when the user types again and a previous XHR call is still busy, the browser will abort that XHR call to avoid racing conditions, and create a new XHR call. This is due to the <code class="language-plaintext highlighter-rouge">switchMap</code> operator since it will unsubscribe from the previous observable.</p>
-
-<p>Although that’s great, there is one problem though. What if the user starts typing again when an XHR call is still busy? 
-Since we have implemented a <code class="language-plaintext highlighter-rouge">debounceTime</code> operator, the call will not be aborted until one second has passed.
-In that period of time new results might be returned and showed to the user, which might not be what we want since <strong>they are not relevant anymore</strong>.</p>
-
-<p>What we want is that the XHR call gets aborted from the moment the user starts typing again, we don’t want to wait for a second.
-This sounds like an ideal scenario to write our custom operator.
-But, before creating our own operator, let’s just combine some operators to get the job done.</p>
-
-<p>A possible solution for this problem is using a <code class="language-plaintext highlighter-rouge">takeUntil</code> operator on the observable that will trigger the XHR call.
-The <code class="language-plaintext highlighter-rouge">takeUntil</code> operator will complete the observable as soon as it gets a value. We want to complete (and therefore abort) the observable when the user types again. With that knowledge we can write something like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">term$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">term$</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">debounceTime</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
-        <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-            <span class="nx">getAutocompleteSuggestions</span><span class="p">(</span><span class="nx">term</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-                    <span class="nx">takeUntil</span><span class="p">(</span><span class="nx">term$</span><span class="p">)</span> <span class="c1">// this still won't work</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-</code></pre></div></div>
-
-<p>Sadly, this does not work yet.</p>
-
-<p>Our <code class="language-plaintext highlighter-rouge">term$</code> observable is a <code class="language-plaintext highlighter-rouge">BehaviorSubject</code> for two reasons:</p>
-<ul>
-  <li>We want to pass an initial value to the subject</li>
-  <li>A <code class="language-plaintext highlighter-rouge">BehaviorSubject</code> is a <code class="language-plaintext highlighter-rouge">ReplaySubject(1)</code> behind the scenes that keeps track of the last value. This is important if we want to subscribe to that observable in a later stage (which is kinda what we do with the <code class="language-plaintext highlighter-rouge">takeUntil</code> operator).</li>
-</ul>
-
-<p>Because the <code class="language-plaintext highlighter-rouge">term$</code> observable is keeping track of the last value, the <code class="language-plaintext highlighter-rouge">takeUntil</code> operator will always have a value, resulting in the fact that every XHR call gets aborted immediately. This is not what we want.
-We want to skip one value of the <code class="language-plaintext highlighter-rouge">term$</code> observable every time.
-We can achieve that with the <code class="language-plaintext highlighter-rouge">skip</code> operator as shown in the following example:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">term$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">term$</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">debounceTime</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
-        <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-            <span class="nx">getAutocompleteSuggestions</span><span class="p">(</span><span class="nx">term</span><span class="p">)</span>
-                <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-                    <span class="nx">takeUntil</span><span class="p">(</span>
-                        <span class="c1">//skip 1 value</span>
-                        <span class="nx">term$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-                    <span class="p">)</span>
-                        
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-</code></pre></div></div>
-
-<p>Now the following scenario works:</p>
-<ul>
-  <li>User types ‘l’</li>
-  <li>Application waits for a second</li>
-  <li>Application creates an XHR call</li>
-  <li>User types ‘lu’</li>
-  <li>Even though the XHR call wasn’t finished yet it gets aborted immediately (it doesn’t wait for a second anymore to abort that XHR call)</li>
-</ul>
-
-<p>Because of that the user never gets irrelevant data on its screen.</p>
-
-<h2 id="extracting-the-logic-into-a-custom-operator">Extracting the logic into a custom operator</h2>
-
-<p>We don’t want to write this logic every time, so let’s extract this logic into a custom written operator.</p>
-
-<p>Turns out that creating custom operators is super easy. An operator is just a function that returns a function that gets the source observable.</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">autocomplete</span> <span class="o">=</span> <span class="p">(</span><span class="cm">/* additional parameters */</span><span class="p">)</span> <span class="o">=&gt;</span> 
-    <span class="p">(</span><span class="nx">source$</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">source$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="cm">/* do stuff */</span> <span class="p">)</span>
-</code></pre></div></div>
-
-<p>We can pass the <code class="language-plaintext highlighter-rouge">time</code> and <code class="language-plaintext highlighter-rouge">selector</code> function as parameters and use the operators we have written to create our own custom operator.
-The operator looks like this:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">autocomplete</span> <span class="o">=</span> <span class="p">(</span><span class="nx">time</span><span class="p">,</span> <span class="nx">selector</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">source$</span><span class="p">)</span> <span class="o">=&gt;</span>
-  <span class="nx">source$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">debounceTime</span><span class="p">(</span><span class="nx">time</span><span class="p">),</span>
-    <span class="nx">switchMap</span><span class="p">((...</span><span class="nx">args</span><span class="p">:</span> <span class="kr">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="nx">selector</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="nx">takeUntil</span><span class="p">(</span>
-                <span class="nx">source$</span>
-                    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-                        <span class="nx">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-  <span class="p">)</span>
-</code></pre></div></div>
-
-<p>Using our operator is super easy:</p>
-
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">term$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">term$</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">autocomplete</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nx">term</span> <span class="o">=&gt;</span> <span class="nx">getAutocompleteSuggestions</span><span class="p">(</span><span class="nx">term</span><span class="p">))</span>
-    <span class="p">)</span>
-</code></pre></div></div>
-
-<p>You can find the sourcecode on stackblitz.</p>
-<iframe src="https://stackblitz.com/edit/safe-switchmap?embed=1&amp;file=src/app/app.component.ts" style="width: 100%; height: 500px"></iframe>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>The combination of <code class="language-plaintext highlighter-rouge">debounceTime</code> and <code class="language-plaintext highlighter-rouge">switchMap</code> don’t always cover everything. Showing irrelevant data to our users might not be what we want and creating our own operators is super easy! I hope you enjoyed the article.</p>
-
-<h2 id="special-thanks">Special thanks</h2>
-
-<p>A special thanks for the awesome reviewers:</p>
-
-<ul>
-  <li>Nicholas Jamieson <a href="https://twitter.com/ncjamieson">@ncjamieson</a></li>
-  <li>Philippe Martin <a href="https://twitter.com/feloy2">@feloy2</a></li>
-  <li>Jan-Niklas Wortmann <a href="https://twitter.com/niklas_wortmann">@niklas_wortmann</a></li>
-  <li>Maarten Tibau <a href="https://twitter.com/maartentibau">@maartentibau</a></li>
-  <li>Kwinten Pisman <a href="https://twitter.com/kwintenp">@kwintenp</a></li>
-</ul>]]></content><author><name>brechtbilliet</name></author><category term="RxJS" /><summary type="html"><![CDATA[A well-known use case of RxJS is creating a simple autocomplete search in only a few lines of code. This article is not just about creating our own autocomplete operator, we will create an autocomplete operator that is completely safe (we will cover the perception of safe later in this article).]]></summary></entry></feed>
+</ul>]]></content><author><name>brechtbilliet</name></author><category term="brechtbilliet" /><category term="Angular" /><category term="nx" /><category term="architecture" /><summary type="html"><![CDATA[About this article]]></summary></entry></feed>

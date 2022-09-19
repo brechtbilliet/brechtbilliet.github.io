@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="User-agent: *" />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Conditional api urls in Angular with injection tokens | Frontend software architect living in Belgium</title>
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Conditional api urls in Angular with injection tokens" />
+<meta name="author" content="brechtbilliet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using env.js files When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one we connect to in development. This means that this api url should be configurable at some point. There are multiple ways of working with environment variables in Angular code-bases. I like to choose for a simple env.js file that can easily be replaced by the continuous integration (read this article). This way the env.js file is never really part of the build and can be replaced at all times. This file could look like this:" />
+<meta property="og:description" content="Using env.js files When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one we connect to in development. This means that this api url should be configurable at some point. There are multiple ways of working with environment variables in Angular code-bases. I like to choose for a simple env.js file that can easily be replaced by the continuous integration (read this article). This way the env.js file is never really part of the build and can be replaced at all times. This file could look like this:" />
+<link rel="canonical" href="http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens/" />
+<meta property="og:url" content="http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens/" />
+<meta property="og:site_name" content="Frontend software architect living in Belgium" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-09-08T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Conditional api urls in Angular with injection tokens" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"brechtbilliet"},"dateModified":"2022-09-08T00:00:00+02:00","datePublished":"2022-09-08T00:00:00+02:00","description":"Using env.js files When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one we connect to in development. This means that this api url should be configurable at some point. There are multiple ways of working with environment variables in Angular code-bases. I like to choose for a simple env.js file that can easily be replaced by the continuous integration (read this article). This way the env.js file is never really part of the build and can be replaced at all times. This file could look like this:","headline":"Conditional api urls in Angular with injection tokens","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens/"},"url":"http://localhost:4000/conditional-api-urls-in-angular-with-injection-tokens/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Frontend software architect living in Belgium" /></head>
+<body>
+<section class="app">
+    <div class="app__nav-wrapper">
+        <nav class="app__menu">
+            <button class="app__menu-close-btn">
+                <span>CLOSE</span>&nbsp;
+                <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+            <ul>
+                <li>
+                    <a href="https://brecht.io">
+                        <span class="app__menu-item-label">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/about">
+                        <span class="app__menu-item-label">About</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/services">
+                        <span class="app__menu-item-label">Services</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/angular-best-practices-training">
+                        <span class="app__menu-item-label">Angular Best Practices Training</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://blog.brecht.io" class="link--active">
+                        <span class="app__menu-item-label">Blog</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/contact">
+                        <span class="app__menu-item-label">Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <button class="app__menu-mobile-btn" id="menu-button">
+        <i class="fa-solid fa-bars"></i>
+        &nbsp;MENU
+    </button>
+
+    <div id="container__wrapper">
+        <div>
+            <header class="blog__header">
+                <div class="page__wrapper">
+                </div>
+            </header>
+            <main aria-label="Content">
+                <div class="blog">
+                    <div class="page__wrapper page__wrapper-flex">
+                        <div class="page__wrapper-left">
+                            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Conditional api urls in Angular with injection tokens</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="2022-09-08T00:00:00+02:00" itemprop="datePublished">Sep 8, 2022
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Brecht Billiet</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="using-envjs-files">Using env.js files</h2>
+<p>When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one
+we connect to in development. This means that this api url should be configurable at some point.
+There are multiple ways of working with environment variables in Angular code-bases.
+I like to choose for a simple <code class="language-plaintext highlighter-rouge">env.js</code> file that can easily be replaced by the continuous integration (<a href="https://www.jvandemo.com/how-to-use-environment-variables-to-configure-your-angular-application-without-a-rebuild/">read this article</a>).
+This way the <code class="language-plaintext highlighter-rouge">env.js</code> file is never really part of the build and can be replaced at all times.
+This file could look like this:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/env.js</span>
+<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:1234/api</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">})(</span><span class="k">this</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>As we can see above we use an immediately invoked function expression (iife) where we just set these environment variables
+directly on the window object. This approach would not work for server-side rendered applications but that’s beyond the goal of this article.</p>
+
+<h3 id="how-do-we-achieve-a-working-solution">How do we achieve a working solution?</h3>
+
+<p>What we need to do in the <code class="language-plaintext highlighter-rouge">angular.json</code> file is to add this <code class="language-plaintext highlighter-rouge">env.js</code> file to the <code class="language-plaintext highlighter-rouge">options.assets</code> array of the <code class="language-plaintext highlighter-rouge">build</code> target, so it will be available after
+compilation time. We also need to import it into the <code class="language-plaintext highlighter-rouge">index.html</code> of our application.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;head&gt;</span>
+    <span class="c">&lt;!-- Load environment variables --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"env.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  ...
+</code></pre></div></div>
+
+<p>What we did so far is we made sure the variable <code class="language-plaintext highlighter-rouge">apiUrl</code> will be available in the <code class="language-plaintext highlighter-rouge">__env</code> property of the <code class="language-plaintext highlighter-rouge">window</code> object which is available everywhere in the frontend.
+Calling the window directly in Angular is seen as a <strong>bad practice</strong> and calling <code class="language-plaintext highlighter-rouge">window['__env'].apiUrl</code> everywhere is even worse.</p>
+
+<p>To consume the <code class="language-plaintext highlighter-rouge">apiUrl</code> in our Angular application in a proper way, we need to create an <code class="language-plaintext highlighter-rouge">InjectionToken</code> that we can use for dependency injection.
+Let’s go ahead and create an <code class="language-plaintext highlighter-rouge">injection-tokens.ts</code> file that exposes the <code class="language-plaintext highlighter-rouge">API_URL</code> token.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/injection-tokens.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">InjectionToken</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/core</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">API_URL</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We have our environment variables living on our <code class="language-plaintext highlighter-rouge">window</code> object and we have an injection token that we will use to inject that in any constructor.
+The last thing that we need to do tell Angular that injecting the <code class="language-plaintext highlighter-rouge">API_URL</code> token into a constructor should retrieve the <code class="language-plaintext highlighter-rouge">apiUrl</code> living on the <code class="language-plaintext highlighter-rouge">__env</code> property of the
+<code class="language-plaintext highlighter-rouge">window</code> object. To do that we have to add some logic to the <code class="language-plaintext highlighter-rouge">providers</code> property of the <code class="language-plaintext highlighter-rouge">@NgModule()</code> decorator of our <code class="language-plaintext highlighter-rouge">AppModule</code>.
+We provide the <code class="language-plaintext highlighter-rouge">API_URL</code> in dthe provide property, we use a factory where <code class="language-plaintext highlighter-rouge">Document</code> is injected and we use <code class="language-plaintext highlighter-rouge">document.defaultView</code> which refers to the <code class="language-plaintext highlighter-rouge">window</code> object
+to retrieve the <code class="language-plaintext highlighter-rouge">apiUrl</code> living in the <code class="language-plaintext highlighter-rouge">__env</code> property. Since we inject <code class="language-plaintext highlighter-rouge">Document</code> we need to add <code class="language-plaintext highlighter-rouge">DOCUMENT</code> to the deps property for it to become available.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="p">...</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">provide</span><span class="p">:</span> <span class="nx">API_URL</span><span class="p">,</span>
+      <span class="na">useFactory</span><span class="p">:</span> <span class="p">(</span><span class="na">document</span><span class="p">:</span> <span class="nx">Document</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">[</span><span class="dl">'</span><span class="s1">__env</span><span class="dl">'</span><span class="p">].</span><span class="nx">apiUrl</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">DOCUMENT</span><span class="p">],</span>
+    <span class="p">},</span>
+  <span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>This is great! Now in our services we can just inject the <code class="language-plaintext highlighter-rouge">API_URL</code> with the <code class="language-plaintext highlighter-rouge">@Inject()</code> decorator, and our service knows exactly where to send its XHR calls to.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span><span class="p">,</span> <span class="nx">Inject</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./injection-tokens</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="extra-problem">Extra problem</h2>
+
+<p>The essence of this article is not to explain environment variables nor InjectionTokens. Let’s dive a bit deeper than that.</p>
+
+<p>A short while ago a client of mine had this specific use-case:
+They had an entire application that was already running in production.
+When their product grew they realised that there was a use-case where they wanted that exact application (the exact same logic) but they needed it to connect to another <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
+
+<p>The first thing that would come to mind, is to change the value of <code class="language-plaintext highlighter-rouge">apiUrl</code> in our <code class="language-plaintext highlighter-rouge">env.js</code> but the thing was they also needed the previous
+flow to keep on working. They actually needed two flows of the same application that both had their own endpoint. Flow one needed to consume the old <code class="language-plaintext highlighter-rouge">apiUrl</code> and flow two needed to consume
+the other <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
+
+<h3 id="lets-try-to-implement-this">Let’s try to implement this:</h3>
+
+<p>Since we don’t want to touch the current routing flow we will pass a QueryParam called <code class="language-plaintext highlighter-rouge">secondary=true</code> to the url of our application. If that QueryParam exists we don’t want to consume
+<code class="language-plaintext highlighter-rouge">window['__env'].apiUrl</code> but <code class="language-plaintext highlighter-rouge">window['__env'].secondaryApiUrl</code> and if it doesn’t exist we want to use <code class="language-plaintext highlighter-rouge">window['__env'].apiUrl</code>.</p>
+
+<p>Let’s add the <code class="language-plaintext highlighter-rouge">secondaryApiUrl</code> to the <code class="language-plaintext highlighter-rouge">env.js</code> file and update the <code class="language-plaintext highlighter-rouge">injection-tokens.ts</code> and <code class="language-plaintext highlighter-rouge">app.module.ts</code> accordingly.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/env.js</span>
+<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:1234/api</span><span class="dl">'</span><span class="p">;</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:4321/api</span><span class="dl">'</span><span class="p">;</span>
+<span class="p">})(</span><span class="k">this</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/injection-tokens.ts</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">InjectionToken</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/core</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">API_URL</span><span class="dl">'</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">SECONDARY_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">SECONDARY_API_URL</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/app.module.ts</span>
+<span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
+  <span class="p">...</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">provide</span><span class="p">:</span> <span class="nx">API_URL</span><span class="p">,</span>
+      <span class="na">useFactory</span><span class="p">:</span> <span class="p">(</span><span class="na">document</span><span class="p">:</span> <span class="nx">Document</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">[</span><span class="dl">'</span><span class="s1">__env</span><span class="dl">'</span><span class="p">].</span><span class="nx">apiUrl</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">DOCUMENT</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">provide</span><span class="p">:</span> <span class="nx">SECONDARY_API_URL</span><span class="p">,</span>
+      <span class="na">useFactory</span><span class="p">:</span> <span class="p">(</span><span class="na">document</span><span class="p">:</span> <span class="nx">Document</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">defaultView</span><span class="p">[</span><span class="dl">'</span><span class="s1">__env</span><span class="dl">'</span><span class="p">].</span><span class="nx">secondaryApiUrl</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="na">deps</span><span class="p">:</span> <span class="p">[</span><span class="nx">DOCUMENT</span><span class="p">],</span>
+    <span class="p">},</span>
+  <span class="p">]</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<h3 id="how-will-we-decide-which-apiurl-to-take">How will we decide which apiUrl to take?</h3>
+
+<p>In our <code class="language-plaintext highlighter-rouge">FooService</code> we could inject both the <code class="language-plaintext highlighter-rouge">API_URL</code> and the <code class="language-plaintext highlighter-rouge">SECONDARY_API_URL</code> together with the <code class="language-plaintext highlighter-rouge">ActivatedRoute</code> but
+that seems like a lot of redundant code to implement in every service.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span>
+    <span class="p">@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">,</span>
+    <span class="p">@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">secondaryApiUrl</span><span class="p">,</span>
+
+    <span class="p">){</span>
+      <span class="kd">const</span> <span class="nx">conditionalApiUrl</span> <span class="o">=</span> <span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">.</span><span class="nx">queryParams</span><span class="p">.</span><span class="nx">secondary</span>
+      <span class="p">?</span> <span class="nx">secondaryApiUrl</span>
+      <span class="p">:</span> <span class="nx">apiUrl</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following code would be way nicer and that’s what we will implement in a minute:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span><span class="p">,</span> <span class="nx">Inject</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./injection-tokens</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+
+ <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">CONDITIONAL_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
+   <span class="c1">// console.log(apiUrl);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For this to work we need to create a new InjectionToken called <code class="language-plaintext highlighter-rouge">CONDITIONAL_API_URL</code> that will determine
+which api url to choose. <code class="language-plaintext highlighter-rouge">CONDITIONAL_API_URL</code> is just a token that will use the <code class="language-plaintext highlighter-rouge">inject</code> function of Angular to inject
+our 3 dependencies and will decide which api url to use based on the existence of the <code class="language-plaintext highlighter-rouge">secondary</code> QueryParam.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">inject</span><span class="p">,</span> <span class="nx">InjectionToken</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ActivatedRoute</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/router</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">'</span><span class="s1">API_URL</span><span class="dl">'</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">SECONDARY_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="dl">'</span><span class="s1">SECONDARY_API_URL</span><span class="dl">'</span>
+<span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="p">(</span><span class="dl">'</span><span class="s1">CONDITIONAL_API_URL</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">factory</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">activatedRoute</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">ActivatedRoute</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">.</span><span class="nx">queryParams</span><span class="p">.</span><span class="nx">secondary</span>
+      <span class="p">?</span> <span class="nx">secondaryApiUrl</span>
+      <span class="p">:</span> <span class="nx">apiUrl</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>There is no need to provide <code class="language-plaintext highlighter-rouge">CONDITIONAL_API_URL</code>, we can just inject it in the <code class="language-plaintext highlighter-rouge">FooService</code> as we just shown.
+Every time the application is loaded with the <code class="language-plaintext highlighter-rouge">secondary</code> queryParam in the url it will use the <code class="language-plaintext highlighter-rouge">SECONDARY_API_URL</code>.
+Otherwise it will use the <code class="language-plaintext highlighter-rouge">API_URL</code>;</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>InjectionTokens are a powerful thing and combining them with the <code class="language-plaintext highlighter-rouge">inject()</code> function of Angular (service locator pattern)
+we can combine tokens and put functionality in them. For more information on the <code class="language-plaintext highlighter-rouge">inject()</code> function of Angular, take a
+look at <a href="https://kevinkreuzer.medium.com/angular-inject-33c6ce8cfd07">this article</a>.</p>
+
+<p><a href="https://stackblitz.com/edit/angular-ivy-byqm8u">Here</a> is a stackblitz example where we can find the source code.
+<strong>Note:</strong> external javascript files in those stackblitz projects are not possible at the time of writing this.
+That’s why we have added the contents of the <code class="language-plaintext highlighter-rouge">env.js</code> file directly into the <code class="language-plaintext highlighter-rouge">index.html</code>.</p>
+
+<h3 id="thanks-for-the-reviewers">Thanks for the reviewers</h3>
+
+<ul>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+  <li><a href="https://twitter.com/jvandemo">Jurgen Van de Moere</a></li>
+</ul>
+
+<p>Thanks, <a href="https://twitter.com/wim_holvoet">Wim Holvoet</a> for the idea of using injection tokens.</p>
+
+  </div><a class="u-url" href="/conditional-api-urls-in-angular-with-injection-tokens/" hidden></a>
+</article>
+
+                        </div>
+                        <div class="page__wrapper-right">
+                            <div class="profile">
+                                <img src="/assets/images/angular.png" alt="Author image" nopin="nopin"/>
+                                <h3>Angular Best Practices Training</h3>
+                                <p>6 Years of international experience (50+ projects) in one day.</p>
+                                <a class="hire-me-button" href="https://brecht.io/angular-best-practices-training">Learn more now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </main>
+        </div><div class="footer">
+    <div class="page__wrapper">
+        <p>Nflow BV - Provinciebaan 120,9270 Laarne</p>
+        <ul class="footer__social-icons">
+            <li>
+                <a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </li>
+            <li>
+                <a href="mailto:billietbrecht@gmail.com" target="blank" class="footer__social-icon">
+                    <i class="fa-solid fa-envelope-open"></i>
+                </a>
+            </li>
+        </ul>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
+    </div>
+</div>
+</div>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
+        charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({
+            "notice_banner_type": "simple",
+            "consent_type": "implied",
+            "palette": "light",
+            "language": "en",
+            "page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
+            "notice_banner_reject_button_hide": false,
+            "preferences_center_close_button_hide": false,
+            "page_refresh_confirmation_buttons": false,
+            "website_name": "brecht.io"
+        });
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-43296458-4');
+</script>
+<script lang="text/javascript">
+    window.menuCollapsed = true;
+    const appMenu = document.querySelector('.app__menu');
+    const closeButton = document.querySelector('.app__menu-close-btn');
+    document.querySelector('#menu-button').addEventListener('click', () => {
+        window.menuCollapsed = !window.menuCollapsed;
+        console.log(window.menuCollapsed);
+        if (!window.menuCollapsed) {
+            appMenu.classList.add('app__menu--open')
+        } else {
+            appMenu.classList.remove('app__menu--open')
+        }
+    })
+    closeButton.addEventListener('click', () => {
+        window.menuCollapsed = true;
+        appMenu.classList.remove('app__menu--open')
+    })
+
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator
+    website</a></noscript>
+</body>
+
+</html>
