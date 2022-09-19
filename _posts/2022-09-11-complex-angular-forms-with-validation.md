@@ -51,9 +51,10 @@ configurations with embedded logic. We want to stay as close as possible to Angu
 
 This component is a wrapper for the native `form` element. It can hold some styling to enforce consistency within our application,
 but it also has a `submitted$` BehaviorSubject that we can use to show validation errors only when the form is submitted.
-We use an observable so it is easier to consume in another class.
 In this case, we don't want to bug the user with validation messages if the form hasn't even been submitted yet (unless the control is dirty).
-We use content projection to add the actual content of the form and that is basically it:
+why a BehaviorSubject? A `submitted` property that would hold a boolean would not enough, since we need a reference type to consume it in another class.
+We could use that BehaviorSubject to assign it to a `submit` output.
+Other than that, we use content projection to add the actual content of the form and that is basically it:
 
 *Note: For this article we have chosen to use the `standalone` component structure, but it could be written with modules as well.*
 
@@ -70,19 +71,19 @@ We use content projection to add the actual content of the form and that is basi
 })
 export class FormWrapperComponent {
     @Input() public readonly formGroup: FormGroup;
-    @Output() public readonly submit = new EventEmitter();
     public readonly submitted$ = new BehaviorSubject(false);
+    // skip(1): don't emit the initial value
+    @Output() public readonly submit = this.submitted$.pipe(skip(1)); 
     
     public onSubmit(): void {
         this.submitted$.next(true);
-        this.submit.emit();
     }
 }
 ```
 
 ### form-input-wrapper component
 
-This component will remove the most of our redundant code. Think about all the `*ngIf` code we have to rewrite for every input. 
+The `form-input-wrapper` component will remove the most of our redundant code (only 3 lines per input). Think about all the `*ngIf` code we have to rewrite for every input. 
 What about making sure the label is on top of the input instead of on the left of it. 
 The `form-input-wrapper` component contains a label, and an element that implements `ControlValueAccessor`.
 
@@ -117,7 +118,7 @@ export class FormInputWrapperComponent {
 ```
 
 As we can see, we don't care about validation error messages yet, that is something we will tackle later.
-This fairly simple component will render a label and project some content.
+This component will render a label and project some content.
 
 ### form-input directive
 
@@ -130,7 +131,7 @@ form control that implements the `ControlValueAccessor` interface. We don't know
 To get access to the element that is projected in the content, we can create an
 `[formInput]` directive which is applied on every of those elements. Later on we can use `@ContentChildren(FormInputDirective)` to get that reference.
 
-The implementation of the `[formInput]` directive is straightforward, like we mentioned before: It's just the glue that gives access:
+The implementation of the `[formInput]` directive doesn't hold logic, like we mentioned before: It's just the glue that gives access:
 
 ```typescript
 @Directive({
@@ -287,8 +288,9 @@ export class AppComponent  {
 
 ## Validation
 
-To have readable consistent validation, let's use [class-validator](https://github.com/typestack/class-validator). We can use it on the frontend, on the backend and it's
-easy to write our own validators. Since class-validator provides us with decorators it's easy to put them on our forms. 
+To have readable consistent validation, let's use [class-validator](https://github.com/typestack/class-validator). 
+We can use it on the frontend, on the backend and it's
+possible to write our own validators. Since class-validator provides us with decorators it's possible to put them on our forms. 
 
 ```typescript
 import { IsNotEmpty, Min, Max } from 'class-validator';
@@ -321,10 +323,10 @@ export class AddressForm {
 
 ```
 
-The next thing we need to do is translate these classes into lists of validators and apply them on our `userForm` and `addressForm`.
-This is something that we don't want to write for every form so let's create a shared function for that.
-Let's create a function called `addAsyncValidators()` that will just do that.
-In the first argument we pass the form group and in the next one the type of its form class.
+The next thing we need to do is translate these classes into lists of async validators and apply them on our `userForm` and `addressForm`.
+Why async validators? Because `class-validator` returns promises when it validates.
+Let's create a shared function called `addAsyncValidators()` that will add validators to our form groups.
+In the first argument we pass the form group and in the next one the type of its form class (The one with the validation decorators).
 
 ```typescript
 private readonly addressForm = addAsyncValidators(this.fb.group<AddressForm>({
@@ -332,13 +334,14 @@ private readonly addressForm = addAsyncValidators(this.fb.group<AddressForm>({
     streetNumber: '',
     city: '',
     zipCode: ''
-}), AddressForm); // the address form with decorators
+}), AddressForm); 
 
 private readonly userForm = addAsyncValidators(this.fb.group<UserForm>({
     firstName: '',
     lastName: '',
     age: null
-}), UserForm); // the user form with decorators
+}), UserForm); 
+
 public readonly form = this.fb.group({
     user: this.userForm,
     address: this.addressForm
@@ -346,12 +349,12 @@ public readonly form = this.fb.group({
 ```
 
 There is a reason why we compose our form like this. Our form classes will never have nested properties. Each nested property would be a form group, and would 
-use the `addAsyncValidators()`. That way we can keep it simple and still use the regular angular Formbuilder api.
+use the `addAsyncValidators()` function. That way we can keep it simple and still use the regular angular FormBuilder api.
 
 The `addAsyncValidators()` function would loop over the form and would add the correct validators based on the class
-that leverages the decorators. I'm not going to go into detail regarding the following implementation. It is not the goal
+that leverage the decorators. I'm not going to go into detail regarding the following implementation. It is not the goal
  of this article and it's already long enough. Just know that we only need to write this once and put this in a shared lib.
-You can just copy paste it, or improve it and let me know :) In a nutshell: We loop over the form object, look up the keys in our class with decorators,
+You can just copy paste it, or improve it and let me know! In a nutshell: We loop over the form object, look up the keys in our class with decorators,
 translate the decorators into async validators and create a new form group with those validators attached to it.
 
 ```typescript
@@ -420,13 +423,14 @@ of these validation errors:
 
 ```typescript
 import { Pipe, PipeTransform } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 
 @Pipe({
     name: 'formInputErrors',
     standalone: true
 })
 export class FormInputErrorsPipe implements PipeTransform {
-    transform(value: any, args?: any): any {
+    transform(value: ValidationErrors | null | undefined, args?: any): any {
         if(value?.constraints){
             return Object.keys(value?.constraints).map(key => {
                 return value?.constraints[key]
@@ -475,7 +479,7 @@ through an `@Input()` property.
 
 ```typescript
 export class FormInputDirective {
-    private readonly submitted$ = inject(FormWrapperComponent).submitted$;
+    private readonly submitted$ = inject(FormWrapperComponent).submitted$; // a value type wouldn't be sufficient here
     @Input() public readonly formControl: FormControl;
     
     @HostBinding('class.form-input--invalid')
@@ -551,7 +555,7 @@ export class UserForm {
 }
 ```
 
-We have written a `@CustomValidator()` because it's easy to a pass validation function in that.
+We have written a `@CustomValidator()` because it's convenient to a pass validation function in that.
 The implementation of the `@CustomValidator()` looks like the code sample below. For more information on this, I would
 advice to consult [the docs](https://github.com/typestack/class-validator#custom-validation-decorators)
 
@@ -586,12 +590,16 @@ export function CustomValidator(validatorFn: Function, options? : ValidationOpti
 That's it folks! We have written some custom logic in order to write less form code in the future.
 - We have less HTML that we need to write in the future
 - We have a consistent way of placing the input and label
-- We have a consistent way of showing validation errors
+- We have a consistent way of showing validation errors and when to show them (if submitted or dirty)
 - We have clean form classes that we decorate with validators
-- We can write custom decorators and reuse them on the backend
+- We can write custom decorators and pass them to the `CustomValidator()` decorator.
 
 Here you can check out the Stackblitz example:
 
-<iframe src="https://stackblitz.com/edit/angular-ivy-pqriez" width="100%"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-ivy-ri8j21" width="100%"></iframe>
 
+**A big thanks to the reviewers!!**
+- [Aaron Delange](https://twitter.com/aaron_delange)
+- [Jan-Niklas wortmann](https://twitter.com/niklas_wortmann)
+- [Webdave](https://twitter.com/webdave_de)
 
