@@ -2,10 +2,10 @@
 layout: post
 title: Complex Angular forms with validation
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
-date: 2022-09-11
+date: 2022-09-19
 subclass: 'post'
 disqus: true
 ---
