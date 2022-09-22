@@ -12,27 +12,27 @@ disqus: true
 
 ## The goal of this article
 
-In the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article, the benefits of having dialogs behind routes is explained.
+In the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article I wrote a while ago, the benefits of having dialogs behind routes is explained.
 We can consider dialogs as pages just like we would consider other components that are connected
-to routes as pages. In that Angular routed dialogs article we see different approaches of handling dialogs and we focus on the benefits of putting dialogs behind routes.
+to routes as pages. In the previous article we see different approaches of handling dialogs and we focus on the benefits of putting dialogs behind routes.
 
 ### Some context
 
-We will continue from the context of that [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article.
+We will continue from the context of that [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article:
 We have a `UsersComponent` that will display a list of users, and a `UsersDetailComponent` that will display
-the details of that user. The `UsersDetailComponent` wants to use our custom dialog called `MyDialogComponent` to render the 
-details of a specific user in a dialog. We use the same setup as the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article
-so we might want to read that first.
+the details of that use. When clicking in the list of users on a specific user we want to open its details. The `UsersDetailComponent` wants to use our custom component called `MyDialogComponent` to render the 
+details of a specific user in a nice dialog. We use the same setup as the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article
+so if you didn't read that one yet, you might want to read that first.
 This article focusses on the actual dialog, not on the application structure itself.
 In this article we are going to focus on how we can tackle real dialog functionality with the Angular CDK.
 
 ## Why the Angular CDK?
 
-This library provided by Angular material is focussed on behavior.
+This library provided by Angular Material is focussed on behavior.
 It can provide us with 2 things that we can use for creating modals:
 - The **portal**: This is a piece of UI that can be dynamically rendered to an open slot on the page
 - The **overlay**: This is something we can use to create dialog behavior: It supports position strategies, we can configure a backdrop, and
-it has some basic functionality that we can use for our modal that we don't want to write ourselves. 
+it has some basic functionalities that we can leverage for our modal that we don't want to write ourselves. 
 Most importantly, it will render a div with a class `cdk-overlay-container` at the bottom of the `body`element where the dialog
 will be rendered in. That way, an overlay is never clipped by an `overflow: hidden` parent. 
 
@@ -46,6 +46,8 @@ npm i @angular/cdk --save
 
 We need the `portal` and `overlay` so let's import the `PortalModule` and the `OverlayModule` in our `AppModule`.
 If we are using **standalone** components we should import them in the `imports` property of our components.
+
+
 The overlay needs some cdk prebuilt styles to render eg: the backdrop, so we will have to import that as well.
 In our `styles.css` we can import that by adding:
 
@@ -56,7 +58,7 @@ In our `styles.css` we can import that by adding:
 
 ## Creating the dialog component
 
-We already have a `my-dialog` component when we start from the previous article. 
+We already have a `my-dialog` component when we continue from the previous article. 
 We consume the dialog like this:
 
 ```html
@@ -66,8 +68,8 @@ We consume the dialog like this:
 </my-dialog>
 ```
 
-Since everything will be rendered in an **overview-container** we need to disable the encapsulation of the styles.
-For that reason we need to us `encapsulation: ViewEncapsulation.None`:
+Since everything will be rendered in an **overlay-container** we need to disable the encapsulation of the styles.
+For that reason we need to set the encapsulation to `ViewEncapsulation.None`:
 
 ```typescript
 @Component({
@@ -95,14 +97,14 @@ The html of the template looks like this:
 </ng-template>
 ```
 
-Everything is wrapped in an `ng-template` that leverages the `cdkPortal` directive.
+Everything is wrapped in an `ng-template` that uses the `cdkPortal` directive.
 We will use `ViewChild` later to reference it in our component class.
 For the rest we see 2 `ng-content` slots that are used to project the header and the body.
 There is a close button in the header that will call the `closeDialog` output from our component class (telling its parent to destroy the component).
 
 ### The dialog component class
 
-The first thing we need to do is create an `overLayRef`. We will use the `Overlay` from the cdk
+The first thing we need to do is create an `overLayRef`. We will use the `Overlay` from the CDK
 to create that `overlayRef` by using its `create()` function, but we need to pass it an `overlayConfig` to
 configure its position, width, backdrop etc.
 We will create the actual `overlayRef` inside the `ngOnInit` lifecycle hook.
@@ -118,8 +120,10 @@ export class MyDialogComponent implements OnInit {
         minWidth: 500,
     });
     private overlayRef: OverlayRef | undefined;
-        constructor(private readonly overlay: Overlay){
+
+    constructor(private readonly overlay: Overlay){
     }
+
     public ngOnInit(): void {
         this.overlayRef = this.overlay.create(this.overlayConfig);
     }
@@ -130,24 +134,23 @@ export class MyDialogComponent implements OnInit {
 The next thing we need to do is attach the portal to the `overlayRef` so we can leverage that portal
 to render the contents of it inside the overlay. We have to do that
 after the view is initialized, so we will need to handle this in the `ngAfterViewInit` lifecycle hook.
-We will use `@ViewChild(CdkPortal)` to get a handle on the `portal` we have defined in our template.
+We will use `@ViewChild(CdkPortal)` to get a handle on the `portal` we have defined in our template:
 
 ```typescript
 export class MyDialogComponent implements OnInit, AfterViewInit {
     // get a grasp on the ng-template with the cdkPortal directive
     @ViewChild(CdkPortal) public readonly portal: CdkPortal | undefined;
-    private readonly overlayConfig = new OverlayConfig({
-        ...
-    });
+
+    private readonly overlayConfig = new OverlayConfig({...});
     private overlayRef: OverlayRef | undefined;
-        constructor(private readonly overlay: Overlay){
+    constructor(private readonly overlay: Overlay){
     }
     public ngOnInit(): void {
         this.overlayRef = this.overlay.create(this.overlayConfig);
     }
     
     public ngAfterViewInit(): void {
-        // attach the portal to the overlay
+        // Wait until the view is initialized to attach the portal to the overlay
         this.overlayRef?.attach(this.portal);
     }
 }
@@ -165,11 +168,7 @@ export class MyDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     // Tell the parent to destroy the component
     @Output() public readonly closeDialog = new EventEmitter<void>();
 
-    // get a grasp on the ng-template with the cdkPortal directive
     @ViewChild(CdkPortal) public readonly portal: CdkPortal | undefined;
-    ...
-    constructor(private readonly overlay: Overlay){
-    }
     ...
     public ngOnDestroy(): void {
         // parent destroys this component, this component destroys the overlayRef
@@ -184,7 +183,10 @@ when the close button is clicked.
 
 ### Closing on backdrop click
 
-Our `overlayRef` has a function called `backdropClick()` that will return an observable that will receive
+By clicking the close button in the dialog we can tell our parent to destroy the `MyDialog` component.
+However, we want to do the same when the user clicks on the backdrop.
+
+It turns out that our `overlayRef` has a function called `backdropClick()` that will return an observable that will receive
 events when the user clicks on the backdrop. We could leverage that to close the dialog by emitting on the `closeDialog`
 EventEmitter. In our `ngOnInit` lifecycle hook we can subscribe to that observable and emit when needed:
 
@@ -212,12 +214,12 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
     
     // the configuration of the overlay
     private readonly overlayConfig = new OverlayConfig({
-    hasBackdrop: true,
-    positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally()
-        .centerVertically(),
+        hasBackdrop: true,
+        positionStrategy: this.overlay
+            .position()
+            .global()
+            .centerHorizontally()
+            .centerVertically(),
         scrollStrategy: this.overlay.scrollStrategies.block(),
         minWidth: 500,
     });
@@ -248,6 +250,8 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
 }
 
 ```
+
+Thanks for reading this short article! I hope you liked it.
 
 Here you can find the stackblitz example:
 
