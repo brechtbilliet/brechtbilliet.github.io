@@ -596,7 +596,7 @@ That's it folks! We have written some custom logic in order to write less form c
 
 Here you can check out the Stackblitz example:
 
-<iframe src="https://stackblitz.com/edit/angular-ivy-ri8j21" width="100%"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-ivy-ri8j21" width="100%" height="500px"></iframe>
 
 **A big thanks to the reviewers!!**
 - [Aaron Delange](https://twitter.com/aaron_delange)
