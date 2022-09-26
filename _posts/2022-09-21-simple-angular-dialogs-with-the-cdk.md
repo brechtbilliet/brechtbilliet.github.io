@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Simple Angular dialogs with the cdk
+title: Simple Angular dialogs with the Angular CDK
 description:  
 published: false
 author: brechtbilliet
@@ -10,29 +10,27 @@ subclass: 'post'
 disqus: true
 ---
 
-## The goal of this article
+## The goal of this **article**
 
-In the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article I wrote a while ago, the benefits of having dialogs behind routes is explained.
+In the article [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) I wrote a while ago, the benefits of having dialogs behind routes are explained.
 We can consider dialogs as pages just like we would consider other components that are connected
-to routes as pages. In the previous article we see different approaches of handling dialogs and we focus on the benefits of putting dialogs behind routes.
+to routes as pages. In the previous article, we see different approaches of handling dialogs and we focus on the benefits of putting dialogs behind routes.
 
 ### Some context
 
-We will continue from the context of that [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article:
-We have a `UsersComponent` that will display a list of users, and a `UsersDetailComponent` that will display
-the details of that use. When clicking in the list of users on a specific user we want to open its details. The `UsersDetailComponent` wants to use our custom component called `MyDialogComponent` to render the 
-details of a specific user in a nice dialog. We use the same setup as the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article
-so if you didn't read that one yet, you might want to read that first.
-This article focusses on the actual dialog, not on the application structure itself.
-In this article we are going to focus on how we can tackle real dialog functionality with the Angular CDK.
+We will continue from the context of the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article. We have a `UsersComponent` that will display a list of users and a `UsersDetailComponent` that will display
+the details of that use. When clicking in the list of users on a specific user we want to open its details. The `UsersDetailComponent` wants to use our custom component called `MyDialogComponent` to render the details of a specific user, in a nice dialog. We use the same setup as the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article so if you didn't read that one yet, you might want to read that first before reading further.
+
+In this article, we are going to focus on how we can tackle real dialog functionality with the Angular CDK.
 
 ## Why the Angular CDK?
 
-This library provided by Angular Material is focussed on behavior.
-It can provide us with 2 things that we can use for creating modals:
-- The **portal**: This is a piece of UI that can be dynamically rendered to an open slot on the page
-- The **overlay**: This is something we can use to create dialog behavior: It supports position strategies, we can configure a backdrop, and
-it has some basic functionalities that we can leverage for our modal that we don't want to write ourselves. 
+The Angular CDK library is focused on "behavior(s)" that web application needs. In this library are things like: accessibility, Coercion, Drag and Drop etc. And a other advantage is that is maintained by the Angular Material team.
+
+The CDK provides us with 2 things that we can use for creating modals:
+
+1. The [**portal**](https://material.angular.io/cdk/portal/overview): This is a piece of UI that can be dynamically rendered to an open slot on the page
+2. The [**overlay**](https://material.angular.io/cdk/overlay/overview): This is something we can use to create dialog behavior: It supports position strategies, we can configure a backdrop, and it has some basic functionalities that we can leverage for our modal that we don't want to write ourselves. 
 Most importantly, it will render a div with a class `cdk-overlay-container` at the bottom of the `body`element where the dialog
 will be rendered in. That way, an overlay is never clipped by an `overflow: hidden` parent. 
 
@@ -44,11 +42,10 @@ First of all we need to install the `@angular/cdk` package by running:
 npm i @angular/cdk --save
 ```
 
-We need the `portal` and `overlay` so let's import the `PortalModule` and the `OverlayModule` in our `AppModule`.
+We need the `portal` and `overlay` so let's import the `PortalModule` and the `OverlayModule` into our `AppModule`.
 If we are using **standalone** components we should import them in the `imports` property of our components.
 
-
-The overlay needs some cdk prebuilt styles to render eg: the backdrop, so we will have to import that as well.
+The overlay needs some CDK prebuilt styles to render eg: the backdrop, so we will have to import that as well.
 In our `styles.css` we can import that by adding:
 
 ```css
@@ -58,7 +55,7 @@ In our `styles.css` we can import that by adding:
 
 ## Creating the dialog component
 
-We already have a `my-dialog` component when we continue from the previous article. 
+We already have a `my-dialog` component when we continue from the previous article.
 We consume the dialog like this:
 
 ```html
@@ -99,20 +96,21 @@ The html of the template looks like this:
 
 Everything is wrapped in an `ng-template` that uses the `cdkPortal` directive.
 We will use `ViewChild` later to reference it in our component class.
-For the rest we see 2 `ng-content` slots that are used to project the header and the body.
+For the rest, we see 2 `ng-content` slots that are used to project the header and the body.
 There is a close button in the header that will call the `closeDialog` output from our component class (telling its parent to destroy the component).
 
 ### The dialog component class
 
 The first thing we need to do is create an `overLayRef`. We will use the `Overlay` from the CDK
 to create that `overlayRef` by using its `create()` function, but we need to pass it an `overlayConfig` to
-configure its position, width, backdrop etc.
+configure its position, width, backdrop, etc.
 We will create the actual `overlayRef` inside the `ngOnInit` lifecycle hook.
 
 ```typescript
 export class MyDialogComponent implements OnInit {
     private readonly overlayConfig = new OverlayConfig({
-        hasBackdrop: true, // show backdrop
+        // show backdrop
+        hasBackdrop: true,
         // position the dialog in the center of the page
         positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
         // when in the dialog, block scrolling of the page      
@@ -157,7 +155,7 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
 ```
 
 This is the only thing we need to do to make this work, but we have forgotten about the destruction of this component.
-The component does not have any close functionality, it's not his responsibility. 
+The component does not have any close functionality, it's not his responsibility.
 The dialog will be closed/destroyed by an `*ngIf` or a route change.
 However we do need to clean up the `overlayRef` by calling its `detach()` function and its `dispose()`
 function. We will do that on the `ngOnDestroy` lifecycle hook:
@@ -253,7 +251,7 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
 
 Thanks for reading this short article! I hope you liked it.
 
-Here you can find the stackblitz example:
+Here you can find the Stackblitz example:
 
 <iframe href="https://stackblitz.com/edit/angular-ivy-ppdmmd" width="100%" height="500px"></iframe>
 
