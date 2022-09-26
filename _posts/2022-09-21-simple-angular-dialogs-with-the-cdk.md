@@ -29,9 +29,11 @@ The Angular CDK library is focused on "behavior(s)" that web application needs. 
 
 The CDK provides us with 2 things that we can use for creating modals:
 
-1. The [**portal**](https://material.angular.io/cdk/portal/overview): This is a piece of UI that can be dynamically rendered to an open slot on the page
-2. The [**overlay**](https://material.angular.io/cdk/overlay/overview): This is something we can use to create dialog behavior: It supports position strategies, we can configure a backdrop, and it has some basic functionalities that we can leverage for our modal that we don't want to write ourselves. 
-Most importantly, it will render a div with a class `cdk-overlay-container` at the bottom of the `body`element where the dialog
+
+
+1. The [**portal**](https://material.angular.io/cdk/portal/overview): a piece of UI that can be dynamically rendered to an open slot on the page
+2. The [**overlay**](https://material.angular.io/cdk/overlay/overview): to create dialog behavior: It supports position strategies and backdrop behavior and provides some additional basic functionalities to leverage our modal.
+Most importantly, it will render a div with a class `cdk-overlay-container` at the bottom of the `body` element where the dialog
 will be rendered in. That way, an overlay is never clipped by an `overflow: hidden` parent. 
 
 ## Getting started
@@ -66,7 +68,7 @@ We consume the dialog like this:
 ```
 
 Since everything will be rendered in an **overlay-container** we need to disable the encapsulation of the styles.
-For that reason we need to set the encapsulation to `ViewEncapsulation.None`:
+For that reason we need to set the encapsulation to `ViewEncapsulation.None` (otherwise the css won't make it into the portal):
 
 ```typescript
 @Component({
@@ -104,10 +106,9 @@ There is a close button in the header that will call the `closeDialog` output fr
 The first thing we need to do is create an `overLayRef`. We will use the `Overlay` from the CDK
 to create that `overlayRef` by using its `create()` function, but we need to pass it an `overlayConfig` to
 configure its position, width, backdrop, etc.
-We will create the actual `overlayRef` inside the `ngOnInit` lifecycle hook.
 
 ```typescript
-export class MyDialogComponent implements OnInit {
+export class MyDialogComponent  {
     private readonly overlayConfig = new OverlayConfig({
         // show backdrop
         hasBackdrop: true,
@@ -117,15 +118,10 @@ export class MyDialogComponent implements OnInit {
         scrollStrategy: this.overlay.scrollStrategies.block(),
         minWidth: 500,
     });
-    private overlayRef: OverlayRef | undefined;
+    private overlayRef = this.overlay.create(this.overlayConfig);
 
     constructor(private readonly overlay: Overlay){
     }
-
-    public ngOnInit(): void {
-        this.overlayRef = this.overlay.create(this.overlayConfig);
-    }
-
 }
 ```
 
@@ -140,11 +136,8 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
     @ViewChild(CdkPortal) public readonly portal: CdkPortal | undefined;
 
     private readonly overlayConfig = new OverlayConfig({...});
-    private overlayRef: OverlayRef | undefined;
+    private overlayRef = this.overlay.create(this.overlayConfig);
     constructor(private readonly overlay: Overlay){
-    }
-    public ngOnInit(): void {
-        this.overlayRef = this.overlay.create(this.overlayConfig);
     }
     
     public ngAfterViewInit(): void {
@@ -186,13 +179,11 @@ However, we want to do the same when the user clicks on the backdrop.
 
 It turns out that our `overlayRef` has a function called `backdropClick()` that will return an observable that will receive
 events when the user clicks on the backdrop. We could leverage that to close the dialog by emitting on the `closeDialog`
-EventEmitter. In our `ngOnInit` lifecycle hook we can subscribe to that observable and emit when needed:
+EventEmitter. In our constructor we can subscribe to that observable and emit when needed:
 
 ```typescript
-public ngOnInit(): void {
-    ...
+constructor(...){
     this.overlayRef?.backdropClick()
-        .pipe(takeUntil(this.destroy$$))
         .subscribe(() => {
             this.closeDialog.emit();
         });
@@ -204,7 +195,7 @@ public ngOnInit(): void {
 Below we see the entire implementation of the `MyDialog` component class:
 
 ```typescript
-export class MyDialogComponent implements OnInit, AfterViewInit {
+export class MyDialogComponent implements AfterViewInit {
     // get a grasp on the ng-template with the cdkPortal directive 
     @ViewChild(CdkPortal) public readonly portal: CdkPortal | undefined;
     // the parent is in charge of destroying this component (usually through ngIf or route change)
@@ -221,16 +212,13 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
         scrollStrategy: this.overlay.scrollStrategies.block(),
         minWidth: 500,
     });
-    private overlayRef: OverlayRef | undefined;
+    // creating the overlayRef
+    private overlayRef = this.overlay.create(this.overlayConfig);
 
-    constructor(private readonly overlay: Overlay) {}
-
-    public ngOnInit(): void {
-        // creating the overlayRef
-        this.overlayRef = this.overlay.create(this.overlayConfig);
+    constructor(private readonly overlay: Overlay) {
         // telling the parent to destroy the dialog when the user
         // clicks on the backdrop
-        this.overlayRef?.backdropClick().subscribe(() => {
+        this.overlayRef.backdropClick().subscribe(() => {
             this.closeDialog.emit();
         });
     }
@@ -256,7 +244,10 @@ Here you can find the Stackblitz example:
 <iframe href="https://stackblitz.com/edit/angular-ivy-ppdmmd" width="100%" height="500px"></iframe>
 
 
-
-
+## Big thanks for the reviewers
+- [Jeffrey Bosch](https://twiter.com/jefiozie)
+- [Gerome Grignon](https://twitter.com/geromegrignon)
+- [Ozcar](https://twitter.com/Ozcar80923785)
+- [Robin Pellegrims](https://twitter.com/robinpel)
 
 
