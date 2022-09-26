@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Imposter syndrome: Are you an imposter or not?!
-description:  
+title: Imposter syndrome Are you an imposter or not?
+description:  are you an imposter or not
 published: false
 author: brechtbilliet
 comments: true
