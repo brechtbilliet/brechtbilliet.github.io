@@ -40,9 +40,11 @@ will be rendered in. That way, an overlay is never clipped by an `overflow: hidd
 
 First of all we need to install the `@angular/cdk` package by running:
 
-```shell script
+```shell
 npm i @angular/cdk --save
 ```
+
+
 
 We need the `portal` and `overlay` so let's import the `PortalModule` and the `OverlayModule` into our `AppModule`.
 If we are using **standalone** components, we should import them in the `imports` property of our components.
