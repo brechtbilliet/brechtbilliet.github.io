@@ -2,7 +2,7 @@
 layout: post
 title: Simple Angular dialogs with the Angular CDK
 description:  
-published: false
+published: true
 author: brechtbilliet
 comments: true
 date: 2022-09-19
@@ -249,5 +249,5 @@ Here you can find the Stackblitz example:
 - [Gerome Grignon](https://twitter.com/geromegrignon)
 - [Ozcar](https://twitter.com/Ozcar80923785)
 - [Robin Pellegrims](https://twitter.com/robinpel)
-
+- [Nelson Gutiérrez](https://twitter.com/nel81212)
 
