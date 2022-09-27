@@ -25,14 +25,14 @@ In this article, we are going to focus on how we can tackle real dialog function
 
 ## Why the Angular CDK?
 
-The Angular CDK library is focused on "behavior(s)" that web application needs. In this library are things like: accessibility, Coercion, Drag and Drop etc. And a other advantage is that is maintained by the Angular Material team.
+The Angular CDK library is focused on "behavior(s)" that a web application needs. In this library there are things like: Accessibility, Coercion, Drag and Drop etc. Another advantage is that is maintained by the Angular Material team.
 
 The CDK provides us with 2 things that we can use for creating modals:
 
 
 
-1. The [**portal**](https://material.angular.io/cdk/portal/overview): a piece of UI that can be dynamically rendered to an open slot on the page
-2. The [**overlay**](https://material.angular.io/cdk/overlay/overview): to create dialog behavior: It supports position strategies and backdrop behavior and provides some additional basic functionalities to leverage our modal.
+1. The [**portal**](https://material.angular.io/cdk/portal/overview): a piece of UI that can be dynamically rendered to an open slot on the page.
+2. The [**overlay**](https://material.angular.io/cdk/overlay/overview): to create dialog behavior. It supports position strategies and backdrop behavior and provides some additional basic functionalities to leverage our modal.
 Most importantly, it will render a div with a class `cdk-overlay-container` at the bottom of the `body` element where the dialog
 will be rendered in. That way, an overlay is never clipped by an `overflow: hidden` parent. 
 
@@ -108,7 +108,7 @@ to create that `overlayRef` by using its `create()` function, but we need to pas
 configure its position, width, backdrop, etc.
 
 ```typescript
-export class MyDialogComponent  {
+export class MyDialogComponent {
     private readonly overlayConfig = new OverlayConfig({
         // show backdrop
         hasBackdrop: true,
@@ -182,7 +182,7 @@ events when the user clicks on the backdrop. We could leverage that to close the
 EventEmitter. In our constructor we can subscribe to that observable and emit when needed:
 
 ```typescript
-constructor(...){
+constructor(...) {
     this.overlayRef?.backdropClick()
         .subscribe(() => {
             this.closeDialog.emit();
