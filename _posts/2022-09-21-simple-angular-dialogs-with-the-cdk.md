@@ -14,18 +14,18 @@ disqus: true
 
 In the article [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) I wrote a while ago, the benefits of having dialogs behind routes are explained.
 We can consider dialogs as pages just like we would consider other components that are connected
-to routes as pages. In the previous article, we see different approaches of handling dialogs and we focus on the benefits of putting dialogs behind routes.
+to routes as pages. In the previous article, we see different approaches to handling dialogs and focus on the benefits of putting dialogs behind routes.
 
 ### Some context
 
 We will continue from the context of the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article. We have a `UsersComponent` that will display a list of users and a `UsersDetailComponent` that will display
-the details of that use. When clicking in the list of users on a specific user we want to open its details. The `UsersDetailComponent` wants to use our custom component called `MyDialogComponent` to render the details of a specific user, in a nice dialog. We use the same setup as the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article so if you didn't read that one yet, you might want to read that first before reading further.
+the details of that use. When clicking in the list of users on a specific user, we want to open its details. The `UsersDetailComponent` uses our custom component called `MyDialogComponent` to render the details of a specific user in a nice dialog. We use the same setup as the [Angular routed dialogs](https://blog.brecht.io/routed-angular-dialogs/) article so if you didn't read that one yet, you might want to read that first before reading further.
 
-In this article, we are going to focus on how we can tackle real dialog functionality with the Angular CDK.
+In this article, we will focus on how we can tackle real dialog functionality with the Angular CDK.
 
 ## Why the Angular CDK?
 
-The Angular CDK library is focused on "behavior(s)" that a web application needs. In this library there are things like: Accessibility, Coercion, Drag and Drop etc. Another advantage is that is maintained by the Angular Material team.
+The Angular CDK library focuses on "behavior(s)" that web application needs. This library includes accessibility, Coercion, Drag and Drop etc. And a other advantage is that is maintained by the Angular Material team.
 
 The CDK provides us with 2 things that we can use for creating modals:
 
@@ -45,9 +45,9 @@ npm i @angular/cdk --save
 ```
 
 We need the `portal` and `overlay` so let's import the `PortalModule` and the `OverlayModule` into our `AppModule`.
-If we are using **standalone** components we should import them in the `imports` property of our components.
+If we are using **standalone** components, we should import them in the `imports` property of our components.
 
-The overlay needs some CDK prebuilt styles to render eg: the backdrop, so we will have to import that as well.
+The overlay needs some CDK prebuilt styles to render, e.g: the backdrop.
 In our `styles.css` we can import that by adding:
 
 ```css
@@ -68,7 +68,7 @@ We consume the dialog like this:
 ```
 
 Since everything will be rendered in an **overlay-container** we need to disable the encapsulation of the styles.
-For that reason we need to set the encapsulation to `ViewEncapsulation.None` (otherwise the css won't make it into the portal):
+For that reason, we need to set the encapsulation to `ViewEncapsulation.None` (otherwise the css won't make it into the portal):
 
 ```typescript
 @Component({
@@ -99,12 +99,12 @@ The html of the template looks like this:
 Everything is wrapped in an `ng-template` that uses the `cdkPortal` directive.
 We will use `ViewChild` later to reference it in our component class.
 For the rest, we see 2 `ng-content` slots that are used to project the header and the body.
-There is a close button in the header that will call the `closeDialog` output from our component class (telling its parent to destroy the component).
+A close button in the header will call the `closeDialog` output from our component class (telling its parent to destroy the component).
 
 ### The dialog component class
 
 The first thing we need to do is create an `overLayRef`. We will use the `Overlay` from the CDK
-to create that `overlayRef` by using its `create()` function, but we need to pass it an `overlayConfig` to
+to create that `overlayRef` by using its `create()` function. It takes an `overlayConfig` parameter to
 configure its position, width, backdrop, etc.
 
 ```typescript
@@ -148,7 +148,7 @@ export class MyDialogComponent implements OnInit, AfterViewInit {
 ```
 
 This is the only thing we need to do to make this work, but we have forgotten about the destruction of this component.
-The component does not have any close functionality, it's not his responsibility.
+The component does not have any close functionality as it's not his responsibility.
 The dialog will be closed/destroyed by an `*ngIf` or a route change.
 However we do need to clean up the `overlayRef` by calling its `detach()` function and its `dispose()`
 function. We will do that on the `ngOnDestroy` lifecycle hook:
@@ -177,7 +177,7 @@ when the close button is clicked.
 By clicking the close button in the dialog we can tell our parent to destroy the `MyDialog` component.
 However, we want to do the same when the user clicks on the backdrop.
 
-It turns out that our `overlayRef` has a function called `backdropClick()` that will return an observable that will receive
+It turns out that our `overlayRef` has a function called `backdropClick()` that will return an observable receiving
 events when the user clicks on the backdrop. We could leverage that to close the dialog by emitting on the `closeDialog`
 EventEmitter. In our constructor we can subscribe to that observable and emit when needed:
 
