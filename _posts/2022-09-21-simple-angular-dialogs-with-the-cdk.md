@@ -241,7 +241,7 @@ Thanks for reading this short article! I hope you liked it.
 
 Here you can find the Stackblitz example:
 
-<iframe href="https://stackblitz.com/edit/angular-ivy-ppdmmd" width="100%" height="500px"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-ivy-ppdmmd" width="100%" height="500px"></iframe>
 
 
 ## Big thanks for the reviewers
