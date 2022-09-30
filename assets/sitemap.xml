@@ -9,137 +9,147 @@
 
 <url>
   <loc>https://blog.brecht.io/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>https://blog.brecht.io/simple-angular-dialogs-with-the-cdk/</loc>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://blog.brecht.io/complex-angular-forms-with-validation/</loc>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://blog.brecht.io/breaking-out-of-the-comfort-zone/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/conditional-api-urls-in-angular-with-injection-tokens/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/routed-angular-dialogs/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/angular-interview-questions-for-seniors/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/why-and-how-i-created-a-spa-router-for-qwik/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/reactive-dumb-components/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/how-covid-affected-strongbrew/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/managing-state-in-angular/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/generic-way-of-handling-loading-saving-and-validationerrors-in-angular/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/opinionated-guidelines-for-large-nx-angular-projects/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/safe-http-calls-with-rxjs/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/building-a-safe-autocomplete-operator-with-rxjs/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/the-sip-principle/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/Redux-best-practices/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/do-we-really-need-redux/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/prerendering-angular-apps/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/rxjs-best-practices-in-angular/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/safe-image-requests-in-angular/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/A-scalable-angular-architecture-part2/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/Creating-reactive-calendar-in-angular4/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/infinite-scroll-with-rxjs-and-angular2/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/A-scalable-angular2-architecture/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/Cancellable-optimistic-updates-in-Angular2-and-Redux/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/How-we-made-our-app-real-time-in-6-lines-of-code/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/components-demystified/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://blog.brecht.io/Modals-in-angular2/</loc>
-  <lastmod>2022-09-19T18:22:30+00:00</lastmod>
+  <lastmod>2022-09-27T10:55:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 
