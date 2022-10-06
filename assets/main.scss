@@ -331,6 +331,17 @@ html, body {
     border: none;
     padding: 8px 16px;
   }
+  .ebook-button {
+    background-color: #267373;
+    color: #fff;
+    font-size: 2rem;
+    text-decoration: none;
+    font-weight:200;
+    padding: $gridunit*2 $gridunit*4;
+    border-radius: $gridunit;
+    border: none;
+    padding: 8px 16px;
+  }
 }
 .profile-mobile {
   display: flex;
@@ -357,5 +368,14 @@ html, body {
     border-radius: 15px;
     text-decoration: none;
   }
+  .ebook-button {
+    background-color: #267373;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 15px;
+    text-decoration: none;
+  }
+
 }
 

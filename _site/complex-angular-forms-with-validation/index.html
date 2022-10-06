@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="User-agent: *" />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Complex Angular forms with validation | Frontend software architect living in Belgium</title>
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Complex Angular forms with validation" />
+<meta name="author" content="brechtbilliet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2. First there was only the template driven forms approach, and then later on the Angular core team introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told us to stay away from template driven forms. The reasoning behind this was: Reactive forms are easier to unit-test. Less chance of 2-way databinding on models directly. Reactive api’s like valueChanges and statusChanges returned observables for us. Validation was supposed to be better, but there is some debate around that topic." />
+<meta property="og:description" content="Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2. First there was only the template driven forms approach, and then later on the Angular core team introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told us to stay away from template driven forms. The reasoning behind this was: Reactive forms are easier to unit-test. Less chance of 2-way databinding on models directly. Reactive api’s like valueChanges and statusChanges returned observables for us. Validation was supposed to be better, but there is some debate around that topic." />
+<link rel="canonical" href="http://localhost:4000/complex-angular-forms-with-validation/" />
+<meta property="og:url" content="http://localhost:4000/complex-angular-forms-with-validation/" />
+<meta property="og:site_name" content="Frontend software architect living in Belgium" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-09-19T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Complex Angular forms with validation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"brechtbilliet"},"dateModified":"2022-09-19T00:00:00+02:00","datePublished":"2022-09-19T00:00:00+02:00","description":"Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2. First there was only the template driven forms approach, and then later on the Angular core team introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told us to stay away from template driven forms. The reasoning behind this was: Reactive forms are easier to unit-test. Less chance of 2-way databinding on models directly. Reactive api’s like valueChanges and statusChanges returned observables for us. Validation was supposed to be better, but there is some debate around that topic.","headline":"Complex Angular forms with validation","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/complex-angular-forms-with-validation/"},"url":"http://localhost:4000/complex-angular-forms-with-validation/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Frontend software architect living in Belgium" /></head>
+<body>
+<section class="app">
+    <div class="app__nav-wrapper">
+        <nav class="app__menu">
+            <button class="app__menu-close-btn">
+                <span>CLOSE</span>&nbsp;
+                <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+            <ul>
+                <li>
+                    <a href="https://brecht.io">
+                        <span class="app__menu-item-label">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/about">
+                        <span class="app__menu-item-label">About</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/services">
+                        <span class="app__menu-item-label">Services</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/angular-best-practices-training">
+                        <span class="app__menu-item-label">Angular Best Practices Training</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://blog.brecht.io" class="link--active">
+                        <span class="app__menu-item-label">Blog</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://brecht.io/contact">
+                        <span class="app__menu-item-label">Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <button class="app__menu-mobile-btn" id="menu-button">
+        <i class="fa-solid fa-bars"></i>
+        &nbsp;MENU
+    </button>
+
+    <div id="container__wrapper">
+        <div>
+            <header class="blog__header">
+                <div class="page__wrapper">
+                </div>
+            </header>
+            <main aria-label="Content">
+                <div class="blog">
+                    <div class="page__wrapper page__wrapper-flex">
+                        <div class="page__wrapper-left">
+                            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Complex Angular forms with validation</h1>
+    <p class="post-meta">
+      <img class="author-thumb" src="/assets/images/brecht.png" alt="Author image" nopin="nopin" />
+      <time class="dt-published" datetime="2022-09-19T00:00:00+02:00" itemprop="datePublished">Sep 19, 2022
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Brecht Billiet</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2.
+First there was only the template driven forms approach, and then later on the Angular core team
+introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told
+us to stay away from template driven forms.
+The reasoning behind this was:</p>
+<ul>
+  <li>Reactive forms are easier to unit-test.</li>
+  <li>Less chance of 2-way databinding on models directly.</li>
+  <li>Reactive api’s like <code class="language-plaintext highlighter-rouge">valueChanges</code> and <code class="language-plaintext highlighter-rouge">statusChanges</code> returned observables for us.</li>
+  <li>Validation was supposed to be better, but there is some debate around that topic.</li>
+</ul>
+
+<p>Even though the reactive forms were recommended they also had some disadvantages:</p>
+<ul>
+  <li>There was a big pain when it came to type safety but that is something that they “fixed” in version 14 where typed forms were 
+introduced.</li>
+  <li>There was a lot of redundancy when it came to showing validations, error messages, etc…</li>
+  <li>It’s also worth noting that <code class="language-plaintext highlighter-rouge">FormGroup</code> and <code class="language-plaintext highlighter-rouge">FormControl</code> are not immutable, so we can’t use <code class="language-plaintext highlighter-rouge">ChangeDetectionStrategy.OnPush</code> on components
+where we pass those formGroups and formControls as <code class="language-plaintext highlighter-rouge">@Input()</code>’s, not without having the occasional manual <code class="language-plaintext highlighter-rouge">markForCheck()</code> statement at least.</li>
+</ul>
+
+<p>It makes sense actually, there are a lot of different ways to handle validations, composing forms etc, and the Angular team has provided us with
+a solution that can be used in a variety of different approaches. We can make the usage of forms easier, but it’s important that we stay close to the
+current api.</p>
+
+<p>A small mention here is that there are a few discussions going on, on whether we should use template driven forms of Reactive forms but let’s
+not go into detail. Both approaches have their advantages and disadvantages. For this article we are going to use Reactive typed forms in Angular.</p>
+
+<h2 id="writing-our-own-wrappers-and-abstractions">Writing our own wrappers and abstractions</h2>
+
+<p>When helping out companies, complex forms is a subject that keeps coming back and I generally introduce some custom form components and abstractions.
+The goal is to reduce both complexity and redundancy while we still improve consistency.
+In this article we will create a set of 4 custom written items that work together to achieve a clean way of handling forms:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">&lt;form-wrapper&gt;</code> component: This will hold the native form element and a submitted state.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component: This has a label and takes care of validation error messages.</li>
+  <li><code class="language-plaintext highlighter-rouge">[formInput]</code> directive: This is used as glue between the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> and the inputs.</li>
+  <li><code class="language-plaintext highlighter-rouge">formInputErrors</code> pipe: This is used to render the errors without to much code.</li>
+</ul>
+
+<p>I’m not a huge fan of writing our own <code class="language-plaintext highlighter-rouge">FormBuilderService</code>, nor am I a fan of using a third party lib like <code class="language-plaintext highlighter-rouge">formly</code> that uses huge chunks of
+configurations with embedded logic. We want to stay as close as possible to Angular, but we do want to avoid redundancy.</p>
+
+<h3 id="the-form-wrapper-component">The form-wrapper component</h3>
+
+<p>This component is a wrapper for the native <code class="language-plaintext highlighter-rouge">form</code> element. It can hold some styling to enforce consistency within our application,
+but it also has a <code class="language-plaintext highlighter-rouge">submitted$</code> BehaviorSubject that we can use to show validation errors only when the form is submitted.
+In this case, we don’t want to bug the user with validation messages if the form hasn’t even been submitted yet (unless the control is dirty).
+why a BehaviorSubject? A <code class="language-plaintext highlighter-rouge">submitted</code> property that would hold a boolean would not enough, since we need a reference type to consume it in another class.
+We could use that BehaviorSubject to assign it to a <code class="language-plaintext highlighter-rouge">submit</code> output.
+Other than that, we use content projection to add the actual content of the form and that is basically it:</p>
+
+<p><em>Note: For this article we have chosen to use the <code class="language-plaintext highlighter-rouge">standalone</code> component structure, but it could be written with modules as well.</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">form-wrapper</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">CommonModule</span><span class="p">,</span> <span class="nx">ReactiveFormsModule</span><span class="p">],</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`
+        &lt;form (submit)="onSubmit()" [formGroup]="formGroup"&gt;
+          &lt;ng-content&gt;&lt;/ng-content&gt;
+        &lt;/form&gt;
+    `</span><span class="p">,</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormWrapperComponent</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formGroup</span><span class="p">:</span> <span class="nx">FormGroup</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="c1">// skip(1): don't emit the initial value</span>
+    <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span> 
+    
+    <span class="k">public</span> <span class="nx">onSubmit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="form-input-wrapper-component">form-input-wrapper component</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">form-input-wrapper</code> component will remove the most of our redundant code (only 3 lines per input). Think about all the <code class="language-plaintext highlighter-rouge">*ngIf</code> code we have to rewrite for every input. 
+What about making sure the label is on top of the input instead of on the left of it. 
+The <code class="language-plaintext highlighter-rouge">form-input-wrapper</code> component contains a label, and an element that implements <code class="language-plaintext highlighter-rouge">ControlValueAccessor</code>.</p>
+
+<p>We could consume the component like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form-wrapper</span> <span class="na">[formGroup]=</span><span class="s">"form"</span> <span class="na">(submit)=</span><span class="s">"onSubmit()"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"First name"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">[formControl]=</span><span class="s">"form.controls.firstName"</span>
+    <span class="err">&lt;/</span><span class="na">form-input-wrapper</span><span class="nt">&gt;</span>
+    ...
+<span class="nt">&lt;/form-wrapper&gt;</span>
+</code></pre></div></div>
+
+<p>The code of the implementation of the <code class="language-plaintext highlighter-rouge">form-input-wrapper</code> might look like this:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">form-input-wrapper</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`
+        &lt;label&gt;&lt;/label&gt;
+        &lt;ng-content&gt;&lt;/ng-content&gt;
+        &lt;!-- Todo: add validation errors later --&gt;
+    `</span><span class="p">,</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">CommonModule</span><span class="p">],</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>As we can see, we don’t care about validation error messages yet, that is something we will tackle later.
+This component will render a label and project some content.</p>
+
+<h3 id="form-input-directive">form-input directive</h3>
+
+<p>In the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component we need a reference to the form control, because that form control holds the valid state which
+is exactly what we need to show in the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component.
+We could pass that formControl as an input, but that seems like a lot of work to do that every time (It’s redundant).
+We need some way to get access to that control from inside the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component.
+We will use <code class="language-plaintext highlighter-rouge">@ContentChildren()</code> for that, but the element can be an <code class="language-plaintext highlighter-rouge">form-input</code> or a <code class="language-plaintext highlighter-rouge">textarea</code> or maybe some custom
+form control that implements the <code class="language-plaintext highlighter-rouge">ControlValueAccessor</code> interface. We don’t know which query we should pass in the <code class="language-plaintext highlighter-rouge">@ContentChildren()</code>.
+To get access to the element that is projected in the content, we can create an
+<code class="language-plaintext highlighter-rouge">[formInput]</code> directive which is applied on every of those elements. Later on we can use <code class="language-plaintext highlighter-rouge">@ContentChildren(FormInputDirective)</code> to get that reference.</p>
+
+<p>The implementation of the <code class="language-plaintext highlighter-rouge">[formInput]</code> directive doesn’t hold logic, like we mentioned before: It’s just the glue that gives access:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Directive</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">[formInput]</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputDirective</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formControl</span><span class="p">:</span> <span class="nx">FormControl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We have to apply the <code class="language-plaintext highlighter-rouge">[formInput]</code> directive on every input element (or element that implements the <code class="language-plaintext highlighter-rouge">ControlValueAccessor</code> interface) to glue it to
+its <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"First name"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span>
+        <span class="na">type=</span><span class="s">"text"</span>
+        <span class="na">formInput</span>
+        <span class="na">[formControl]=</span><span class="s">"form.controls.user.controls.firstName"</span>
+    <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form-input-wrapper&gt;</span>
+</code></pre></div></div>
+
+<p>By using <code class="language-plaintext highlighter-rouge">@ContentChildren(FormInputDirective)</code>, we now can add the <code class="language-plaintext highlighter-rouge">formInputs</code> property to the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component which we will later use to retrieve its validity state from.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="p">@</span><span class="nd">ContentChildren</span><span class="p">(</span><span class="nx">FormInputDirective</span><span class="p">,</span> <span class="p">{</span> <span class="na">descendants</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formInputs</span><span class="p">:</span> <span class="nx">QueryList</span><span class="o">&lt;</span><span class="nx">FormInputDirective</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="the-structure">The structure</h2>
+
+<p>A small recap: We have one <code class="language-plaintext highlighter-rouge">&lt;form-wrapper&gt;</code> component which holds the submitted state, and that wraps <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code>’s to reduce redundancy with a <code class="language-plaintext highlighter-rouge">[formInput]</code> directive
+that acts as glue. In the code below we show an example where we have a <strong>general</strong> form group, and an <strong>address</strong> form group. This HTML won’t change anymore,
+so this is the only code we will have to write when creating forms in the future.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form-wrapper</span> <span class="na">[formGroup]=</span><span class="s">"form"</span> <span class="na">(submit)=</span><span class="s">"onSubmit()"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;fieldset&gt;</span>
+        <span class="nt">&lt;h3&gt;</span>General<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"First name"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"text"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.user.controls.firstName"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"Last name"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"text"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.user.controls.lastName"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"Age"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"number"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.user.controls.age"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+    <span class="nt">&lt;/fieldset&gt;</span>
+    <span class="nt">&lt;fieldset&gt;</span>
+        <span class="nt">&lt;h3&gt;</span>Address<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"Street"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"text"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.address.controls.street"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"Street number"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"text"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.address.controls.streetNumber"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"City"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"text"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.address.controls.city"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+        <span class="nt">&lt;form-input-wrapper</span> <span class="na">label=</span><span class="s">"Zipcode"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span>
+                <span class="na">type=</span><span class="s">"text"</span>
+                <span class="na">formInput</span>
+                <span class="na">[formControl]=</span><span class="s">"form.controls.address.controls.zipCode"</span>
+            <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/form-input-wrapper&gt;</span>
+    <span class="nt">&lt;/fieldset&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Submit<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/form-wrapper&gt;</span>
+
+</code></pre></div></div>
+<p>Typed forms need types. We can create types but we will use classes instead because later on we will leverage decorators to add validation on them.
+We will create the 2 classes <code class="language-plaintext highlighter-rouge">UserForm</code> and <code class="language-plaintext highlighter-rouge">AddressForm</code>, and we use the <code class="language-plaintext highlighter-rouge">FormBuilder</code> api to compose our form:</p>
+
+<p><em>Note: Making these properties <strong>readonly</strong> enforces us to work in an immutable way</em></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserForm</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">age</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AddressForm</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">street</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">streetNumber</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">city</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">zipCode</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="p">...</span>
+    <span class="na">templateUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./app.component.html</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">FormWrapperComponent</span><span class="p">,</span> <span class="nx">FormInputWrapperComponent</span><span class="p">,</span> <span class="nx">FormInputDirective</span><span class="p">,</span> <span class="nx">ReactiveFormsModule</span><span class="p">,</span> <span class="nx">FormsModule</span><span class="p">,</span> <span class="nx">CommonModule</span><span class="p">],</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span>  <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">addressForm</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">AddressForm</span><span class="o">&gt;</span><span class="p">({</span>
+        <span class="na">street</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">streetNumber</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">city</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">zipCode</span><span class="p">:</span> <span class="dl">''</span>
+    <span class="p">});</span>
+    
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">userForm</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">UserForm</span><span class="o">&gt;</span><span class="p">({</span>
+        <span class="na">firstName</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">lastName</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+        <span class="na">age</span><span class="p">:</span> <span class="kc">null</span>
+    <span class="p">});</span>
+    
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="p">({</span>
+        <span class="na">user</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userForm</span><span class="p">,</span>
+        <span class="na">address</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">addressForm</span>
+    <span class="p">})</span>
+    
+    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">fb</span><span class="p">:</span> <span class="nx">FormBuilder</span><span class="p">){</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="nx">onSubmit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="validation">Validation</h2>
+
+<p>To have readable consistent validation, let’s use <a href="https://github.com/typestack/class-validator">class-validator</a>. 
+We can use it on the frontend, on the backend and it’s
+possible to write our own validators. Since class-validator provides us with decorators it’s possible to put them on our forms.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">IsNotEmpty</span><span class="p">,</span> <span class="nx">Min</span><span class="p">,</span> <span class="nx">Max</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">class-validator</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserForm</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">Min</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">@</span><span class="nd">Max</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">age</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AddressForm</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">street</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">streetNumber</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">city</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">zipCode</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>The next thing we need to do is translate these classes into lists of async validators and apply them on our <code class="language-plaintext highlighter-rouge">userForm</code> and <code class="language-plaintext highlighter-rouge">addressForm</code>.
+Why async validators? Because <code class="language-plaintext highlighter-rouge">class-validator</code> returns promises when it validates.
+Let’s create a shared function called <code class="language-plaintext highlighter-rouge">addAsyncValidators()</code> that will add validators to our form groups.
+In the first argument we pass the form group and in the next one the type of its form class (The one with the validation decorators).</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">readonly</span> <span class="nx">addressForm</span> <span class="o">=</span> <span class="nx">addAsyncValidators</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">AddressForm</span><span class="o">&gt;</span><span class="p">({</span>
+    <span class="na">street</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+    <span class="na">streetNumber</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+    <span class="na">city</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+    <span class="na">zipCode</span><span class="p">:</span> <span class="dl">''</span>
+<span class="p">}),</span> <span class="nx">AddressForm</span><span class="p">);</span> 
+
+<span class="k">private</span> <span class="k">readonly</span> <span class="nx">userForm</span> <span class="o">=</span> <span class="nx">addAsyncValidators</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">UserForm</span><span class="o">&gt;</span><span class="p">({</span>
+    <span class="na">firstName</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+    <span class="na">lastName</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+    <span class="na">age</span><span class="p">:</span> <span class="kc">null</span>
+<span class="p">}),</span> <span class="nx">UserForm</span><span class="p">);</span> 
+
+<span class="k">public</span> <span class="k">readonly</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="p">({</span>
+    <span class="na">user</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userForm</span><span class="p">,</span>
+    <span class="na">address</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">addressForm</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>There is a reason why we compose our form like this. Our form classes will never have nested properties. Each nested property would be a form group, and would 
+use the <code class="language-plaintext highlighter-rouge">addAsyncValidators()</code> function. That way we can keep it simple and still use the regular angular FormBuilder api.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">addAsyncValidators()</code> function would loop over the form and would add the correct validators based on the class
+that leverage the decorators. I’m not going to go into detail regarding the following implementation. It is not the goal
+ of this article and it’s already long enough. Just know that we only need to write this once and put this in a shared lib.
+You can just copy paste it, or improve it and let me know! In a nutshell: We loop over the form object, look up the keys in our class with decorators,
+translate the decorators into async validators and create a new form group with those validators attached to it.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// form-utils.ts</span>
+<span class="k">import</span> <span class="p">{</span>
+    <span class="nx">AbstractControl</span><span class="p">,</span>
+    <span class="nx">AsyncValidatorFn</span><span class="p">,</span>
+    <span class="nx">FormControl</span><span class="p">,</span>
+    <span class="nx">FormGroup</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/forms</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">validate</span><span class="p">,</span> <span class="nx">ValidationError</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">class-validator</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">addAsyncValidators</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">FormGroup</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="nx">form</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span>
+    <span class="nx">formType</span><span class="p">:</span> <span class="k">new</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="kr">any</span>
+<span class="p">):</span> <span class="nx">T</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">groupObj</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">controls</span><span class="p">).</span><span class="nx">reduce</span><span class="p">(</span>
+        <span class="p">(</span><span class="nx">obj</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">},</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">keyof</span> <span class="nx">T</span> <span class="o">&amp;</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">validators</span> <span class="o">=</span> <span class="p">[</span><span class="nx">createValidatorFn</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">formType</span><span class="p">)];</span>
+            <span class="kd">const</span> <span class="nx">formControl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormControl</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="p">{</span>
+                <span class="na">asyncValidators</span><span class="p">:</span> <span class="nx">validators</span><span class="p">,</span>
+            <span class="p">});</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="p">...</span><span class="nx">obj</span><span class="p">,</span>
+                <span class="p">[</span><span class="nx">key</span><span class="p">]:</span> <span class="nx">formControl</span><span class="p">,</span>
+            <span class="p">};</span>
+        <span class="p">},</span>
+        <span class="p">{}</span> <span class="k">as</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">}</span>
+  <span class="p">);</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">FormGroup</span><span class="p">(</span><span class="nx">groupObj</span> <span class="k">as</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">})</span> <span class="k">as</span> <span class="nx">T</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">createValidatorFn</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span>
+    <span class="nx">formType</span><span class="p">:</span> <span class="k">new</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="kr">any</span>
+<span class="p">):</span> <span class="nx">AsyncValidatorFn</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">control</span><span class="p">:</span> <span class="nx">AbstractControl</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">toValidate</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">formType</span><span class="p">();</span>
+        <span class="nx">toValidate</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">control</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">validate</span><span class="p">(</span><span class="nx">toValidate</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="na">validationErrors</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">err</span> <span class="o">=</span> <span class="nx">validationErrors</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span>
+                <span class="p">(</span><span class="na">v</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">?.</span><span class="nx">property</span> <span class="o">===</span> <span class="nx">key</span>
+            <span class="p">);</span>
+            
+            <span class="k">return</span> <span class="nx">err</span> 
+            <span class="p">?</span> <span class="p">({</span>
+                <span class="na">constraints</span><span class="p">:</span> <span class="nx">err</span><span class="p">.</span><span class="nx">constraints</span><span class="p">,</span>
+                <span class="na">contexts</span><span class="p">:</span> <span class="nx">err</span><span class="p">.</span><span class="nx">contexts</span><span class="p">,</span>
+            <span class="p">}</span> <span class="k">as</span> <span class="nx">ValidationError</span><span class="p">)</span>
+            <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">});</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="showing-the-validations">Showing the validations</h3>
+
+<p>To show the validators we need to use the <code class="language-plaintext highlighter-rouge">formInputs</code> property of the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component.
+The errors that we want to show live in <code class="language-plaintext highlighter-rouge">formInputs?.first?.formControl?.errors</code>.
+The validation errors that <code class="language-plaintext highlighter-rouge">class-validator</code> spits out have a very specific format: 
+<code class="language-plaintext highlighter-rouge">constraints[keyname]</code> holds the validation message. We know multiple validation messages for one
+form input is possible so let’s write a pipe to loop over that data and return the list.
+Let’s create a <code class="language-plaintext highlighter-rouge">formInputErrors</code> pipe that checks if there are constraints, and if there are any, it returns a nice list
+of these validation errors:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Pipe</span><span class="p">,</span> <span class="nx">PipeTransform</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ValidationErrors</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/forms</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Pipe</span><span class="p">({</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">formInputErrors</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputErrorsPipe</span> <span class="k">implements</span> <span class="nx">PipeTransform</span> <span class="p">{</span>
+    <span class="nx">transform</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">ValidationErrors</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">,</span> <span class="nx">args</span><span class="p">?:</span> <span class="kr">any</span><span class="p">):</span> <span class="kr">any</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">){</span>
+            <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">key</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To use this pipe we add an <code class="language-plaintext highlighter-rouge">*ngFor</code> statement in the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component.
+Because we are working with standalone components, don’t forget to add the <code class="language-plaintext highlighter-rouge">FormInputErrorsPipe</code> into the imports of that component:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">CommonModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/common</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">ContentChildren</span><span class="p">,</span> <span class="nx">Input</span><span class="p">,</span> <span class="nx">QueryList</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">FormInputErrorsPipe</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../form-input-errors.pipe</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">FormInputDirective</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../form-input.directive</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">form-input-wrapper</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`
+        &lt;label&gt;&lt;/label&gt; &lt;ng-content&gt;&lt;/ng-content&gt;
+        &lt;ul&gt;
+          &lt;li *ngFor="let child of formInputs?.first?.formControl?.errors|formInputErrors"&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    `</span><span class="p">,</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">CommonModule</span><span class="p">,</span> <span class="nx">FormInputDirective</span><span class="p">,</span> <span class="nx">FormInputErrorsPipe</span><span class="p">],</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="c1">// search for elements of type FormInputDirective in the &lt;ng-content&gt;</span>
+    <span class="p">@</span><span class="nd">ContentChildren</span><span class="p">(</span><span class="nx">FormInputDirective</span><span class="p">,</span> <span class="p">{</span> <span class="na">descendants</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formInputs</span><span class="p">:</span> <span class="nx">QueryList</span><span class="o">&lt;</span><span class="nx">FormInputDirective</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="adding-a-validation-class-on-the-forminput-directive">Adding a validation class on the <code class="language-plaintext highlighter-rouge">formInput</code> directive</h3>
+
+<p>Sometimes we want to have a red border our another specific style on invalid fields.
+Let’s add a css class called <code class="language-plaintext highlighter-rouge">form-input--invalid</code> when the form input contains errors.
+We can do that by using a <code class="language-plaintext highlighter-rouge">@HostBinding()</code>, injecting the <code class="language-plaintext highlighter-rouge">FormWrapperComponent</code> and using the form control that we pass
+through an <code class="language-plaintext highlighter-rouge">@Input()</code> property.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputDirective</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">FormWrapperComponent</span><span class="p">).</span><span class="nx">submitted$</span><span class="p">;</span> <span class="c1">// a value type wouldn't be sufficient here</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formControl</span><span class="p">:</span> <span class="nx">FormControl</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">HostBinding</span><span class="p">(</span><span class="dl">'</span><span class="s1">class.form-input--invalid</span><span class="dl">'</span><span class="p">)</span>
+    <span class="k">public</span> <span class="kd">get</span> <span class="nx">invalid</span><span class="p">():</span> <span class="nx">boolean</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">formControl</span><span class="p">?.</span><span class="nx">invalid</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formControl</span><span class="p">?.</span><span class="nx">touched</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This will set the <code class="language-plaintext highlighter-rouge">form-input--invalid</code> class every time the control is invalid, and it has been touched or the form is submitted.</p>
+
+<h3 id="conditionally-showing-the-validations-with-dependency-injection">Conditionally showing the validations with dependency injection</h3>
+
+<p>Now the validations are shown, we only want to show them when the form is submitted or when the form control is touched.
+For that we can inject the <code class="language-plaintext highlighter-rouge">FormWrapperComponent</code> into the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component and add an 
+<code class="language-plaintext highlighter-rouge">*ngIf</code> statement on the <code class="language-plaintext highlighter-rouge">&lt;ul&gt;</code> element that checks if the form is submitted, or the form control is dirty.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">form-input-wrapper</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nx">CommonModule</span><span class="p">,</span>
+        <span class="nx">FormInputDirective</span><span class="p">,</span>
+        <span class="nx">FormInputErrorsPipe</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;label&gt;&lt;/label&gt; &lt;ng-content&gt;&lt;/ng-content&gt;
+    &lt;ul *ngIf="(submitted$|async)|| 
+        (formInputs?.first?.formControl.touched &amp;&amp; formInputs?.first?.formControl?.errors)"&gt;
+        &lt;li *ngFor="let child of formInputs?.first?.formControl?.errors|formInputErrors"&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+`</span><span class="p">,</span>
+
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    <span class="p">@</span><span class="nd">ContentChildren</span><span class="p">(</span><span class="nx">FormInputDirective</span><span class="p">,</span> <span class="p">{</span> <span class="na">descendants</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formInputs</span><span class="p">:</span> <span class="nx">QueryList</span><span class="o">&lt;</span><span class="nx">FormInputDirective</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">FormWrapperComponent</span><span class="p">).</span><span class="nx">submitted$</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="custom-validator">Custom validator</h3>
+
+<p>Creating a custom validator for <code class="language-plaintext highlighter-rouge">class-validator</code> is not that hard. 
+Let’s create a <code class="language-plaintext highlighter-rouge">noSpecialChars</code> validator that will throw an error when the user
+types a special character in one of the name fields.
+The usage of our validator looks like this:</p>
+
+<p>We will use our decorator like this:</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">noSpecialChars</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/</span><span class="se">[\!\@\#\$\%\^\&amp;\*\)\(\+\=\.\&lt;\&gt;\{\}\[\]\:\;\'\"\|\~\`\_]</span><span class="sr">/g</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserForm</span> <span class="p">{</span>
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="p">@</span><span class="nd">CustomValidator</span><span class="p">(</span><span class="nx">noSpecialChars</span><span class="p">,</span> <span class="p">{</span><span class="na">message</span><span class="p">:</span> <span class="dl">'</span><span class="s1">First name can not contain special chars</span><span class="dl">'</span><span class="p">})</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
+    <span class="p">@</span><span class="nd">CustomValidator</span><span class="p">(</span><span class="nx">noSpecialChars</span><span class="p">,</span> <span class="p">{</span><span class="na">message</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Last name can not contain special chars</span><span class="dl">'</span><span class="p">})</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+    
+    <span class="p">@</span><span class="nd">Min</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">@</span><span class="nd">Max</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">age</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We have written a <code class="language-plaintext highlighter-rouge">@CustomValidator()</code> because it’s convenient to a pass validation function in that.
+The implementation of the <code class="language-plaintext highlighter-rouge">@CustomValidator()</code> looks like the code sample below. For more information on this, I would
+advice to consult <a href="https://github.com/typestack/class-validator#custom-validation-decorators">the docs</a></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span>
+    <span class="nx">registerDecorator</span><span class="p">,</span>
+    <span class="nx">ValidationArguments</span><span class="p">,</span>
+    <span class="nx">ValidationOptions</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">class-validator</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">CustomValidator</span><span class="p">(</span><span class="nx">validatorFn</span><span class="p">:</span> <span class="nb">Function</span><span class="p">,</span> <span class="nx">options</span><span class="p">?</span> <span class="p">:</span> <span class="nx">ValidationOptions</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">object</span><span class="p">:</span> <span class="nb">Object</span><span class="p">,</span> <span class="nx">propertyName</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">registerDecorator</span><span class="p">({</span>
+            <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">custom</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">target</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="kd">constructor</span><span class="p">,</span>
+            <span class="na">propertyName</span><span class="p">:</span> <span class="nx">propertyName</span><span class="p">,</span>
+            <span class="na">options</span><span class="p">:</span> <span class="nx">options</span><span class="p">,</span>
+            <span class="na">constraints</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="na">validator</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nx">validate</span><span class="p">(</span><span class="na">value</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="na">args</span><span class="p">:</span> <span class="nx">ValidationArguments</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">validatorFn</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s it folks! We have written some custom logic in order to write less form code in the future.</p>
+<ul>
+  <li>We have less HTML that we need to write in the future</li>
+  <li>We have a consistent way of placing the input and label</li>
+  <li>We have a consistent way of showing validation errors and when to show them (if submitted or dirty)</li>
+  <li>We have clean form classes that we decorate with validators</li>
+  <li>We can write custom decorators and pass them to the <code class="language-plaintext highlighter-rouge">CustomValidator()</code> decorator.</li>
+</ul>
+
+<p>Here you can check out the Stackblitz example:</p>
+
+<iframe src="https://stackblitz.com/edit/angular-ivy-ri8j21" width="100%" height="500px"></iframe>
+
+<p><strong>A big thanks to the reviewers!!</strong></p>
+<ul>
+  <li><a href="https://twitter.com/aaron_delange">Aaron Delange</a></li>
+  <li><a href="https://twitter.com/niklas_wortmann">Jan-Niklas wortmann</a></li>
+  <li><a href="https://twitter.com/webdave_de">Webdave</a></li>
+</ul>
+
+
+  </div><a class="u-url" href="/complex-angular-forms-with-validation/" hidden></a>
+</article>
+
+                        </div>
+                        <div class="page__wrapper-right">
+                            <div class="profile">
+                                <img src="/assets/images/angular.png" alt="Author image" nopin="nopin"/>
+
+                                <h3>Angular Change Detection Simplified E-BOOK</h3>
+                                <a class="ebook-button" href="https://www.simplified.courses/free-angular-change-detection-simplified-e-book">Get your free E-BOOK!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </main>
+        </div><div class="footer">
+    <div class="page__wrapper">
+        <p>Nflow BV - Provinciebaan 120,9270 Laarne</p>
+        <ul class="footer__social-icons">
+            <li>
+                <a href="https://www.linkedin.com/in/brecht-billiet-58417426/" target="blank"
+                   class="footer__social-icon">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/brechtbilliet" target="blank" class="footer__social-icon">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </li>
+            <li>
+                <a href="mailto:billietbrecht@gmail.com" target="blank" class="footer__social-icon">
+                    <i class="fa-solid fa-envelope-open"></i>
+                </a>
+            </li>
+        </ul>
+        <a href="#" id="open_preferences_center">Change your preferences</a>
+    </div>
+</div>
+</div>
+</section>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43296458-4"></script>
+<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
+        charset="UTF-8"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({
+            "notice_banner_type": "simple",
+            "consent_type": "implied",
+            "palette": "light",
+            "language": "en",
+            "page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
+            "notice_banner_reject_button_hide": false,
+            "preferences_center_close_button_hide": false,
+            "page_refresh_confirmation_buttons": false,
+            "website_name": "brecht.io"
+        });
+    });
+</script>
+<script cookie-consent="tracking">
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-43296458-4');
+</script>
+<script lang="text/javascript">
+    window.menuCollapsed = true;
+    const appMenu = document.querySelector('.app__menu');
+    const closeButton = document.querySelector('.app__menu-close-btn');
+    document.querySelector('#menu-button').addEventListener('click', () => {
+        window.menuCollapsed = !window.menuCollapsed;
+        console.log(window.menuCollapsed);
+        if (!window.menuCollapsed) {
+            appMenu.classList.add('app__menu--open')
+        } else {
+            appMenu.classList.remove('app__menu--open')
+        }
+    })
+    closeButton.addEventListener('click', () => {
+        window.menuCollapsed = true;
+        appMenu.classList.remove('app__menu--open')
+    })
+
+</script>
+<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/" rel="noopener">Privacy Policies Generator
+    website</a></noscript>
+</body>
+
+</html>
