@@ -1,0 +1,12 @@
+I"h<p>Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2.
+First there was only the template driven forms approach, and then later on the Angular core team
+introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told
+us to stay away from template driven forms.
+The reasoning behind this was:</p>
+<ul>
+  <li>Reactive forms are easier to unit-test.</li>
+  <li>Less chance of 2-way databinding on models directly.</li>
+  <li>Reactive api’s like <code class="language-plaintext highlighter-rouge">valueChanges</code> and <code class="language-plaintext highlighter-rouge">statusChanges</code> returned observables for us.</li>
+  <li>Validation was supposed to be better, but there is some debate around that topic.</li>
+</ul>
+:ET

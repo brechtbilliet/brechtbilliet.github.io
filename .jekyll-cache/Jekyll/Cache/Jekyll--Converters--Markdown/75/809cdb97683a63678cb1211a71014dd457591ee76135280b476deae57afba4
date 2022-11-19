@@ -1,0 +1,232 @@
+I"�_<h2 id="the-goal-of-this-article">The goal of this <strong>article</strong></h2>
+
+<p>In the article <a href="https://blog.brecht.io/routed-angular-dialogs/">Angular routed dialogs</a> I wrote a while ago, the benefits of having dialogs behind routes are explained.
+We can consider dialogs as pages just like we would consider other components that are connected
+to routes as pages. In the previous article, we see different approaches to handling dialogs and focus on the benefits of putting dialogs behind routes.</p>
+
+<h3 id="some-context">Some context</h3>
+
+<p>We will continue from the context of the <a href="https://blog.brecht.io/routed-angular-dialogs/">Angular routed dialogs</a> article. We have a <code class="language-plaintext highlighter-rouge">UsersComponent</code> that will display a list of users and a <code class="language-plaintext highlighter-rouge">UsersDetailComponent</code> that will display
+the details of that use. When clicking in the list of users on a specific user, we want to open its details. The <code class="language-plaintext highlighter-rouge">UsersDetailComponent</code> uses our custom component called <code class="language-plaintext highlighter-rouge">MyDialogComponent</code> to render the details of a specific user in a nice dialog. We use the same setup as the <a href="https://blog.brecht.io/routed-angular-dialogs/">Angular routed dialogs</a> article so if you didn’t read that one yet, you might want to read that first before reading further.</p>
+
+<p>In this article, we will focus on how we can tackle real dialog functionality with the Angular CDK.</p>
+
+<h2 id="why-the-angular-cdk">Why the Angular CDK?</h2>
+
+<p>The Angular CDK library focuses on “behavior(s)” that web application needs. This library includes accessibility, Coercion, Drag and Drop etc. And a other advantage is that is maintained by the Angular Material team.</p>
+
+<p>The CDK provides us with 2 things that we can use for creating modals:</p>
+
+<ol>
+  <li>The <a href="https://material.angular.io/cdk/portal/overview"><strong>portal</strong></a>: a piece of UI that can be dynamically rendered to an open slot on the page.</li>
+  <li>The <a href="https://material.angular.io/cdk/overlay/overview"><strong>overlay</strong></a>: to create dialog behavior. It supports position strategies and backdrop behavior and provides some additional basic functionalities to leverage our modal.
+Most importantly, it will render a div with a class <code class="language-plaintext highlighter-rouge">cdk-overlay-container</code> at the bottom of the <code class="language-plaintext highlighter-rouge">body</code> element where the dialog
+will be rendered in. That way, an overlay is never clipped by an <code class="language-plaintext highlighter-rouge">overflow: hidden</code> parent.</li>
+</ol>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>First of all we need to install the <code class="language-plaintext highlighter-rouge">@angular/cdk</code> package by running:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm i @angular/cdk <span class="nt">--save</span>
+</code></pre></div></div>
+
+<p>We need the <code class="language-plaintext highlighter-rouge">portal</code> and <code class="language-plaintext highlighter-rouge">overlay</code> so let’s import the <code class="language-plaintext highlighter-rouge">PortalModule</code> and the <code class="language-plaintext highlighter-rouge">OverlayModule</code> into our <code class="language-plaintext highlighter-rouge">AppModule</code>.
+If we are using <strong>standalone</strong> components, we should import them in the <code class="language-plaintext highlighter-rouge">imports</code> property of our components.</p>
+
+<p>The overlay needs some CDK prebuilt styles to render, e.g: the backdrop.
+In our <code class="language-plaintext highlighter-rouge">styles.css</code> we can import that by adding:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@import</span> <span class="s2">'@angular/cdk/overlay-prebuilt.css'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="creating-the-dialog-component">Creating the dialog component</h2>
+
+<p>We already have a <code class="language-plaintext highlighter-rouge">my-dialog</code> component when we continue from the previous article.
+We consume the dialog like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;my-dialog&gt;</span>
+    <span class="nt">&lt;ng-container</span> <span class="na">my-dialog-header</span><span class="nt">&gt;</span>Here is my header<span class="nt">&lt;/ng-container&gt;</span>
+    <span class="nt">&lt;ng-container</span> <span class="na">my-dialog-body</span><span class="nt">&gt;</span>Here is my body<span class="nt">&lt;/ng-container&gt;</span>
+<span class="nt">&lt;/my-dialog&gt;</span>
+</code></pre></div></div>
+
+<p>Since everything will be rendered in an <strong>overlay-container</strong> we need to disable the encapsulation of the styles.
+For that reason, we need to set the encapsulation to <code class="language-plaintext highlighter-rouge">ViewEncapsulation.None</code> (otherwise the css won’t make it into the portal):</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">my-dialog</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">...</span>
+    <span class="na">encapsulation</span><span class="p">:</span> <span class="nx">ViewEncapsulation</span><span class="p">.</span><span class="nx">None</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="the-dialog-component-html">The dialog component html</h3>
+
+<p>The html of the template looks like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ng-template</span> <span class="na">cdkPortal</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"dialog"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"dialog__header"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ng-content</span> <span class="na">select=</span><span class="s">"[my-dialog-header]"</span><span class="nt">&gt;&lt;/ng-content&gt;</span>
+            <span class="nt">&lt;button</span> <span class="na">(click)=</span><span class="s">"closeDialog.emit()"</span><span class="nt">&gt;</span>Close<span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"dialog__body"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ng-content</span> <span class="na">select=</span><span class="s">"[my-dialog-body]"</span><span class="nt">&gt;&lt;/ng-content&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/ng-template&gt;</span>
+</code></pre></div></div>
+
+<p>Everything is wrapped in an <code class="language-plaintext highlighter-rouge">ng-template</code> that uses the <code class="language-plaintext highlighter-rouge">cdkPortal</code> directive.
+We will use <code class="language-plaintext highlighter-rouge">ViewChild</code> later to reference it in our component class.
+For the rest, we see 2 <code class="language-plaintext highlighter-rouge">ng-content</code> slots that are used to project the header and the body.
+A close button in the header will call the <code class="language-plaintext highlighter-rouge">closeDialog</code> output from our component class (telling its parent to destroy the component).</p>
+
+<h3 id="the-dialog-component-class">The dialog component class</h3>
+
+<p>The first thing we need to do is create an <code class="language-plaintext highlighter-rouge">overLayRef</code>. We will use the <code class="language-plaintext highlighter-rouge">Overlay</code> from the CDK
+to create that <code class="language-plaintext highlighter-rouge">overlayRef</code> by using its <code class="language-plaintext highlighter-rouge">create()</code> function. It takes an <code class="language-plaintext highlighter-rouge">overlayConfig</code> parameter to
+configure its position, width, backdrop, etc.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OverlayConfig</span><span class="p">({</span>
+        <span class="c1">// show backdrop</span>
+        <span class="na">hasBackdrop</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="c1">// position the dialog in the center of the page</span>
+        <span class="na">positionStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nb">global</span><span class="p">().</span><span class="nx">centerHorizontally</span><span class="p">().</span><span class="nx">centerVertically</span><span class="p">(),</span>
+        <span class="c1">// when in the dialog, block scrolling of the page      </span>
+        <span class="na">scrollStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">scrollStrategies</span><span class="p">.</span><span class="nx">block</span><span class="p">(),</span>
+        <span class="na">minWidth</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="p">});</span>
+    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
+
+    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">){</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The next thing we need to do is attach the portal to the <code class="language-plaintext highlighter-rouge">overlayRef</code> so we can leverage that portal
+to render the contents of it inside the overlay. We have to do that
+after the view is initialized, so we will need to handle this in the <code class="language-plaintext highlighter-rouge">ngAfterViewInit</code> lifecycle hook.
+We will use <code class="language-plaintext highlighter-rouge">@ViewChild(CdkPortal)</code> to get a handle on the <code class="language-plaintext highlighter-rouge">portal</code> we have defined in our template:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+    <span class="c1">// get a grasp on the ng-template with the cdkPortal directive</span>
+    <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="nx">CdkPortal</span><span class="p">)</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">portal</span><span class="p">:</span> <span class="nx">CdkPortal</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OverlayConfig</span><span class="p">({...});</span>
+    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">){</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="nx">ngAfterViewInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// Wait until the view is initialized to attach the portal to the overlay</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">portal</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is the only thing we need to do to make this work, but we have forgotten about the destruction of this component.
+The component does not have any close functionality as it’s not his responsibility.
+The dialog will be closed/destroyed by an <code class="language-plaintext highlighter-rouge">*ngIf</code> or a route change.
+However we do need to clean up the <code class="language-plaintext highlighter-rouge">overlayRef</code> by calling its <code class="language-plaintext highlighter-rouge">detach()</code> function and its <code class="language-plaintext highlighter-rouge">dispose()</code>
+function. We will do that on the <code class="language-plaintext highlighter-rouge">ngOnDestroy</code> lifecycle hook:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">AfterViewInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
+    <span class="c1">// Tell the parent to destroy the component</span>
+    <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">closeDialog</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span><span class="p">();</span>
+
+    <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="nx">CdkPortal</span><span class="p">)</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">portal</span><span class="p">:</span> <span class="nx">CdkPortal</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
+    <span class="p">...</span>
+    <span class="k">public</span> <span class="nx">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// parent destroys this component, this component destroys the overlayRef</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">detach</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">dispose</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We see that we have added a <code class="language-plaintext highlighter-rouge">closeDialog</code> output that will be called from within the template
+when the close button is clicked.</p>
+
+<h3 id="closing-on-backdrop-click">Closing on backdrop click</h3>
+
+<p>By clicking the close button in the dialog we can tell our parent to destroy the <code class="language-plaintext highlighter-rouge">MyDialog</code> component.
+However, we want to do the same when the user clicks on the backdrop.</p>
+
+<p>It turns out that our <code class="language-plaintext highlighter-rouge">overlayRef</code> has a function called <code class="language-plaintext highlighter-rouge">backdropClick()</code> that will return an observable receiving
+events when the user clicks on the backdrop. We could leverage that to close the dialog by emitting on the <code class="language-plaintext highlighter-rouge">closeDialog</code>
+EventEmitter. In our constructor we can subscribe to that observable and emit when needed:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">constructor</span><span class="p">(...)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">backdropClick</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">closeDialog</span><span class="p">.</span><span class="nx">emit</span><span class="p">();</span>
+        <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Below we see the entire implementation of the <code class="language-plaintext highlighter-rouge">MyDialog</code> component class:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+    <span class="c1">// get a grasp on the ng-template with the cdkPortal directive </span>
+    <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="nx">CdkPortal</span><span class="p">)</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">portal</span><span class="p">:</span> <span class="nx">CdkPortal</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
+    <span class="c1">// the parent is in charge of destroying this component (usually through ngIf or route change)</span>
+    <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">closeDialog</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span><span class="p">();</span>
+    
+    <span class="c1">// the configuration of the overlay</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OverlayConfig</span><span class="p">({</span>
+        <span class="na">hasBackdrop</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">positionStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span>
+            <span class="p">.</span><span class="nx">position</span><span class="p">()</span>
+            <span class="p">.</span><span class="nb">global</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">centerHorizontally</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">centerVertically</span><span class="p">(),</span>
+        <span class="na">scrollStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">scrollStrategies</span><span class="p">.</span><span class="nx">block</span><span class="p">(),</span>
+        <span class="na">minWidth</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="p">});</span>
+    <span class="c1">// creating the overlayRef</span>
+    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
+
+    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// telling the parent to destroy the dialog when the user</span>
+        <span class="c1">// clicks on the backdrop</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">.</span><span class="nx">backdropClick</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">closeDialog</span><span class="p">.</span><span class="nx">emit</span><span class="p">();</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// attach the portal to the overlayRef when the view is initialized</span>
+    <span class="k">public</span> <span class="nx">ngAfterViewInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">portal</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="nx">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="c1">// When the parent destroys this component, this component destroys the overlayRef</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">detach</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">dispose</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Thanks for reading this short article! I hope you liked it.</p>
+
+<p>Here you can find the Stackblitz example:</p>
+
+<iframe src="https://stackblitz.com/edit/angular-ivy-ppdmmd" width="100%" height="500px"></iframe>
+
+<h2 id="big-thanks-for-the-reviewers">Big thanks for the reviewers</h2>
+<ul>
+  <li><a href="https://twiter.com/jefiozie">Jeffrey Bosch</a></li>
+  <li><a href="https://twitter.com/geromegrignon">Gerome Grignon</a></li>
+  <li><a href="https://twitter.com/Ozcar80923785">Ozcar</a></li>
+  <li><a href="https://twitter.com/robinpel">Robin Pellegrims</a></li>
+  <li><a href="https://twitter.com/nel81212">Nelson Gutiérrez</a></li>
+</ul>
+
+:ET

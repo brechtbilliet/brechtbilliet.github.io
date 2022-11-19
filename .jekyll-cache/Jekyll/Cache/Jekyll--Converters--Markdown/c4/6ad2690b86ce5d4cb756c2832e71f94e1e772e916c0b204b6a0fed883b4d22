@@ -1,0 +1,8 @@
+I"b<h2 id="using-envjs-files">Using env.js files</h2>
+<p>When we deploy our Angular application, chances are big that we will let our data-access layer connect to another api url than the one
+we connect to in development. This means that this api url should be configurable at some point.
+There are multiple ways of working with environment variables in Angular code-bases.
+I like to choose for a simple <code class="language-plaintext highlighter-rouge">env.js</code> file that can easily be replaced by the continuous integration (<a href="https://www.jvandemo.com/how-to-use-environment-variables-to-configure-your-angular-application-without-a-rebuild/">read this article</a>).
+This way the <code class="language-plaintext highlighter-rouge">env.js</code> file is never really part of the build and can be replaced at all times.
+This file could look like this:</p>
+:ET
