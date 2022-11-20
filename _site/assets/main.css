@@ -453,15 +453,11 @@ html h1, html h2, html a, html li, body h1, body h2, body a, body li { font-fami
 
 .profile { flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
-@media (min-width: 768px) { .profile { position: fixed; width: 15%; top: 130px; z-index: 400; display: flex; } }
+@media (min-width: 768px) { .profile { position: fixed; width: 20%; top: 130px; z-index: 400; display: flex; } }
 
-.profile h3 { margin-top: 20px; }
+.profile h3 { color: #267373; margin-top: 20px; font-weight: bold; font-size: 20px; }
 
-.profile img { max-width: 150px; }
-
-.profile .hire-me-button { background: #cc0033; color: #fff; font-size: 2rem; text-decoration: none; font-weight: 200; padding: 16px 32px; border-radius: 8px; border: none; padding: 8px 16px; }
-
-.profile .ebook-button { background-color: #267373; color: #fff; font-size: 2rem; text-decoration: none; font-weight: 200; padding: 16px 32px; border-radius: 8px; border: none; padding: 8px 16px; }
+.profile .ebook-button { background-color: #267373; color: #fff; font-size: 1.5rem; text-decoration: none; font-weight: 200; padding: 16px 32px; border-radius: 8px; border: none; width: 100%; padding: 8px 16px; }
 
 .profile-mobile { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 

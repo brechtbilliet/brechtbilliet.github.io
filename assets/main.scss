@@ -305,7 +305,7 @@ html, body {
 
   @media (min-width: 768px) {
     position: fixed;
-    width: 15%;
+    width: 20%;
     top: 130px;
     z-index: 400;
     display: flex;
@@ -315,31 +315,21 @@ html, body {
   align-items: center;
   text-align: center;
   h3 {
+    color: #267373;
     margin-top: 20px;
-  }
-  img {
-    max-width: 150px;
-  }
-  .hire-me-button {
-      background: #cc0033;
-      color: #fff;
-      font-size: 2rem;
-      text-decoration: none;
-      font-weight:200;
-      padding: $gridunit*2 $gridunit*4;
-      border-radius: $gridunit;
-    border: none;
-    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 20px;
   }
   .ebook-button {
     background-color: #267373;
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-decoration: none;
     font-weight:200;
     padding: $gridunit*2 $gridunit*4;
     border-radius: $gridunit;
     border: none;
+    width: 100%;
     padding: 8px 16px;
   }
 }
