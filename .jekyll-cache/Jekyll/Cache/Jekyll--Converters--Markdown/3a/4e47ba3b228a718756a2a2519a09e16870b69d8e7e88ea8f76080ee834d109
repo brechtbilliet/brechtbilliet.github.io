@@ -1,4 +1,4 @@
-I"ê,<h2 id="about-this-article">About this article</h2>
+I"-<h2 id="about-this-article">About this article</h2>
 
 <p>If you are writing Angular, Vue or React applications, chances are big that you have used or encountered the Redux pattern.
 Redux helps us to structure statemanagement in an immutable matter which is great, but in order to use it correctly, we have to write a bunch of boilerplate code.
@@ -31,17 +31,17 @@ It could be a simple value that we want to remember in memory when we are naviga
 If statemanagement is trivial to our applications and we just want to store values we could work with a state service instead of Redux.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersService</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">([]);</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">UsersService</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">([]);</span>
 
-    <span class="kd">get</span> <span class="nx">users$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+    <span class="kd">get</span> <span class="nx">users</span><span class="nf">$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">asObservable</span><span class="p">();</span>
     <span class="p">}</span>
 
     <span class="c1">// IMPORTANT: since we use an immutable dataflow</span>
     <span class="c1">// we have to make sure users is a new instance</span>
-    <span class="nx">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
+    <span class="nf">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -52,28 +52,28 @@ If statemanagement is trivial to our applications and we just want to store valu
 <p>But what if we need to do more then just set the value of <code class="language-plaintext highlighter-rouge">users</code>. What if we want to add and remove users from that stream, and we would have to do it in an immutable manner? Checkout the following example for instance.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersService</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">([]);</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">UsersService</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nx">_users$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">([]);</span>
 
-    <span class="kd">get</span> <span class="nx">users$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+    <span class="kd">get</span> <span class="nx">users</span><span class="nf">$</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">asObservable</span><span class="p">();</span>
     <span class="p">}</span>
 
-    <span class="nx">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
+    <span class="nf">setUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">next</span><span class="p">(...</span><span class="nx">users</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// We cannot use array.push because we only want to</span>
         <span class="c1">// pass immutable data to the streame</span>
         <span class="c1">// for the OnPush strategy remmber?</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">([...</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">getValue</span><span class="p">(),</span> <span class="nx">user</span><span class="p">])</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">next</span><span class="p">([...</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">getValue</span><span class="p">(),</span> <span class="nx">user</span><span class="p">])</span>
     <span class="p">}</span>
 
-    <span class="nx">removeUser</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">removeUser</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// Again, we have to create a new Array instance to not break the</span>
         <span class="c1">// immutable dataflow</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nx">getValue</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">));</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_users$</span><span class="p">.</span><span class="nf">getValue</span><span class="p">().</span><span class="nf">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">));</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -82,9 +82,9 @@ If statemanagement is trivial to our applications and we just want to store valu
 
 <p>Another example is caching. People use redux to cache data results. A simple <code class="language-plaintext highlighter-rouge">shareReplay</code> operator might to the trick as well.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">''</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">shareReplay</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">''</span><span class="p">).</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">shareReplay</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 <span class="p">}</span>
 </code></pre></div></div>
 

@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Safe HTTP calls with RxJS | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="Safe HTTP calls with RxJS" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -122,13 +126,13 @@ HTTP request for every value using a <code class="language-plaintext highlighter
 
 <span class="c1">// when the term receives a new value...</span>
 <span class="c1">// go fetch some data</span>
-<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">))</span>
+<span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> <span class="nf">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">))</span>
 <span class="p">)</span>
 
 <span class="c1">// subscribe to the observable to start listening</span>
-<span class="nx">results$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">response</span><span class="p">:</span> <span class="nx">Result</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+<span class="nx">results$</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">((</span><span class="nx">response</span><span class="p">:</span> <span class="nx">Result</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
 <span class="p">})</span>
 </code></pre></div></div>
 <p>This all works fine, until an error happens in the observable. This could come from a bad connection, server down-time or anything that went wrong during the HTTP request (500, 404, …) 
@@ -141,21 +145,21 @@ That observable will have the error as a value, instead of throwing it again as 
 That way we could actually show the user a decent message.
 This might look something like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-        <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
+        <span class="nf">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nf">pipe</span><span class="p">(</span>
             <span class="c1">// return an observable with the error inside</span>
-            <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
+            <span class="nf">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nf">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
         <span class="p">)</span>
     <span class="p">)</span>
 <span class="p">)</span>
-<span class="nx">results$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span>
+<span class="nx">results$</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span>
     <span class="p">(</span><span class="nx">response</span><span class="p">:</span> <span class="nx">Result</span><span class="p">[]</span> <span class="o">|</span> <span class="nx">HttpErrorResponse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="nx">response</span> <span class="k">instanceof</span> <span class="nx">HttpErrorResponse</span><span class="p">){</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">oh no:(</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nf">if</span><span class="p">(</span><span class="nx">response</span> <span class="k">instanceof</span> <span class="nx">HttpErrorResponse</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">oh no:(</span><span class="dl">'</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">do something fancy</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">do something fancy</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">});</span>
 <span class="p">)</span>
 </code></pre></div></div>
@@ -171,18 +175,18 @@ From the moment an observable receives an error, it will die… That’s why it�
 
 <p>We could fix that by telling RxJS to retry a few times</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-        <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="nx">retryWhen</span><span class="p">(</span><span class="nx">e$</span> <span class="o">=&gt;</span> <span class="nx">e$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
+        <span class="nf">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nf">pipe</span><span class="p">(</span>
+            <span class="nf">retryWhen</span><span class="p">(</span><span class="nx">e$</span> <span class="o">=&gt;</span> <span class="nx">e$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
                 <span class="c1">// try again after 2 seconds</span>
-                <span class="nx">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
+                <span class="nf">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
                 <span class="c1">// stop trying after 5 times</span>
-                <span class="nx">take</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+                <span class="nf">take</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="c1">// still keep the observable alive if</span>
             <span class="c1">// the first 5 times fail</span>
-            <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
+            <span class="nf">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nf">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
         <span class="p">)</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -194,14 +198,14 @@ From the moment an observable receives an error, it will die… That’s why it�
 
 <p>Even though this is a good solution, there is room for improvement. A great choice is to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorOnLine/Online_and_offline_events">online</a> event from HTML5 to tell the browser to retry when the user regains internet connection. It’s even shorter than before and it’s super elegant</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
-        <span class="nx">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="nx">retryWhen</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">'</span><span class="s1">online</span><span class="dl">'</span><span class="p">))</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">results$</span> <span class="o">=</span> <span class="nx">searchTerm$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">switchMap</span><span class="p">(</span><span class="nx">term</span> <span class="o">=&gt;</span> 
+        <span class="nf">fetchData</span><span class="p">(</span><span class="nx">term</span><span class="p">).</span><span class="nf">pipe</span><span class="p">(</span>
+            <span class="nf">retryWhen</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nf">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">'</span><span class="s1">online</span><span class="dl">'</span><span class="p">))</span>
             <span class="c1">// still keep the observable alive if</span>
             <span class="c1">// the server would return a different</span>
             <span class="c1">// HTTP error</span>
-            <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
+            <span class="nf">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nf">of</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
         <span class="p">)</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -231,21 +235,18 @@ This doesn’t only apply to typeahead searches but to every observable where we
   <li><a href="https://twitter.com/rubenverm">Ruben Vermeulen</a></li>
 </ul>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/safe-http-calls-with-rxjs/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

@@ -138,7 +138,7 @@ That being said, our apps mostly not completely empty. In general they also cont
 
 <p>This directory contains all feature libs that can be lazyloaded. To make sure these libs can be lazy-loaded, they should expose an <code class="language-plaintext highlighter-rouge">NgModule</code> in the barrel file and are loaded as such:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">RouterModule</span><span class="p">.</span><span class="nx">forRoot</span><span class="p">([</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">RouterModule</span><span class="p">.</span><span class="nf">forRoot</span><span class="p">([</span>
     <span class="p">{</span>
         <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
         <span class="na">loadChildren</span><span class="p">:</span> <span class="dl">'</span><span class="s1">@strongbrew/feature/lazy/users</span><span class="dl">'</span>

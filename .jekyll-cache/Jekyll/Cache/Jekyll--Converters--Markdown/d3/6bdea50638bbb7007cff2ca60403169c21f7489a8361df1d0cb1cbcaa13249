@@ -54,7 +54,7 @@ Let’s have a look at our application and look for the source streams there:
 <span class="nx">selectedModel$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="nx">randomModel$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="c1">// needs an initial value</span>
-<span class="nx">numberOfPassengers$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span> 
+<span class="nx">numberOfPassengers$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span> 
 </code></pre></div></div>
 
 <p>These subjects will be populated by the outputs as shown below:</p>

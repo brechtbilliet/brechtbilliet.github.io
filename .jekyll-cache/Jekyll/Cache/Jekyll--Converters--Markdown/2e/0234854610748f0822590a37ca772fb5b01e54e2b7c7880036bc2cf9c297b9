@@ -39,7 +39,7 @@ The simplest implementation can be found here:</p>
     `</span><span class="p">,</span>
   <span class="p">],</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">MyDialogComponent</span> <span class="p">{}</span>
 </code></pre></div></div>
 
 <p>We use the <code class="language-plaintext highlighter-rouge">my-dialog-header</code> selector to project the header into the component and we use the <code class="language-plaintext highlighter-rouge">my-dialog-body</code> selector to project the body.</p>
@@ -59,7 +59,7 @@ The simplest implementation can be found here:</p>
 
   `</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{}</span>
 
 </code></pre></div></div>
 
@@ -149,7 +149,7 @@ We bind it to the <code class="language-plaintext highlighter-rouge">user/:userI
   &lt;router-outlet&gt;&lt;/router-outlet&gt;
   `</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{}</span>
 </code></pre></div></div>
 
 <p>We have created a <code class="language-plaintext highlighter-rouge">&lt;users&gt;</code> component which loads some mocked user data and shows it in a table. This will be rendered in the
@@ -174,9 +174,9 @@ the dialog in.</p>
   &lt;router-outlet&gt;&lt;/router-outlet&gt;
   `</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersComponent</span> <span class="p">{</span>
-  <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">getUsers</span><span class="p">();</span>
-  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">usersService</span><span class="p">:</span> <span class="nx">UsersService</span><span class="p">)</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">UsersComponent</span> <span class="p">{</span>
+  <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nf">getUsers</span><span class="p">();</span>
+  <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">usersService</span><span class="p">:</span> <span class="nx">UsersService</span><span class="p">)</span> <span class="p">{}</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -192,12 +192,12 @@ of a user. Based on the <code class="language-plaintext highlighter-rouge">:user
   &lt;/my-dialog&gt;
   `</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersDetailComponent</span> <span class="p">{</span>
-  <span class="k">private</span> <span class="nx">userId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">userId</span><span class="p">));</span>
-  <span class="nx">user$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">userId$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">UsersDetailComponent</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nx">userId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">userId</span><span class="p">));</span>
+  <span class="nx">user$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">userId$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nf">getById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
   <span class="p">)</span>
-  <span class="kd">constructor</span><span class="p">(</span>
+  <span class="nf">constructor</span><span class="p">(</span>
     <span class="k">private</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span>
     <span class="k">private</span> <span class="nx">usersService</span><span class="p">:</span> <span class="nx">UsersService</span>
   <span class="p">)</span> <span class="p">{}</span>
@@ -211,7 +211,7 @@ we are dealing with 2 nested <code class="language-plaintext highlighter-rouge">
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
   <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">...</span>
-    <span class="nx">RouterModule</span><span class="p">.</span><span class="nx">forRoot</span><span class="p">([</span>
+    <span class="nx">RouterModule</span><span class="p">.</span><span class="nf">forRoot</span><span class="p">([</span>
       <span class="p">{</span>
         <span class="na">path</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
         <span class="na">redirectTo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
@@ -231,7 +231,7 @@ we are dealing with 2 nested <code class="language-plaintext highlighter-rouge">
   <span class="p">],</span>
   <span class="p">...</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
 </code></pre></div></div>
 
 <p>That’s it. When product management decides that the details of a user should not be shown in a dialog but on a page

@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>A scalable Angular 2 architecture | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="A scalable Angular 2 architecture" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -194,8 +198,8 @@ Smart components (also named containers here) should also follow a very strict s
 <p>The following example shows a big constructor with a lot of dependencies. In this scenario <strong>MyComponent</strong> can pretty much do whatever it wants in the application. It gets injected whatever it wants and uses whatever it wants.
 That’s generally not a good idea.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
-	<span class="kd">constructor</span><span class="p">(...,</span><span class="k">private</span> <span class="nx">foo</span><span class="p">:</span><span class="nx">Foo</span><span class="p">,</span> <span class="k">private</span> <span class="nx">bar</span><span class="p">:</span> <span class="nx">Bar</span><span class="p">,</span> 
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyComponent</span><span class="p">{</span>
+	<span class="nf">constructor</span><span class="p">(...,</span><span class="k">private</span> <span class="nx">foo</span><span class="p">:</span><span class="nx">Foo</span><span class="p">,</span> <span class="k">private</span> <span class="nx">bar</span><span class="p">:</span> <span class="nx">Bar</span><span class="p">,</span> 
 		<span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">private</span> <span class="nx">authService</span><span class="p">:</span> <span class="nx">AuthService</span><span class="p">,</span>
 		<span class="k">private</span> <span class="nx">fooHttpService</span><span class="p">:</span> <span class="nx">FooHttpService</span><span class="p">,</span> <span class="k">private</span> <span class="nx">barMapper</span><span class="p">:</span> <span class="nx">BarMapper</span><span class="p">,</span> <span class="p">...){</span>
 	<span class="p">}</span>
@@ -212,12 +216,12 @@ An abstraction layer could really help us here. In the example below we can see 
 
 <p>The abstraction might look something like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
-	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">abstraction</span><span class="p">:</span> <span class="nx">SomeAbstractionType</span><span class="p">){</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyComponent</span><span class="p">{</span>
+	<span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">abstraction</span><span class="p">:</span> <span class="nx">SomeAbstractionType</span><span class="p">){</span>
 	<span class="p">}</span>
 	
-	<span class="nx">doSomething</span><span class="p">():</span> <span class="k">void</span><span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">abstraction</span><span class="p">.</span><span class="nx">doSomething</span><span class="p">();</span>
+	<span class="nf">doSomething</span><span class="p">():</span> <span class="k">void</span><span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">abstraction</span><span class="p">.</span><span class="nf">doSomething</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -227,20 +231,20 @@ An abstraction layer could really help us here. In the example below we can see 
 
 <p>The snippet below might be an example of bad design because the component is very tightly coupled to redux (we use <a href="https://github.com/ngrx/store">ngrx/store</a> in this example)</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyComponent</span><span class="p">{</span>
 	<span class="c1">// we just care about the state, not where it comes from...</span>
-	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">users</span><span class="p">);</span>
-	<span class="nx">foo$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">foo</span><span class="p">);</span>
-	<span class="nx">bar$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">bar</span><span class="p">);</span>
-	<span class="kd">constructor</span><span class="p">(...,</span> 
+	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">users</span><span class="p">);</span>
+	<span class="nx">foo$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">foo</span><span class="p">);</span>
+	<span class="nx">bar$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">bar</span><span class="p">);</span>
+	<span class="nf">constructor</span><span class="p">(...,</span> 
 		<span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">...){</span>
 	<span class="p">}</span>
 	
-	<span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+	<span class="nf">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
 		<span class="c1">// we don't care about the actiontype, payload or store</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">ADD_USER</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">user</span><span class="p">}}</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">ADD_USER</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">user</span><span class="p">}}</span>
 	<span class="p">}</span>
-	<span class="nx">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+	<span class="nf">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
 		<span class="c1">// we don't care about the actiontype, payload or store</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_USER</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">userId</span><span class="p">}}</span>
 	<span class="p">}</span>
@@ -249,19 +253,19 @@ An abstraction layer could really help us here. In the example below we can see 
 
 <p>This might be clearer, and more loosely coupled:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyComponent</span><span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyComponent</span><span class="p">{</span>
 	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">users$</span><span class="p">;</span>
 	<span class="nx">foo$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">foo$</span><span class="p">;</span>
 	<span class="nx">bar$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">bar$</span><span class="p">;</span>
 	
-	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">facade</span><span class="p">:</span> <span class="p">...){</span>
+	<span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">facade</span><span class="p">:</span> <span class="p">...){</span>
 	<span class="p">}</span>
 	
-	<span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+	<span class="nf">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nf">addUser</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
 	<span class="p">}</span>
-	<span class="nx">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nx">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">)</span>
+	<span class="nf">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span><span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">facade</span><span class="p">.</span><span class="nf">removeUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">)</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -280,20 +284,20 @@ An abstraction layer could really help us here. In the example below we can see 
 <p>At a first glance, it might seem pragmatic to handle the result of a GET call and put it in the store right in the service. But the only goal an HTTP service has, is <strong>to perform HTTP requests and return the result of those requests</strong>.
 This might look pragmatic:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserService</span><span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">UserService</span><span class="p">{</span>
 	<span class="c1">// expose the users$-stream directly in the service</span>
-	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">users</span><span class="p">);</span>
+	<span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">users</span><span class="p">);</span>
 	
-	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span>
+	<span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span>
 	<span class="p">}</span>
 	
-	<span class="nx">fetchUsers</span><span class="p">():</span> <span class="k">void</span><span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">)</span>
-			<span class="p">.</span><span class="nx">map</span><span class="p">(...)</span>
-			<span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">users</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="nf">fetchUsers</span><span class="p">():</span> <span class="k">void</span><span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">)</span>
+			<span class="p">.</span><span class="nf">map</span><span class="p">(...)</span>
+			<span class="p">.</span><span class="nf">subscribe</span><span class="p">((</span><span class="nx">users</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 				<span class="c1">// when successful, put the users in the store</span>
 				<span class="c1">// is this really my responsibility?</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">SET_USERS</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">users</span><span class="p">}});</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">SET_USERS</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">users</span><span class="p">}});</span>
 			<span class="p">});</span>
 	<span class="p">}</span>
 <span class="p">}</span>
@@ -304,14 +308,14 @@ This might look pragmatic:</p>
 
 <p>This is actually the only responsibility an http service should have.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserService</span><span class="p">{</span>
-	<span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">UserService</span><span class="p">{</span>
+	<span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span>
 	<span class="p">}</span>
 	
 	<span class="c1">// just let the consumer of this service handle the store interaction</span>
 	<span class="c1">// this will just return a stream of users</span>
-	<span class="nx">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;&gt;</span><span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">).</span><span class="nx">map</span><span class="p">(...)</span>
+	<span class="nf">fetchUsers</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;&gt;</span><span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">...</span><span class="dl">"</span><span class="p">).</span><span class="nf">map</span><span class="p">(...)</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -359,21 +363,18 @@ I hope you enjoyed the article.</p>
 <h2 id="a-very-special-thanks">A very special thanks</h2>
 <p>I want to thank the people who have reviewed this article and gave me their valuable input. Thank you so much <a href="http://twitter.com/jvandemo">Jurgen Van de Moere</a>, <a href="http://twitter.com/carmenpopoviciu">Carmen Popoviciu</a>, <a href="http://twitter.com/manfredsteyer">Manfred Steyer</a> and <a href="http://twitter.com/juristr">Juri Strumpflohner</a>!!!</p>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/A-scalable-angular2-architecture/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

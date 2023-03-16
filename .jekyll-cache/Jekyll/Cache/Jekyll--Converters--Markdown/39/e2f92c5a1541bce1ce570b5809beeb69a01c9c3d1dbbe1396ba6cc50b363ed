@@ -1,4 +1,4 @@
-I"û<p>Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2.
+I"û<p>Sometimes forms in Angular can be a pain, and some of us have been struggling with them since the beta phases of Angular2.
 First there was only the template driven forms approach, and then later on the Angular core team
 introduced Reactive forms. Both solutions still exist today, but the community sold Reactive forms as a best practice and they basically told
 us to stay away from template driven forms.
@@ -62,14 +62,14 @@ Other than that, we use content projection to add the actual content of the form
     `</span><span class="p">,</span>
     <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormWrapperComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FormWrapperComponent</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formGroup</span><span class="p">:</span> <span class="nx">FormGroup</span><span class="p">;</span>
-    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
     <span class="c1">// skip(1): don't emit the initial value</span>
-    <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span> 
+    <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span> 
     
-    <span class="k">public</span> <span class="nx">onSubmit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="k">public</span> <span class="nf">onSubmit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -102,7 +102,7 @@ The <code class="language-plaintext highlighter-rouge">form-input-wrapper</code>
     <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">CommonModule</span><span class="p">],</span>
     <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputWrapperComponent</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -128,7 +128,7 @@ To get access to the element that is projected in the content, we can create an
     <span class="na">selector</span><span class="p">:</span> <span class="dl">'</span><span class="s1">[formInput]</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputDirective</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputDirective</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formControl</span><span class="p">:</span> <span class="nx">FormControl</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -147,7 +147,7 @@ its <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt
 
 <p>By using <code class="language-plaintext highlighter-rouge">@ContentChildren(FormInputDirective)</code>, we now can add the <code class="language-plaintext highlighter-rouge">formInputs</code> property to the <code class="language-plaintext highlighter-rouge">&lt;form-input-wrapper&gt;</code> component which we will later use to retrieve its validity state from.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputWrapperComponent</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="p">@</span><span class="nd">ContentChildren</span><span class="p">(</span><span class="nx">FormInputDirective</span><span class="p">,</span> <span class="p">{</span> <span class="na">descendants</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
         <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formInputs</span><span class="p">:</span> <span class="nx">QueryList</span><span class="o">&lt;</span><span class="nx">FormInputDirective</span><span class="o">&gt;</span><span class="p">;</span>
@@ -225,13 +225,13 @@ We will create the 2 classes <code class="language-plaintext highlighter-rouge">
 
 <p><em>Note: Making these properties <strong>readonly</strong> enforces us to work in an immutable way</em></p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserForm</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">UserForm</span> <span class="p">{</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">lastName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">age</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AddressForm</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AddressForm</span> <span class="p">{</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">street</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">streetNumber</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">city</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
@@ -244,7 +244,7 @@ We will create the 2 classes <code class="language-plaintext highlighter-rouge">
     <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">FormWrapperComponent</span><span class="p">,</span> <span class="nx">FormInputWrapperComponent</span><span class="p">,</span> <span class="nx">FormInputDirective</span><span class="p">,</span> <span class="nx">ReactiveFormsModule</span><span class="p">,</span> <span class="nx">FormsModule</span><span class="p">,</span> <span class="nx">CommonModule</span><span class="p">],</span>
     <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span>  <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppComponent</span>  <span class="p">{</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="nx">addressForm</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">AddressForm</span><span class="o">&gt;</span><span class="p">({</span>
         <span class="na">street</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
         <span class="na">streetNumber</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
@@ -258,16 +258,16 @@ We will create the 2 classes <code class="language-plaintext highlighter-rouge">
         <span class="na">age</span><span class="p">:</span> <span class="kc">null</span>
     <span class="p">});</span>
     
-    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="p">({</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nf">group</span><span class="p">({</span>
         <span class="na">user</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userForm</span><span class="p">,</span>
         <span class="na">address</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">addressForm</span>
     <span class="p">})</span>
     
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">fb</span><span class="p">:</span> <span class="nx">FormBuilder</span><span class="p">){</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">fb</span><span class="p">:</span> <span class="nx">FormBuilder</span><span class="p">){</span>
     <span class="p">}</span>
     
-    <span class="k">public</span> <span class="nx">onSubmit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+    <span class="k">public</span> <span class="nf">onSubmit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -280,7 +280,7 @@ possible to write our own validators. Since class-validator provides us with dec
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">IsNotEmpty</span><span class="p">,</span> <span class="nx">Min</span><span class="p">,</span> <span class="nx">Max</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">class-validator</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserForm</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">UserForm</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     
@@ -292,7 +292,7 @@ possible to write our own validators. Since class-validator provides us with dec
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">age</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AddressForm</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AddressForm</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">street</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     
@@ -313,20 +313,20 @@ Why async validators? Because <code class="language-plaintext highlighter-rouge"
 Letâ€™s create a shared function called <code class="language-plaintext highlighter-rouge">addAsyncValidators()</code> that will add validators to our form groups.
 In the first argument we pass the form group and in the next one the type of its form class (The one with the validation decorators).</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">readonly</span> <span class="nx">addressForm</span> <span class="o">=</span> <span class="nx">addAsyncValidators</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">AddressForm</span><span class="o">&gt;</span><span class="p">({</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">readonly</span> <span class="nx">addressForm</span> <span class="o">=</span> <span class="nf">addAsyncValidators</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">AddressForm</span><span class="o">&gt;</span><span class="p">({</span>
     <span class="na">street</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
     <span class="na">streetNumber</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
     <span class="na">city</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
     <span class="na">zipCode</span><span class="p">:</span> <span class="dl">''</span>
 <span class="p">}),</span> <span class="nx">AddressForm</span><span class="p">);</span> 
 
-<span class="k">private</span> <span class="k">readonly</span> <span class="nx">userForm</span> <span class="o">=</span> <span class="nx">addAsyncValidators</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">UserForm</span><span class="o">&gt;</span><span class="p">({</span>
+<span class="k">private</span> <span class="k">readonly</span> <span class="nx">userForm</span> <span class="o">=</span> <span class="nf">addAsyncValidators</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="o">&lt;</span><span class="nx">UserForm</span><span class="o">&gt;</span><span class="p">({</span>
     <span class="na">firstName</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
     <span class="na">lastName</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
     <span class="na">age</span><span class="p">:</span> <span class="kc">null</span>
 <span class="p">}),</span> <span class="nx">UserForm</span><span class="p">);</span> 
 
-<span class="k">public</span> <span class="k">readonly</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nx">group</span><span class="p">({</span>
+<span class="k">public</span> <span class="k">readonly</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fb</span><span class="p">.</span><span class="nf">group</span><span class="p">({</span>
     <span class="na">user</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userForm</span><span class="p">,</span>
     <span class="na">address</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">addressForm</span>
 <span class="p">})</span>
@@ -350,14 +350,14 @@ translate the decorators into async validators and create a new form group with 
 <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/forms</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">validate</span><span class="p">,</span> <span class="nx">ValidationError</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">class-validator</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">addAsyncValidators</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">FormGroup</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">addAsyncValidators</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="nx">FormGroup</span><span class="o">&gt;</span><span class="p">(</span>
     <span class="nx">form</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span>
-    <span class="nx">formType</span><span class="p">:</span> <span class="k">new</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="kr">any</span>
+    <span class="nx">formType</span><span class="p">:</span> <span class="nf">new </span><span class="p">()</span> <span class="o">=&gt;</span> <span class="kr">any</span>
 <span class="p">):</span> <span class="nx">T</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">groupObj</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">controls</span><span class="p">).</span><span class="nx">reduce</span><span class="p">(</span>
+    <span class="kd">const</span> <span class="nx">groupObj</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">controls</span><span class="p">).</span><span class="nf">reduce</span><span class="p">(</span>
         <span class="p">(</span><span class="nx">obj</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">},</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">keyof</span> <span class="nx">T</span> <span class="o">&amp;</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="kd">const</span> <span class="nx">validators</span> <span class="o">=</span> <span class="p">[</span><span class="nx">createValidatorFn</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">formType</span><span class="p">)];</span>
-            <span class="kd">const</span> <span class="nx">formControl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormControl</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">validators</span> <span class="o">=</span> <span class="p">[</span><span class="nf">createValidatorFn</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">formType</span><span class="p">)];</span>
+            <span class="kd">const</span> <span class="nx">formControl</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FormControl</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="p">{</span>
                 <span class="na">asyncValidators</span><span class="p">:</span> <span class="nx">validators</span><span class="p">,</span>
             <span class="p">});</span>
             <span class="k">return</span> <span class="p">{</span>
@@ -367,18 +367,18 @@ translate the decorators into async validators and create a new form group with 
         <span class="p">},</span>
         <span class="p">{}</span> <span class="k">as</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">}</span>
   <span class="p">);</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nx">FormGroup</span><span class="p">(</span><span class="nx">groupObj</span> <span class="k">as</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">})</span> <span class="k">as</span> <span class="nx">T</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nc">FormGroup</span><span class="p">(</span><span class="nx">groupObj</span> <span class="k">as</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span> <span class="k">in</span> <span class="kr">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">FormControl</span> <span class="p">})</span> <span class="k">as</span> <span class="nx">T</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">createValidatorFn</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="kd">function</span> <span class="nf">createValidatorFn</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span>
     <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span>
-    <span class="nx">formType</span><span class="p">:</span> <span class="k">new</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="kr">any</span>
+    <span class="nx">formType</span><span class="p">:</span> <span class="nf">new </span><span class="p">()</span> <span class="o">=&gt;</span> <span class="kr">any</span>
 <span class="p">):</span> <span class="nx">AsyncValidatorFn</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="nx">control</span><span class="p">:</span> <span class="nx">AbstractControl</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">toValidate</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">formType</span><span class="p">();</span>
+    <span class="nf">return </span><span class="p">(</span><span class="nx">control</span><span class="p">:</span> <span class="nx">AbstractControl</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">toValidate</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">formType</span><span class="p">();</span>
         <span class="nx">toValidate</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">control</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nx">validate</span><span class="p">(</span><span class="nx">toValidate</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="na">validationErrors</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="kd">const</span> <span class="nx">err</span> <span class="o">=</span> <span class="nx">validationErrors</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span>
+        <span class="k">return</span> <span class="nf">validate</span><span class="p">(</span><span class="nx">toValidate</span><span class="p">).</span><span class="nf">then</span><span class="p">((</span><span class="na">validationErrors</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">err</span> <span class="o">=</span> <span class="nx">validationErrors</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span>
                 <span class="p">(</span><span class="na">v</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">?.</span><span class="nx">property</span> <span class="o">===</span> <span class="nx">key</span>
             <span class="p">);</span>
             
@@ -411,10 +411,10 @@ of these validation errors:</p>
     <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">formInputErrors</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputErrorsPipe</span> <span class="k">implements</span> <span class="nx">PipeTransform</span> <span class="p">{</span>
-    <span class="nx">transform</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">ValidationErrors</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">,</span> <span class="nx">args</span><span class="p">?:</span> <span class="kr">any</span><span class="p">):</span> <span class="kr">any</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">){</span>
-            <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">key</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputErrorsPipe</span> <span class="k">implements</span> <span class="nx">PipeTransform</span> <span class="p">{</span>
+    <span class="nf">transform</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">ValidationErrors</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">,</span> <span class="nx">args</span><span class="p">?:</span> <span class="kr">any</span><span class="p">):</span> <span class="kr">any</span> <span class="p">{</span>
+        <span class="nf">if</span><span class="p">(</span><span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">){</span>
+            <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="nx">key</span> <span class="o">=&gt;</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="nx">value</span><span class="p">?.</span><span class="nx">constraints</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
             <span class="p">});</span>
         <span class="p">}</span>
@@ -442,7 +442,7 @@ Because we are working with standalone components, donâ€™t forget to add the <co
     <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">CommonModule</span><span class="p">,</span> <span class="nx">FormInputDirective</span><span class="p">,</span> <span class="nx">FormInputErrorsPipe</span><span class="p">],</span>
     <span class="na">standalone</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputWrapperComponent</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="c1">// search for elements of type FormInputDirective in the &lt;ng-content&gt;</span>
     <span class="p">@</span><span class="nd">ContentChildren</span><span class="p">(</span><span class="nx">FormInputDirective</span><span class="p">,</span> <span class="p">{</span> <span class="na">descendants</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
@@ -458,13 +458,13 @@ Letâ€™s add a css class called <code class="language-plaintext highlighter-rouge
 We can do that by using a <code class="language-plaintext highlighter-rouge">@HostBinding()</code>, injecting the <code class="language-plaintext highlighter-rouge">FormWrapperComponent</code> and using the form control that we pass
 through an <code class="language-plaintext highlighter-rouge">@Input()</code> property.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputDirective</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">FormWrapperComponent</span><span class="p">).</span><span class="nx">submitted$</span><span class="p">;</span> <span class="c1">// a value type wouldn't be sufficient here</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputDirective</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="nf">inject</span><span class="p">(</span><span class="nx">FormWrapperComponent</span><span class="p">).</span><span class="nx">submitted$</span><span class="p">;</span> <span class="c1">// a value type wouldn't be sufficient here</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formControl</span><span class="p">:</span> <span class="nx">FormControl</span><span class="p">;</span>
     
     <span class="p">@</span><span class="nd">HostBinding</span><span class="p">(</span><span class="dl">'</span><span class="s1">class.form-input--invalid</span><span class="dl">'</span><span class="p">)</span>
-    <span class="k">public</span> <span class="kd">get</span> <span class="nx">invalid</span><span class="p">():</span> <span class="nx">boolean</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span>
+    <span class="k">public</span> <span class="kd">get</span> <span class="nf">invalid</span><span class="p">():</span> <span class="nx">boolean</span> <span class="p">{</span>
+        <span class="nf">return </span><span class="p">(</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">formControl</span><span class="p">?.</span><span class="nx">invalid</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">formControl</span><span class="p">?.</span><span class="nx">touched</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">submitted$</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">}</span>
@@ -496,11 +496,11 @@ For that we can inject the <code class="language-plaintext highlighter-rouge">Fo
 `</span><span class="p">,</span>
 
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FormInputWrapperComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FormInputWrapperComponent</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">label</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
     <span class="p">@</span><span class="nd">ContentChildren</span><span class="p">(</span><span class="nx">FormInputDirective</span><span class="p">,</span> <span class="p">{</span> <span class="na">descendants</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">formInputs</span><span class="p">:</span> <span class="nx">QueryList</span><span class="o">&lt;</span><span class="nx">FormInputDirective</span><span class="o">&gt;</span><span class="p">;</span>
-    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">FormWrapperComponent</span><span class="p">).</span><span class="nx">submitted$</span><span class="p">;</span>
+    <span class="k">public</span> <span class="k">readonly</span> <span class="nx">submitted$</span> <span class="o">=</span> <span class="nf">inject</span><span class="p">(</span><span class="nx">FormWrapperComponent</span><span class="p">).</span><span class="nx">submitted$</span><span class="p">;</span>
 <span class="p">}</span>
 
 </code></pre></div></div>
@@ -513,11 +513,11 @@ types a special character in one of the name fields.
 The usage of our validator looks like this:</p>
 
 <p>We will use our decorator like this:</p>
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">noSpecialChars</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">noSpecialChars</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/</span><span class="se">[\!\@\#\$\%\^\&amp;\*\)\(\+\=\.\&lt;\&gt;\{\}\[\]\:\;\'\"\|\~\`\_]</span><span class="sr">/g</span><span class="p">;</span>
-    <span class="k">return</span> <span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">UserForm</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">UserForm</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">IsNotEmpty</span><span class="p">()</span>
     <span class="p">@</span><span class="nd">CustomValidator</span><span class="p">(</span><span class="nx">noSpecialChars</span><span class="p">,</span> <span class="p">{</span><span class="na">message</span><span class="p">:</span> <span class="dl">'</span><span class="s1">First name can not contain special chars</span><span class="dl">'</span><span class="p">})</span>
     <span class="k">public</span> <span class="k">readonly</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
@@ -542,17 +542,17 @@ advice to consult <a href="https://github.com/typestack/class-validator#custom-v
     <span class="nx">ValidationOptions</span><span class="p">,</span>
 <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">class-validator</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">CustomValidator</span><span class="p">(</span><span class="nx">validatorFn</span><span class="p">:</span> <span class="nb">Function</span><span class="p">,</span> <span class="nx">options</span><span class="p">?</span> <span class="p">:</span> <span class="nx">ValidationOptions</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">object</span><span class="p">:</span> <span class="nb">Object</span><span class="p">,</span> <span class="nx">propertyName</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">registerDecorator</span><span class="p">({</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">CustomValidator</span><span class="p">(</span><span class="nx">validatorFn</span><span class="p">:</span> <span class="nb">Function</span><span class="p">,</span> <span class="nx">options</span><span class="p">?</span> <span class="p">:</span> <span class="nx">ValidationOptions</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nf">function </span><span class="p">(</span><span class="nx">object</span><span class="p">:</span> <span class="nb">Object</span><span class="p">,</span> <span class="nx">propertyName</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">registerDecorator</span><span class="p">({</span>
             <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">custom</span><span class="dl">'</span><span class="p">,</span>
             <span class="na">target</span><span class="p">:</span> <span class="nx">object</span><span class="p">.</span><span class="kd">constructor</span><span class="p">,</span>
             <span class="na">propertyName</span><span class="p">:</span> <span class="nx">propertyName</span><span class="p">,</span>
             <span class="na">options</span><span class="p">:</span> <span class="nx">options</span><span class="p">,</span>
             <span class="na">constraints</span><span class="p">:</span> <span class="p">[],</span>
             <span class="na">validator</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nx">validate</span><span class="p">(</span><span class="na">value</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="na">args</span><span class="p">:</span> <span class="nx">ValidationArguments</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">return</span> <span class="nx">validatorFn</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+                <span class="nf">validate</span><span class="p">(</span><span class="na">value</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="na">args</span><span class="p">:</span> <span class="nx">ValidationArguments</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nf">validatorFn</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">});</span>

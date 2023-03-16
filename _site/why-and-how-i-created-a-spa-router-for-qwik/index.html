@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Why and how I created a SPA router for Qwik | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="Why and how I created a SPA router for Qwik" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -222,11 +226,11 @@ Then we need to pass it to the <code class="language-plaintext highlighter-rouge
 That <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component will initialize the router with the URL.</p>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// entry.dev.tsx</span>
 <span class="p">...</span>
-<span class="nx">render</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="dl">''</span><span class="p">}</span><span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
+<span class="nf">render</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="dl">''</span><span class="p">}</span><span class="sr">/&gt;</span><span class="se">)</span><span class="err">;
 </span></code></pre></div></div>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// entry.ssr.tsx</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">render</span><span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="nx">RenderOptions</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">renderToString</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span> <span class="k">as</span> <span class="kr">string</span> <span class="o">||</span> <span class="dl">''</span><span class="p">}</span> <span class="sr">/&gt;, </span><span class="err">{
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">render</span><span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="nx">RenderOptions</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">renderToString</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">Root</span> <span class="nx">url</span><span class="o">=</span><span class="p">{</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span> <span class="k">as</span> <span class="kr">string</span> <span class="o">||</span> <span class="dl">''</span><span class="p">}</span> <span class="sr">/&gt;, </span><span class="err">{
 </span>    <span class="nx">manifest</span><span class="p">,</span>
     <span class="p">...</span><span class="nx">opts</span><span class="p">,</span>
   <span class="p">});</span>
@@ -234,8 +238,8 @@ That <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> comp
 
 </code></pre></div></div>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// root.tsx</span>
-<span class="k">export</span> <span class="k">default</span> <span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> 
-  <span class="k">return</span> <span class="p">(</span>
+<span class="k">export</span> <span class="nf">default </span><span class="p">(</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> 
+  <span class="nf">return </span><span class="p">(</span>
     <span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
       <span class="p">...</span>
       <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
@@ -266,21 +270,21 @@ Now let’s set up the state.</p>
 
 <span class="c1">// this one will be called by the &lt;App/&gt; component and initialize </span>
 <span class="c1">// the state once for the entire lifecycle of the application</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">initializeRouter</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
     <span class="c1">// create a store and state</span>
     <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useStore</span><span class="o">&lt;</span><span class="nx">RoutingState</span><span class="o">&gt;</span><span class="p">(</span>
-        <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+        <span class="nf">getRoutingStateByPath</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
     <span class="p">);</span>
 
-    <span class="nx">useContextProvider</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+    <span class="nf">useContextProvider</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">routingState</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">// this will retrieve the routingstate by the path (the current url)</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">segments</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">segments</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// remove empty segment </span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">getRoutingStateByPath</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">RoutingState</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">segments</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">segments</span><span class="p">.</span><span class="nf">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// remove empty segment </span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="na">url</span><span class="p">:</span> <span class="nx">path</span><span class="p">,</span>
         <span class="nx">segments</span>
@@ -291,8 +295,8 @@ Now let’s set up the state.</p>
 <p>The first part of the state is done, we just have to initialize the router in the <code class="language-plaintext highlighter-rouge">&lt;App/&gt;</code> component.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// containers/app/app.tsx</span>
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component</span><span class="nf">$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
     <span class="p">...</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -310,37 +314,37 @@ We use <code class="language-plaintext highlighter-rouge">isServer</code> here, 
 <span class="k">import</span> <span class="p">{</span><span class="nx">isServer</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik/build</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="c1">// safely get the window object</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">getWindow</span><span class="p">():</span> <span class="nx">Window</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">getWindow</span><span class="p">():</span> <span class="nx">Window</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
        <span class="k">return</span> <span class="k">typeof</span> <span class="nb">window</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">object</span><span class="dl">'</span> <span class="p">?</span> <span class="nb">window</span> <span class="p">:</span> <span class="kc">undefined</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// we don't actually navigate, but push a new state to</span>
         <span class="c1">// the history object</span>
-        <span class="nx">getWindow</span><span class="p">()?.</span><span class="nx">history</span><span class="p">?.</span><span class="nx">pushState</span><span class="p">({</span><span class="na">page</span><span class="p">:</span> <span class="nx">path</span><span class="p">},</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">path</span><span class="p">);</span>
-        <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+        <span class="nf">getWindow</span><span class="p">()?.</span><span class="nx">history</span><span class="p">?.</span><span class="nf">pushState</span><span class="p">({</span><span class="na">page</span><span class="p">:</span> <span class="nx">path</span><span class="p">},</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">path</span><span class="p">);</span>
+        <span class="nf">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nx">isServer</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// when the navigation buttons are being used</span>
         <span class="c1">// we want to set the routing state</span>
-        <span class="nx">getWindow</span><span class="p">()?.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">popstate</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">getWindow</span><span class="p">()?.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">popstate</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="kd">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">page</span><span class="p">;</span>
-            <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
+            <span class="nf">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">);</span>
         <span class="p">})</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">oldUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">newUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">oldUrl</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="p">{</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">url</span><span class="p">}</span> <span class="o">=</span> <span class="nx">getRoutingStateByPath</span><span class="p">(</span><span class="nx">newUrl</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">setRoutingState</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">oldUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">newUrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">URL</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">oldUrl</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">{</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">url</span><span class="p">}</span> <span class="o">=</span> <span class="nf">getRoutingStateByPath</span><span class="p">(</span><span class="nx">newUrl</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span>
     <span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span> <span class="o">=</span> <span class="nx">segments</span><span class="p">;</span>
     <span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
 <span class="p">}</span>
@@ -355,9 +359,9 @@ Now we want to render the right components for the right path inside a router ou
 <p>Our app component looks like this:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// containers/app/app.tsx</span>
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
-    <span class="k">return</span> <span class="p">(</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="nx">component</span><span class="nf">$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">url</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">undefined</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nf">initializeRouter</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+    <span class="nf">return </span><span class="p">(</span>
         <span class="o">&lt;</span><span class="nx">section</span><span class="o">&gt;</span>
             <span class="p">...</span> <span class="nx">here</span> <span class="nx">comes</span> <span class="nx">the</span> <span class="nx">menu</span>
             <span class="o">&lt;</span><span class="nx">RouterOutlet</span><span class="o">/&gt;</span>
@@ -374,11 +378,11 @@ Now we want to render the right components for the right path inside a router ou
 <span class="k">import</span> <span class="p">{</span><span class="nx">getMatchingConfig</span><span class="p">,}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span><span class="nx">routingConfig</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../routing-config</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">(</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component</span><span class="nf">$</span><span class="p">(</span>
     <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nf">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
         <span class="c1">// render the correct component</span>
-        <span class="k">return</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
+        <span class="k">return</span> <span class="nf">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
     <span class="p">}</span>
 <span class="p">);</span>
 </code></pre></div></div>
@@ -397,21 +401,21 @@ Remember this piece of config?</p>
 <span class="p">...</span>
 <span class="c1">// go over all the RoutingConfigItem objects and if they match return the config</span>
 <span class="c1">// so we know which compnent to render</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">segments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">config</span><span class="p">:</span> <span class="nx">RoutingConfig</span><span class="p">):</span> <span class="nx">RoutingConfigItem</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">segmentsMatch</span><span class="p">(</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">item</span><span class="p">))</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">found</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">getMatchingConfig</span><span class="p">(</span><span class="nx">segments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">config</span><span class="p">:</span> <span class="nx">RoutingConfig</span><span class="p">):</span> <span class="nx">RoutingConfigItem</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">segmentsMatch</span><span class="p">(</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">item</span><span class="p">))</span>
+    <span class="nf">if </span><span class="p">(</span><span class="nx">found</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">segmentsMatch</span><span class="p">(</span><span class="nx">pathSegments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">configItem</span><span class="p">:</span> <span class="nx">RoutingConfigItem</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">configItemSegments</span> <span class="o">=</span> <span class="nx">configItem</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">configItemSegments</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">segmentsMatch</span><span class="p">(</span><span class="nx">pathSegments</span><span class="p">:</span> <span class="kr">string</span><span class="p">[],</span> <span class="nx">configItem</span><span class="p">:</span> <span class="nx">RoutingConfigItem</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">configItemSegments</span> <span class="o">=</span> <span class="nx">configItem</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nf">if </span><span class="p">(</span><span class="nx">configItemSegments</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="kd">const</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">segment</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">segment</span> <span class="o">===</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">||</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span>
+    <span class="kd">const</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nf">filter</span><span class="p">((</span><span class="nx">segment</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">segment</span> <span class="o">===</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">||</span> <span class="nx">configItemSegments</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nf">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span>
     <span class="p">});</span>
     <span class="k">return</span> <span class="nx">matches</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">pathSegments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 <span class="p">}</span>
@@ -427,13 +431,13 @@ For that, Qwik provides us with the <code class="language-plaintext highlighter-
 <span class="k">import</span> <span class="p">{</span><span class="nx">getMatchingConfig</span><span class="p">,</span> <span class="nx">listenToRouteChanges</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span><span class="nx">routingConfig</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../routing-config</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">(</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">RouterOutlet</span> <span class="o">=</span> <span class="nx">component</span><span class="nf">$</span><span class="p">(</span>
     <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
-        <span class="nx">useClientEffect$</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="nx">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nf">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+        <span class="nx">useClientEffect</span><span class="nf">$</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nf">listenToRouteChanges</span><span class="p">(</span><span class="nx">routingState</span><span class="p">);</span>
         <span class="p">});</span>
-        <span class="k">return</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
+        <span class="k">return</span> <span class="nf">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">)?.</span><span class="nx">component</span>
     <span class="p">}</span>
 <span class="p">);</span>
 
@@ -453,19 +457,19 @@ The <code class="language-plaintext highlighter-rouge">navigateTo()</code> requi
 <span class="k">import</span> <span class="p">{</span><span class="nx">component$</span><span class="p">,</span> <span class="nx">Slot</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@builder.io/qwik</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span><span class="nx">navigateTo</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./routing</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">Link</span> <span class="o">=</span> <span class="nx">component$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">path</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">Link</span> <span class="o">=</span> <span class="nx">component</span><span class="nf">$</span><span class="p">((</span><span class="nx">opts</span><span class="p">:</span> <span class="p">{</span> <span class="nl">path</span><span class="p">:</span> <span class="kr">string</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">routingState</span> <span class="o">=</span> <span class="nf">useContext</span><span class="p">(</span><span class="nx">ROUTING</span><span class="p">);</span>
     <span class="kd">const</span> <span class="p">{</span><span class="nx">path</span><span class="p">}</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">;</span>
     <span class="c1">// check whether the link should be active or not</span>
-    <span class="kd">const</span> <span class="nx">isActive</span> <span class="o">=</span> <span class="s2">`/</span><span class="p">${</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)}</span><span class="s2">`</span> <span class="o">===</span> <span class="nx">path</span><span class="p">;</span>
-    <span class="k">return</span> <span class="p">(</span>
+    <span class="kd">const</span> <span class="nx">isActive</span> <span class="o">=</span> <span class="s2">`/</span><span class="p">${</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)}</span><span class="s2">`</span> <span class="o">===</span> <span class="nx">path</span><span class="p">;</span>
+    <span class="nf">return </span><span class="p">(</span>
         <span class="o">&lt;</span><span class="nx">a</span>
             <span class="c1">// This will prevent the default behavior of the "click" event.</span>
             <span class="na">preventdefault</span><span class="p">:</span><span class="nx">click</span> 
             <span class="c1">// set the correct class when the link is active</span>
             <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">isActive</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">link--active</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">''</span><span class="p">}</span>
             <span class="nx">href</span><span class="o">=</span><span class="p">{</span><span class="nx">path</span><span class="p">}</span> <span class="nx">onClick$</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="nx">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">)</span>
+            <span class="nf">navigateTo</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">routingState</span><span class="p">)</span>
         <span class="p">}}</span><span class="o">&gt;&lt;</span><span class="nx">Slot</span><span class="o">/&gt;&lt;</span><span class="sr">/a</span><span class="err">&gt;
 </span>    <span class="p">);</span>
 <span class="p">});</span>
@@ -497,29 +501,29 @@ something like <code class="language-plaintext highlighter-rouge">getParams(rout
 
 <p>In <code class="language-plaintext highlighter-rouge">routing/routing.ts</code> we add 2 more functions:</p>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// routing/routing.tsx</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">getParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">matchingConfig</span> <span class="o">=</span> <span class="nx">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">matchingConfig</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="na">segment</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">index</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">segment</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">getParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">matchingConfig</span> <span class="o">=</span> <span class="nf">getMatchingConfig</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">,</span> <span class="nx">routingConfig</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">matchingConfig</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">map</span><span class="p">((</span><span class="na">segment</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">index</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nf">if </span><span class="p">(</span><span class="nx">segment</span><span class="p">.</span><span class="nf">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="p">{</span>
                     <span class="nx">index</span><span class="p">,</span>
-                    <span class="na">paramName</span><span class="p">:</span> <span class="nx">segment</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">,</span> <span class="dl">''</span><span class="p">)</span>
+                    <span class="na">paramName</span><span class="p">:</span> <span class="nx">segment</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">:</span><span class="dl">'</span><span class="p">,</span> <span class="dl">''</span><span class="p">)</span>
                 <span class="p">}</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="kc">undefined</span>
             <span class="p">}</span>
         <span class="p">})</span>
-        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span><span class="p">);</span>
+        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span><span class="p">);</span>
     <span class="kd">const</span> <span class="na">returnObj</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="na">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}</span> <span class="o">=</span> <span class="p">{};</span>
-    <span class="nx">params</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">param</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">param</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">returnObj</span><span class="p">[</span><span class="nx">param</span><span class="p">.</span><span class="nx">paramName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">routingState</span><span class="p">.</span><span class="nx">segments</span><span class="p">[</span><span class="nx">param</span><span class="p">.</span><span class="nx">index</span><span class="p">]</span>
     <span class="p">})</span>
     <span class="k">return</span> <span class="nx">returnObj</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">getSearchParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="nx">URLSearchParams</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">searchParams</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">getSearchParams</span><span class="p">(</span><span class="nx">routingState</span><span class="p">:</span> <span class="nx">RoutingState</span><span class="p">):</span> <span class="nx">URLSearchParams</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nc">URL</span><span class="p">(</span><span class="nx">routingState</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">searchParams</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -550,21 +554,18 @@ I hope you found it interesting as well!</p>
   <li><a href="https://twitter.com/antoinepairet">Antoine Pairet</a></li>
 </ul>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/why-and-how-i-created-a-spa-router-for-qwik/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

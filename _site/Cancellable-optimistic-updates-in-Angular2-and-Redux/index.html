@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Cancellable optimistic updates in Angular 2 and Redux | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="Cancellable optimistic updates in Angular 2 and Redux" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -105,10 +109,10 @@
 
 <p>The code explained above might look like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     	<span class="c1">// dispatch the action to the store, when the call was successful</span>
-    	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}});</span>
+    	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}});</span>
     <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -119,11 +123,11 @@
 
 <p>The code explained above might look like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
 	<span class="c1">// dispatch directly to the store</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}};</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}};</span>
 	<span class="c1">// we still have to subscribe because http calls return cold observables</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -139,19 +143,19 @@
 
 <p>We would like to implement something like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
 	<span class="c1">// create an action</span>
 	<span class="kd">let</span> <span class="nx">action</span> <span class="o">=</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">REMOVE_WINE</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">_id</span><span class="p">:</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}};</span>
 	<span class="c1">//dispatch the action to the store</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
 	<span class="c1">// call the backend</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
-    	<span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">API_URL</span><span class="p">}</span><span class="s2">/wines/</span><span class="p">${</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+    	<span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span>
     		<span class="c1">// on success, do nothing</span>
     		<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{},</span> 
 	    	<span class="c1">// on error, rollback the action</span>
 	    	<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-	    		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">action</span><span class="p">});</span>
+	    		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">action</span><span class="p">});</span>
 	    	<span class="c1">// maybe show somekind of errormessage to show the user that it's action failed</span>
     	<span class="p">});</span>
 <span class="p">}</span>
@@ -163,27 +167,27 @@ The implementation looks like this:</p>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">ApplicationState</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../statemanagement/state/ApplicationState</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span><span class="nx">Action</span><span class="p">,</span> <span class="nx">ActionReducer</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@ngrx/store</span><span class="dl">"</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">)</span>
 	<span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span> <span class="p">{</span>
 	<span class="c1">// keep the executedActions</span>
     <span class="kd">let</span> <span class="na">executedActions</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Action</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="k">return</span> <span class="p">(</span><span class="na">state</span><span class="p">:</span> <span class="nx">ApplicationState</span><span class="p">,</span> <span class="na">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">return </span><span class="p">(</span><span class="na">state</span><span class="p">:</span> <span class="nx">ApplicationState</span><span class="p">,</span> <span class="na">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">if </span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
         	<span class="c1">// if the action is UNDO_ACTION, </span>
         	<span class="c1">// then call all the actions again on the rootReducer, </span>
         	<span class="c1">// except the one we want to rollback</span>
             <span class="kd">let</span> <span class="na">newState</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="p">{};</span>
-            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">eAct</span> <span class="o">=&gt;</span> <span class="nx">eAct</span> <span class="o">!==</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">);</span>
+            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">eAct</span> <span class="o">=&gt;</span> <span class="nx">eAct</span> <span class="o">!==</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">);</span>
             <span class="c1">// update the state for every action untill we get the</span>
             <span class="c1">// exact same state as before, but without the action we want to rollback</span>
-            <span class="nx">executedActions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">executedAction</span> <span class="o">=&gt;</span> 
-            	<span class="nx">newState</span> <span class="o">=</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">newState</span><span class="p">,</span> <span class="nx">executedAction</span><span class="p">));</span>
+            <span class="nx">executedActions</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">executedAction</span> <span class="o">=&gt;</span> 
+            	<span class="nx">newState</span> <span class="o">=</span> <span class="nf">rootReducer</span><span class="p">(</span><span class="nx">newState</span><span class="p">,</span> <span class="nx">executedAction</span><span class="p">));</span>
             <span class="k">return</span> <span class="nx">newState</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="c1">// push every action that isn't an UNDO_ACTION to the executedActions property</span>
-        <span class="nx">executedActions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+        <span class="nx">executedActions</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
         <span class="c1">// just delegate</span>
-        <span class="k">return</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nf">rootReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
     <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -195,10 +199,10 @@ The implementation looks like this:</p>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
 	<span class="c1">// instead of passing the rootReducer directly</span>
 	<span class="c1">// like we would have done before, wrap it in the handleUndo function</span>
-    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">StoreModule</span><span class="p">.</span><span class="nx">provideStore</span><span class="p">(</span><span class="nx">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">))</span><span class="cm">/*, ...*/</span><span class="p">],</span>
+    <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">StoreModule</span><span class="p">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="nf">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">))</span><span class="cm">/*, ...*/</span><span class="p">],</span>
     <span class="cm">/* ... */</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -215,32 +219,32 @@ Some facts:</p>
 <p>What if it would become slow?
 We can implement a buffer. Let’s say that we only want the last 100 actions to be kept.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> 
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nf">handleUndo</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">:</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> 
 	<span class="nx">bufferSize</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span> <span class="nx">ActionReducer</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="na">executedActions</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Action</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="kd">let</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="na">state</span><span class="p">:</span> <span class="nx">ApplicationState</span><span class="p">,</span> <span class="na">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">return </span><span class="p">(</span><span class="na">state</span><span class="p">:</span> <span class="nx">ApplicationState</span><span class="p">,</span> <span class="na">action</span><span class="p">:</span> <span class="nx">Action</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">if </span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">UNDO_ACTION</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
         	<span class="c1">// if the action is UNDO_ACTION, </span>
         	<span class="c1">// then call all the actions again on the rootReducer, </span>
         	<span class="c1">// except the one we want to rollback</span>
             <span class="kd">let</span> <span class="na">newState</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="nx">initialState</span><span class="p">;</span>
-            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">eAct</span> <span class="o">=&gt;</span> <span class="nx">eAct</span> <span class="o">!==</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">);</span>
+            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">eAct</span> <span class="o">=&gt;</span> <span class="nx">eAct</span> <span class="o">!==</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">);</span>
             <span class="c1">// update the state for every action untill we get the</span>
             <span class="c1">// exact same state as before, but without the action we want to rollback</span>
-            <span class="nx">executedActions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">executedAction</span> <span class="o">=&gt;</span> 
-            	<span class="nx">newState</span> <span class="o">=</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">newState</span><span class="p">,</span> <span class="nx">executedAction</span><span class="p">));</span>
+            <span class="nx">executedActions</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">executedAction</span> <span class="o">=&gt;</span> 
+            	<span class="nx">newState</span> <span class="o">=</span> <span class="nf">rootReducer</span><span class="p">(</span><span class="nx">newState</span><span class="p">,</span> <span class="nx">executedAction</span><span class="p">));</span>
             <span class="k">return</span> <span class="nx">newState</span><span class="p">;</span>
         <span class="p">}</span>
        	<span class="c1">// push every action that isn't an UNDO_ACTION to the executedActions property</span>
-		<span class="nx">executedActions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
-        <span class="kd">let</span> <span class="nx">updatedState</span> <span class="o">=</span>  <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">executedActions</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">bufferSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">executedActions</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">updatedState</span> <span class="o">=</span>  <span class="nf">rootReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+        <span class="nf">if </span><span class="p">(</span><span class="nx">executedActions</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">bufferSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">let</span> <span class="nx">firstAction</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
             <span class="c1">// calculate the state x (buffersize) actions ago</span>
-            <span class="nx">initialState</span> <span class="o">=</span> <span class="nx">rootReducer</span><span class="p">(</span><span class="nx">initialState</span><span class="p">,</span> <span class="nx">firstAction</span><span class="p">);</span>
+            <span class="nx">initialState</span> <span class="o">=</span> <span class="nf">rootReducer</span><span class="p">(</span><span class="nx">initialState</span><span class="p">,</span> <span class="nx">firstAction</span><span class="p">);</span>
             <span class="c1">// keep the correct actions</span>
-            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">bufferSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+            <span class="nx">executedActions</span> <span class="o">=</span> <span class="nx">executedActions</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">bufferSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">updatedState</span><span class="p">;</span>
     <span class="p">};</span>
@@ -255,21 +259,18 @@ The reason why you would do optimistic updates is that your application becomes 
 
 <p>Let me know if you enjoyed this article!</p>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/Cancellable-optimistic-updates-in-Angular2-and-Redux/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

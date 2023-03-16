@@ -7,7 +7,7 @@
         &lt;img [src]="img.src"/&gt;
     `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FooComponent</span> <span class="p">{</span>
     <span class="nx">img</span> <span class="o">=</span> <span class="p">{</span>
         <span class="na">src</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://angular.io/assets/images/logos/angular/logo-nav@2x.png</span><span class="dl">'</span>
     <span class="p">}</span>
@@ -36,7 +36,7 @@ If we use JWT or any other modern authentication system we would rather send <st
         &lt;img [src]="img.src + '?bearer=' + bearToken"/&gt;
     `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FooComponent</span> <span class="p">{</span>
     <span class="nx">img</span> <span class="o">=</span> <span class="p">{</span>
         <span class="na">src</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://angular.io/assets/images/logos/angular/logo-nav@2x.png</span><span class="dl">'</span>
     <span class="p">}</span>
@@ -76,7 +76,7 @@ If we use JWT or any other modern authentication system we would rather send <st
           &lt;secured-image [src]="img.src"&gt;&lt;/secured-image&gt;
     `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FooComponent</span> <span class="p">{</span>
     <span class="nx">img</span> <span class="o">=</span> <span class="p">{</span>
         <span class="na">src</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://angular.io/assets/images/logos/angular/logo-nav@2x.png</span><span class="dl">'</span>
     <span class="p">}</span>
@@ -106,32 +106,32 @@ This component needs to handle the following:</p>
     &lt;img [src]="dataUrl$|async"/&gt;
   `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">SecuredImageComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span>  <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">SecuredImageComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span>  <span class="p">{</span>
   <span class="c1">// This code block just creates an rxjs stream from the src</span>
   <span class="c1">// this makes sure that we can handle source changes</span>
   <span class="c1">// or even when the component gets destroyed</span>
   <span class="c1">// So basically turn src into src$</span>
   <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="k">private</span> <span class="nx">src</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
-  <span class="k">private</span> <span class="nx">src$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
-  <span class="nx">ngOnChanges</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">src$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">src$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
+  <span class="nf">ngOnChanges</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">src$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
   <span class="p">}</span>
 
   <span class="c1">// this stream will contain the actual url that our img tag will load</span>
   <span class="c1">// everytime the src changes, the previous call would be canceled and the</span>
   <span class="c1">// new resource would be loaded</span>
-  <span class="nx">dataUrl$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">src$</span><span class="p">.</span><span class="nx">switchMap</span><span class="p">(</span><span class="nx">url</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadImage</span><span class="p">(</span><span class="nx">url</span><span class="p">))</span>
+  <span class="nx">dataUrl$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">src$</span><span class="p">.</span><span class="nf">switchMap</span><span class="p">(</span><span class="nx">url</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">loadImage</span><span class="p">(</span><span class="nx">url</span><span class="p">))</span>
   
   <span class="c1">// we need HttpClient to load the image</span>
-  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">httpClient</span><span class="p">:</span> <span class="nx">HttpClient</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">httpClient</span><span class="p">:</span> <span class="nx">HttpClient</span><span class="p">)</span> <span class="p">{</span>
   <span class="p">}</span>
 
-  <span class="k">private</span> <span class="nx">loadImage</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nf">loadImage</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span>
       <span class="c1">// load the image as a blob</span>
-      <span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span><span class="na">responseType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">blob</span><span class="dl">'</span><span class="p">})</span>
+      <span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span><span class="na">responseType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">blob</span><span class="dl">'</span><span class="p">})</span>
       <span class="c1">// create an object url of that blob that we can use in the src attribute</span>
-      <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
+      <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">URL</span><span class="p">.</span><span class="nf">createObjectURL</span><span class="p">(</span><span class="nx">e</span><span class="p">))</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
@@ -142,17 +142,17 @@ This component needs to handle the following:</p>
 
 <p>Loading the image through AJAX does not work yet because we haven’t sanitized the url yet. For that we need the <strong>DomSanitizer</strong> that angular provides us. This is a security mechanism to protect the app from XSS-attacks. We basically have to tell angular which urls to trust.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">SecuredImageComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span>  <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">SecuredImageComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span>  <span class="p">{</span>
   <span class="p">...</span>
   <span class="c1">// inject the domSanitizer here as well</span>
-  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">httpClient</span><span class="p">:</span> <span class="nx">HttpClient</span><span class="p">,</span> <span class="k">private</span> <span class="nx">domSanitizer</span><span class="p">:</span> <span class="nx">DomSanitizer</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">httpClient</span><span class="p">:</span> <span class="nx">HttpClient</span><span class="p">,</span> <span class="k">private</span> <span class="nx">domSanitizer</span><span class="p">:</span> <span class="nx">DomSanitizer</span><span class="p">)</span> <span class="p">{</span>
   <span class="p">}</span>
 
-  <span class="k">private</span> <span class="nx">loadImage</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nf">loadImage</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span>
-      <span class="p">.</span><span class="kd">get</span><span class="p">(...)</span>
+      <span class="p">.</span><span class="nf">get</span><span class="p">(...)</span>
       <span class="c1">// pass the url through the domSanitizer so angular knows he can parse it</span>
-      <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">domSanitizer</span><span class="p">.</span><span class="nx">bypassSecurityTrustUrl</span><span class="p">(</span><span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">e</span><span class="p">)))</span>
+      <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">domSanitizer</span><span class="p">.</span><span class="nf">bypassSecurityTrustUrl</span><span class="p">(</span><span class="nx">URL</span><span class="p">.</span><span class="nf">createObjectURL</span><span class="p">(</span><span class="nx">e</span><span class="p">)))</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
@@ -170,21 +170,21 @@ Interceptors are a way to hook into http calls that are being made by the new Ht
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// my-http.interceptor.ts</span>
 <span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyHttpInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">MyHttpInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
   <span class="c1">// intercept any http call done by the httpClient</span>
-  <span class="nx">intercept</span><span class="p">(</span><span class="nx">request</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
+  <span class="nf">intercept</span><span class="p">(</span><span class="nx">request</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
     <span class="c1">// fetch the bearer token from wherever you have stored it</span>
     <span class="c1">// NOTE: fetching it directly from window is not a good idea (demo purpose)</span>
-    <span class="kd">const</span> <span class="nx">jwtToken</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">jwtToken</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">jwtToken</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">jwtToken</span><span class="dl">'</span><span class="p">);</span>
 
     <span class="c1">// if there is a token, clone the request and set the correct</span>
     <span class="c1">// authorization header, if not =&gt; just use the old request</span>
     <span class="kd">const</span> <span class="nx">requestToHandle</span> <span class="o">=</span> <span class="nx">jwtToken</span>
-      <span class="p">?</span> <span class="nx">request</span><span class="p">.</span><span class="nx">clone</span><span class="p">({</span>
-        <span class="na">headers</span><span class="p">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="dl">'</span><span class="s1">authorization</span><span class="dl">'</span><span class="p">,</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">jwtToken</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+      <span class="p">?</span> <span class="nx">request</span><span class="p">.</span><span class="nf">clone</span><span class="p">({</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="dl">'</span><span class="s1">authorization</span><span class="dl">'</span><span class="p">,</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">jwtToken</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
       <span class="p">})</span>
       <span class="p">:</span> <span class="nx">request</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">requestToHandle</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">requestToHandle</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
@@ -198,7 +198,7 @@ Interceptors are a way to hook into http calls that are being made by the new Ht
     <span class="na">provide</span><span class="p">:</span> <span class="nx">HTTP_INTERCEPTORS</span><span class="p">,</span> <span class="na">useClass</span><span class="p">:</span> <span class="nx">MyHttpInterceptor</span><span class="p">,</span> <span class="na">multi</span><span class="p">:</span> <span class="kc">true</span>
   <span class="p">}]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{</span> <span class="p">}</span>
 </code></pre></div></div>
 
 <p>If you would like to learn more about interceptors, check this <a href="https://juristr.com/blog/2017/08/intercept-http-requests-in-angular/">awesome article</a> by <a href="https://twitter.com/juristr">Juri Strumpflohner</a>.

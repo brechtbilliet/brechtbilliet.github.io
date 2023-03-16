@@ -1,4 +1,4 @@
-I"‚©<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
+I"ˆ©<p>When writing Angular applications there are always pieces of functionality that are being rewritten over and over again. 3 common usecases are:</p>
 
 <ul>
   <li>Showing a <em>loading</em> status</li>
@@ -13,15 +13,15 @@
 <p>Before we jump to the solution, letâ€™s have a look at the impact of a non generic way of handling the previous called functionalities.
 A solution that is often used might look like the following: (keep in mind that this functionality has to be implemented over and over again for every component)</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ngOnInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">ngOnInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="kd">const</span> <span class="nx">usersCompleted</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
     <span class="kd">const</span> <span class="nx">citiesCompleted</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">fetch</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">fetch</span><span class="p">().</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">usersCompleted</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="nx">usersCompleted</span> <span class="o">&amp;&amp;</span> <span class="nx">citiesCompleted</span><span class="p">;</span>
     <span class="p">});</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">citiesService</span><span class="p">.</span><span class="nx">fetch</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">cities</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">citiesService</span><span class="p">.</span><span class="nf">fetch</span><span class="p">().</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">cities</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">citiesCompleted</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="nx">usersCompleted</span> <span class="o">&amp;&amp;</span> <span class="nx">citiesCompleted</span><span class="p">;</span>
     <span class="p">});</span>
@@ -33,22 +33,22 @@ A solution that is often used might look like the following: (keep in mind that 
 
 <p>It becomes even worse if we want to update, add and remove data. Imagine that we have to handle validation errors as well:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">remove</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">remove</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
     <span class="c1">// TODO: set acting to true</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// TODO: set acting to false</span>
     <span class="p">});</span>
 <span class="p">}</span>
-<span class="nx">update</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<span class="nf">update</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
     <span class="c1">// TODO: set acting to true</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// TODO: set acting to false</span>
         <span class="c1">// TODO: handle validation errors</span>
     <span class="p">});</span>
 <span class="p">}</span>
-<span class="nx">add</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<span class="nf">add</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
     <span class="c1">// TODO: set acting to true</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// TODO: set acting to false</span>
         <span class="c1">// TODO: handle validation errors</span>
     <span class="p">});</span>
@@ -77,7 +77,7 @@ A solution that is often used might look like the following: (keep in mind that 
   <span class="c1">// injector of the root module </span>
   <span class="na">providedIn</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">HttpStatusService</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">HttpStatusService</span> <span class="p">{</span>
   <span class="c1">// regular subject because we don't want to replay</span>
   <span class="c1">// the validationerrors</span>
   <span class="k">private</span> <span class="nx">validationErrorsSub$</span> 
@@ -92,24 +92,24 @@ A solution that is often used might look like the following: (keep in mind that 
   <span class="c1">// encapsulation purposes. That's why we convert them</span>
   <span class="c1">// into observables</span>
   <span class="nx">getvalidationErrors$</span> <span class="o">=</span> 
-    <span class="k">this</span><span class="p">.</span><span class="nx">validationErrorsSub$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">validationErrorsSub$</span><span class="p">.</span><span class="nf">asObservable</span><span class="p">();</span>
   <span class="nx">loading$</span> <span class="o">=</span> 
-    <span class="k">this</span><span class="p">.</span><span class="nx">loadingSub$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">distinctUntilChanged</span><span class="p">());</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">loadingSub$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">distinctUntilChanged</span><span class="p">());</span>
   <span class="nx">acting$</span> <span class="o">=</span> 
-    <span class="k">this</span><span class="p">.</span><span class="nx">actingSub$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">distinctUntilChanged</span><span class="p">());</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">actingSub$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">distinctUntilChanged</span><span class="p">());</span>
 
   <span class="c1">// these are just some regular setters to next </span>
   <span class="c1">// the values in our subjects</span>
-  <span class="kd">set</span> <span class="nx">validationErrors</span><span class="p">(</span><span class="nx">errors</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">[])</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">validationErrorsSub$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">errors</span><span class="p">);</span>
+  <span class="kd">set</span> <span class="nf">validationErrors</span><span class="p">(</span><span class="nx">errors</span><span class="p">:</span> <span class="nx">ValidationError</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">validationErrorsSub$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">errors</span><span class="p">);</span>
   <span class="p">}</span>
 
-  <span class="kd">set</span> <span class="nx">loading</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">loadingSub$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+  <span class="kd">set</span> <span class="nf">loading</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">loadingSub$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
   <span class="p">}</span>
 
-  <span class="kd">set</span> <span class="nx">acting</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">actingSub$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+  <span class="kd">set</span> <span class="nf">acting</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">actingSub$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -121,22 +121,22 @@ We donâ€™t want to manually implement that for every call, so letâ€™s create an 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span>
     <span class="na">providedIn</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">HttpStatusInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">HttpStatusInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
   <span class="c1">// keep track of the loading calls</span>
   <span class="k">private</span> <span class="nx">loadingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
   <span class="c1">// keep track of the acting calls</span>
   <span class="k">private</span> <span class="nx">actingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
 
-  <span class="kd">constructor</span><span class="p">(</span>
+  <span class="nf">constructor</span><span class="p">(</span>
     <span class="k">private</span> <span class="nx">httpStatusService</span><span class="p">:</span> <span class="nx">HttpStatusService</span>
   <span class="p">)</span> <span class="p">{}</span>
 
-  <span class="k">private</span> <span class="nx">changeStatus</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">,</span> <span class="nx">method</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">([</span><span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PATCH</span><span class="dl">'</span><span class="p">]</span>
-      <span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nf">changeStatus</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">,</span> <span class="nx">method</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">([</span><span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PATCH</span><span class="dl">'</span><span class="p">]</span>
+      <span class="p">.</span><span class="nf">indexOf</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">val</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">--</span><span class="p">;</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">acting</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="nf">if </span><span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">val</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">--</span><span class="p">;</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
@@ -160,18 +160,18 @@ The <code class="language-plaintext highlighter-rouge">handle</code> function of
 which we can use to set a status to <code class="language-plaintext highlighter-rouge">false</code>.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
-<span class="nx">intercept</span><span class="p">(</span>
+<span class="nf">intercept</span><span class="p">(</span>
   <span class="nx">req</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span>
   <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span>
 <span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
   <span class="c1">// there is a new request, so we are definitely</span>
   <span class="c1">// loading or acting, we have to change the status</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">changeStatus</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
-  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">clone</span><span class="p">()).</span><span class="nx">pipe</span><span class="p">(</span>
+  <span class="k">this</span><span class="p">.</span><span class="nf">changeStatus</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nf">clone</span><span class="p">()).</span><span class="nf">pipe</span><span class="p">(</span>
     <span class="c1">// when the request completes, errors or times out,</span>
     <span class="c1">// we have to change the status as well</span>
-    <span class="nx">finalize</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">changeStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+    <span class="nf">finalize</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nf">changeStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
     <span class="p">})</span>
   <span class="p">);</span>
 <span class="p">}</span>
@@ -181,16 +181,16 @@ which we can use to set a status to <code class="language-plaintext highlighter-
 <p>This should automatically update the <code class="language-plaintext highlighter-rouge">loading$</code> and <code class="language-plaintext highlighter-rouge">acting$</code> observables in the <code class="language-plaintext highlighter-rouge">HttpStatusService</code>.
 However, we have not fixed our validation errors issue yet. For that we can use the <code class="language-plaintext highlighter-rouge">catchError</code> operator that we place before the finalize operator:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">intercept</span><span class="p">(</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">intercept</span><span class="p">(</span>
   <span class="nx">req</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span>
   <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span>
 <span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
   <span class="p">..</span>
-  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">clone</span><span class="p">()).</span><span class="nx">pipe</span><span class="p">(</span>
+  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nf">clone</span><span class="p">()).</span><span class="nf">pipe</span><span class="p">(</span>
     <span class="c1">// catch the error</span>
-    <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
       <span class="c1">// if bad request &gt; validation erors</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span> 
+      <span class="nf">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span> 
         <span class="c1">// use the validationErrors setter to update</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">validationErrors</span> <span class="o">=</span> 
           <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">;</span>
@@ -200,9 +200,9 @@ However, we have not fixed our validation errors issue yet. For that we can use 
       <span class="p">}</span>
       <span class="c1">// throw the error back</span>
       <span class="c1">// or put that in the `HttpStatusService` as well ;-)      </span>
-      <span class="k">return</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> 
+      <span class="k">return</span> <span class="nf">throwError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> 
     <span class="p">}),</span>
-    <span class="nx">finalize</span><span class="p">(...)</span>
+    <span class="nf">finalize</span><span class="p">(...)</span>
   <span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -212,40 +212,40 @@ However, we have not fixed our validation errors issue yet. For that we can use 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span>
     <span class="na">providedIn</span><span class="p">:</span> <span class="dl">'</span><span class="s1">root</span><span class="dl">'</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">HttpStatusInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">HttpStatusInterceptor</span> <span class="k">implements</span> <span class="nx">HttpInterceptor</span> <span class="p">{</span>
   <span class="k">private</span> <span class="nx">loadingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
   <span class="k">private</span> <span class="nx">actingCalls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
 
-  <span class="kd">constructor</span><span class="p">(</span>
+  <span class="nf">constructor</span><span class="p">(</span>
     <span class="k">private</span> <span class="nx">httpStatusService</span><span class="p">:</span> <span class="nx">HttpStatusService</span>
   <span class="p">)</span> <span class="p">{}</span>
 
-  <span class="k">private</span> <span class="nx">changeStatus</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">,</span> <span class="nx">method</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">([</span><span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PATCH</span><span class="dl">'</span><span class="p">]</span>
-      <span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nf">changeStatus</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">,</span> <span class="nx">method</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">([</span><span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">PATCH</span><span class="dl">'</span><span class="p">]</span>
+      <span class="p">.</span><span class="nf">indexOf</span><span class="p">(</span><span class="nx">method</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">v</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span><span class="o">--</span><span class="p">;</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">acting</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">actingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="nf">if </span><span class="p">(</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">v</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">++</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span><span class="o">--</span><span class="p">;</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">loadingCalls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
 
-  <span class="nx">intercept</span><span class="p">(</span>
+  <span class="nf">intercept</span><span class="p">(</span>
     <span class="nx">req</span><span class="p">:</span> <span class="nx">HttpRequest</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="nx">next</span><span class="p">:</span> <span class="nx">HttpHandler</span>
   <span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">HttpEvent</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">clone</span><span class="p">()).</span><span class="nx">pipe</span><span class="p">(</span>
-      <span class="nx">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nf">clone</span><span class="p">()).</span><span class="nf">pipe</span><span class="p">(</span>
+      <span class="nf">catchError</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">400</span><span class="p">)</span> <span class="p">{</span> 
           <span class="k">this</span><span class="p">.</span><span class="nx">httpStatusService</span><span class="p">.</span><span class="nx">validationErrors</span> <span class="o">=</span> 
             <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">;</span>
           <span class="k">return</span> <span class="nx">NEVER</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> 
+        <span class="k">return</span> <span class="nf">throwError</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span> 
       <span class="p">}),</span>
-      <span class="nx">finalize</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">changeStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+      <span class="nf">finalize</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">changeStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
       <span class="p">})</span>
     <span class="p">);</span>
   <span class="p">}</span>
@@ -269,12 +269,12 @@ However, we have not fixed our validation errors issue yet. For that we can use 
 
 <p>We can now use the <code class="language-plaintext highlighter-rouge">HttpStatusService</code> in our code as easy as this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserComponent</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">UserComponent</span> <span class="p">{</span>
   <span class="nx">loading$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpStatus</span><span class="p">.</span><span class="nx">loading</span><span class="p">;</span>
   <span class="nx">validationErrors$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpStatus</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">;</span>
   <span class="nx">acting$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpStatus</span><span class="p">.</span><span class="nx">loading</span><span class="p">;</span>
 
-  <span class="kd">constructor</span><span class="p">(</span>
+  <span class="nf">constructor</span><span class="p">(</span>
     <span class="k">private</span> <span class="nx">httpStatusService</span><span class="p">:</span> <span class="nx">HttpStatusService</span><span class="p">)</span> <span class="p">{</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -293,7 +293,7 @@ However, we have not fixed our validation errors issue yet. For that we can use 
 
 <p>We have cleaned up a lot, we found an easy way to get the httpstatuses to the component, but we can make it even simpler with the use of decorators. letâ€™s refactor the <code class="language-plaintext highlighter-rouge">UserComponent</code> class accordingly:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">UserComponent</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">UserComponent</span> <span class="p">{</span>
   <span class="p">@</span><span class="nd">Loading</span><span class="p">()</span><span class="nx">loading$</span><span class="p">;</span>
   <span class="p">@</span><span class="nd">ValidationErrors</span><span class="p">()</span> <span class="nx">validationErrors$</span><span class="p">;</span>
   <span class="p">@</span><span class="nd">Acting</span><span class="p">()</span> <span class="nx">acting$</span><span class="p">;</span>
@@ -304,8 +304,8 @@ However, we have not fixed our validation errors issue yet. For that we can use 
 
 <p>But how do we create these decorators? Iâ€™m glad you asked, itâ€™s pretty easy. A property decorator is simply a function that returns a function that gets the target and key as arguments.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">Loading</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nf">Loading</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">function </span><span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
     <span class="c1">// in this case the target is the component</span>
     <span class="c1">// instance and key the property name</span>
     <span class="c1">// target: userComponent, key: loading$</span>
@@ -324,7 +324,7 @@ Until Angular provides us with functionality like <a href="https://github.com/an
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="k">export</span> <span class="kd">let</span> <span class="nx">rootInjector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">;</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">setRootInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">setRootInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
   <span class="nx">rootInjector</span> <span class="o">=</span> <span class="nx">injector</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -335,9 +335,9 @@ To make it work the rootModule will have to call the <code class="language-plain
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
     <span class="p">...</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span>
-  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">setRootInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{</span>
+  <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">setRootInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
@@ -346,25 +346,25 @@ To make it work the rootModule will have to call the <code class="language-plain
 <p>The last step is to actually use the <code class="language-plaintext highlighter-rouge">rootInjector</code> variable inside the decorators. The result looks like this:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// loading.decorator.ts</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">Loading</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">Loading</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">function </span><span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
     <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">loading$</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="c1">// acting.decorator.ts</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">Acting</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">Acting</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">function </span><span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
     <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">acting$</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="c1">// validation-errors.decorator.ts</span>
-<span class="k">export</span> <span class="kd">function</span> <span class="nx">ValidationErrors</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">ValidationErrors</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">function </span><span class="p">(</span><span class="nx">target</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">rootInjector</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">HttpStatusService</span><span class="p">);</span>
     <span class="nx">target</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">validationErrors$</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">};</span>

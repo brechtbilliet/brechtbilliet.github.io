@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>A scalable angular architecture (part 2) | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="A scalable angular architecture (part 2)" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -153,12 +157,12 @@ One could even argue that the action-dispatching and state-selecting should be c
 
 <p>Well, as the name already reveals. An HTTP service is all about doing HTTP communication and returning asynchronous objects to the components. An HTTP service should have no notion about redux at all nor any other statemanagement tool. Its sole purpose is fetching data and returning it. Let’s take a look at the following example for instance. We fetch an array of wines from the backend and we want to persist that in a redux store. This is an example of an HTTP service that is being abused to achieve that:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">WineService</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">WineService</span> <span class="p">{</span>
 	<span class="c1">// bad</span>
-	<span class="nx">fetchWines</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">)</span>
-			<span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">wines</span> <span class="o">=&gt;</span> 
-				<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">SET_WINES</span><span class="dl">'</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">wines</span><span class="p">}});</span>
+	<span class="nf">fetchWines</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">)</span>
+			<span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">wines</span> <span class="o">=&gt;</span> 
+				<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">SET_WINES</span><span class="dl">'</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">wines</span><span class="p">}});</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -169,10 +173,10 @@ Does it belong in the component? They would get dirty and reduxy in no-time…
 
 <p>An http service should look like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">WineService</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">WineService</span> <span class="p">{</span>
 	<span class="c1">// good</span>
-	<span class="nx">fetchWines</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">)</span>
+	<span class="nf">fetchWines</span><span class="p">():</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">)</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -230,73 +234,73 @@ Does it belong in the component? They would get dirty and reduxy in no-time…
 <h2 id="an-example">An example</h2>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">StockSandbox</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">StockSandbox</span> <span class="p">{</span>
 	<span class="c1">// these are the store select statements</span>
 	<span class="c1">// It's pretty dirty to have them all over our components</span>
 	<span class="c1">// Our components just want to get streams of data, no matter where they come from</span>
-	<span class="nx">wines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">wines</span><span class="p">);</span>
-	<span class="nx">isAuthenticated$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">authentication</span><span class="p">.</span><span class="nx">isAuthenticated</span><span class="p">);</span>
+	<span class="nx">wines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">wines</span><span class="p">);</span>
+	<span class="nx">isAuthenticated$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">authentication</span><span class="p">.</span><span class="nx">isAuthenticated</span><span class="p">);</span>
 
-	<span class="kd">constructor</span><span class="p">(</span>
+	<span class="nf">constructor</span><span class="p">(</span>
 		<span class="k">private</span> <span class="nx">store</span><span class="p">:</span> <span class="nx">Store</span><span class="o">&lt;</span><span class="nx">ApplicationState</span><span class="o">&gt;</span><span class="p">,</span> 
 		<span class="k">private</span> <span class="nx">stockService</span><span class="p">:</span> <span class="nx">StockService</span><span class="p">,</span>
 		<span class="k">private</span> <span class="nx">fooService</span><span class="p">:</span> <span class="nx">FooService</span><span class="p">)</span> <span class="p">{</span>
 	<span class="p">}</span>
 
-	<span class="nx">addWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+	<span class="nf">addWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
 		<span class="c1">// use the stockservice to add a wine</span>
 		<span class="c1">// and when it's done handle our statemanagement</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">wine</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">((</span><span class="na">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nx">AddWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">));</span>
-		<span class="p">},</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleError</span><span class="p">());</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nx">wine</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">((</span><span class="na">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nc">AddWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">));</span>
+		<span class="p">},</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">handleError</span><span class="p">());</span>
 	<span class="p">}</span>
 
-	 <span class="nx">removeWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+	 <span class="nf">removeWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
 		<span class="c1">// removing a wine can be done optimistically!</span>
 		<span class="c1">// this would certainly improve the performance and snappyness of our app</span>
 		<span class="c1">// this would be sandbox logic</span>
-		<span class="kd">let</span> <span class="nx">action</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RemoveWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">).</span><span class="nx">subscribe</span><span class="p">(</span>
+		<span class="kd">let</span> <span class="nx">action</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RemoveWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="nx">wine</span><span class="p">).</span><span class="nf">subscribe</span><span class="p">(</span>
 			<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{},</span> 
 			<span class="c1">// if the call failed, we have to undo an action. This is sandbox logic as well!</span>
-			<span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">UNDO_ACTION</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">action</span><span class="p">}););</span>
+			<span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">UNDO_ACTION</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">action</span><span class="p">}););</span>
 	<span class="p">}</span>
 
-	<span class="nx">fetchWine</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Wine</span><span class="o">&gt;</span> <span class="p">{</span>
+	<span class="nf">fetchWine</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Wine</span><span class="o">&gt;</span> <span class="p">{</span>
 		<span class="c1">// simple delegation of fetching something: Sandbox logic</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nx">fetchWine</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nx">share</span><span class="p">();</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">stockService</span><span class="p">.</span><span class="nf">fetchWine</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nf">share</span><span class="p">();</span>
 	<span class="p">}</span>
 
-	<span class="nx">notifyAnotherModule</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+	<span class="nf">notifyAnotherModule</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
 		<span class="c1">// our components should NOT know where fooService is, or what it does</span>
 		<span class="c1">// it should just tell its sandbox to handle a specific action</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">fooService</span><span class="p">.</span><span class="nx">doSomething</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fooService</span><span class="p">.</span><span class="nf">doSomething</span><span class="p">();</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <p>Look how clean this smart component has become:</p>
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">StockPageContainer</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">StockPageContainer</span> <span class="p">{</span>
     <span class="nx">wines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nx">wines$</span><span class="p">;</span> <span class="c1">// Does this stream comes from Redux? or Firebase (I don't need to know)</span>
-    <span class="nx">numberOfWines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wines$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">wines</span> <span class="o">=&gt;</span> <span class="nx">sumBy</span><span class="p">(</span><span class="nx">wines</span><span class="p">,</span> <span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">inStock</span><span class="p">));</span>
+    <span class="nx">numberOfWines$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wines$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">wines</span> <span class="o">=&gt;</span> <span class="nf">sumBy</span><span class="p">(</span><span class="nx">wines</span><span class="p">,</span> <span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">wine</span><span class="p">.</span><span class="nx">inStock</span><span class="p">));</span>
 
 	<span class="c1">// a clean constructor makes it easy to test.</span>
 	<span class="c1">// Util dependencies or presentational dependencies like a router</span>
 	<span class="c1">// do not belong in the sandbox.</span>
 	<span class="c1">// They belong right here in the component, in the presentational layer.</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">sb</span><span class="p">:</span> <span class="nx">StockSandbox</span><span class="p">,</span> <span class="k">private</span> <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">sb</span><span class="p">:</span> <span class="nx">StockSandbox</span><span class="p">,</span> <span class="k">private</span> <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">}</span>
 
-    <span class="nx">onRemove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">onRemove</span><span class="p">(</span><span class="nx">wine</span><span class="p">:</span> <span class="nx">Wine</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
 		<span class="c1">// Hey Sandbox! Remove the wine please, I don't care how you do it</span>
 		<span class="c1">// I don't even care that you do optimistic updates, it's not my business</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nx">removeWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nf">removeWine</span><span class="p">(</span><span class="nx">wine</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">notifyAnotherModule</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">notifyAnotherModule</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
 		<span class="c1">// I don't know what will happen, but that's okay... It's not my responsability</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nx">notifyAnotherModule</span><span class="p">();</span> 
+        <span class="k">this</span><span class="p">.</span><span class="nx">sb</span><span class="p">.</span><span class="nf">notifyAnotherModule</span><span class="p">();</span> 
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -309,21 +313,18 @@ If you still have questions about this approach, don’t hesitate to contact me 
 <p>Special thanks to <a href="'https://twitter.com/ManfredSteyer'">Manfred Steyer (@manfredsteyer)</a> and <a href="https://twitter.com/juristr">Juri Strumpflohner (@juristr)</a> for reviewing this article!</p>
 
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/A-scalable-angular-architecture-part2/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

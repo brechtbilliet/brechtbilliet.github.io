@@ -1,4 +1,4 @@
-I"�t<h2 id="about-this-article">About this article</h2>
+I"u<h2 id="about-this-article">About this article</h2>
 
 <p>This article explains how the “reactive-programming” approach helps us to create an awesome <strong>infinite-scroll-list</strong> in only a few lines of code. For this article, we are going to use <a href="http://reactivex.io/rxjs/">RxJS</a> and <a href="http://angular.io">Angular</a>. If <a href="http://reactivex.io/rxjs/">RxJS</a> is completely new, it might be a good idea to read the documentation first. Whether we use <a href="http://angular.io">Angular</a> or something else like <a href="https://facebook.github.io/react/">React</a>, it shouldn’t really interfere with the clarity of this article.</p>
 
@@ -110,21 +110,21 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span> <span class="nx">pageByScroll$</span> <span class="o">=</span> 
  	<span class="c1">// first of all, we want to create a stream that contains </span>
  	<span class="c1">// all the scroll events that are happening in the window object</span>
-	<span class="nx">Observable</span><span class="p">.</span><span class="nx">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">scroll</span><span class="dl">"</span><span class="p">)</span> 
+	<span class="nx">Observable</span><span class="p">.</span><span class="nf">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">scroll</span><span class="dl">"</span><span class="p">)</span> 
 	<span class="c1">// we are only interested in the scrollY value of these events</span>
 	<span class="c1">// let's create a stream with only these values</span>
-	<span class="p">.</span><span class="nx">map</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span><span class="p">)</span>
+	<span class="p">.</span><span class="nf">map</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span><span class="p">)</span>
 	<span class="c1">// create a stream with the filtered values</span>
 	<span class="c1">// we only need the values from when we are scrolling outside</span>
 	<span class="c1">// our viewport</span>
-	<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">current</span> <span class="o">=&gt;</span> <span class="nx">current</span> <span class="o">&gt;=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientHeight</span> <span class="o">-</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span>
+	<span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">current</span> <span class="o">=&gt;</span> <span class="nx">current</span> <span class="o">&gt;=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientHeight</span> <span class="o">-</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span>
 	<span class="c1">// Only when the user stops scrolling for 200 ms, we can continue</span>
 	<span class="c1">// so let's debounce this stream for 200 ms</span>
-	<span class="p">.</span><span class="nx">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
+	<span class="p">.</span><span class="nf">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
 	<span class="c1">// filter out double values</span>
-	<span class="p">.</span><span class="nx">distinct</span><span class="p">()</span> 
+	<span class="p">.</span><span class="nf">distinct</span><span class="p">()</span> 
 	<span class="c1">// calculate the page number</span>
-	<span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">y</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">ceil</span><span class="p">((</span><span class="nx">y</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span><span class="p">)));</span>
+	<span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">y</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">ceil</span><span class="p">((</span><span class="nx">y</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span><span class="p">)));</span>
 	
 	<span class="c1">// --------1---2----3------2...</span>
 </code></pre></div></div>
@@ -138,11 +138,11 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">private</span> <span class="nx">pageByResize$</span> <span class="o">=</span> 
   	<span class="c1">// Now, we want to create a new stream that contains </span>
  	<span class="c1">// all the resize events that are happening in the window object</span>
-	<span class="nx">Observable</span><span class="p">.</span><span class="nx">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">resize</span><span class="dl">"</span><span class="p">)</span>
+	<span class="nx">Observable</span><span class="p">.</span><span class="nf">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">resize</span><span class="dl">"</span><span class="p">)</span>
 	<span class="c1">// when the user stops resizing for 200 ms, then we can continue</span>
-	<span class="p">.</span><span class="nx">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
+	<span class="p">.</span><span class="nf">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
 	<span class="c1">// calculate the page number based on the window</span>
-   <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">ceil</span><span class="p">(</span>
+   <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">ceil</span><span class="p">(</span>
 	   	<span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">)</span> <span class="o">/</span> 
 	   	<span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span><span class="p">)</span>
    	<span class="p">));</span>
@@ -154,7 +154,7 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
 
 <p>The pageByManual$ is the stream we use to have an initial value (initial page to load), but it’s also something that we need to control manually. A <a href="http://reactivex.io/documentation/subject.html">Behavior subject</a> looks perfect for the job, because we need a stream that has an initial value where we can also manually add values. A behavior subject is just a stream that has an initial value and can be manipulated over time.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="nx">pageByManual$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="nx">pageByManual$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
 <span class="c1">// 1---2----3------...</span>
 </code></pre></div></div>
@@ -165,11 +165,11 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="nx">pageToLoad$</span> <span class="o">=</span> 
 	<span class="c1">// merge all the page streams and create a new stream of those</span>
-	<span class="nx">Observable</span><span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByScroll$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByResize$</span><span class="p">)</span>
+	<span class="nx">Observable</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByScroll$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByResize$</span><span class="p">)</span>
 	<span class="c1">// create a new stream where the double values are filtered out</span>
-	<span class="p">.</span><span class="nx">distinct</span><span class="p">()</span> 
+	<span class="p">.</span><span class="nf">distinct</span><span class="p">()</span> 
 	<span class="c1">// check if the page is already in the cache (just an array property in our component)</span>
-	<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">page</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span> 
+	<span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">page</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span> 
 </code></pre></div></div>
 
 <h3 id="itemresults">itemResults$</h3>
@@ -181,22 +181,22 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">itemResults$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageToLoad$</span> 
 	<span class="c1">// based on that stream, load our asynchronosly data</span>
 	<span class="c1">// flatmap is an alias for mergemap</span>
-	<span class="p">.</span><span class="nx">flatMap</span><span class="p">((</span><span class="nx">page</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="p">.</span><span class="nf">flatMap</span><span class="p">((</span><span class="nx">page</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 		<span class="c1">// load me some starwars characters</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s2">`https://swapi.co/api/people?page=</span><span class="p">${</span><span class="nx">page</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">`https://swapi.co/api/people?page=</span><span class="p">${</span><span class="nx">page</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
 			<span class="c1">// create a stream that contains the results</span>
-			<span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">results</span><span class="p">)</span>
-			<span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="p">{</span>
+			<span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nf">json</span><span class="p">().</span><span class="nx">results</span><span class="p">)</span>
+			<span class="p">.</span><span class="nf">do</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="p">{</span>
 				<span class="c1">// add the page to the cache</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">page</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">;</span>
 				<span class="c1">// if the page contains enough white space, load some more data :)</span>
-				<span class="k">if</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span> <span class="o">*</span> <span class="nx">page</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">){</span>
-					<span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+				<span class="nf">if</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span> <span class="o">*</span> <span class="nx">page</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">){</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
 				<span class="p">}</span>
 			<span class="p">})</span>
 		<span class="p">})</span>
 	<span class="c1">// eventually, just return a stream that contains the cache</span>
-	<span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nx">flatMap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">));</span> 
+	<span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nf">flatMap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">));</span> 
 </code></pre></div></div>
 
 <h3 id="the-result">The result</h3>
@@ -215,47 +215,47 @@ Afterwards we have 3 page streams that are based on the input streams. When merg
    &lt;/table&gt;
   `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">InfiniteScrollListComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">InfiniteScrollListComponent</span> <span class="p">{</span>
   <span class="k">private</span> <span class="nx">cache</span> <span class="o">=</span> <span class="p">[];</span> 
-  <span class="k">private</span> <span class="nx">pageByManual$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">private</span> <span class="nx">pageByManual$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
   <span class="k">private</span> <span class="nx">itemHeight</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
   <span class="k">private</span> <span class="nx">numberOfItems</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> 
-  <span class="k">private</span> <span class="nx">pageByScroll$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nx">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">scroll</span><span class="dl">"</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">map</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">current</span> <span class="o">=&gt;</span> <span class="nx">current</span> <span class="o">&gt;=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientHeight</span> <span class="o">-</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
-      <span class="p">.</span><span class="nx">distinct</span><span class="p">()</span> 
-      <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">y</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">ceil</span><span class="p">((</span><span class="nx">y</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span><span class="p">)));</span>
+  <span class="k">private</span> <span class="nx">pageByScroll$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nf">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">scroll</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nf">map</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span><span class="p">)</span>
+      <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">current</span> <span class="o">=&gt;</span> <span class="nx">current</span> <span class="o">&gt;=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientHeight</span> <span class="o">-</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span>
+      <span class="p">.</span><span class="nf">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
+      <span class="p">.</span><span class="nf">distinct</span><span class="p">()</span> 
+      <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">y</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">ceil</span><span class="p">((</span><span class="nx">y</span> <span class="o">+</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span><span class="p">)));</span>
        
   <span class="k">private</span> <span class="nx">pageByResize$</span> <span class="o">=</span> 
-	<span class="nx">Observable</span><span class="p">.</span><span class="nx">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">resize</span><span class="dl">"</span><span class="p">)</span>
-	<span class="p">.</span><span class="nx">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
-	<span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">ceil</span><span class="p">(</span>
+	<span class="nx">Observable</span><span class="p">.</span><span class="nf">fromEvent</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="dl">"</span><span class="s2">resize</span><span class="dl">"</span><span class="p">)</span>
+	<span class="p">.</span><span class="nf">debounceTime</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> 
+	<span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nf">ceil</span><span class="p">(</span>
 	   	<span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">)</span> <span class="o">/</span> 
 	   	<span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span><span class="p">)</span>
    	<span class="p">));</span>
 
     
   <span class="k">private</span> <span class="nx">pageToLoad$</span> <span class="o">=</span> <span class="nx">Observable</span>
-    <span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByScroll$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByResize$</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">distinct</span><span class="p">()</span> 
-    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">page</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span> 
+    <span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByScroll$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageByResize$</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">distinct</span><span class="p">()</span> 
+    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">page</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span> 
     
   <span class="nx">itemResults$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageToLoad$</span> 
-    <span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">flatMap</span><span class="p">((</span><span class="nx">page</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s2">`https://swapi.co/api/people?page=</span><span class="p">${</span><span class="nx">page</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
-          <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">results</span><span class="p">)</span>
-      		<span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nf">do</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">flatMap</span><span class="p">((</span><span class="nx">page</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">`https://swapi.co/api/people?page=</span><span class="p">${</span><span class="nx">page</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+          <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="nx">resp</span><span class="p">.</span><span class="nf">json</span><span class="p">().</span><span class="nx">results</span><span class="p">)</span>
+      		<span class="p">.</span><span class="nf">do</span><span class="p">(</span><span class="nx">resp</span> <span class="o">=&gt;</span> <span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">[</span><span class="nx">page</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">resp</span><span class="p">;</span>
-				<span class="k">if</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span> <span class="o">*</span> <span class="nx">page</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">){</span>
-					<span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+				<span class="nf">if</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">itemHeight</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">numberOfItems</span> <span class="o">*</span> <span class="nx">page</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">){</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">pageByManual$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
 				<span class="p">}</span>
           <span class="p">})</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nx">flatMap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">));</span> 
+    <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nf">flatMap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cache</span><span class="p">));</span> 
   
-  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span> 
+  <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">http</span><span class="p">:</span> <span class="nx">Http</span><span class="p">){</span> 
   <span class="p">}</span> 
 <span class="p">}</span>
 </code></pre></div></div>

@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Managing state in Angular | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="Managing state in Angular" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -165,7 +169,7 @@ When we work in an immutable fashion we can also take advantage of performance s
 <p>Arrays can be handled like this:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Brecht</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Kwinten</span><span class="dl">'</span><span class="p">];</span>
-<span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">John</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// BAD: arr is mutated</span>
+<span class="nx">arr</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">John</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// BAD: arr is mutated</span>
 <span class="nx">arr</span> <span class="o">=</span> <span class="p">[...</span><span class="nx">arr</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John</span><span class="dl">'</span><span class="p">];</span> <span class="c1">// Good, arr gets new reference</span>
 </code></pre></div></div>
 <p>the <code class="language-plaintext highlighter-rouge">Array</code> prototype also has some great helper functions that we can use to enforce immutability like <code class="language-plaintext highlighter-rouge">map()</code> and <code class="language-plaintext highlighter-rouge">filter()</code> but this is not in scope for this article.</p>
@@ -231,9 +235,9 @@ Another example is a wizard with different steps, and every step needs to be per
 Let’s say that we want an <code class="language-plaintext highlighter-rouge">Observable</code> of an <code class="language-plaintext highlighter-rouge">Array</code> of countries that we need to share throughout the entire application. In Angular we could have a <code class="language-plaintext highlighter-rouge">CountryService</code> that fetches the countries from the API once, and then shares it throughout the entire application. 
 For that we can use the <code class="language-plaintext highlighter-rouge">shareReplay</code> operator from RxJS.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CountryService</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">CountryService</span> <span class="p">{</span>
     <span class="p">...</span>
-    <span class="nx">countries$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">countries</span><span class="dl">'</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">shareReplay</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+    <span class="nx">countries$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">countries</span><span class="dl">'</span><span class="p">).</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">shareReplay</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -295,21 +299,18 @@ I would suggest to use what works for you and your team and really think about, 
   <li><a href="https://twitter.com/rubverm">Ruben Vermeulen</a></li>
 </ul>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/managing-state-in-angular/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

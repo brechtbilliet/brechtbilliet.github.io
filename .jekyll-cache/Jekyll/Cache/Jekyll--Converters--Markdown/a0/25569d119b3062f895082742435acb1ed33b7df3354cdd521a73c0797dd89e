@@ -1,4 +1,4 @@
-I"no<p><strong>Updated at 3 september 2016 (RC.6 compliant)</strong></p>
+I"oo<p><strong>Updated at 3 september 2016 (RC.6 compliant)</strong></p>
 
 <p>Since one of my late New Year’s resolutions is blogging, behold my very first blogpost.
 For a customer of mine I had to implement modal-dialog functionality in Angular 2.
@@ -19,11 +19,11 @@ As most developers would do in this scenario, I crawled the web searching for ex
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c1">// this was possible in RC.5</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">MyCustomModalComponent</span><span class="p">,</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">});</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="nx">MyCustomModalComponent</span><span class="p">,</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">});</span>
 
 
 <span class="c1">// this is what we need to do in RC.6</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyCustomModalComponent</span><span class="p">,</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">});</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyCustomModalComponent</span><span class="p">,</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">});</span>
 
 </code></pre></div></div>
 
@@ -62,7 +62,7 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
        ...
 `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">ApplicationContainer</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">ApplicationContainer</span> <span class="p">{</span>
 	<span class="p">...</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -80,17 +80,17 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
     <span class="na">selector</span><span class="p">:</span> <span class="dl">"</span><span class="s2">modal-placeholder</span><span class="dl">"</span><span class="p">,</span>
     <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;div #modalplaceholder&gt;&lt;/div&gt;`</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">ModalPlaceholderComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">ModalPlaceholderComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="dl">"</span><span class="s2">modalplaceholder</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span><span class="na">read</span><span class="p">:</span> <span class="nx">ViewContainerRef</span><span class="p">})</span> 
     	<span class="nx">viewContainerRef</span><span class="p">;</span>
 
-    <span class="kd">constructor</span><span class="p">(</span>
+    <span class="nf">constructor</span><span class="p">(</span>
     	<span class="k">private</span> <span class="nx">modalService</span><span class="p">:</span> <span class="nx">ModalService</span><span class="p">,</span> 
     	<span class="k">private</span> <span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">}</span>
-    <span class="nx">ngOnInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">registerViewContainerRef</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">viewContainerRef</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">registerInjector</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">injector</span><span class="p">);</span>
+    <span class="nf">ngOnInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nf">registerViewContainerRef</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">viewContainerRef</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nf">registerInjector</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">injector</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -99,7 +99,7 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
 <h2 id="the-modal-service">The modal service</h2>
 <p>This is the service that will dynamically generate custom components.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">ModalService</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">ModalService</span> <span class="p">{</span>
     <span class="c1">// here we hold our placeholder</span>
     <span class="k">private</span> <span class="nx">vcRef</span><span class="p">:</span> <span class="nx">ViewContainerRef</span><span class="p">;</span> 
     <span class="c1">// here we hold our injector</span>
@@ -107,14 +107,14 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
     <span class="c1">// we can use this to determine z-index of multiple modals</span>
     <span class="k">public</span> <span class="nx">activeInstances</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">compiler</span><span class="p">:</span> <span class="nx">Compiler</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">compiler</span><span class="p">:</span> <span class="nx">Compiler</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">}</span>
 
-    <span class="nx">registerViewContainerRef</span><span class="p">(</span><span class="nx">vcRef</span><span class="p">:</span> <span class="nx">ViewContainerRef</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">registerViewContainerRef</span><span class="p">(</span><span class="nx">vcRef</span><span class="p">:</span> <span class="nx">ViewContainerRef</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">vcRef</span> <span class="o">=</span> <span class="nx">vcRef</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="nx">registerInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">registerInjector</span><span class="p">(</span><span class="nx">injector</span><span class="p">:</span> <span class="nx">Injector</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">injector</span> <span class="o">=</span> <span class="nx">injector</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -122,34 +122,34 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
     <span class="nx">create</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="kr">module</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">component</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">?:</span> <span class="nb">Object</span><span class="p">):</span>
      	<span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">ComponentRef</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
      	<span class="c1">// we return a stream so we can  access the componentref</span>
-        <span class="kd">let</span> <span class="nx">componentRef$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="p">();</span> 
+        <span class="kd">let</span> <span class="nx">componentRef$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ReplaySubject</span><span class="p">();</span> 
         <span class="c1">// compile the component based on its type and</span>
         <span class="c1">// create a component factory</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">compiler</span><span class="p">.</span><span class="nx">compileModuleAndAllComponentsAsync</span><span class="p">(</span><span class="kr">module</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">factory</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">compiler</span><span class="p">.</span><span class="nf">compileModuleAndAllComponentsAsync</span><span class="p">(</span><span class="kr">module</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">factory</span> <span class="o">=&gt;</span> <span class="p">{</span>
             	<span class="c1">// look for the componentfactory in the modulefactory</span>
              	<span class="kd">let</span> <span class="nx">componentFactory</span> <span class="o">=</span> <span class="nx">factory</span><span class="p">.</span><span class="nx">componentFactories</span>
-             		<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">componentType</span> <span class="o">===</span> <span class="nx">component</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+             		<span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">componentType</span> <span class="o">===</span> <span class="nx">component</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
             	<span class="c1">// the injector will be needed for DI in </span>
             	<span class="c1">// the custom component</span>
                 <span class="kd">const</span> <span class="nx">childInjector</span> <span class="o">=</span> <span class="nx">ReflectiveInjector</span>
-                	<span class="p">.</span><span class="nx">resolveAndCreate</span><span class="p">([],</span> <span class="k">this</span><span class="p">.</span><span class="nx">injector</span><span class="p">);</span>
+                	<span class="p">.</span><span class="nf">resolveAndCreate</span><span class="p">([],</span> <span class="k">this</span><span class="p">.</span><span class="nx">injector</span><span class="p">);</span>
             	<span class="c1">// create the actual component</span>
                 <span class="kd">let</span> <span class="nx">componentRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vcRef</span>
-                	<span class="p">.</span><span class="nx">createComponent</span><span class="p">(</span><span class="nx">componentFactory</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">childInjector</span><span class="p">);</span>
+                	<span class="p">.</span><span class="nf">createComponent</span><span class="p">(</span><span class="nx">componentFactory</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">childInjector</span><span class="p">);</span>
                 <span class="c1">// pass the @Input parameters to the instance</span>
-                <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">.</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">);</span> 
+                <span class="nb">Object</span><span class="p">.</span><span class="nf">assign</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">.</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">);</span> 
                 <span class="k">this</span><span class="p">.</span><span class="nx">activeInstances</span> <span class="o">++</span><span class="p">;</span>
                 <span class="c1">// add a destroy method to the modal instance</span>
                 <span class="nx">componentRef</span><span class="p">.</span><span class="nx">instance</span><span class="p">[</span><span class="dl">"</span><span class="s2">destroy</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
                     <span class="k">this</span><span class="p">.</span><span class="nx">activeInstances</span> <span class="o">--</span><span class="p">;</span>
                     <span class="c1">// this will destroy the component</span>
-                    <span class="nx">componentRef</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span> 
+                    <span class="nx">componentRef</span><span class="p">.</span><span class="nf">destroy</span><span class="p">();</span> 
                 <span class="p">};</span>
                 <span class="c1">// the component is rendered into the ViewContainerRef</span>
                 <span class="c1">// so we can update and complete the stream</span>
-                <span class="nx">componentRef$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">);</span>
-                <span class="nx">componentRef$</span><span class="p">.</span><span class="nx">complete</span><span class="p">();</span>
+                <span class="nx">componentRef$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">);</span>
+                <span class="nx">componentRef$</span><span class="p">.</span><span class="nf">complete</span><span class="p">();</span>
             <span class="p">});</span>
         <span class="k">return</span> <span class="nx">componentRef$</span><span class="p">;</span>
     <span class="p">}</span>
@@ -160,10 +160,10 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
 
 <p>As we saw above, every modal component will have a destroy method. That method is dynamically added (see logic above) to the instance of the modalcomponent. This will call the <strong>componentRef.destroy()</strong> behind the scenes which will safely destroy the component. I also found it convenient to have a closeModal function on the modal as well. Therefore every custom modal component we create should inherit this class:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">ModalContainer</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">ModalContainer</span> <span class="p">{</span>
     <span class="nl">destroy</span><span class="p">:</span> <span class="nb">Function</span><span class="p">;</span>
-    <span class="nx">closeModal</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+    <span class="nf">closeModal</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">destroy</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -185,11 +185,11 @@ That’s why I created a <strong>modal-placeholder</strong>, that I can use like
 	&lt;div class="modal-backdrop fade in"&gt;&lt;/div&gt;
 `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyCustomModalComponent</span> <span class="kd">extends</span> <span class="nx">ModalContainer</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">MyCustomModalComponent</span> <span class="kd">extends</span> <span class="nc">ModalContainer</span> <span class="p">{</span>
 	<span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">foo</span><span class="p">;</span>
-	<span class="nx">onSave</span><span class="p">():</span> <span class="nb">Function</span><span class="p">;</span>
-	<span class="kd">constructor</span><span class="p">(){</span>
-		<span class="k">super</span><span class="p">();</span>
+	<span class="nf">onSave</span><span class="p">():</span> <span class="nb">Function</span><span class="p">;</span>
+	<span class="nf">constructor</span><span class="p">(){</span>
+		<span class="nf">super</span><span class="p">();</span>
 	<span class="p">}</span>
 	<span class="c1">// the closeModal function will be available </span>
 	<span class="c1">// on the ModalContainer parent class</span>
@@ -206,9 +206,9 @@ I wanted to create modal components like this:</p>
 `</span>
 <span class="p">})</span>
 <span class="p">@</span><span class="nd">Modal</span><span class="p">()</span> <span class="c1">// this decorator is all it takes</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyCustomComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">MyCustomComponent</span> <span class="p">{</span>
 	<span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">foo</span><span class="p">;</span>
-	<span class="nx">onSave</span><span class="p">():</span> <span class="nb">Function</span><span class="p">;</span>
+	<span class="nf">onSave</span><span class="p">():</span> <span class="nb">Function</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -216,9 +216,9 @@ I wanted to create modal components like this:</p>
 
 <p>Here’s the code for the custom decorator: (How easy is that?!)</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nx">Modal</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span>  <span class="nx">ModalContainer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">function</span> <span class="nf">Modal</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nf">function </span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Object</span><span class="p">.</span><span class="nf">assign</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span>  <span class="nx">ModalContainer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
     <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -243,7 +243,7 @@ It’s flexible, maintainable and easy to use… Let me show you…</p>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">create</span><span class="o">&lt;</span><span class="nx">MyCustomComponent</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyCustomComponent</span><span class="p">,</span> 
 <span class="p">{</span> 
 	<span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">,</span> 
-	<span class="na">onSave</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">save me</span><span class="dl">'</span><span class="p">)</span>
+	<span class="na">onSave</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">save me</span><span class="dl">'</span><span class="p">)</span>
 <span class="p">});</span>
 </code></pre></div></div>
 
@@ -254,11 +254,11 @@ It’s flexible, maintainable and easy to use… Let me show you…</p>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">create</span><span class="o">&lt;</span><span class="nx">MyCustomComponent</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyCustomComponent</span><span class="p">,</span> 
 	<span class="p">{</span> 
 		<span class="na">foo</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">,</span> 
-		<span class="na">onSave</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">save me</span><span class="dl">'</span><span class="p">)</span>
+		<span class="na">onSave</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">save me</span><span class="dl">'</span><span class="p">)</span>
 	<span class="p">})</span>
-	<span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">ref</span><span class="p">:</span> <span class="nx">ComponentRef</span><span class="o">&lt;</span><span class="nx">MyCustomComponent</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="p">.</span><span class="nf">subscribe</span><span class="p">((</span><span class="nx">ref</span><span class="p">:</span> <span class="nx">ComponentRef</span><span class="o">&lt;</span><span class="nx">MyCustomComponent</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
 		<span class="c1">//destroy after 1 second</span>
-		<span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">ref</span><span class="p">.</span><span class="nx">destroy</span><span class="p">(),</span> <span class="mi">1000</span><span class="p">);</span>
+		<span class="nf">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">ref</span><span class="p">.</span><span class="nf">destroy</span><span class="p">(),</span> <span class="mi">1000</span><span class="p">);</span>
 	<span class="p">});</span>
 </code></pre></div></div>
 
@@ -268,23 +268,23 @@ It’s flexible, maintainable and easy to use… Let me show you…</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">createFromFactory</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">componentFactory</span><span class="p">:</span> <span class="nx">ComponentFactory</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">,</span> 
 	<span class="nx">parameters</span><span class="p">?:</span> <span class="nb">Object</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">ComponentRef</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;&gt;</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">componentRef$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="p">();</span>
-    <span class="kd">const</span> <span class="nx">childInjector</span> <span class="o">=</span> <span class="nx">ReflectiveInjector</span><span class="p">.</span><span class="nx">resolveAndCreate</span><span class="p">([],</span> <span class="k">this</span><span class="p">.</span><span class="nx">injector</span><span class="p">);</span>
-    <span class="kd">let</span> <span class="nx">componentRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vcRef</span><span class="p">.</span><span class="nx">createComponent</span><span class="p">(</span><span class="nx">componentFactory</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">childInjector</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">componentRef$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ReplaySubject</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">childInjector</span> <span class="o">=</span> <span class="nx">ReflectiveInjector</span><span class="p">.</span><span class="nf">resolveAndCreate</span><span class="p">([],</span> <span class="k">this</span><span class="p">.</span><span class="nx">injector</span><span class="p">);</span>
+    <span class="kd">let</span> <span class="nx">componentRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">vcRef</span><span class="p">.</span><span class="nf">createComponent</span><span class="p">(</span><span class="nx">componentFactory</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">childInjector</span><span class="p">);</span>
     <span class="c1">// pass the @Input parameters to the instance</span>
-    <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">.</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">);</span> 
+    <span class="nb">Object</span><span class="p">.</span><span class="nf">assign</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">.</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">);</span> 
     <span class="k">this</span><span class="p">.</span><span class="nx">activeInstances</span><span class="o">++</span><span class="p">;</span>
     <span class="nx">componentRef</span><span class="p">.</span><span class="nx">instance</span><span class="p">[</span><span class="dl">"</span><span class="s2">destroy</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">activeInstances</span><span class="o">--</span><span class="p">;</span>
-        <span class="nx">componentRef</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+        <span class="nx">componentRef</span><span class="p">.</span><span class="nf">destroy</span><span class="p">();</span>
     <span class="p">};</span>
-    <span class="nx">componentRef$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">);</span>
-    <span class="nx">componentRef$</span><span class="p">.</span><span class="nx">complete</span><span class="p">();</span>
-    <span class="k">return</span> <span class="nx">componentRef$</span><span class="p">.</span><span class="nx">asObservable</span><span class="p">();</span>
+    <span class="nx">componentRef$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">componentRef</span><span class="p">);</span>
+    <span class="nx">componentRef$</span><span class="p">.</span><span class="nf">complete</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nx">componentRef$</span><span class="p">.</span><span class="nf">asObservable</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="c1">// you can call it like that</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nx">createFromFactory</span><span class="p">(</span><span class="nx">myCustomModalNgFactory</span><span class="p">);</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">modalService</span><span class="p">.</span><span class="nf">createFromFactory</span><span class="p">(</span><span class="nx">myCustomModalNgFactory</span><span class="p">);</span>
 </code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>

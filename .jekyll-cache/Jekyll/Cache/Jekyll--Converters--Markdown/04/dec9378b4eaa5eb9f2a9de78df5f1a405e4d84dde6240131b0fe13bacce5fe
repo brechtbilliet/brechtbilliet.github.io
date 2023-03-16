@@ -1,4 +1,4 @@
-I"R›<h2 id="reactive-dumb-components">Reactive dumb components</h2>
+I"W›<h2 id="reactive-dumb-components">Reactive dumb components</h2>
 
 <p>When we write RxJS logic inside our presentation layer we mostly wind up with reactive flows inside our smart components (container components). The reasoning behind this, is quite easy:</p>
 
@@ -29,19 +29,19 @@ The component is also responsibile to calculate whether the previous button and 
   `</span><span class="p">,</span>
   <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company.component.css</span><span class="dl">'</span><span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">CompanyComponent</span> <span class="p">{</span>
   <span class="c1">// fetch the sites</span>
-  <span class="nx">sites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sitesService</span><span class="p">.</span><span class="nx">getSites</span><span class="p">();</span>
+  <span class="nx">sites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sitesService</span><span class="p">.</span><span class="nf">getSites</span><span class="p">();</span>
   <span class="c1">// get the asynchronous siteId from the router params</span>
-  <span class="nx">currentSiteId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">siteId</span><span class="p">));</span>
+  <span class="nx">currentSiteId$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">siteId</span><span class="p">));</span>
 
   <span class="c1">// the dumb app-company-detail component is responsible</span>
   <span class="c1">// to calculate the siteId that we need to go to</span>
-  <span class="nx">siteChanged</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nx">navigate</span><span class="p">([</span><span class="nx">id</span><span class="p">]);</span>
+  <span class="nf">siteChanged</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">navigate</span><span class="p">([</span><span class="nx">id</span><span class="p">]);</span>
   <span class="p">}</span>
 
-  <span class="kd">constructor</span><span class="p">(</span>
+  <span class="nf">constructor</span><span class="p">(</span>
     <span class="k">private</span> <span class="nx">sitesService</span><span class="p">:</span> <span class="nx">SitesService</span><span class="p">,</span>
     <span class="k">private</span> <span class="nx">router</span><span class="p">:</span> <span class="nx">Router</span><span class="p">,</span>
     <span class="k">private</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span>
@@ -66,7 +66,7 @@ The component is also responsibile to calculate whether the previous button and 
   `</span><span class="p">,</span>
   <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company-detail.component.css</span><span class="dl">'</span><span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span><span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">CompanyDetailComponent</span> <span class="k">implements</span> <span class="nx">OnChanges</span><span class="p">{</span>
   <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">currentSiteId</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
   <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">sites</span><span class="p">:</span> <span class="kr">any</span><span class="p">[];</span>
   <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">();</span>
@@ -79,10 +79,10 @@ The component is also responsibile to calculate whether the previous button and 
   <span class="nl">currentSite</span><span class="p">:</span> <span class="kr">any</span><span class="p">;</span>
   <span class="nl">currentSiteNumber</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
 
-  <span class="nx">ngOnChanges</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+  <span class="nf">ngOnChanges</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
     <span class="c1">// this can become complex really fast</span>
-    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span><span class="p">);</span>    
+    <span class="nf">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">?.</span><span class="nf">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nf">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId</span><span class="p">);</span>    
       <span class="k">this</span><span class="p">.</span><span class="nx">currentSite</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span><span class="p">];</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteNumber</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">previousDisabled</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
@@ -90,12 +90,12 @@ The component is also responsibile to calculate whether the previous button and 
     <span class="p">}</span>
   <span class="p">}</span>
 
-  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
+  <span class="nf">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
   <span class="p">}</span>
 
-  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
+  <span class="nf">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex</span> <span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>    
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -106,20 +106,20 @@ Although this solution is perfectly fine, there is a more reactive way of approa
 <p>Think about a complex calendar view that has to do a bunch of calculations based on dozens of <code class="language-plaintext highlighter-rouge">@Input()</code> properties for instance, where a bunch of them are happening synchronous and there are async properties depending on other async properties.
 Think about <code class="language-plaintext highlighter-rouge">@Input()</code> components that are useless unless other <code class="language-plaintext highlighter-rouge">@Input()</code> components have their values. Or what if you like to combine the <code class="language-plaintext highlighter-rouge">@Input()</code> properties with other async objects inside the dumb component. In the following example every piece of code inside this component is a stream. The first thing we want to do is create observables from the <code class="language-plaintext highlighter-rouge">@Input()</code> properties. I like to use this approach when multiple <code class="language-plaintext highlighter-rouge">@Input()</code> properties need eachother to compute a specific value.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">CompanyDetailComponent</span><span class="p">{</span>
   <span class="c1">// input state subjects</span>
   <span class="k">private</span> <span class="nx">currentSiteId$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
   <span class="k">private</span> <span class="nx">sites$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
   <span class="c1">// input stream setters</span>
-  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nf">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
+    <span class="nf">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">};</span>
-  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nf">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
+    <span class="nf">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="c1">// we don't care about null values in this case</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">};</span>
 <span class="p">}</span>
@@ -129,7 +129,7 @@ Think about <code class="language-plaintext highlighter-rouge">@Input()</code> c
 
 <p>We have now created observables from these <code class="language-plaintext highlighter-rouge">@Input()</code> properties. I have created the library <a href="https://www.npmjs.com/package/ngx-reactivetoolkit">ngx-reactivetoolkit</a> to make this even easier. We can see an example on how this cleans up the code right below:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">CompanyDetailComponent</span><span class="p">{</span>
   <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">currentSiteId</span><span class="p">:</span> <span class="kr">string</span>
   <span class="p">@</span><span class="nd">Input</span><span class="p">()</span>  <span class="nx">sites</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]</span>
   <span class="p">@</span><span class="nd">Changes</span><span class="p">(</span><span class="dl">'</span><span class="s1">currentSiteId</span><span class="dl">'</span><span class="p">)</span> <span class="nx">currentSiteId$</span><span class="p">;</span>
@@ -152,12 +152,12 @@ Think about <code class="language-plaintext highlighter-rouge">@Input()</code> c
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// this will be used to communicate with the siteChanged @Output()</span>
   <span class="k">private</span> <span class="nx">nav$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
 
-  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// decrement</span>
+  <span class="nf">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// decrement</span>
   <span class="p">}</span>
   
-  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// increment</span>
+  <span class="nf">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// increment</span>
   <span class="p">}</span>
 </code></pre></div></div>
 
@@ -190,7 +190,7 @@ Think about <code class="language-plaintext highlighter-rouge">@Input()</code> c
 
 <p>This means that this code:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="p">();</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EventEmitter</span><span class="p">();</span>
 </code></pre></div></div>
 
 <p>can be refactored to:</p>
@@ -200,9 +200,9 @@ Think about <code class="language-plaintext highlighter-rouge">@Input()</code> c
 
 <p>Again, for this example the solution might be personal preference but when the flows become more complex we believe this approach can really shine! Think about a search component that looks like thisâ€¦</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">search$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchControl</span><span class="p">.</span><span class="nx">valueChanges$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">debounceTime</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-    <span class="nx">distinctUntilChanged</span><span class="p">()</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">search$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchControl</span><span class="p">.</span><span class="nx">valueChanges$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">debounceTime</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="nf">distinctUntilChanged</span><span class="p">()</span>
 <span class="p">)</span>
 </code></pre></div></div>
 
@@ -215,21 +215,21 @@ We can see the calculation in this example:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// intermediate streams</span>
 <span class="c1">// the current index, calculated by the current site id and the sites</span>
-<span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
-      <span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
+<span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nf">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
+  <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
+      <span class="nx">sites</span><span class="p">?.</span><span class="nf">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nf">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
     <span class="p">)</span>
   <span class="p">);</span>
 
 <span class="c1">// an array that always contains the currentIndex and all the sites</span>
-<span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
+<span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nf">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
 
 <span class="c1">// every time the nav button is clicked, we need to calculate the id that</span>
 <span class="c1">// needs to be emitted to the siteChanged @Output()</span>
-<span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-  <span class="nx">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
-  <span class="nx">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
+<span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+  <span class="nf">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
+  <span class="nf">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
     <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="nx">navigationIndex</span><span class="p">]?.</span><span class="nx">id</span>
   <span class="p">)</span>
 <span class="p">)</span>
@@ -257,64 +257,64 @@ In the code snippet below we can see the complete code: You can also check the <
   `</span><span class="p">,</span>
   <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./company-detail.component.css</span><span class="dl">'</span><span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">CompanyDetailComponent</span><span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">CompanyDetailComponent</span><span class="p">{</span>
   <span class="c1">// local state subjects and input state subjects</span>
   <span class="k">private</span> <span class="nx">nav$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">();</span>
   <span class="k">private</span> <span class="nx">currentSiteId$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
   <span class="k">private</span> <span class="nx">sites$$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReplaySubject</span><span class="o">&lt;</span><span class="kr">any</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
   <span class="c1">// input stream setters</span>
-  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nf">currentSiteId</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">string</span><span class="p">){</span>
+    <span class="nf">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">};</span>
-  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nx">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="kd">set</span> <span class="nf">sites</span><span class="p">(</span><span class="nx">v</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]){</span>
+    <span class="nf">if</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">};</span>
 
   <span class="c1">// intermediate streams</span>
-  <span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-      <span class="nx">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
-        <span class="nx">sites</span><span class="p">?.</span><span class="nx">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
+  <span class="k">private</span> <span class="nx">currentIndex$</span> <span class="o">=</span> <span class="nf">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentSiteId$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">])</span>
+    <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+      <span class="nf">map</span><span class="p">(([</span><span class="nx">currentSiteId</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> 
+        <span class="nx">sites</span><span class="p">?.</span><span class="nf">map</span><span class="p">(</span><span class="nx">site</span> <span class="o">=&gt;</span> <span class="nx">site</span><span class="p">?.</span><span class="nx">id</span><span class="p">).</span><span class="nf">indexOf</span><span class="p">(</span><span class="nx">currentSiteId</span><span class="p">)</span>    
       <span class="p">)</span>
     <span class="p">);</span>
-  <span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
+  <span class="k">private</span> <span class="nx">indexWithSites$</span> <span class="o">=</span> <span class="nf">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">]);</span>
 
-  <span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
-    <span class="nx">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
+  <span class="k">private</span> <span class="nx">siteChanged$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">withLatestFrom</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">),</span>
+    <span class="nf">map</span><span class="p">(([</span><span class="nx">navigationIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">,</span> <span class="nx">currentIndex</span><span class="p">])</span> <span class="o">=&gt;</span> 
      <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span> <span class="o">+</span> <span class="nx">navigationIndex</span><span class="p">]?.</span><span class="nx">id</span>
     <span class="p">)</span>
   <span class="p">)</span>
 
   <span class="c1">// output streams and presentational streams</span>
   <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="nx">siteChanged</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">siteChanged$</span><span class="p">;</span>
-  <span class="nx">previousDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">map</span><span class="p">(</span><span class="nx">currentIndex</span> <span class="o">=&gt;</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="nx">previousDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">map</span><span class="p">(</span><span class="nx">currentIndex</span> <span class="o">=&gt;</span><span class="nx">currentIndex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
   <span class="p">)</span>
-  <span class="nx">nextDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">currentIndex</span> <span class="o">===</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="nx">nextDisabled$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">currentIndex</span> <span class="o">===</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
   <span class="p">)</span>
-  <span class="nx">currentSite$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span><span class="p">])</span>
+  <span class="nx">currentSite$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">indexWithSites$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">map</span><span class="p">(([</span><span class="nx">currentIndex</span><span class="p">,</span> <span class="nx">sites</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">[</span><span class="nx">currentIndex</span><span class="p">])</span>
   <span class="p">)</span>
-  <span class="nx">totalSites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">map</span><span class="p">(</span><span class="nx">sites</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span><span class="p">)</span>
+  <span class="nx">totalSites$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">sites$$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">map</span><span class="p">(</span><span class="nx">sites</span> <span class="o">=&gt;</span> <span class="nx">sites</span><span class="p">?.</span><span class="nx">length</span><span class="p">)</span>
   <span class="p">)</span>
-  <span class="nx">currentSiteNumber$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-    <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nx">currentSiteNumber$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentIndex$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+    <span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
   <span class="p">)</span>
 
-  <span class="nx">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>    
+  <span class="nf">previousClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>    
   <span class="p">}</span>
   
-  <span class="nx">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>    
+  <span class="nf">nextClicked</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">nav$$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>    
   <span class="p">}</span>
 <span class="p">}</span>
 

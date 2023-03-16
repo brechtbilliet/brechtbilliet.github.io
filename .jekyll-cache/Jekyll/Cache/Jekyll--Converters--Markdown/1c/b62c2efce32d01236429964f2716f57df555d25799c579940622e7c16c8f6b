@@ -1,4 +1,4 @@
-I"1x<h2 id="why-should-we-pre-render-angular-applications">Why should we pre-render Angular applications?</h2>
+I"3x<h2 id="why-should-we-pre-render-angular-applications">Why should we pre-render Angular applications?</h2>
 
 <p>At the moment of writing this article, there are several ways of optimizing Angular applications - We could compile them <a href="https://angular.io/guide/aot-compiler">ahead-of-time</a> through AOT compilation.
 We could use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> to optimize caching. And there are plenty of other PWA (progressive web app) features that can increase the quality and overall performance of our Angular applications.</p>
@@ -48,7 +48,7 @@ The first thing we need to do is to install @angular/platform-server by running
 <span class="p">@</span><span class="nd">NgModule</span><span class="p">({</span>
   <span class="p">...</span>
   <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
-    <span class="nx">BrowserModule</span><span class="p">.</span><span class="nx">withServerTransition</span><span class="p">(</span>
+    <span class="nx">BrowserModule</span><span class="p">.</span><span class="nf">withServerTransition</span><span class="p">(</span>
         <span class="c1">// this is just the name of our application</span>
         <span class="c1">// configured in angular-cli.json</span>
         <span class="p">{</span> <span class="na">appId</span><span class="p">:</span> <span class="dl">'</span><span class="s1">prerender-angular-example</span><span class="dl">'</span> <span class="p">}</span>
@@ -57,7 +57,7 @@ The first thing we need to do is to install @angular/platform-server by running
   <span class="p">],</span>
   <span class="p">...</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{</span> <span class="p">}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{</span> <span class="p">}</span>
 </code></pre></div></div>
 
 <h3 id="creating-the-prerender-module">Creating the prerender module</h3>
@@ -79,7 +79,7 @@ The first thing we need to do is to install @angular/platform-server by running
   <span class="p">],</span>
   <span class="na">bootstrap</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppComponent</span><span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppPrerenderModule</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppPrerenderModule</span> <span class="p">{</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -92,7 +92,7 @@ Let’s create that file, shall we?</p>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">enableProdMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">export</span> <span class="p">{</span> <span class="nx">AppPrerenderModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app/app.prerender.module</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">enableProdMode</span><span class="p">();</span>
+<span class="nf">enableProdMode</span><span class="p">();</span>
 </code></pre></div></div>
 <h3 id="a-prerender-tsconfigjson">A prerender tsconfig.json</h3>
 
@@ -193,8 +193,8 @@ We can start with creating an empty <code class="language-plaintext highlighter-
 
 <span class="kd">const</span> <span class="nx">distFolder</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">./dist</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">fs</span>
-    <span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">distFolder</span><span class="p">}</span><span class="s2">/index.html`</span><span class="p">),</span> <span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    <span class="p">.</span><span class="nf">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">`</span><span class="p">${</span><span class="nx">distFolder</span><span class="p">}</span><span class="s2">/index.html`</span><span class="p">),</span> <span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">toString</span><span class="p">();</span>
 
 <span class="c1">// we could automate this based on the app.routes.ts file but</span>
 <span class="c1">// to keep it simple let's just create an array with the routes we want</span>
@@ -203,30 +203,30 @@ We can start with creating an empty <code class="language-plaintext highlighter-
     <span class="dl">'</span><span class="s1">/about</span><span class="dl">'</span><span class="p">,</span>
     <span class="dl">'</span><span class="s1">/brews</span><span class="dl">'</span><span class="p">,</span>
     <span class="dl">'</span><span class="s1">/consultancy</span><span class="dl">'</span><span class="p">];</span>
-<span class="nx">enableProdMode</span><span class="p">();</span>
+<span class="nf">enableProdMode</span><span class="p">();</span>
 
 <span class="c1">// for every route render the html and save it in the correct folder</span>
-<span class="nx">paths</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">distFolder</span> <span class="o">+</span> <span class="nx">p</span><span class="p">));</span>
+<span class="nx">paths</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">p</span> <span class="o">=&gt;</span> <span class="nf">renderToHtml</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">distFolder</span> <span class="o">+</span> <span class="nx">p</span><span class="p">));</span>
 
 <span class="c1">// don't forget to overwrite the index.html as well</span>
-<span class="nx">renderToHtml</span><span class="p">(</span><span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">distFolder</span><span class="p">);</span>
+<span class="nf">renderToHtml</span><span class="p">(</span><span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">distFolder</span><span class="p">);</span>
 
-<span class="kd">function</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nf">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
   <span class="c1">// Render the module with the correct url just </span>
   <span class="c1">// as the server would do</span>
-  <span class="nx">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nf">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
     <span class="nx">url</span><span class="p">,</span>
     <span class="na">document</span><span class="p">:</span> <span class="nx">index</span>
-  <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="p">}).</span><span class="nf">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// create the route directory</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">url</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">mkdirSync</span><span class="p">(</span><span class="nx">folderPath</span><span class="p">);</span>
+    <span class="nf">if </span><span class="p">(</span><span class="nx">url</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nf">mkdirSync</span><span class="p">(</span><span class="nx">folderPath</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nf">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
+      <span class="nf">if </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
       <span class="p">}</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`success`</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`success`</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">}</span>
@@ -247,17 +247,17 @@ We can find the full pre-rendered version by checking out branch <code class="la
 
 <p>Note: to optimize the HTML even more, we could use an HTML minifier like <a href="https://www.npmjs.com/package/html-minifier">this one</a> to shrink the HTML where possible. The example could look something like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-minifier</span><span class="dl">'</span><span class="p">).</span><span class="nx">minify</span><span class="p">;</span>
-<span class="kd">function</span> <span class="nx">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">minify</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-minifier</span><span class="dl">'</span><span class="p">).</span><span class="nx">minify</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nf">renderToHtml</span><span class="p">(</span><span class="nx">url</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">folderPath</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
     <span class="c1">// Render the module with the correct url just </span>
     <span class="c1">// as the server would do</span>
-    <span class="nx">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nf">renderModuleFactory</span><span class="p">(</span><span class="nx">AppPrerenderModuleNgFactory</span><span class="p">,</span> <span class="p">{</span>
         <span class="nx">url</span><span class="p">,</span>
         <span class="na">document</span><span class="p">:</span> <span class="nx">index</span>
-    <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">}).</span><span class="nf">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="p">...</span>
         <span class="c1">// minify the html</span>
-        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nx">minify</span><span class="p">(</span><span class="nx">html</span><span class="p">),</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
+        <span class="nx">fs</span><span class="p">.</span><span class="nf">writeFile</span><span class="p">(</span><span class="nx">folderPath</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">/index.html</span><span class="dl">'</span><span class="p">,</span> <span class="nf">minify</span><span class="p">(</span><span class="nx">html</span><span class="p">),</span>  <span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span>  <span class="p">{</span>
           <span class="p">...</span>
         <span class="p">});</span>
     <span class="p">});</span>

@@ -7,7 +7,7 @@ This way the <code class="language-plaintext highlighter-rouge">env.js</code> fi
 This file could look like this:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/env.js</span>
-<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
   <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span> <span class="o">=</span> <span class="p">{};</span>
   <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:1234/api</span><span class="dl">'</span><span class="p">;</span>
 <span class="p">})(</span><span class="k">this</span><span class="p">);</span>
@@ -58,7 +58,7 @@ to retrieve the <code class="language-plaintext highlighter-rouge">apiUrl</code>
     <span class="p">},</span>
   <span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
 </code></pre></div></div>
 
 <p>This is great! Now in our services we can just inject the <code class="language-plaintext highlighter-rouge">API_URL</code> with the <code class="language-plaintext highlighter-rouge">@Inject()</code> decorator, and our service knows exactly where to send its XHR calls to.</p>
@@ -66,8 +66,8 @@ to retrieve the <code class="language-plaintext highlighter-rouge">apiUrl</code>
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span><span class="p">,</span> <span class="nx">Inject</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@angular/core</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./injection-tokens</span><span class="dl">'</span><span class="p">;</span>
 <span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
-  <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FooService</span> <span class="p">{</span>
+  <span class="nf">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
   <span class="p">}</span>
   <span class="p">...</span>
 <span class="p">}</span>
@@ -93,7 +93,7 @@ the other <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
 <p>Let’s add the <code class="language-plaintext highlighter-rouge">secondaryApiUrl</code> to the <code class="language-plaintext highlighter-rouge">env.js</code> file and update the <code class="language-plaintext highlighter-rouge">injection-tokens.ts</code> and <code class="language-plaintext highlighter-rouge">app.module.ts</code> accordingly.</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// app-name/src/env.js</span>
-<span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
   <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span> <span class="o">=</span> <span class="p">{};</span>
   <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">apiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:1234/api</span><span class="dl">'</span><span class="p">;</span>
   <span class="nb">window</span><span class="p">.</span><span class="nx">__env</span><span class="p">.</span><span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:4321/api</span><span class="dl">'</span><span class="p">;</span>
@@ -127,7 +127,7 @@ the other <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
     <span class="p">},</span>
   <span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
 </code></pre></div></div>
 
 <h3 id="how-will-we-decide-which-apiurl-to-take">How will we decide which apiUrl to take?</h3>
@@ -136,8 +136,8 @@ the other <code class="language-plaintext highlighter-rouge">apiUrl</code>.</p>
 that seems like a lot of redundant code to implement in every service.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
-  <span class="kd">constructor</span><span class="p">(</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FooService</span> <span class="p">{</span>
+  <span class="nf">constructor</span><span class="p">(</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="nx">activatedRoute</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span>
     <span class="p">@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">,</span>
     <span class="p">@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">secondaryApiUrl</span><span class="p">,</span>
@@ -156,9 +156,9 @@ that seems like a lot of redundant code to implement in every service.</p>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./injection-tokens</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="p">@</span><span class="nd">Injectable</span><span class="p">({</span><span class="na">providedIn</span><span class="p">:</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">FooService</span> <span class="p">{</span>
 
- <span class="kd">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">CONDITIONAL_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nf">constructor</span><span class="p">(@</span><span class="nd">Inject</span><span class="p">(</span><span class="nx">CONDITIONAL_API_URL</span><span class="p">)</span> <span class="k">private</span> <span class="k">readonly</span> <span class="nx">apiUrl</span><span class="p">)</span> <span class="p">{</span>
    <span class="c1">// console.log(apiUrl);</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -175,11 +175,11 @@ our 3 dependencies and will decide which api url to use based on the existence o
 <span class="k">export</span> <span class="kd">const</span> <span class="nx">SECONDARY_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="o">&lt;</span><span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span>
   <span class="dl">'</span><span class="s1">SECONDARY_API_URL</span><span class="dl">'</span>
 <span class="p">);</span>
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InjectionToken</span><span class="p">(</span><span class="dl">'</span><span class="s1">CONDITIONAL_API_URL</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">factory</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">activatedRoute</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">ActivatedRoute</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">);</span>
-    <span class="kd">const</span> <span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="nx">inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">);</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">CONDITIONAL_API_URL</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InjectionToken</span><span class="p">(</span><span class="dl">'</span><span class="s1">CONDITIONAL_API_URL</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nf">factory</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">activatedRoute</span> <span class="o">=</span> <span class="nf">inject</span><span class="p">(</span><span class="nx">ActivatedRoute</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">apiUrl</span> <span class="o">=</span> <span class="nf">inject</span><span class="p">(</span><span class="nx">API_URL</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">secondaryApiUrl</span> <span class="o">=</span> <span class="nf">inject</span><span class="p">(</span><span class="nx">SECONDARY_API_URL</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">activatedRoute</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">.</span><span class="nx">queryParams</span><span class="p">.</span><span class="nx">secondary</span>
       <span class="p">?</span> <span class="nx">secondaryApiUrl</span>
       <span class="p">:</span> <span class="nx">apiUrl</span><span class="p">;</span>

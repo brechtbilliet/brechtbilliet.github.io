@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Thinking reactively in Angular and RXJS | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="Thinking reactively in Angular and RXJS" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -262,18 +266,18 @@ When the view mode is changed to week mode, and the previous view mode was month
 
 <p><code class="language-plaintext highlighter-rouge">The appointments$</code> is a stream that will be provided to us by AngularFire, but the <code class="language-plaintext highlighter-rouge">viewMode$</code>, <code class="language-plaintext highlighter-rouge">searchTerm$</code>, and <code class="language-plaintext highlighter-rouge">navigation$</code> are simple behavior subjects. We use subjects because we need to control the values of the streams ourselves, and we use the <code class="language-plaintext highlighter-rouge">BehaviorSubject</code> in particular because all our source streams need an initial value.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="p">...</span>
     <span class="c1">// this is how we can retrieve the list of appointments from angularfire</span>
-    <span class="nx">appointments$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="dl">'</span><span class="s1">/appointments</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">appointments$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nf">list</span><span class="p">(</span><span class="dl">'</span><span class="s1">/appointments</span><span class="dl">'</span><span class="p">);</span>
      <span class="c1">// 0--------(+1)----(+1)----(-1)-------------...</span>
-    <span class="nx">viewMode$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="nx">VIEW_MODE</span><span class="p">.</span><span class="nx">MONTH</span><span class="p">);</span>
-    <span class="nx">navigation$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="nx">searchTerm$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+    <span class="nx">viewMode$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="nx">VIEW_MODE</span><span class="p">.</span><span class="nx">MONTH</span><span class="p">);</span>
+    <span class="nx">navigation$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">searchTerm$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
 
 	<span class="c1">// because we set up the angularfire configuration correctly, we can just</span>
 	<span class="c1">// inject the angularfiredatabase right here and use it</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">db</span><span class="p">:</span> <span class="nx">AngularFireDatabase</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">db</span><span class="p">:</span> <span class="nx">AngularFireDatabase</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">}</span>
     <span class="p">...</span>
 <span class="p">}</span>
@@ -294,30 +298,30 @@ When the view mode is changed to week mode, and the previous view mode was month
         ...
     `</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="p">...</span>
     
-    <span class="nx">onSetViewMode</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">onSetViewMode</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// when the viewmode changes, update its subject</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onPrevious</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">onPrevious</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// when the user clicks the previous button</span>
         <span class="c1">// update the navigation subject</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onNext</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">onNext</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// when the user clicks the next button</span>
         <span class="c1">// update the navigation subject</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onSearchChanged</span><span class="p">(</span><span class="nx">e</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nf">onSearchChanged</span><span class="p">(</span><span class="nx">e</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// when the user searches</span>
         <span class="c1">// update the searchterm subject</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -411,27 +415,27 @@ We know the presentational streams, which are simply the streams that our compon
 <span class="c1">// viewMode$:     M------------------W---------------D--------...</span>
 <span class="c1">// navigation$:   0---(+1)-(-1)----------(+1)-(-1)------------...</span>
 <span class="c1">// currentDateM$: d---d----d---------d---d----d------d--------...</span>
-<span class="k">private</span> <span class="nx">currentDateM</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nx">flatMap</span><span class="p">((</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="k">private</span> <span class="nx">currentDateM</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">((</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// every time the viewMode changes, the navigation should be reset as well</span>
     <span class="c1">// the dateM variable will contain the navigation and because of the </span>
     <span class="c1">// flatMap it will reset every time the view mode changes</span>
     <span class="c1">// if the navigation$ changes afterwards it will manipulate the dateM object</span>
     <span class="c1">// by adding months, weeks, or days depending on the viewMode</span>
-    <span class="kd">const</span> <span class="nx">dateM</span> <span class="o">=</span> <span class="nx">moment</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">dateM</span> <span class="o">=</span> <span class="nf">moment</span><span class="p">();</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span>
-        <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="na">action</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">switch</span> <span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">.</span><span class="nf">map</span><span class="p">((</span><span class="na">action</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nf">switch </span><span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">MONTH</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">month</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">months</span><span class="dl">"</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">month</span><span class="dl">'</span><span class="p">).</span><span class="nf">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">months</span><span class="dl">"</span><span class="p">);</span>
                 <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">WEEK</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">week</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">weeks</span><span class="dl">"</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">week</span><span class="dl">'</span><span class="p">).</span><span class="nf">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">weeks</span><span class="dl">"</span><span class="p">);</span>
                 <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">DAY</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">day</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">days</span><span class="dl">"</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">day</span><span class="dl">'</span><span class="p">).</span><span class="nf">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">"</span><span class="s2">days</span><span class="dl">"</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="nx">dateM</span><span class="p">;</span>
         <span class="p">})</span>
 <span class="p">})</span>
-<span class="nx">currentDate$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">toDate</span><span class="p">());</span>
+<span class="nx">currentDate$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">toDate</span><span class="p">());</span>
 
 </code></pre></div></div>
 
@@ -441,7 +445,7 @@ We know the presentational streams, which are simply the streams that our compon
 
 <p><img src="https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar8.png" alt="currentWeek$" /></p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">currentWeek$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">week</span><span class="p">());</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">currentWeek$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">week</span><span class="p">());</span>
 </code></pre></div></div>
 
 <h4 id="currentmonth">currentMonth$</h4>
@@ -450,7 +454,7 @@ We know the presentational streams, which are simply the streams that our compon
 
 <p><img src="https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar9.png" alt="currentMonth$" /></p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">currentMonth$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">month</span><span class="p">());</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">currentMonth$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">month</span><span class="p">());</span>
 </code></pre></div></div>
 <h4 id="currentyear">currentYear$</h4>
 
@@ -458,7 +462,7 @@ We know the presentational streams, which are simply the streams that our compon
 
 <p><img src="https://raw.githubusercontent.com/brechtbilliet/brechtbilliet.github.io/master/_posts/reactivecalendar/reactivecalendar10.png" alt="currentYear$" /></p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">currentYear$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">year</span><span class="p">());</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">currentYear$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">year</span><span class="p">());</span>
 </code></pre></div></div>
 
 <h4 id="filteredappointments">filteredAppointments$</h4>
@@ -482,39 +486,39 @@ We know the presentational streams, which are simply the streams that our compon
 
 <p>So basically, it gives us a function where we have all the information we need. The appointments in Firebase, the view mode, the search term, and the current date. Based on those values, we can calculate the appointments for every view:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">filteredAppointments$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nx">combineLatest</span><span class="p">(</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">filteredAppointments$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nf">combineLatest</span><span class="p">(</span>
     <span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">,</span> 
     <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">],</span>
     <span class="p">(</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">currentDateM</span><span class="p">:</span> <span class="nx">Moment</span><span class="p">,</span> 
         <span class="nx">appointments</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Appointment</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">switch</span> <span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">switch </span><span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
             <span class="c1">// calculate the appointments for the month-view based on</span>
             <span class="c1">// the current date, the appointments in firebase </span>
             <span class="c1">// and the searchterm</span>
             <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">MONTH</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nx">appointments</span>
-                    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
-                    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
+                    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
+                    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
              <span class="c1">// calculate the appointments for the week-view based on</span>
              <span class="c1">// the current date, the appointments in firebase</span>
              <span class="c1">// and the searchterm</span>
             <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">WEEK</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nx">appointments</span>
-                    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">))</span>
-                    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
+                    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">))</span>
+                    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
             <span class="c1">// calculate the appointments for the day-view based on</span>
             <span class="c1">// the current date, the appointments in firebase</span>
             <span class="c1">// and the searchterm</span>
             <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">DAY</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nx">appointments</span>
-                    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
-                    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
+                    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
+                    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
 
         <span class="p">}</span>
     <span class="p">});</span>
 
-<span class="k">private</span> <span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">appointment</span><span class="p">:</span> <span class="nx">Appointment</span><span class="p">,</span> <span class="nx">term</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">private</span> <span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">appointment</span><span class="p">:</span> <span class="nx">Appointment</span><span class="p">,</span> <span class="nx">term</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">().</span><span class="nf">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">())</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -577,12 +581,12 @@ We know the presentational streams, which are simply the streams that our compon
     `</span><span class="p">,</span>
     <span class="na">styleUrls</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">./app.component.less</span><span class="dl">'</span><span class="p">]</span>
 <span class="p">})</span>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="nx">VIEW_MODE</span> <span class="o">=</span> <span class="nx">VIEW_MODE</span><span class="p">;</span>
-    <span class="nx">viewMode$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="nx">VIEW_MODE</span><span class="p">.</span><span class="nx">MONTH</span><span class="p">);</span>
+    <span class="nx">viewMode$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="nx">VIEW_MODE</span><span class="p">.</span><span class="nx">MONTH</span><span class="p">);</span>
     <span class="c1">// 0--------(+1)----(+1)----(-1)-------------...</span>
     <span class="nx">navigation$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="nx">searchTerm$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+    <span class="nx">searchTerm$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BehaviorSubject</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
 
     <span class="c1">// -----MONTH---------------------YEAR------...</span>
     <span class="c1">// -----MONTH-------------------------------...</span>
@@ -590,79 +594,79 @@ We know the presentational streams, which are simply the streams that our compon
     <span class="c1">// --------(+1)----(+1)----(-1)-------------...</span>
     <span class="c1">// -----d---d-------d-------d-----d----------...</span>
 
-    <span class="k">private</span> <span class="nx">currentDateM$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nx">flatMap</span><span class="p">((</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">dateM</span> <span class="o">=</span> <span class="nx">moment</span><span class="p">();</span>
+    <span class="k">private</span> <span class="nx">currentDateM$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nf">flatMap</span><span class="p">((</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">dateM</span> <span class="o">=</span> <span class="nf">moment</span><span class="p">();</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span>
-            <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="na">action</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-                <span class="k">switch</span> <span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">.</span><span class="nf">map</span><span class="p">((</span><span class="na">action</span><span class="p">:</span> <span class="kr">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">switch </span><span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">MONTH</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">month</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">'</span><span class="s1">months</span><span class="dl">'</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">month</span><span class="dl">'</span><span class="p">).</span><span class="nf">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">'</span><span class="s1">months</span><span class="dl">'</span><span class="p">);</span>
                     <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">WEEK</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">week</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">'</span><span class="s1">weeks</span><span class="dl">'</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">week</span><span class="dl">'</span><span class="p">).</span><span class="nf">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">'</span><span class="s1">weeks</span><span class="dl">'</span><span class="p">);</span>
                     <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">DAY</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">day</span><span class="dl">'</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">'</span><span class="s1">days</span><span class="dl">'</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">startOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">day</span><span class="dl">'</span><span class="p">).</span><span class="nf">add</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="dl">'</span><span class="s1">days</span><span class="dl">'</span><span class="p">);</span>
                 <span class="p">}</span>
                 <span class="k">return</span> <span class="nx">dateM</span><span class="p">;</span>
             <span class="p">})</span>
     <span class="p">});</span>
 
-    <span class="nx">currentDate$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">toDate</span><span class="p">());</span>
-    <span class="nx">currentYear$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">year</span><span class="p">());</span>
-    <span class="nx">currentMonth$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">month</span><span class="p">());</span>
-    <span class="nx">currentWeek$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nx">week</span><span class="p">());</span>
-    <span class="nx">appointments$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="dl">'</span><span class="s1">/appointments</span><span class="dl">'</span><span class="p">);</span>
-    <span class="nx">filteredAppointments$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nx">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">],</span>
+    <span class="nx">currentDate$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">toDate</span><span class="p">());</span>
+    <span class="nx">currentYear$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">year</span><span class="p">());</span>
+    <span class="nx">currentMonth$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">month</span><span class="p">());</span>
+    <span class="nx">currentWeek$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">dateM</span> <span class="o">=&gt;</span> <span class="nx">dateM</span><span class="p">.</span><span class="nf">week</span><span class="p">());</span>
+    <span class="nx">appointments$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nf">list</span><span class="p">(</span><span class="dl">'</span><span class="s1">/appointments</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">filteredAppointments$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nf">combineLatest</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentDateM$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">],</span>
         <span class="p">(</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">currentDateM</span><span class="p">:</span> <span class="nx">Moment</span><span class="p">,</span> <span class="nx">appointments</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Appointment</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">switch</span> <span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">switch </span><span class="p">(</span><span class="nx">viewMode</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">MONTH</span><span class="p">:</span>
                     <span class="k">return</span> <span class="nx">appointments</span>
-                        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
-                        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
+                        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
+                        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
                 <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">WEEK</span><span class="p">:</span>
                     <span class="k">return</span> <span class="nx">appointments</span>
-                        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">))</span>
-                        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
+                        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">ww/YYYY</span><span class="dl">'</span><span class="p">))</span>
+                        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
                 <span class="k">case</span> <span class="nx">VIEW_MODE</span><span class="p">.</span><span class="na">DAY</span><span class="p">:</span>
                     <span class="k">return</span> <span class="nx">appointments</span>
-                        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
-                        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
+                        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="nf">moment</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">).</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">currentDateM</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="dl">'</span><span class="s1">DD/MM/YYYY</span><span class="dl">'</span><span class="p">))</span>
+                        <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">));</span>
 
             <span class="p">}</span>
         <span class="p">});</span>
 
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">db</span><span class="p">:</span> <span class="nx">AngularFireDatabase</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">db</span><span class="p">:</span> <span class="nx">AngularFireDatabase</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">}</span>
 
-    <span class="k">private</span> <span class="nx">filterByTerm</span><span class="p">(</span><span class="nx">appointment</span><span class="p">:</span> <span class="nx">Appointment</span><span class="p">,</span> <span class="nx">term</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nf">filterByTerm</span><span class="p">(</span><span class="nx">appointment</span><span class="p">:</span> <span class="nx">Appointment</span><span class="p">,</span> <span class="nx">term</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">().</span><span class="nf">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">())</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="nx">onSetViewMode</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">);</span>
+    <span class="nf">onSetViewMode</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">viewMode$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">viewMode</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onPrevious</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="nf">onPrevious</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onNext</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="nf">onNext</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">navigation$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onSearchChanged</span><span class="p">(</span><span class="nx">e</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+    <span class="nf">onSearchChanged</span><span class="p">(</span><span class="nx">e</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">searchTerm$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onRemoveAppointment</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="nf">onRemoveAppointment</span><span class="p">(</span><span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">onAddAppointment</span><span class="p">(</span><span class="nx">date</span><span class="p">:</span> <span class="nb">Date</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">Appointment</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">toDateString</span><span class="p">(),</span> <span class="dl">''</span><span class="p">));</span>
+    <span class="nf">onAddAppointment</span><span class="p">(</span><span class="nx">date</span><span class="p">:</span> <span class="nb">Date</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">appointments$</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="k">new</span> <span class="nc">Appointment</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nf">toDateString</span><span class="p">(),</span> <span class="dl">''</span><span class="p">));</span>
     <span class="p">}</span>
 
-    <span class="nx">onUpdateAppointment</span><span class="p">(</span><span class="nx">appointment</span><span class="p">:</span> <span class="nx">Appointment</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">object</span><span class="p">(</span><span class="dl">'</span><span class="s1">appointments/</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">$key</span><span class="p">).</span><span class="kd">set</span><span class="p">({</span>
+    <span class="nf">onUpdateAppointment</span><span class="p">(</span><span class="nx">appointment</span><span class="p">:</span> <span class="nx">Appointment</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nf">object</span><span class="p">(</span><span class="dl">'</span><span class="s1">appointments/</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">$key</span><span class="p">).</span><span class="nf">set</span><span class="p">({</span>
             <span class="na">description</span><span class="p">:</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
             <span class="na">date</span><span class="p">:</span> <span class="nx">appointment</span><span class="p">.</span><span class="nx">date</span>
         <span class="p">});</span>
@@ -702,21 +706,18 @@ The situation of the problem goes like this:</p>
 
 <p>Thanks, guys! It means a lot!</p>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/Creating-reactive-calendar-in-angular4/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

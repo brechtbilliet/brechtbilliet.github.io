@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>RxJS best practices in Angular | Frontend software architect living in Belgium</title>
-<meta name="generator" content="Jekyll v4.2.2" />
+<meta name="generator" content="Jekyll v4.3.2" />
 <meta property="og:title" content="RxJS best practices in Angular" />
 <meta name="author" content="brechtbilliet" />
 <meta property="og:locale" content="en_US" />
@@ -79,8 +79,12 @@
             </header>
             <main aria-label="Content">
                 <div class="blog">
+                    <div class="page__wrapper">
+                        <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+                            <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+                        </a>
+                    </div>
                     <div class="page__wrapper page__wrapper-flex">
-                        <div class="page__wrapper-left">
                             <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -141,17 +145,17 @@ also have <a href="https://webpack.js.org/guides/tree-shaking/">treeshaking</a> 
 <span class="k">import</span> <span class="dl">'</span><span class="s1">rxjs/add/operator/filter</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="dl">'</span><span class="s1">rxjs/add/operator/map</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="k">new</span><span class="nx">$</span> <span class="o">=</span> <span class="nx">Observable</span><span class="p">.</span><span class="nx">interval$</span>
-    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
 
 <span class="c1">// GOOD: This is the new and improved way (lettable operators)</span>
 <span class="c1">// we just use the pipe operator where we pass operators that</span>
 <span class="c1">// we can import from 'rxjs/operators'</span>
 <span class="k">import</span> <span class="p">{</span><span class="nx">filter</span><span class="p">,</span> <span class="nx">map</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">rxjs/operators</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="k">new</span><span class="nx">$</span> <span class="o">=</span> <span class="nx">interval$</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">),</span>
-        <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+        <span class="nf">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">*</span><span class="mi">2</span><span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></div>
 
@@ -196,13 +200,13 @@ There is an ASCII variant of these marble-diagrams that we can use to describe a
 
 <p>Perhaps it’s time to check a real example and how we might document it:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nx">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>            <span class="c1">// 0--1--2--3--4--5--6...</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nf">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>            <span class="c1">// 0--1--2--3--4--5--6...</span>
 <span class="kd">const</span> <span class="k">new</span><span class="nx">$</span> <span class="o">=</span> <span class="nx">interval$</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>                            <span class="c1">// ---1--2--3--4--5--6...</span>
-        <span class="nx">take</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>                            <span class="c1">// ---1--2--3--4--5|</span>
-        <span class="nx">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">),</span>           <span class="c1">// ------2-----4---|</span>
-        <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1">// ------3-----5---|</span>
+    <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+        <span class="nf">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>                            <span class="c1">// ---1--2--3--4--5--6...</span>
+        <span class="nf">take</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>                            <span class="c1">// ---1--2--3--4--5|</span>
+        <span class="nf">filter</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">),</span>           <span class="c1">// ------2-----4---|</span>
+        <span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1">// ------3-----5---|</span>
     <span class="p">)</span>
 </code></pre></div></div>
 
@@ -229,58 +233,58 @@ Therefore avoid side effects at much as possible.</p>
 That subscription will keep on living until the stream is <strong>completed</strong> or until we <strong>unsubscribe manually</strong> from that stream.
 Managing subscriptions is very important and in a number of cases we will have to manually unsubscribe an existing subscription to avoid memory leaks. Take this example for instance:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
-   <span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
+   <span class="nf">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
         <span class="c1">// The following stream will produce values every second</span>
         <span class="c1">// 0--1--2--3--4--5--6--...</span>
-        <span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nx">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nf">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
         <span class="c1">// Even when this component gets destroyed,</span>
         <span class="c1">// the stream will keep producing values...</span>
         <span class="c1">// This means the console will keep on logging</span>
         <span class="c1">// This is a classic example of a memory-leak</span>
-        <span class="kd">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">interval$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
+        <span class="kd">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">interval$</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <p>To remove the memory-leak in this component we can keep track of the subscriptions by taking advantage of the <code class="language-plaintext highlighter-rouge">ngOnDestroy()</code> lifecycle hook of Angular:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
     <span class="nx">subscriptions</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nx">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
-        <span class="kd">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">interval$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
+    <span class="nf">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nf">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">subscription</span> <span class="o">=</span> <span class="nx">interval$</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
         <span class="c1">// manually keep track of the subscriptions in a subscription array</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">subscription</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">subscription</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
         <span class="c1">// when the component get's destroyed, unsubscribe all the subscriptions</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">sub</span> <span class="o">=&gt;</span> <span class="nx">sub</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">());</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">sub</span> <span class="o">=&gt;</span> <span class="nx">sub</span><span class="p">.</span><span class="nf">unsubscribe</span><span class="p">());</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <p>However, when we are using a bunch of subscriptions, it can become quite dirty. Before, we talked about the fact that a subscription will live until we manually unsubscribe (like we just did in the snippet above), but also until the stream gets <strong>completed</strong>. A cool way to handle this issue is to use a Subject that we next in the <code class="language-plaintext highlighter-rouge">ngOnDestroy()</code> lifecycle hook of Angular:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
-    <span class="nx">destroy$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="p">();</span>
-    <span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
+    <span class="nx">destroy$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Subject</span><span class="p">();</span>
+    <span class="nf">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
         <span class="c1">// interval$: 0--1--2--3--4--5--6--...</span>
         <span class="c1">// destroy$:  -------------true|</span>
         <span class="c1">// result:    0--1--2--3--4|</span>
-        <span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nx">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">interval$</span> <span class="o">=</span> <span class="nf">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
         <span class="nx">interval$</span>
             <span class="c1">// let the interval$ stream live </span>
             <span class="c1">// until the destroy$ Subject gets a value</span>
-            <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">takeUntil</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">))</span>
-            <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
+            <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">takeUntil</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">))</span>
+            <span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
     <span class="p">}</span>
 
-    <span class="nx">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
         <span class="c1">// when the component get's destroyed, pass something to the</span>
         <span class="c1">// destroy$ Subject</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">destroy$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -290,9 +294,9 @@ Managing subscriptions is very important and in a number of cases we will have t
 <p>Nesting subscribes is something that needs to be avoided as much as possible. It makes the code unreadable, complex, and introduces side effects.
 It basically forces you to <strong>NOT</strong> think reactively. Take this Angular example for instance:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="nl">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
-    <span class="kd">constructor</span><span class="p">(</span>
+    <span class="nf">constructor</span><span class="p">(</span>
         <span class="k">private</span> <span class="nx">route</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span> 
         <span class="k">private</span> <span class="nx">userService</span><span class="p">:</span> <span class="nx">UserService</span><span class="p">)</span>
     <span class="p">{</span>
@@ -302,19 +306,19 @@ It basically forces you to <strong>NOT</strong> think reactively. Take this Angu
         <span class="c1">// VERY BAD: nesting subscribes is ugly and takes away</span>
         <span class="c1">// the control over a stream</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">.</span><span class="nx">params</span>
-            <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="p">))</span>
-            <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> 
-                <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">fetchById</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
-                    <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span><span class="p">))</span>
+            <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="p">))</span>
+            <span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> 
+                <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">fetchById</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span><span class="p">))</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <p>The previous implementation is considered a bad-practice. It’s recommended to use <strong>higher-order streams</strong> like <code class="language-plaintext highlighter-rouge">mergeMap</code> or <code class="language-plaintext highlighter-rouge">switchMap</code>. Let’s have a look at this example:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="nl">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
-    <span class="kd">constructor</span><span class="p">(</span>
+    <span class="nf">constructor</span><span class="p">(</span>
         <span class="k">private</span> <span class="nx">route</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span> 
         <span class="k">private</span> <span class="nx">userService</span><span class="p">:</span> <span class="nx">UserService</span><span class="p">)</span> 
     <span class="p">{</span>
@@ -324,11 +328,11 @@ It basically forces you to <strong>NOT</strong> think reactively. Take this Angu
         <span class="c1">// GOOD: we have created a single subscribe which makes</span>
         <span class="c1">// the flow way easier and gives us the control we need</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">.</span><span class="nx">params</span>
-            <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-                <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span>
-                <span class="nx">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">fetchById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
+            <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+                <span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span>
+                <span class="nf">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">fetchById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
             <span class="p">)</span>
-            <span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -354,15 +358,15 @@ Let’s have a look at the cleaned up previous example:</p>
         &lt;user-detail [user]="user$|async"&gt;&lt;/user-detail&gt;
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="c1">// expose a user$ stream that will be </span>
     <span class="c1">// subscribed in the template with the async pipe</span>
-    <span class="nx">user$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span>
-        <span class="nx">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">fetchById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
+    <span class="nx">user$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+        <span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span>
+        <span class="nf">switchMap</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nf">fetchById</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
     <span class="p">);</span>
 
-    <span class="kd">constructor</span><span class="p">(</span>
+    <span class="nf">constructor</span><span class="p">(</span>
         <span class="k">private</span> <span class="nx">route</span><span class="p">:</span> <span class="nx">ActivatedRoute</span><span class="p">,</span> 
         <span class="k">private</span> <span class="nx">userService</span><span class="p">:</span> <span class="nx">UserService</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">}</span>
@@ -390,11 +394,11 @@ A component should always receive an object or value and should not even care if
         &lt;user-detail [user$]="user$"&gt;&lt;/user-detail&gt;
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="c1">// this http call will get called when the </span>
     <span class="c1">// user-detail component subscribes to users$</span>
     <span class="c1">// We don't want that</span>
-    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...);</span>
+    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...);</span>
     <span class="p">...</span>
 <span class="p">}</span>
 
@@ -405,14 +409,14 @@ A component should always receive an object or value and should not even care if
         
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">UserDetailComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">UserDetailComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">user$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;</span><span class="p">;</span>
     <span class="nl">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
-    <span class="nx">ngOnInit</span><span class="p">(){</span>
+    <span class="nf">ngOnInit</span><span class="p">(){</span>
         <span class="c1">// WHOOPS! This child component subscribes to the stream</span>
         <span class="c1">// of the parent component which will do an automatic XHR call</span>
         <span class="c1">// because Angular HTTP returns a cold stream</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">user$</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">u</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">u</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">user$</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="nx">u</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">u</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -427,13 +431,13 @@ A component should always receive an object or value and should not even care if
         &lt;user-detail [user]="user$|async"&gt;&lt;/user-detail&gt;
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
-    <span class="nx">users$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...);</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span> <span class="p">{</span>
+    <span class="nx">users$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...);</span>
     <span class="nl">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
-    <span class="nx">ngOnInit</span><span class="p">(){</span>
+    <span class="nf">ngOnInit</span><span class="p">(){</span>
         <span class="c1">// the app component (smart) subscribes to the user$ which will</span>
         <span class="c1">// do an XHR call here</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...);</span>
     <span class="p">}</span>
     <span class="p">...</span>
 <span class="p">}</span>
@@ -445,7 +449,7 @@ A component should always receive an object or value and should not even care if
         
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">UserDetailComponent</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">UserDetailComponent</span> <span class="p">{</span>
     <span class="c1">// This component doesn't even know that we are using RxJS which</span>
     <span class="c1">// results in better decoupling</span>
     <span class="p">@</span><span class="nd">Input</span><span class="p">()</span> <span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
@@ -463,20 +467,20 @@ Subscriptions might trigger unwanted behavior. And after all, services don’t c
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// BAD</span>
 <span class="c1">// app.component.ts</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
-     <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...)</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
+     <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...)</span>
      <span class="nx">filteredusers$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">fooService</span>
-        <span class="p">.</span><span class="nx">filterUsers</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">users$</span><span class="p">);</span> <span class="c1">// Passing stream directly: BAD</span>
+        <span class="p">.</span><span class="nf">filterUsers</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">users$</span><span class="p">);</span> <span class="c1">// Passing stream directly: BAD</span>
     <span class="p">...</span>
 <span class="p">}</span>
 
 <span class="c1">// foo.service.ts</span>
-<span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">FooService</span> <span class="p">{</span>
     <span class="c1">// return a stream based on a stream</span>
     <span class="c1">// BAD! because we don't know what will happen here</span>
-    <span class="nx">filterUsers</span><span class="p">(</span><span class="nx">users$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">users$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-            <span class="nx">map</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="nx">users</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="nx">user</span><span class="p">.</span><span class="nx">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">))</span>
+    <span class="nf">filterUsers</span><span class="p">(</span><span class="nx">users$</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">):</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">User</span><span class="p">[]</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">users$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+            <span class="nf">map</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="nx">users</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="nx">user</span><span class="p">.</span><span class="nx">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">))</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -487,19 +491,19 @@ The following example is better since all the RxJS logic is centralized in one p
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// GOOD</span>
 <span class="c1">// app.component.ts</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
-    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...)</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
+    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...)</span>
     <span class="nx">filteredusers$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users$</span>
-        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">switchMap</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">fooService</span><span class="p">.</span><span class="nx">filterUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">)));</span>
+        <span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">switchMap</span><span class="p">(</span><span class="nx">users</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">fooService</span><span class="p">.</span><span class="nf">filterUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">)));</span>
     <span class="p">...</span>
 <span class="p">}</span>
 
 <span class="c1">// foo.service.ts</span>
-<span class="kd">class</span> <span class="nx">FooService</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">FooService</span> <span class="p">{</span>
     <span class="c1">// this is way cleaner: this service doesn't even know</span>
     <span class="c1">// about streams now</span>
-    <span class="nx">filterUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="nx">User</span><span class="p">[]</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">users</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="nx">user</span><span class="p">.</span><span class="nx">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">);</span>
+    <span class="nf">filterUsers</span><span class="p">(</span><span class="nx">users</span><span class="p">:</span> <span class="nx">User</span><span class="p">[]):</span> <span class="nx">User</span><span class="p">[]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">users</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="nx">user</span><span class="p">.</span><span class="nx">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -519,10 +523,10 @@ The following example will trigger the xhr call twice because <code class="langu
     `</span>
 <span class="p">})</span>
 <span class="c1">// BAD</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
-    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...)</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
+    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...)</span>
     <span class="c1">// the subscription on this stream will execute the xhr call again</span>
-    <span class="nx">numberOfUsers$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span> 
+    <span class="nx">numberOfUsers$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span> 
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -536,10 +540,10 @@ The following example will trigger the xhr call twice because <code class="langu
     `</span>
 <span class="p">})</span>
 <span class="c1">// GOOD</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
-    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">share</span><span class="p">());</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
+    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...).</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">share</span><span class="p">());</span>
     <span class="c1">// the subscription on this stream will execute the xhr call again</span>
-    <span class="nx">numberOfUsers$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span> 
+    <span class="nx">numberOfUsers$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span> 
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -562,9 +566,9 @@ The following example reduces the number of streams, the number of subscriptions
         &lt;ng-template #loading&gt;Loading...&lt;/ng-template&gt;
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
     <span class="c1">// This stream will only subscribed to once</span>
-    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(...);</span>
+    <span class="nx">users$</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(...);</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -576,9 +580,9 @@ Subjects tend to be overused by people that didn’t make the mind switch toward
 <p>Only use them when really needed, for instance it’s ok to use Subjects in the following scenarios:</p>
 <h4 id="when-mocking-streams-in-tests">When mocking streams in tests</h4>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">fetchAll$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="p">();</span> <span class="c1">// use a Subject as a mock</span>
-<span class="nx">usersServiceMock</span><span class="p">.</span><span class="nx">fetchAll</span><span class="p">.</span><span class="nx">mockReturnValue</span><span class="p">(</span><span class="nx">fetchAll$</span><span class="p">);</span>
-<span class="nx">fetchAll$</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">fakeUser</span><span class="p">);</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">fetchAll$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Subject</span><span class="p">();</span> <span class="c1">// use a Subject as a mock</span>
+<span class="nx">usersServiceMock</span><span class="p">.</span><span class="nx">fetchAll</span><span class="p">.</span><span class="nf">mockReturnValue</span><span class="p">(</span><span class="nx">fetchAll$</span><span class="p">);</span>
+<span class="nx">fetchAll$</span><span class="p">.</span><span class="nf">next</span><span class="p">(</span><span class="nx">fakeUser</span><span class="p">);</span>
 </code></pre></div></div>
 
 <h4 id="when-we-want-to-create-streams-from-outputs-in-angular">When we want to create streams from outputs in Angular</h4>
@@ -589,8 +593,8 @@ Subjects tend to be overused by people that didn’t make the mind switch toward
     &lt;some-component (search)="search$.next($event)"&gt;&lt;/some-component&gt;
     `</span>
 <span class="p">})</span>
-<span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
-<span class="nx">search$</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Subject</span><span class="p">();</span> <span class="c1">// ----t-----te-----ter----term...</span>
+<span class="kd">class</span> <span class="nc">AppComponent</span> <span class="p">{</span>
+<span class="nx">search$</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Subject</span><span class="p">();</span> <span class="c1">// ----t-----te-----ter----term...</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -610,10 +614,10 @@ When we are trying to fetch a specific value it usually means we are not thinkin
   <li>Align operators below each other</li>
 </ul>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">foo$</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span>
-        <span class="nx">map</span><span class="p">(...)</span>
-        <span class="nx">filter</span><span class="p">(...)</span>
-        <span class="nx">tap</span><span class="p">(...)</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">foo$</span><span class="p">.</span><span class="nf">pipe</span><span class="p">(</span>
+        <span class="nf">map</span><span class="p">(...)</span>
+        <span class="nf">filter</span><span class="p">(...)</span>
+        <span class="nf">tap</span><span class="p">(...)</span>
     <span class="p">)</span>
 </code></pre></div></div>
 
@@ -639,21 +643,18 @@ Therefore it’s recommended to use the functionality that Angular provides.</p>
 
 <p>Still here? Awesome! We learned a lot! If this article interests you, you might want to check out the “Advanced RxJS in Angular workshop” from <a href="https://strongbrew.io">Strongbrew</a>, where me and <a href="blog.kwintenp.com">Kwinten Pisman</a> teach how to use advanced RxJS in real Angular applications.</p>
 
+  </div>
+  <div class="page__wrapper">
+    <a class="workshop-link" href="https://www.simplified.courses/remote-angular-proven-enterprise-solutions" target="_blank">
+      <img  src="/assets/angular-proven-enterprise-solutions.jpg" alt="Angular Proven Enterprise Solutions">
+    </a>
   </div><a class="u-url" href="/rxjs-best-practices-in-angular/" hidden></a>
 </article>
 
-                        </div>
-                        <div class="page__wrapper-right">
-                            <div class="profile">
-                                <a href="https://www.simplified.courses/angular-change-detection-simplified-e-book" target="_blank">
-                                    <img src="/assets/images/ad.jpg" alt="Angular Change Detection ebook"
-                                         nopin="nopin"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
+                    </div>
+
+                </div>
 
             </main>
         </div><div class="footer">

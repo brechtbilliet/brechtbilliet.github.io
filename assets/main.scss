@@ -89,6 +89,7 @@ html, body {
     }
   }
   .page__wrapper{
+    max-width: 940px;
     margin-top:$gridunit*4;
     &-right {
       display:flex;
@@ -369,3 +370,12 @@ html, body {
 
 }
 
+.workshop-link {
+  cursor:pointer;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  img {
+    border-radius: 1.5rem;
+  }
+}

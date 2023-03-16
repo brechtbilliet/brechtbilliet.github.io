@@ -89,19 +89,19 @@ A close button in the header will call the <code class="language-plaintext highl
 to create that <code class="language-plaintext highlighter-rouge">overlayRef</code> by using its <code class="language-plaintext highlighter-rouge">create()</code> function. It takes an <code class="language-plaintext highlighter-rouge">overlayConfig</code> parameter to
 configure its position, width, backdrop, etc.</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="p">{</span>
-    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OverlayConfig</span><span class="p">({</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyDialogComponent</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OverlayConfig</span><span class="p">({</span>
         <span class="c1">// show backdrop</span>
         <span class="na">hasBackdrop</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
         <span class="c1">// position the dialog in the center of the page</span>
-        <span class="na">positionStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">position</span><span class="p">().</span><span class="nb">global</span><span class="p">().</span><span class="nx">centerHorizontally</span><span class="p">().</span><span class="nx">centerVertically</span><span class="p">(),</span>
+        <span class="na">positionStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nf">position</span><span class="p">().</span><span class="nf">global</span><span class="p">().</span><span class="nf">centerHorizontally</span><span class="p">().</span><span class="nf">centerVertically</span><span class="p">(),</span>
         <span class="c1">// when in the dialog, block scrolling of the page      </span>
-        <span class="na">scrollStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">scrollStrategies</span><span class="p">.</span><span class="nx">block</span><span class="p">(),</span>
+        <span class="na">scrollStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">scrollStrategies</span><span class="p">.</span><span class="nf">block</span><span class="p">(),</span>
         <span class="na">minWidth</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
     <span class="p">});</span>
-    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
+    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
 
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">){</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">){</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -111,18 +111,18 @@ to render the contents of it inside the overlay. We have to do that
 after the view is initialized, so we will need to handle this in the <code class="language-plaintext highlighter-rouge">ngAfterViewInit</code> lifecycle hook.
 We will use <code class="language-plaintext highlighter-rouge">@ViewChild(CdkPortal)</code> to get a handle on the <code class="language-plaintext highlighter-rouge">portal</code> we have defined in our template:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
     <span class="c1">// get a grasp on the ng-template with the cdkPortal directive</span>
     <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="nx">CdkPortal</span><span class="p">)</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">portal</span><span class="p">:</span> <span class="nx">CdkPortal</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
 
-    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OverlayConfig</span><span class="p">({...});</span>
-    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">){</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OverlayConfig</span><span class="p">({...});</span>
+    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">){</span>
     <span class="p">}</span>
     
-    <span class="k">public</span> <span class="nx">ngAfterViewInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="nf">ngAfterViewInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// Wait until the view is initialized to attach the portal to the overlay</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">portal</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">portal</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -134,16 +134,16 @@ However we do need to clean up the <code class="language-plaintext highlighter-r
 function. We will do that on the <code class="language-plaintext highlighter-rouge">ngOnDestroy</code> lifecycle hook:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">AfterViewInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">OnInit</span><span class="p">,</span> <span class="nx">AfterViewInit</span><span class="p">,</span> <span class="nx">OnDestroy</span> <span class="p">{</span>
     <span class="c1">// Tell the parent to destroy the component</span>
     <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">closeDialog</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span><span class="p">();</span>
 
     <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="nx">CdkPortal</span><span class="p">)</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">portal</span><span class="p">:</span> <span class="nx">CdkPortal</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
     <span class="p">...</span>
-    <span class="k">public</span> <span class="nx">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="nf">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// parent destroys this component, this component destroys the overlayRef</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">detach</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">dispose</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">detach</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">dispose</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -160,10 +160,10 @@ However, we want to do the same when the user clicks on the backdrop.</p>
 events when the user clicks on the backdrop. We could leverage that to close the dialog by emitting on the <code class="language-plaintext highlighter-rouge">closeDialog</code>
 EventEmitter. In our constructor we can subscribe to that observable and emit when needed:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">constructor</span><span class="p">(...)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">backdropClick</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">closeDialog</span><span class="p">.</span><span class="nx">emit</span><span class="p">();</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">constructor</span><span class="p">(...)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">backdropClick</span><span class="p">()</span>
+        <span class="p">.</span><span class="nf">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">closeDialog</span><span class="p">.</span><span class="nf">emit</span><span class="p">();</span>
         <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -172,43 +172,43 @@ EventEmitter. In our constructor we can subscribe to that observable and emit wh
 
 <p>Below we see the entire implementation of the <code class="language-plaintext highlighter-rouge">MyDialog</code> component class:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nc">MyDialogComponent</span> <span class="k">implements</span> <span class="nx">AfterViewInit</span> <span class="p">{</span>
     <span class="c1">// get a grasp on the ng-template with the cdkPortal directive </span>
     <span class="p">@</span><span class="nd">ViewChild</span><span class="p">(</span><span class="nx">CdkPortal</span><span class="p">)</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">portal</span><span class="p">:</span> <span class="nx">CdkPortal</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
     <span class="c1">// the parent is in charge of destroying this component (usually through ngIf or route change)</span>
     <span class="p">@</span><span class="nd">Output</span><span class="p">()</span> <span class="k">public</span> <span class="k">readonly</span> <span class="nx">closeDialog</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">EventEmitter</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span><span class="p">();</span>
     
     <span class="c1">// the configuration of the overlay</span>
-    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">OverlayConfig</span><span class="p">({</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlayConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OverlayConfig</span><span class="p">({</span>
         <span class="na">hasBackdrop</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
         <span class="na">positionStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span>
-            <span class="p">.</span><span class="nx">position</span><span class="p">()</span>
-            <span class="p">.</span><span class="nb">global</span><span class="p">()</span>
-            <span class="p">.</span><span class="nx">centerHorizontally</span><span class="p">()</span>
-            <span class="p">.</span><span class="nx">centerVertically</span><span class="p">(),</span>
-        <span class="na">scrollStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">scrollStrategies</span><span class="p">.</span><span class="nx">block</span><span class="p">(),</span>
+            <span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">global</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">centerHorizontally</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">centerVertically</span><span class="p">(),</span>
+        <span class="na">scrollStrategy</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">scrollStrategies</span><span class="p">.</span><span class="nf">block</span><span class="p">(),</span>
         <span class="na">minWidth</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
     <span class="p">});</span>
     <span class="c1">// creating the overlayRef</span>
-    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
+    <span class="k">private</span> <span class="nx">overlayRef</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">overlay</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">overlayConfig</span><span class="p">);</span>
 
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">overlay</span><span class="p">:</span> <span class="nx">Overlay</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// telling the parent to destroy the dialog when the user</span>
         <span class="c1">// clicks on the backdrop</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">.</span><span class="nx">backdropClick</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">closeDialog</span><span class="p">.</span><span class="nx">emit</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">.</span><span class="nf">backdropClick</span><span class="p">().</span><span class="nf">subscribe</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">closeDialog</span><span class="p">.</span><span class="nf">emit</span><span class="p">();</span>
         <span class="p">});</span>
     <span class="p">}</span>
     
     <span class="c1">// attach the portal to the overlayRef when the view is initialized</span>
-    <span class="k">public</span> <span class="nx">ngAfterViewInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">portal</span><span class="p">);</span>
+    <span class="k">public</span> <span class="nf">ngAfterViewInit</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">portal</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="nx">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="nf">ngOnDestroy</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
         <span class="c1">// When the parent destroys this component, this component destroys the overlayRef</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">detach</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nx">dispose</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">detach</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">overlayRef</span><span class="p">?.</span><span class="nf">dispose</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 

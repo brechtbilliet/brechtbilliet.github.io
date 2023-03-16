@@ -1,4 +1,4 @@
-I"׷<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
+I"ܷ<p><a href="https://github.com/ngrx/platform/blob/master/docs/store/README.md">@ngrx/store</a> is a library that tries to solve the problems of state management through the principles of <a href="https://redux.js.org/">Redux</a>. The difference between Redux and @ngrx/store is that @ngrx/store is written specifically for <a href="https://angular.io">Angular</a> and it embraces the use of Observables from <a href="http://reactivex.io/rxjs/">RxJS</a>.
 The combination of redux principles and RxJS can be very powerful when it comes to writing reactive applications.
 Since a lot of Angular projects use @ngrx/store, it might be a good idea to write down some best-practices.</p>
 
@@ -24,11 +24,11 @@ It is a best practice to only use it when your application demands it.
 
 <p>A model can be seen as a javascript object which has functionality, like the following example:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">User</span><span class="p">{</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="k">private</span> <span class="nx">lastName</span><span class="p">:</span><span class="kr">string</span><span class="p">){</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">User</span><span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">firstName</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="k">private</span> <span class="nx">lastName</span><span class="p">:</span><span class="kr">string</span><span class="p">){</span>
     <span class="p">}</span>
 
-    <span class="kd">get</span> <span class="nx">fullName</span><span class="p">():</span> <span class="kr">string</span> <span class="p">{</span>
+    <span class="kd">get</span> <span class="nf">fullName</span><span class="p">():</span> <span class="kr">string</span> <span class="p">{</span>
         <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">firstName</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">lastName</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span> 
     <span class="p">}</span>
 <span class="p">}</span>
@@ -37,10 +37,10 @@ It is a best practice to only use it when your application demands it.
 <p>While the Redux package written by Dan Abramov forbids sending these prototyped objects as a payload, @ngrx/store does not forbid it yet.
 However, it is a bad practice because it adds a lot of complexity to the store and chances are big that the models will get broken because of the immutable way of handling data. Check this example for instance:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">Brecht</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Billiet</span><span class="dl">'</span><span class="p">);</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span> <span class="c1">// Brecht Billiet</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">Brecht</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Billiet</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span> <span class="c1">// Brecht Billiet</span>
 <span class="kd">const</span> <span class="nx">updatedUser</span> <span class="o">=</span> <span class="p">{...</span><span class="nx">user</span><span class="p">,</span> <span class="na">lastName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Doe</span><span class="dl">'</span><span class="p">};</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">updatedUser</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span> <span class="c1">// undefined</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">updatedUser</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span> <span class="c1">// undefined</span>
 </code></pre></div></div>
 
 <p>Since we have updated the user in an immutable way, it has created a new reference and therefore all its functionality has been lost.
@@ -194,7 +194,7 @@ The cool thing is that typescript offers us something called “advanced types�
 <p>When we use plain action types and payloads it becomes quite painful to remember all the action type names and all the payloads that belong to them. This example for instance:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user_id</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">1234</span><span class="dl">'</span><span class="p">,</span> <span class="nx">address</span> <span class="o">=</span> <span class="p">{</span><span class="nx">whatevz</span><span class="p">};</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">,</span> 
         <span class="na">payload</span><span class="p">:</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">}</span>
@@ -204,17 +204,17 @@ The cool thing is that typescript offers us something called “advanced types�
 <p>That’s pretty nasty if we want remember all that stuff, so let’s create action creator classes for these. What if we could do this?</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">user_id</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">1234</span><span class="dl">'</span><span class="p">,</span> <span class="nx">address</span> <span class="o">=</span> <span class="p">{</span><span class="nx">whatevz</span><span class="p">};</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nx">SetUserAddressAction</span><span class="p">(</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">));</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nf">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nc">SetUserAddressAction</span><span class="p">(</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">));</span>
 </code></pre></div></div>
 
 <p>That’s just became way easier to use and we don’t have to remember the payload of the action.</p>
 
 <p>If we wanted to implement the actioncreator class for this action it would look like this:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">SetUserAddressAction</span> <span class="k">implements</span> <span class="nx">Action</span> <span class="p">{</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SetUserAddressAction</span> <span class="k">implements</span> <span class="nx">Action</span> <span class="p">{</span>
     <span class="kd">type</span> <span class="o">=</span> <span class="nx">SET_USER_ADDRESS</span><span class="p">;</span>
     <span class="nl">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">user_id</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="na">address</span><span class="p">:</span> <span class="nx">Address</span><span class="p">};</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="nx">user_id</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">address</span><span class="p">:</span> <span class="nx">Address</span><span class="p">){</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">user_id</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="nx">address</span><span class="p">:</span> <span class="nx">Address</span><span class="p">){</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">};</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -225,18 +225,18 @@ The cool thing is that typescript offers us something called “advanced types�
 <p>When the action would only have one property for the payload we might be encouraged to use the payload directly instead of creating a property in it. However that would lead to inconsistency, so it might be better to always use subproperties</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is bad (inconsistent with the rest of the actions)</span>
-<span class="kd">class</span> <span class="nx">UpdateUserAction</span> <span class="k">implements</span> <span class="nx">Action</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">UpdateUserAction</span> <span class="k">implements</span> <span class="nx">Action</span> <span class="p">{</span>
     <span class="kd">type</span> <span class="o">=</span> <span class="nx">UPDATE_USER</span><span class="p">;</span>
     <span class="nl">payload</span><span class="p">:</span> <span class="nx">User</span><span class="p">;</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">){</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">){</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">payload</span> <span class="o">=</span> <span class="nx">user</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="c1">// This is better</span>
-<span class="kd">class</span> <span class="nx">UpdateUserAction</span> <span class="k">implements</span> <span class="nx">Action</span><span class="p">{</span>
+<span class="kd">class</span> <span class="nc">UpdateUserAction</span> <span class="k">implements</span> <span class="nx">Action</span><span class="p">{</span>
     <span class="kd">type</span> <span class="o">=</span> <span class="nx">UPDATE_USER</span><span class="p">;</span>
     <span class="nl">payload</span><span class="p">:</span> <span class="p">{</span><span class="na">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">};</span>
-    <span class="kd">constructor</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">){</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">user</span><span class="p">:</span> <span class="nx">User</span><span class="p">){</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span><span class="nx">user</span><span class="p">};</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -254,11 +254,11 @@ Therefore I would definitely consider it a must. Since <a href="https://twitter.
 <p>If we want to make the reducer code more readable and shorter we could use javascript destructuring for that.
 This might be personal preference, but it sure as hell makes our reducers easier to read. Take this example for instance:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">usersReducer</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">usersReducer</span>
   <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">case</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
+        <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
           <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">.</span><span class="nx">user_id</span> <span class="p">?</span> 
           <span class="p">{...</span><span class="nx">user</span><span class="p">,</span> <span class="na">address</span><span class="p">:</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">.</span><span class="nx">address</span><span class="p">}</span> <span class="p">:</span> 
           <span class="nx">v</span>
@@ -269,12 +269,12 @@ This might be personal preference, but it sure as hell makes our reducers easier
 <p>The <code class="language-plaintext highlighter-rouge">action.payload.</code>code comes back a few times, resulting in longer codelines.
 The following piece of code might be more readable:</p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">usersReducer</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">usersReducer</span>
   <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">case</span> <span class="dl">'</span><span class="s1">SET_USER_ADDRESS</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
         <span class="kd">const</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">address</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
+        <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
           <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">user_id</span> <span class="p">?</span> 
           <span class="p">{...</span><span class="nx">user</span><span class="p">,</span> <span class="nx">address</span><span class="p">}</span> <span class="p">:</span> 
           <span class="nx">v</span>
@@ -321,16 +321,16 @@ Something to note here is that the case implementation is wrapped inside a block
 <p>If we would put all the logic to add an assignee to a specific contract of a specific user, the code would be hard to read. Checkout the following piece of code:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is bad</span>
-<span class="kd">function</span> <span class="nx">usersReducer</span>
+<span class="kd">function</span> <span class="nf">usersReducer</span>
   <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">case</span> <span class="dl">'</span><span class="s1">ADD_USER_CONTRACT_ASSIGNEE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
       <span class="kd">const</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">contract_id</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
+      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
         <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">user_id</span> <span class="p">?</span> 
         <span class="p">{</span>
           <span class="p">...</span><span class="nx">user</span><span class="p">,</span> 
-          <span class="na">contracts</span><span class="p">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">contracts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">contract</span> <span class="o">=&gt;</span> 
+          <span class="na">contracts</span><span class="p">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">contracts</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">contract</span> <span class="o">=&gt;</span> 
             <span class="nx">contract</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">contract_id</span> <span class="p">?</span>
             <span class="p">{</span>
               <span class="p">...</span><span class="nx">contract</span><span class="p">,</span> 
@@ -351,16 +351,16 @@ Something to note here is that the case implementation is wrapped inside a block
 <p>When reducers become complex it might be a good idea to split the reducer up into child reducers. Check the refactored version of the previous example:</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is better</span>
-<span class="kd">function</span> <span class="nx">usersReducer</span>
+<span class="kd">function</span> <span class="nf">usersReducer</span>
   <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">User</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">User</span> <span class="p">[]{</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">case</span> <span class="dl">'</span><span class="s1">ADD_USER_CONTRACT_ASSIGNEE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
       <span class="kd">const</span> <span class="p">{</span><span class="nx">user_id</span><span class="p">,</span> <span class="nx">contract_id</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
+      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
         <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">user_id</span> <span class="p">?</span> 
         <span class="p">{</span>
           <span class="p">...</span><span class="nx">user</span><span class="p">,</span> 
-          <span class="na">contracts</span><span class="p">:</span> <span class="nx">contractsReducer</span><span class="p">(</span><span class="nx">contracts</span><span class="p">,</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">)</span>
+          <span class="na">contracts</span><span class="p">:</span> <span class="nf">contractsReducer</span><span class="p">(</span><span class="nx">contracts</span><span class="p">,</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">)</span>
         <span class="p">}</span> <span class="p">:</span> 
         <span class="nx">v</span>
       <span class="p">)</span>
@@ -370,12 +370,12 @@ Something to note here is that the case implementation is wrapped inside a block
   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">contractsReducer</span>
+<span class="kd">function</span> <span class="nf">contractsReducer</span>
   <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">Contract</span><span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">UserActions</span><span class="p">):</span> <span class="nx">Contract</span> <span class="p">[]{</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">case</span> <span class="dl">'</span><span class="s1">ADD_USER_CONTRACT_ASSIGNEE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
       <span class="kd">const</span> <span class="p">{</span> <span class="nx">contract_id</span><span class="p">,</span> <span class="nx">assignee</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
+      <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">v</span> <span class="o">=&gt;</span> 
         <span class="nx">v</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">contract_id</span> <span class="p">?</span> 
         <span class="p">{</span>
           <span class="p">...</span><span class="nx">contract</span><span class="p">,</span> 
@@ -402,23 +402,23 @@ We won’t need to mock out any dependencies and we only have to test the value 
 
 <p>We can also use <a href="https://www.npmjs.com/package/deep-freeze">deepfreeze</a> to freeze the state that when the reducer accidently mutates data, the tests will throw an error. Deepfreeze is nothing more than a recursive <code class="language-plaintext highlighter-rouge">Object.freeze</code></p>
 
-<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">reducer: usersReducer</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">case UPDATE_USER</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should return a new instance with the correct state</span><span class="dl">'</span><span class="p">,</span> 
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">reducer: usersReducer</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nf">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">case UPDATE_USER</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should return a new instance with the correct state</span><span class="dl">'</span><span class="p">,</span> 
     <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="kd">const</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="p">[</span><span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">),</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">)];</span>
+      <span class="kd">const</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="p">[</span><span class="k">new</span> <span class="nc">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">),</span> <span class="k">new</span> <span class="nc">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">)];</span>
       <span class="c1">// deepfreeze makes sure the reducer </span>
       <span class="c1">// doesn't mutate anything by accident</span>
-      <span class="nx">deepfreeze</span><span class="p">(</span><span class="nx">initialState</span><span class="p">);</span> 
-      <span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">);</span>
-      <span class="kd">const</span> <span class="nx">action</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UpdateUserAction</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
-      <span class="kd">const</span> <span class="nx">newState</span> <span class="o">=</span> <span class="nx">usersReducer</span><span class="p">(</span><span class="nx">initialState</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+      <span class="nf">deepfreeze</span><span class="p">(</span><span class="nx">initialState</span><span class="p">);</span> 
+      <span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">(</span><span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">);</span>
+      <span class="kd">const</span> <span class="nx">action</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UpdateUserAction</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+      <span class="kd">const</span> <span class="nx">newState</span> <span class="o">=</span> <span class="nf">usersReducer</span><span class="p">(</span><span class="nx">initialState</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
       <span class="c1">// check if the result of the array is a new ref</span>
-      <span class="nx">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">).</span><span class="nx">not</span><span class="p">.</span><span class="nx">toBe</span><span class="p">(</span><span class="nx">initialState</span><span class="p">);</span> 
+      <span class="nf">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">).</span><span class="nx">not</span><span class="p">.</span><span class="nf">toBe</span><span class="p">(</span><span class="nx">initialState</span><span class="p">);</span> 
       <span class="c1">// check if the result of the user is a new ref</span>
-      <span class="nx">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nx">not</span><span class="p">.</span><span class="nx">toBe</span><span class="p">(</span><span class="nx">initialState</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="nf">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nx">not</span><span class="p">.</span><span class="nf">toBe</span><span class="p">(</span><span class="nx">initialState</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
       <span class="c1">// check if the user got updated automatically</span>
-      <span class="nx">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nx">toEqual</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+      <span class="nf">expect</span><span class="p">(</span><span class="nx">newState</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nf">toEqual</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>
